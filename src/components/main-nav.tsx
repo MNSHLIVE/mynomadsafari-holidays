@@ -54,10 +54,15 @@ const MainNav = () => {
           <div className="flex items-center">
             <Link 
               to="/" 
-              className="text-xl font-bold text-primary flex items-center space-x-2"
+              className="text-xl font-bold text-primary flex items-center space-x-3"
             >
-              <span className="text-2xl">
-                WanderLuxe
+              <img 
+                src="/lovable-uploads/3e515213-741f-498e-add3-8b8f70b7fe4c.png" 
+                alt="My Nomadsafari Holidays" 
+                className="h-10 w-auto"
+              />
+              <span className="text-lg md:text-xl font-medium">
+                My Nomadsafari Holidays
               </span>
             </Link>
           </div>

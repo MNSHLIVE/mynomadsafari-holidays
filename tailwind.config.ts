@@ -58,8 +58,8 @@ export default {
 					foreground: 'hsl(var(--card-foreground))'
 				},
 				brand: {
-					green: '#98FF98',
-					blue: '#1E90FF'
+					green: '#79B94A', // Logo green color
+					blue: '#33A9DE'  // Logo blue color from the globe
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',

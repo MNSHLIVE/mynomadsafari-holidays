@@ -24,7 +24,14 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Company Info */}
           <div className="space-y-4">
-            <h3 className="font-bold text-lg text-primary">WanderLuxe Travel</h3>
+            <div className="flex items-center space-x-2">
+              <img 
+                src="/lovable-uploads/3e515213-741f-498e-add3-8b8f70b7fe4c.png" 
+                alt="My Nomadsafari Holidays" 
+                className="h-10 w-auto"
+              />
+              <h3 className="font-bold text-lg text-primary">My Nomadsafari Holidays</h3>
+            </div>
             <p className="text-sm text-muted-foreground">
               Your one-stop travel expert helping you explore the world your way since 2010.
             </p>
@@ -102,7 +109,7 @@ const Footer = () => {
               <li className="flex items-center space-x-3">
                 <Mail size={18} className="text-primary flex-shrink-0" />
                 <span className="text-sm text-muted-foreground">
-                  info@wanderluxetravel.com
+                  info@mynomadsafari.com
                 </span>
               </li>
             </ul>
@@ -129,7 +136,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-border mt-10 pt-6 text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} WanderLuxe Travel Agency. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} My Nomadsafari Holidays. All rights reserved.</p>
         </div>
       </div>
     </footer>
