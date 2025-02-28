@@ -27,6 +27,76 @@ import { cn } from "@/lib/utils";
 
 // Tour data
 const tours = [
+  // Featured Door-to-Door Packages
+  {
+    id: 101,
+    title: "Dubai Family Delight",
+    imageSrc: "https://images.unsplash.com/photo-1582672750001-3bacac6a1cb5?q=80&w=800",
+    location: "Dubai, UAE",
+    duration: "7 Days",
+    price: 1999,
+    bestTime: "October - April",
+    packageType: "Luxury",
+    country: "UAE",
+    region: "Middle East",
+    description: "Experience the magic of Dubai with this exclusive family package. From doorstep pickup to airport transfers, everything is taken care of for a hassle-free vacation.",
+    activities: ["Desert Safari", "Burj Khalifa Visit", "Dubai Mall Shopping", "Dhow Cruise Dinner"],
+    included: ["Home Pickup & Drop", "5-Star Accommodation", "All Meals", "Private Tours", "Visa Processing", "Travel Insurance"],
+    groupSize: "Family Package (4 persons)",
+    highlight: "Door-to-Door Service"
+  },
+  {
+    id: 102,
+    title: "Singapore Complete Experience",
+    imageSrc: "https://images.unsplash.com/photo-1565967511849-76a60a516170?q=80&w=800",
+    location: "Singapore",
+    duration: "6 Days",
+    price: 1850,
+    bestTime: "Year Round",
+    packageType: "Luxury",
+    country: "Singapore",
+    region: "Southeast Asia",
+    description: "Discover the beauty of Singapore with our complete package that takes care of every detail from your doorstep to Singapore and back.",
+    activities: ["Gardens by the Bay", "Universal Studios", "Sentosa Island", "Singapore Flyer"],
+    included: ["Home Pickup & Drop", "4-Star Accommodation", "Breakfast & Dinner", "Skip-the-line Attraction Tickets", "Visa Processing", "Travel Insurance"],
+    groupSize: "Up to 6 people",
+    highlight: "Door-to-Door Service"
+  },
+  {
+    id: 103,
+    title: "Enchanting Bali Getaway",
+    imageSrc: "https://images.unsplash.com/photo-1555400038-63f5ba517a47?q=80&w=800",
+    location: "Bali, Indonesia",
+    duration: "8 Days",
+    price: 1750,
+    bestTime: "April - October",
+    packageType: "Luxury",
+    country: "Indonesia",
+    region: "Southeast Asia",
+    description: "A carefully crafted door-to-door Bali experience with personal assistance throughout the journey. Perfect for couples and honeymooners.",
+    activities: ["Rice Terrace Trekking", "Temple Visits", "Sunset Dinner", "Spa Treatments", "Ubud Art Tour"],
+    included: ["Home Pickup & Drop", "Villa Accommodation", "Daily Breakfast & Dinner", "Private Tours", "Visa On Arrival Assistance", "Travel Insurance"],
+    groupSize: "Couple Package",
+    highlight: "Door-to-Door Service"
+  },
+  {
+    id: 104,
+    title: "Thailand Family Adventure",
+    imageSrc: "https://images.unsplash.com/photo-1504214208698-ea1916a2195a?q=80&w=800",
+    location: "Bangkok, Phuket, Krabi",
+    duration: "9 Days",
+    price: 2100,
+    bestTime: "November - March",
+    packageType: "Luxury",
+    country: "Thailand",
+    region: "Southeast Asia",
+    description: "Experience the best of Thailand with our comprehensive door-to-door package perfect for families seeking adventure and relaxation.",
+    activities: ["Elephant Sanctuary Visit", "Island Hopping", "Thai Cooking Class", "Water Sports"],
+    included: ["Home Pickup & Drop", "4-Star Resorts", "All Meals", "Private Guides", "Domestic Flights", "Travel Insurance"],
+    groupSize: "Family Package (4 persons)",
+    highlight: "Door-to-Door Service"
+  },
+  
   // India Tours
   {
     id: 1,
@@ -157,6 +227,38 @@ const tours = [
     activities: ["Ha Long Bay Cruise", "Walking Tours", "Cooking Class"],
     included: ["3-Star Accommodations", "Breakfast", "Some Lunches", "Guided Tours"],
     groupSize: "Small Group (max 10)"
+  },
+  {
+    id: 9,
+    title: "Singapore Family Fun",
+    imageSrc: "https://images.unsplash.com/photo-1533052494972-63e070a3f1f9?q=80&w=800",
+    location: "Singapore",
+    duration: "5 Days",
+    price: 1200,
+    bestTime: "Year Round",
+    packageType: "Budgeted",
+    country: "Singapore",
+    region: "Southeast Asia",
+    description: "Perfect for families, this Singapore package covers all the major attractions including Universal Studios and Gardens by the Bay.",
+    activities: ["Universal Studios", "Gardens by the Bay", "Singapore Zoo", "Night Safari"],
+    included: ["3-Star Accommodation", "Breakfast", "Attraction Tickets", "Airport Transfers"],
+    groupSize: "Family Package"
+  },
+  {
+    id: 10,
+    title: "Majestic Malaysia",
+    imageSrc: "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?q=80&w=800",
+    location: "Kuala Lumpur, Penang, Langkawi",
+    duration: "8 Days",
+    price: 900,
+    bestTime: "December - May",
+    packageType: "Budgeted",
+    country: "Malaysia",
+    region: "Southeast Asia",
+    description: "Experience the diverse culture, food, and landscapes of Malaysia from bustling cities to serene islands.",
+    activities: ["City Tours", "Island Hopping", "Cable Car Ride", "Food Trails"],
+    included: ["3-Star Accommodations", "Breakfast", "Guided Tours", "Domestic Flights"],
+    groupSize: "Up to 12 people"
   }
 ];
 
@@ -232,8 +334,12 @@ const Tours = () => {
     });
   };
 
-  const indianTours = filterTours(tours.filter(tour => tour.country === "India"));
-  const internationalTours = filterTours(tours.filter(tour => tour.country !== "India"));
+  // Get door-to-door packages
+  const doorToDoorPackages = tours.filter(tour => tour.highlight === "Door-to-Door Service");
+  
+  // Filter standard packages
+  const indianTours = filterTours(tours.filter(tour => tour.country === "India" && !tour.highlight));
+  const internationalTours = filterTours(tours.filter(tour => tour.country !== "India" && !tour.highlight));
 
   const clearFilters = () => {
     setSelectedRegions([]);
@@ -284,6 +390,118 @@ const Tours = () => {
               className="pl-10"
             />
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          </div>
+        </div>
+      </section>
+
+      {/* Door-to-Door Service Banner */}
+      <section className="container mx-auto px-4 mb-16">
+        <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl p-6 md:p-8 shadow-sm border border-primary/20">
+          <div className="flex flex-col md:flex-row gap-6 items-center">
+            <div className="md:w-3/4">
+              <h2 className="text-2xl md:text-3xl font-bold mb-4">End-to-End Travel Solution</h2>
+              <p className="text-lg mb-4">
+                Experience hassle-free travel with our door-to-door service. We pick you up from your home, 
+                take care of everything during your journey, and drop you back safely.
+              </p>
+              <div className="flex flex-wrap gap-4 mb-4">
+                <Badge className="px-3 py-1 text-sm bg-primary/20 text-primary hover:bg-primary/30">Home Pickup & Drop</Badge>
+                <Badge className="px-3 py-1 text-sm bg-primary/20 text-primary hover:bg-primary/30">Visa Assistance</Badge>
+                <Badge className="px-3 py-1 text-sm bg-primary/20 text-primary hover:bg-primary/30">Travel Insurance</Badge>
+                <Badge className="px-3 py-1 text-sm bg-primary/20 text-primary hover:bg-primary/30">24/7 Support</Badge>
+              </div>
+            </div>
+            <div className="md:w-1/4 flex justify-center">
+              <Button size="lg" className="rounded-full px-6">
+                Learn More
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Door-to-Door Packages */}
+      <section className="container mx-auto px-4 mb-16">
+        <SectionHeading
+          title="Featured Door-to-Door Packages"
+          subtitle="Premium packages with home pickup and drop service"
+          align="center"
+        />
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
+          {doorToDoorPackages.map((tour) => (
+            <TourCard
+              key={tour.id}
+              imageSrc={tour.imageSrc}
+              title={tour.title}
+              location={tour.location}
+              duration={tour.duration}
+              price={`$${tour.price}`}
+              bestTime={tour.bestTime}
+              packageType={tour.packageType as "Budgeted" | "Luxury" | "Premier"}
+              link={`/tours/${tour.id}`}
+              className="relative"
+            />
+          ))}
+        </div>
+
+        <div className="bg-muted/30 rounded-xl p-6 mt-10">
+          <h3 className="text-xl font-semibold mb-4">What's Included in Door-to-Door Packages</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="flex items-start">
+              <div className="bg-primary/10 p-2 rounded-full mr-3">
+                <Check className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h4 className="font-medium">Home Pickup & Drop</h4>
+                <p className="text-sm text-muted-foreground">Comfortable transportation from your doorstep</p>
+              </div>
+            </div>
+            <div className="flex items-start">
+              <div className="bg-primary/10 p-2 rounded-full mr-3">
+                <Check className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h4 className="font-medium">Premium Accommodations</h4>
+                <p className="text-sm text-muted-foreground">4 & 5-star hotels with breakfast included</p>
+              </div>
+            </div>
+            <div className="flex items-start">
+              <div className="bg-primary/10 p-2 rounded-full mr-3">
+                <Check className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h4 className="font-medium">Visa Processing</h4>
+                <p className="text-sm text-muted-foreground">Complete assistance with visa applications</p>
+              </div>
+            </div>
+            <div className="flex items-start">
+              <div className="bg-primary/10 p-2 rounded-full mr-3">
+                <Check className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h4 className="font-medium">Travel Insurance</h4>
+                <p className="text-sm text-muted-foreground">Comprehensive coverage for peace of mind</p>
+              </div>
+            </div>
+            <div className="flex items-start">
+              <div className="bg-primary/10 p-2 rounded-full mr-3">
+                <Check className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h4 className="font-medium">Private Transfers</h4>
+                <p className="text-sm text-muted-foreground">Between airports, hotels, and attractions</p>
+              </div>
+            </div>
+            <div className="flex items-start">
+              <div className="bg-primary/10 p-2 rounded-full mr-3">
+                <Check className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h4 className="font-medium">24/7 Support</h4>
+                <p className="text-sm text-muted-foreground">Dedicated support throughout your journey</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -441,8 +659,8 @@ const Tours = () => {
 
               <TabsContent value="all" className="mt-0">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {filterTours(tours).length > 0 ? (
-                    filterTours(tours).map((tour) => (
+                  {filterTours([...doorToDoorPackages, ...tours.filter(t => !t.highlight)]).length > 0 ? (
+                    filterTours([...doorToDoorPackages, ...tours.filter(t => !t.highlight)]).map((tour) => (
                       <TourCard
                         key={tour.id}
                         imageSrc={tour.imageSrc}
@@ -539,6 +757,14 @@ const Tours = () => {
                       <li>English-speaking tour guide</li>
                       <li>All applicable taxes</li>
                     </ul>
+                    <p className="mt-4 mb-2"><strong>Door-to-Door packages additionally include:</strong></p>
+                    <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+                      <li>Pickup and drop from your home to the airport and back</li>
+                      <li>Complete visa processing assistance</li>
+                      <li>Travel insurance coverage</li>
+                      <li>24/7 dedicated support throughout your journey</li>
+                      <li>All meals during the tour (breakfast, lunch, and dinner)</li>
+                    </ul>
                   </AccordionContent>
                 </AccordionItem>
 
@@ -550,6 +776,10 @@ const Tours = () => {
                       by phone, or by email. We'll need your travel dates, the number of travelers, 
                       and your preferred package type. A 20% deposit is required to confirm your booking, 
                       with the balance due 30 days before the tour starts.
+                    </p>
+                    <p className="mt-4">
+                      For Door-to-Door packages, our travel consultant will visit your home to discuss requirements
+                      and customize the perfect itinerary for you.
                     </p>
                   </AccordionContent>
                 </AccordionItem>
@@ -597,6 +827,11 @@ const Tours = () => {
                       personalized tour experience for you. Customization options include accommodation upgrades, 
                       additional activities, special dietary requirements, and more.
                     </p>
+                    <p className="mt-4">
+                      Our Door-to-Door packages are especially flexible and can be fully tailored to your needs.
+                      From the pickup time at your home to the specific experiences at your destination,
+                      everything can be personalized.
+                    </p>
                   </AccordionContent>
                 </AccordionItem>
 
@@ -615,6 +850,27 @@ const Tours = () => {
                     </p>
                   </AccordionContent>
                 </AccordionItem>
+
+                <AccordionItem value="item-6">
+                  <AccordionTrigger>How does the Door-to-Door service work?</AccordionTrigger>
+                  <AccordionContent>
+                    <p className="mb-4">Our Door-to-Door service provides a completely hassle-free travel experience:</p>
+                    
+                    <ol className="list-decimal list-inside space-y-2 text-muted-foreground">
+                      <li>After booking, our representative contacts you to confirm pickup details and special requirements</li>
+                      <li>On the day of departure, our chauffeur arrives at your home to transport you to the airport</li>
+                      <li>Our airport representative assists with check-in and immigration procedures</li>
+                      <li>Upon arrival at your destination, a dedicated guide welcomes you and handles all transfers</li>
+                      <li>Throughout your trip, all transportation between attractions and hotels is pre-arranged</li>
+                      <li>When returning home, our chauffeur meets you at the airport and drops you back at your doorstep</li>
+                    </ol>
+                    
+                    <p className="mt-4">
+                      This service is ideal for families, senior travelers, and anyone who prefers a stress-free vacation without
+                      having to worry about logistics.
+                    </p>
+                  </AccordionContent>
+                </AccordionItem>
               </Accordion>
             </div>
           </div>
@@ -624,7 +880,7 @@ const Tours = () => {
       {/* CTA Section */}
       <CTASection
         title="Ready to Start Your Journey?"
-        description="Contact us today to book your perfect tour package or request a custom itinerary."
+        description="Contact us today to book your perfect tour package or request a custom itinerary with our door-to-door service."
         buttonText="Contact Now"
         buttonLink="/contact"
         imageSrc="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=2000"
