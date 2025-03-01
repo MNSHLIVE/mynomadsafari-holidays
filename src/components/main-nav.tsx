@@ -45,7 +45,7 @@ const MainNav = () => {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300",
         isScrolled 
-          ? "bg-background/80 backdrop-blur-md shadow-sm" 
+          ? "bg-background/90 backdrop-blur-md shadow-sm" 
           : "bg-transparent"
       )}
     >
@@ -74,13 +74,21 @@ const MainNav = () => {
                 key={link.href}
                 to={link.href}
                 className={cn(
-                  "text-sm font-medium transition-colors hover:text-primary relative story-link",
+                  "text-sm font-medium transition-all duration-300 relative group py-1",
                   location.pathname === link.href 
                     ? "text-primary" 
-                    : "text-foreground/80"
+                    : "text-foreground/80 hover:text-primary"
                 )}
               >
                 {link.label}
+                <span 
+                  className={cn(
+                    "absolute bottom-0 left-0 w-full h-0.5 transform scale-x-0 transition-transform duration-300 bg-primary rounded-full",
+                    location.pathname === link.href 
+                      ? "scale-x-100" 
+                      : "group-hover:scale-x-100"
+                  )}
+                />
               </Link>
             ))}
             <ThemeToggle />
@@ -109,7 +117,7 @@ const MainNav = () => {
       {/* Mobile Navigation */}
       {isOpen && (
         <div className="md:hidden bg-background/95 backdrop-blur-sm animate-fade-in">
-          <div className="container mx-auto px-4 pt-2 pb-6 space-y-3">
+          <div className="container mx-auto px-4 pt-2 pb-6 space-y-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}

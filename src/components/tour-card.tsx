@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Clock, MapPin, Calendar, Tag } from "lucide-react";
+import { Clock, MapPin, Calendar, IndianRupee } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export interface TourCardProps {
@@ -90,7 +90,7 @@ const TourCard = ({
         <div className="mt-auto">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
-              <Tag className="w-4 h-4 mr-1 text-primary" />
+              <IndianRupee className="w-4 h-4 mr-1 text-primary" />
               <span className="font-semibold">{price}</span>
             </div>
             <span className="text-xs text-muted-foreground">per person</span>

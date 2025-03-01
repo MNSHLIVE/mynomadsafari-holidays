@@ -9,8 +9,33 @@ import TourCard from "@/components/tour-card";
 import TestimonialCard from "@/components/testimonial-card";
 import BlogCard from "@/components/blog-card";
 import CTASection from "@/components/cta-section";
+import HeroSlider from "@/components/hero-slider";
+import PackageCalculator from "@/components/package-calculator";
 import { ArrowRight, Globe, MapPin, Compass, Shield, Headphones } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+const heroSlides = [
+  {
+    imageSrc: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2000",
+    title: "Your One-Stop Travel Expert – Explore the World Your Way",
+    subtitle: "Personalized travel experiences, expert planning, and unforgettable adventures"
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=2000",
+    title: "Discover the Beauty of Incredible India",
+    subtitle: "From the Himalayas to the backwaters, experience the diversity of India"
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80&w=2000",
+    title: "International Adventures Await",
+    subtitle: "Explore exotic destinations with our curated international packages"
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2000",
+    title: "Door-to-Door Travel Solutions",
+    subtitle: "We pick you up from home and drop you back - hassle-free travel guaranteed"
+  }
+];
 
 const destinations = [
   {
@@ -46,7 +71,7 @@ const tours = [
     title: "Golden Triangle Tour",
     location: "Delhi, Agra, Jaipur",
     duration: "6 Days",
-    price: "$600",
+    price: "₹45,000",
     bestTime: "October - March",
     packageType: "Budgeted",
   },
@@ -55,7 +80,7 @@ const tours = [
     title: "Kerala Backwaters Luxury",
     location: "Kochi, Munnar, Alleppey",
     duration: "7 Days",
-    price: "$1800",
+    price: "₹1,25,000",
     bestTime: "September - March",
     packageType: "Luxury",
   },
@@ -64,7 +89,7 @@ const tours = [
     title: "Premier Rajasthan Heritage",
     location: "Jaipur, Udaipur, Jodhpur",
     duration: "10 Days",
-    price: "$3500",
+    price: "₹2,50,000",
     bestTime: "October - March",
     packageType: "Premier",
   },
@@ -72,13 +97,13 @@ const tours = [
 
 const testimonials = [
   {
-    quote: "WanderLuxe Travel arranged the most amazing trip to Rajasthan for us. Every detail was perfect, from the hotels to the guided tours. Highly recommend their Premier package!",
+    quote: "My Nomadsafari Holidays arranged the most amazing trip to Rajasthan for us. Every detail was perfect, from the hotels to the guided tours. Highly recommend their Premier package!",
     author: "Sarah Thompson",
     role: "Traveled to Rajasthan",
     rating: 5,
   },
   {
-    quote: "As a solo traveler, I was nervous about my trip to Bali, but the team at WanderLuxe made it so easy and comfortable. The customized itinerary was exactly what I wanted.",
+    quote: "As a solo traveler, I was nervous about my trip to Bali, but the team at My Nomadsafari Holidays made it so easy and comfortable. The customized itinerary was exactly what I wanted.",
     author: "Michael Chen",
     role: "Traveled to Bali",
     rating: 5,
@@ -124,40 +149,7 @@ const Index = () => {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="relative overflow-hidden min-h-[calc(100vh-64px)]">
-        <img
-          src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2000"
-          alt="Hero"
-          className="absolute w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/40 hero-gradient" />
-        
-        <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-center">
-          <div className="max-w-3xl mx-auto text-center text-white pt-20 md:pt-0">
-            <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-primary/30 mb-4 animate-fade-in">
-              Discover the World with Us
-            </span>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight animate-fade-in" style={{ animationDelay: "200ms" }}>
-              Your One-Stop Travel Expert – Explore the World Your Way
-            </h1>
-            <p className="text-xl md:text-2xl text-white/80 mb-8 animate-fade-in" style={{ animationDelay: "400ms" }}>
-              Personalized travel experiences, expert planning, and unforgettable adventures
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 animate-fade-in" style={{ animationDelay: "600ms" }}>
-              <Link to="/destinations">
-                <Button size="lg" className="bg-primary hover:bg-primary/90">
-                  Explore Destinations
-                </Button>
-              </Link>
-              <Link to="/contact">
-                <Button size="lg" variant="outline" className="bg-white/10 border-white hover:bg-white/20">
-                  Contact Us
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSlider slides={heroSlides} />
 
       {/* Services Section */}
       <section className="section-padding container mx-auto px-4">
@@ -206,6 +198,19 @@ const Index = () => {
               <p className="text-muted-foreground">{service.description}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Package Calculator Section */}
+      <section className="section-padding bg-muted/30 py-16">
+        <div className="container mx-auto px-4">
+          <SectionHeading
+            title="Plan Your Perfect Trip"
+            subtitle="Use our package calculator to estimate your travel costs"
+            tag="Tour Calculator"
+          />
+          
+          <PackageCalculator className="max-w-4xl mx-auto" />
         </div>
       </section>
 
