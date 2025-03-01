@@ -91,7 +91,7 @@ const TourCard = ({
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
               <IndianRupee className="w-4 h-4 mr-1 text-primary" />
-              <span className="font-semibold">{price}</span>
+              <span className="font-semibold">Starting from {price}</span>
             </div>
             <span className="text-xs text-muted-foreground">per person</span>
           </div>

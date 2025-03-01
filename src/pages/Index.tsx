@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/layout";
@@ -71,7 +70,7 @@ const tours = [
     title: "Golden Triangle Tour",
     location: "Delhi, Agra, Jaipur",
     duration: "6 Days",
-    price: "₹45,000",
+    price: "Starting from ₹21,000",
     bestTime: "October - March",
     packageType: "Budgeted",
   },
@@ -80,7 +79,7 @@ const tours = [
     title: "Kerala Backwaters Luxury",
     location: "Kochi, Munnar, Alleppey",
     duration: "7 Days",
-    price: "₹1,25,000",
+    price: "Starting from ₹35,000",
     bestTime: "September - March",
     packageType: "Luxury",
   },
@@ -89,7 +88,7 @@ const tours = [
     title: "Premier Rajasthan Heritage",
     location: "Jaipur, Udaipur, Jodhpur",
     duration: "10 Days",
-    price: "₹2,50,000",
+    price: "Starting from ₹75,000",
     bestTime: "October - March",
     packageType: "Premier",
   },

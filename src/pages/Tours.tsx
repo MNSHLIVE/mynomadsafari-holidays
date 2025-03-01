@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Layout from "@/components/layout";
 import SectionHeading from "@/components/section-heading";
@@ -104,7 +103,7 @@ const tours = [
     imageSrc: "https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=800",
     location: "Delhi, Agra, Jaipur",
     duration: "6 Days",
-    price: 600,
+    price: 60000,
     bestTime: "October - March",
     packageType: "Budgeted",
     country: "India",
@@ -120,7 +119,7 @@ const tours = [
     imageSrc: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=800",
     location: "Kochi, Munnar, Alleppey",
     duration: "7 Days",
-    price: 1800,
+    price: 18000,
     bestTime: "September - March",
     packageType: "Luxury",
     country: "India",
@@ -136,7 +135,7 @@ const tours = [
     imageSrc: "https://images.unsplash.com/photo-1580439471383-30ab8d7b0e3c?q=80&w=800",
     location: "Jaipur, Udaipur, Jodhpur",
     duration: "10 Days",
-    price: 3500,
+    price: 35000,
     bestTime: "October - March",
     packageType: "Premier",
     country: "India",

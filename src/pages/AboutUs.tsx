@@ -32,10 +32,10 @@ const AboutUs = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
           <div className="order-2 md:order-1">
             <h2 className="text-2xl md:text-3xl font-bold mb-4">
-              Welcome to WanderLuxe Travel
+              Welcome to My Nomadsafari Holidays
             </h2>
             <p className="text-muted-foreground mb-6">
-              As a solo travel expert with over a decade of experience, I founded WanderLuxe Travel with a simple mission: to provide personalized, hassle-free travel experiences that create lasting memories.
+              As a solo travel expert with over a decade of experience, I founded My Nomadsafari Holidays with a simple mission: to provide personalized, hassle-free travel experiences that create lasting memories.
             </p>
             <p className="text-muted-foreground mb-6">
               What sets us apart is our attention to detail, deep knowledge of destinations, and commitment to understanding each client's unique preferences. Whether you're seeking a budget-friendly adventure or a luxury getaway, we craft experiences that perfectly match your travel style.
@@ -94,7 +94,7 @@ const AboutUs = () => {
       <section className="py-16 container mx-auto px-4">
         <SectionHeading
           title="Our Story"
-          subtitle="How WanderLuxe Travel became your trusted travel partner"
+          subtitle="How My Nomadsafari Holidays became your trusted travel partner"
           tag="Our Journey"
         />
 
@@ -110,7 +110,7 @@ const AboutUs = () => {
             <div>
               <h3 className="text-xl font-semibold mb-2">The Beginning</h3>
               <p className="text-muted-foreground">
-                After years of exploring the world and helping friends and family plan their perfect trips, I decided to turn my passion into a profession. WanderLuxe Travel was born from a desire to share my knowledge and create meaningful travel experiences for others.
+                After years of exploring the world and helping friends and family plan their perfect trips, I decided to turn my passion into a profession. My Nomadsafari Holidays was born from a desire to share my knowledge and create meaningful travel experiences for others.
               </p>
             </div>
             <div>
@@ -133,7 +133,7 @@ const AboutUs = () => {
       <section className="py-16 bg-muted/30">
         <div className="container mx-auto px-4">
           <SectionHeading
-            title="Why Choose WanderLuxe"
+            title="Why Choose My Nomadsafari"
             subtitle="What makes us different from other travel agencies"
             tag="Our Advantages"
           />
