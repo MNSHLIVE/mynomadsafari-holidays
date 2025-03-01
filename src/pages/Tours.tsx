@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import Layout from "@/components/layout";
 import SectionHeading from "@/components/section-heading";
@@ -96,112 +97,90 @@ const tours = [
     highlight: "Door-to-Door Service"
   },
   
-  // India Tours
+  // Domestic Tours - India
   {
-    id: 1,
-    title: "Golden Triangle Tour",
-    imageSrc: "https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=800",
-    location: "Delhi, Agra, Jaipur",
-    duration: "6 Days",
-    price: 60000,
-    bestTime: "October - March",
+    id: 201,
+    title: "Goa Beach Paradise",
+    imageSrc: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=800",
+    location: "North and South Goa",
+    duration: "4 Days",
+    price: 21000,
+    bestTime: "November - February",
     packageType: "Budgeted",
     country: "India",
-    region: "North India",
-    description: "Explore India's iconic Golden Triangle covering Delhi, Agra, and Jaipur. See the Taj Mahal, Amber Fort, and more.",
-    activities: ["Heritage Walks", "Monument Visits", "Cultural Shows"],
-    included: ["Hotel Accommodation", "Breakfast", "Guided Tours", "Transportation"],
-    groupSize: "Up to 12 people"
+    region: "West India",
+    description: "Explore the beautiful beaches of Goa, enjoy water sports, and experience the unique Portuguese-influenced culture.",
+    activities: ["Beach Activities", "Water Sports", "Night Markets", "Heritage Tours"],
+    included: ["Hotel Accommodation", "Breakfast", "Airport Transfers", "Sightseeing"],
+    groupSize: "Flexible",
+    itinerary: [
+      { day: 1, title: "Arrival in Goa", description: "Arrive in Goa, relax at Baga Beach, nightlife at Tito's." },
+      { day: 2, title: "Old Goa Exploration", description: "Explore Old Goa (Basilica of Bom Jesus), Dudhsagar Falls." },
+      { day: 3, title: "South Goa", description: "South Goa (Palolem Beach), water sports." },
+      { day: 4, title: "Departure", description: "Shopping at Anjuna Flea Market, depart." }
+    ],
+    highlights: ["Beaches", "Nightlife", "Portuguese Heritage"]
   },
   {
-    id: 2,
+    id: 202,
     title: "Kerala Backwaters Luxury",
     imageSrc: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=800",
     location: "Kochi, Munnar, Alleppey",
-    duration: "7 Days",
-    price: 18000,
+    duration: "6 Days",
+    price: 35000,
     bestTime: "September - March",
     packageType: "Luxury",
     country: "India",
     region: "South India",
     description: "Experience the serene backwaters of Kerala in luxury houseboats, explore tea plantations, and enjoy Ayurvedic treatments.",
-    activities: ["Houseboat Stay", "Tea Plantation Visit", "Ayurvedic Spa"],
+    activities: ["Houseboat Stay", "Tea Plantation Visit", "Ayurvedic Spa", "Wildlife Safari"],
     included: ["Luxury Accommodation", "All Meals", "Private Guides", "All Transportation"],
-    groupSize: "Private Tour"
+    groupSize: "Private Tour",
+    itinerary: [
+      { day: 1, title: "Arrival in Kochi", description: "Arrive in Kochi, Fort Kochi tour." },
+      { day: 2, title: "Munnar Hills", description: "Munnar tea plantations, Eravikulam National Park." },
+      { day: 3, title: "Thekkady Wildlife", description: "Thekkady (Periyar Wildlife Sanctuary)." },
+      { day: 4, title: "Alleppey Backwaters", description: "Alleppey backwaters houseboat stay." },
+      { day: 5, title: "Kovalam Beach", description: "Kovalam Beach relaxation." },
+      { day: 6, title: "Departure", description: "Depart from Trivandrum." }
+    ],
+    highlights: ["Backwaters", "Hills", "Wildlife"]
   },
   {
-    id: 3,
-    title: "Premier Rajasthan Heritage",
-    imageSrc: "https://images.unsplash.com/photo-1580439471383-30ab8d7b0e3c?q=80&w=800",
-    location: "Jaipur, Udaipur, Jodhpur",
-    duration: "10 Days",
-    price: 35000,
+    id: 203,
+    title: "Premier Himachal Adventure",
+    imageSrc: "https://images.unsplash.com/photo-1547378809-c0414f48c2d4?q=80&w=800",
+    location: "Shimla, Kullu, Manali, Dharamshala",
+    duration: "7 Days",
+    price: 75000,
     bestTime: "October - March",
     packageType: "Premier",
     country: "India",
     region: "North India",
-    description: "A luxury journey through royal Rajasthan staying at heritage palaces and experiencing royal traditions.",
-    activities: ["Heritage Palace Stays", "Private Cultural Performances", "Exclusive Dining Experiences"],
-    included: ["Palace Accommodations", "All Meals", "Private Guides", "Luxury Transportation"],
-    groupSize: "Private Tour"
-  },
-  {
-    id: 4,
-    title: "Goa Beach Retreat",
-    imageSrc: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=800",
-    location: "North and South Goa",
-    duration: "5 Days",
-    price: 450,
-    bestTime: "November - February",
-    packageType: "Budgeted",
-    country: "India",
-    region: "West India",
-    description: "Relax on the beautiful beaches of Goa, enjoy water sports, and experience the unique Portuguese-influenced culture.",
-    activities: ["Beach Activities", "Water Sports", "Night Markets"],
-    included: ["Hotel Accommodation", "Breakfast", "Airport Transfers"],
-    groupSize: "Flexible"
+    description: "A luxury journey through the beautiful landscapes of Himachal Pradesh with premium accommodations and exclusive experiences.",
+    activities: ["Snow Activities", "Paragliding", "Temple Visits", "Trekking"],
+    included: ["Luxury Accommodations", "All Meals", "Private Guides", "Premium Transportation"],
+    groupSize: "Private Tour",
+    itinerary: [
+      { day: 1, title: "Arrival in Shimla", description: "Arrive in Shimla, Mall Road." },
+      { day: 2, title: "Kufri Exploration", description: "Kufri sightseeing, snow activities." },
+      { day: 3, title: "Journey to Manali", description: "Manali via Kullu Valley." },
+      { day: 4, title: "Rohtang Adventure", description: "Rohtang Pass adventure." },
+      { day: 5, title: "Solang Valley", description: "Solang Valley, paragliding." },
+      { day: 6, title: "McLeod Ganj", description: "Dharamshala (McLeod Ganj)." },
+      { day: 7, title: "Departure", description: "Depart from Dharamshala." }
+    ],
+    highlights: ["Snow", "Adventure", "Monasteries"]
   },
   
   // International Tours
   {
-    id: 5,
-    title: "Bali Island Explorer",
-    imageSrc: "https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?q=80&w=800",
-    location: "Ubud, Seminyak, Nusa Dua",
-    duration: "8 Days",
-    price: 1200,
-    bestTime: "April - October",
-    packageType: "Luxury",
-    country: "Indonesia",
-    region: "Southeast Asia",
-    description: "Discover the beauty of Bali with its stunning beaches, lush rice terraces, and rich cultural heritage.",
-    activities: ["Temple Visits", "Rice Terrace Trekking", "Spa Treatments", "Water Sports"],
-    included: ["4-Star Accommodations", "Breakfast", "Some Lunches", "Private Tours", "Airport Transfers"],
-    groupSize: "Small Group (max 8)"
-  },
-  {
-    id: 6,
-    title: "Thailand Highlights",
-    imageSrc: "https://images.unsplash.com/photo-1528181304800-259b08848526?q=80&w=800",
-    location: "Bangkok, Phuket, Chiang Mai",
-    duration: "9 Days",
-    price: 950,
-    bestTime: "November - March",
-    packageType: "Budgeted",
-    country: "Thailand",
-    region: "Southeast Asia",
-    description: "Experience the best of Thailand from bustling Bangkok to the beaches of Phuket and the mountains of Chiang Mai.",
-    activities: ["Temple Tours", "Island Hopping", "Thai Cooking Class"],
-    included: ["Hotel Accommodation", "Breakfast", "Guided Tours", "Domestic Flights"],
-    groupSize: "Up to 15 people"
-  },
-  {
-    id: 7,
+    id: 301,
     title: "Dubai Luxury Experience",
     imageSrc: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=800",
     location: "Dubai, Abu Dhabi",
-    duration: "6 Days",
-    price: 2800,
+    duration: "5 Days",
+    price: 75000,
     bestTime: "November - March",
     packageType: "Premier",
     country: "UAE",
@@ -209,56 +188,71 @@ const tours = [
     description: "Indulge in the ultimate luxury experience in Dubai with exclusive access to top attractions and premium accommodations.",
     activities: ["Desert Safari", "Burj Khalifa", "Shopping", "Yacht Cruise"],
     included: ["5-Star Accommodation", "Breakfast", "Some Dinners", "Private Tours", "VIP Access"],
-    groupSize: "Private Tour"
+    groupSize: "Private Tour",
+    itinerary: [
+      { day: 1, title: "Arrival in Dubai", description: "Arrive in Dubai, Dubai Mall, Burj Khalifa." },
+      { day: 2, title: "Desert Safari", description: "Desert Safari, BBQ dinner." },
+      { day: 3, title: "Abu Dhabi Day Trip", description: "Abu Dhabi (Sheikh Zayed Mosque)." },
+      { day: 4, title: "Beach & Adventure", description: "Jumeirah Beach, Atlantis Aquaventure." },
+      { day: 5, title: "Departure", description: "Shopping, depart." }
+    ],
+    highlights: ["Skyscrapers", "Desert", "Luxury"]
   },
   {
-    id: 8,
-    title: "Vietnam Heritage Trail",
-    imageSrc: "https://images.unsplash.com/photo-1557750255-c76072a7aad1?q=80&w=800",
-    location: "Hanoi, Ha Long Bay, Hoi An",
-    duration: "10 Days",
-    price: 1100,
-    bestTime: "February - April",
-    packageType: "Budgeted",
-    country: "Vietnam",
+    id: 302,
+    title: "Bali Island Explorer",
+    imageSrc: "https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?q=80&w=800",
+    location: "Ubud, Seminyak, Nusa Dua",
+    duration: "6 Days",
+    price: 35000,
+    bestTime: "April - October",
+    packageType: "Luxury",
+    country: "Indonesia",
     region: "Southeast Asia",
-    description: "Explore Vietnam's rich cultural heritage from the vibrant capital to the stunning Ha Long Bay and historic Hoi An.",
-    activities: ["Ha Long Bay Cruise", "Walking Tours", "Cooking Class"],
-    included: ["3-Star Accommodations", "Breakfast", "Some Lunches", "Guided Tours"],
-    groupSize: "Small Group (max 10)"
+    description: "Discover the beauty of Bali with its stunning beaches, lush rice terraces, and rich cultural heritage.",
+    activities: ["Temple Visits", "Rice Terrace Trekking", "Spa Treatments", "Water Sports"],
+    included: ["4-Star Accommodations", "Breakfast", "Some Lunches", "Private Tours", "Airport Transfers"],
+    groupSize: "Small Group (max 8)",
+    itinerary: [
+      { day: 1, title: "Arrival in Bali", description: "Arrive in Bali, Uluwatu Temple sunset." },
+      { day: 2, title: "Ubud Exploration", description: "Ubud (Monkey Forest, rice terraces)." },
+      { day: 3, title: "Island Adventure", description: "Nusa Penida island tour." },
+      { day: 4, title: "Beach & Relaxation", description: "Seminyak Beach, spa day." },
+      { day: 5, title: "Cultural Day", description: "Tanah Lot Temple, shopping." },
+      { day: 6, title: "Departure", description: "Depart." }
+    ],
+    highlights: ["Beaches", "Temples", "Culture"]
   },
   {
-    id: 9,
-    title: "Singapore Family Fun",
-    imageSrc: "https://images.unsplash.com/photo-1533052494972-63e070a3f1f9?q=80&w=800",
-    location: "Singapore",
-    duration: "5 Days",
-    price: 1200,
-    bestTime: "Year Round",
+    id: 303,
+    title: "Thailand Highlights",
+    imageSrc: "https://images.unsplash.com/photo-1528181304800-259b08848526?q=80&w=800",
+    location: "Bangkok, Phuket, Chiang Mai",
+    duration: "9 Days",
+    price: 21000,
+    bestTime: "November - March",
     packageType: "Budgeted",
-    country: "Singapore",
+    country: "Thailand",
     region: "Southeast Asia",
-    description: "Perfect for families, this Singapore package covers all the major attractions including Universal Studios and Gardens by the Bay.",
-    activities: ["Universal Studios", "Gardens by the Bay", "Singapore Zoo", "Night Safari"],
-    included: ["3-Star Accommodation", "Breakfast", "Attraction Tickets", "Airport Transfers"],
-    groupSize: "Family Package"
+    description: "Experience the best of Thailand from bustling Bangkok to the beaches of Phuket and the mountains of Chiang Mai.",
+    activities: ["Temple Tours", "Island Hopping", "Thai Cooking Class"],
+    included: ["Hotel Accommodation", "Breakfast", "Guided Tours", "Domestic Flights"],
+    groupSize: "Up to 15 people",
+    itinerary: [
+      { day: 1, title: "Arrival in Bangkok", description: "Arrive in Bangkok, visit Grand Palace." },
+      { day: 2, title: "Bangkok Exploration", description: "Floating markets, temple tours." },
+      { day: 3, title: "Chiang Mai", description: "Fly to Chiang Mai, night markets." },
+      { day: 4, title: "Elephant Sanctuary", description: "Visit ethical elephant sanctuary." },
+      { day: 5, title: "Mountain Temple", description: "Doi Suthep temple, traditional dinner." },
+      { day: 6, title: "Phuket", description: "Fly to Phuket, beach relaxation." },
+      { day: 7, title: "Phi Phi Islands", description: "Island hopping tour to Phi Phi." },
+      { day: 8, title: "Free Day in Phuket", description: "Optional activities or beach day." },
+      { day: 9, title: "Departure", description: "Return to Bangkok for departure." }
+    ],
+    highlights: ["Temples", "Beaches", "Culture"]
   },
-  {
-    id: 10,
-    title: "Majestic Malaysia",
-    imageSrc: "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?q=80&w=800",
-    location: "Kuala Lumpur, Penang, Langkawi",
-    duration: "8 Days",
-    price: 900,
-    bestTime: "December - May",
-    packageType: "Budgeted",
-    country: "Malaysia",
-    region: "Southeast Asia",
-    description: "Experience the diverse culture, food, and landscapes of Malaysia from bustling cities to serene islands.",
-    activities: ["City Tours", "Island Hopping", "Cable Car Ride", "Food Trails"],
-    included: ["3-Star Accommodations", "Breakfast", "Guided Tours", "Domestic Flights"],
-    groupSize: "Up to 12 people"
-  }
+  
+  // More tours can be added here
 ];
 
 const regions = [
@@ -287,8 +281,9 @@ const Tours = () => {
   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
   const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
   const [selectedDuration, setSelectedDuration] = useState("");
-  const [priceRange, setPriceRange] = useState([0, 4000]);
+  const [priceRange, setPriceRange] = useState([0, 100000]);
   const [filters, setFilters] = useState(false);
+  const [selectedTour, setSelectedTour] = useState<number | null>(null);
 
   // Filter tours based on selection
   const filterTours = (tours: any[]) => {
@@ -344,7 +339,7 @@ const Tours = () => {
     setSelectedRegions([]);
     setSelectedActivities([]);
     setSelectedDuration("");
-    setPriceRange([0, 4000]);
+    setPriceRange([0, 100000]);
     setSearchTerm("");
   };
 
@@ -435,7 +430,7 @@ const Tours = () => {
               title={tour.title}
               location={tour.location}
               duration={tour.duration}
-              price={`$${tour.price}`}
+              price={`₹${tour.price}`}
               bestTime={tour.bestTime}
               packageType={tour.packageType as "Budgeted" | "Luxury" | "Premier"}
               link={`/tours/${tour.id}`}
@@ -519,7 +514,7 @@ const Tours = () => {
                 <Filter className="mr-2 h-4 w-4" />
                 Filter Tours
               </span>
-              {(selectedRegions.length > 0 || selectedActivities.length > 0 || selectedDuration !== "" || priceRange[0] > 0 || priceRange[1] < 4000) && (
+              {(selectedRegions.length > 0 || selectedActivities.length > 0 || selectedDuration !== "" || priceRange[0] > 0 || priceRange[1] < 100000) && (
                 <Badge variant="secondary" className="ml-2">
                   Active Filters
                 </Badge>
@@ -547,19 +542,19 @@ const Tours = () => {
 
               {/* Price Range */}
               <div className="mb-6">
-                <h4 className="text-sm font-medium mb-3">Price Range (USD)</h4>
+                <h4 className="text-sm font-medium mb-3">Price Range (₹)</h4>
                 <div className="px-2">
                   <Slider
-                    defaultValue={[0, 4000]}
+                    defaultValue={[0, 100000]}
                     value={priceRange}
                     onValueChange={setPriceRange}
-                    max={4000}
-                    step={100}
+                    max={100000}
+                    step={5000}
                     className="mb-2"
                   />
                   <div className="flex items-center justify-between text-sm">
-                    <span>${priceRange[0]}</span>
-                    <span>${priceRange[1]}</span>
+                    <span>₹{priceRange[0].toLocaleString()}</span>
+                    <span>₹{priceRange[1].toLocaleString()}</span>
                   </div>
                 </div>
               </div>
@@ -658,18 +653,18 @@ const Tours = () => {
 
               <TabsContent value="all" className="mt-0">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {filterTours([...doorToDoorPackages, ...tours.filter(t => !t.highlight)]).length > 0 ? (
-                    filterTours([...doorToDoorPackages, ...tours.filter(t => !t.highlight)]).map((tour) => (
+                  {filterTours([...tours]).length > 0 ? (
+                    filterTours([...tours]).map((tour) => (
                       <TourCard
                         key={tour.id}
                         imageSrc={tour.imageSrc}
                         title={tour.title}
                         location={tour.location}
                         duration={tour.duration}
-                        price={`$${tour.price}`}
+                        price={`Starting from ₹${tour.price.toLocaleString()}`}
                         bestTime={tour.bestTime}
                         packageType={tour.packageType as "Budgeted" | "Luxury" | "Premier"}
-                        link={`/tours/${tour.id}`}
+                        link={`#tour-${tour.id}`}
                       />
                     ))
                   ) : (
@@ -692,10 +687,10 @@ const Tours = () => {
                         title={tour.title}
                         location={tour.location}
                         duration={tour.duration}
-                        price={`$${tour.price}`}
+                        price={`Starting from ₹${tour.price.toLocaleString()}`}
                         bestTime={tour.bestTime}
                         packageType={tour.packageType as "Budgeted" | "Luxury" | "Premier"}
-                        link={`/tours/${tour.id}`}
+                        link={`#tour-${tour.id}`}
                       />
                     ))
                   ) : (
@@ -718,10 +713,10 @@ const Tours = () => {
                         title={tour.title}
                         location={tour.location}
                         duration={tour.duration}
-                        price={`$${tour.price}`}
+                        price={`Starting from ₹${tour.price.toLocaleString()}`}
                         bestTime={tour.bestTime}
                         packageType={tour.packageType as "Budgeted" | "Luxury" | "Premier"}
-                        link={`/tours/${tour.id}`}
+                        link={`#tour-${tour.id}`}
                       />
                     ))
                   ) : (
@@ -734,6 +729,112 @@ const Tours = () => {
                 </div>
               </TabsContent>
             </Tabs>
+
+            {/* Tour Itineraries Section */}
+            <div className="mt-16">
+              <SectionHeading
+                title="Tour Itineraries"
+                subtitle="Detailed day-by-day plans for our popular packages"
+                align="left"
+              />
+
+              <div className="mt-6 space-y-8">
+                {tours.filter(tour => tour.itinerary).map(tour => (
+                  <div 
+                    key={tour.id} 
+                    id={`tour-${tour.id}`}
+                    className="bg-card border border-border/50 rounded-lg overflow-hidden shadow-sm"
+                  >
+                    <div className="flex flex-col md:flex-row">
+                      <div className="md:w-1/3 h-64 md:h-auto relative">
+                        <img 
+                          src={tour.imageSrc} 
+                          alt={tour.title} 
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="md:w-2/3 p-6">
+                        <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
+                          <div>
+                            <h3 className="text-2xl font-bold">{tour.title}</h3>
+                            <div className="flex items-center mt-2 text-sm text-muted-foreground">
+                              <MapPin className="h-4 w-4 mr-1" />
+                              <span>{tour.location}</span>
+                              <span className="mx-2">•</span>
+                              <Clock className="h-4 w-4 mr-1" />
+                              <span>{tour.duration}</span>
+                            </div>
+                          </div>
+                          <div>
+                            <span className={cn(
+                              "inline-block px-3 py-1 text-xs font-medium rounded-full",
+                              tour.packageType === "Budgeted" && "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
+                              tour.packageType === "Luxury" && "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300",
+                              tour.packageType === "Premier" && "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300"
+                            )}>
+                              {tour.packageType}
+                            </span>
+                          </div>
+                        </div>
+
+                        <p className="text-muted-foreground mb-4">
+                          {tour.description}
+                        </p>
+
+                        <div className="mb-6">
+                          <h4 className="text-lg font-semibold mb-2">Highlights</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {tour.highlights?.map((highlight, index) => (
+                              <Badge key={index} variant="outline" className="bg-primary/5">
+                                {highlight}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div>
+                          <Accordion type="single" collapsible>
+                            <AccordionItem value="itinerary">
+                              <AccordionTrigger className="text-lg font-semibold">
+                                View Itinerary
+                              </AccordionTrigger>
+                              <AccordionContent>
+                                <div className="space-y-4 mt-2">
+                                  {tour.itinerary?.map((day, index) => (
+                                    <div key={index} className="flex">
+                                      <div className="mr-4 flex flex-col items-center">
+                                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold">
+                                          {day.day}
+                                        </div>
+                                        {index < tour.itinerary?.length - 1 && (
+                                          <div className="w-0.5 bg-border h-full mt-2"></div>
+                                        )}
+                                      </div>
+                                      <div className="pb-6">
+                                        <h5 className="font-semibold">{day.title}</h5>
+                                        <p className="text-sm text-muted-foreground">{day.description}</p>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </AccordionContent>
+                            </AccordionItem>
+                          </Accordion>
+                        </div>
+
+                        <div className="mt-6 flex items-center justify-between">
+                          <div>
+                            <span className="text-sm text-muted-foreground">Starting from</span>
+                            <p className="text-xl font-bold">₹{tour.price.toLocaleString()}</p>
+                          </div>
+                          <Button>Book Now</Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
             {/* Tour Information */}
             <div className="mt-12">
