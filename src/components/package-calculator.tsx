@@ -50,6 +50,11 @@ const TRANSPORT_RATES = {
 const DRIVER_ALLOWANCE = 500; // per day
 const TOLL_PARKING_ESTIMATE = 300; // per day
 
+// Km calculation based on days
+const calculateDistance = (days: number) => {
+  return days * 250; // 250km per day
+};
+
 interface PackageCalculatorProps {
   className?: string;
 }
@@ -64,7 +69,7 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
   const [adults, setAdults] = useState(2);
   const [children, setChildren] = useState(0);
   const [transportType, setTransportType] = useState<"sedan" | "suv">("sedan");
-  const [distance, setDistance] = useState(250);
+  const [distance, setDistance] = useState(750); // Default for 3 days
   const [packageType, setPackageType] = useState<"Budgeted" | "Luxury" | "Premier">("Budgeted");
 
   // Calculated costs
@@ -93,6 +98,12 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
     "Thailand",
   ];
 
+  // Update distance when days change
+  useEffect(() => {
+    const calculatedDistance = calculateDistance(days);
+    setDistance(calculatedDistance);
+  }, [days]);
+
   // Calculate costs whenever inputs change
   useEffect(() => {
     // Hotel cost calculation
@@ -101,10 +112,8 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
     setHotelCost(totalHotelCost);
 
     // Transport cost calculation
-    // Assuming minimum 250km, and each day adds approximately 50km
-    const estimatedDistance = Math.max(distance, 250 + (days - 1) * 50);
     const transportRate = TRANSPORT_RATES[transportType];
-    const totalTransportCost = estimatedDistance * transportRate;
+    const totalTransportCost = distance * transportRate;
     setTransportCost(totalTransportCost);
 
     // Additional costs
@@ -240,11 +249,11 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
                   <Input
                     id="distance"
                     type="number"
-                    min={250}
                     value={distance}
-                    onChange={(e) => setDistance(parseInt(e.target.value) || 250)}
+                    readOnly
+                    className="bg-muted"
                   />
-                  <p className="text-xs text-muted-foreground mt-1">Minimum 250 km</p>
+                  <p className="text-xs text-muted-foreground mt-1">Based on {days} days (250km per day)</p>
                 </div>
               </div>
 

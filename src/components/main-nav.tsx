@@ -74,9 +74,9 @@ const MainNav = () => {
                 key={link.href}
                 to={link.href}
                 className={cn(
-                  "text-sm font-medium transition-all duration-300 relative group py-1",
+                  "text-sm font-medium transition-all duration-300 relative group py-2 px-3 rounded-md hover:bg-primary/10",
                   location.pathname === link.href 
-                    ? "text-primary" 
+                    ? "text-primary bg-primary/10" 
                     : "text-foreground/80 hover:text-primary"
                 )}
               >
