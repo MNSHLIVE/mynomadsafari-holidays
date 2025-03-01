@@ -20,7 +20,16 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Search, Filter, Check, X } from "lucide-react";
+import {
+  Search,
+  Filter,
+  Check,
+  X,
+  MapPin,
+  Clock,
+  Calendar,
+  IndianRupee,
+} from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
