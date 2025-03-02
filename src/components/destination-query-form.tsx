@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -56,18 +55,21 @@ const DestinationQueryForm = ({
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const handleDateSelect = (date: Date | undefined) => {
+    setTravelDate(date);
+    setCalendarOpen(false);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Validate form
     if (!name || !email || !phone) {
       toast.error("Please fill all required fields");
       setIsSubmitting(false);
       return;
     }
 
-    // Simulate API call
     setTimeout(() => {
       toast.success("Thank you for your inquiry! Our team will contact you shortly.");
       setIsSubmitting(false);
@@ -87,6 +89,13 @@ const DestinationQueryForm = ({
     setMessage("");
   };
 
+  const handleCalendarKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      setCalendarOpen(true);
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -94,7 +103,7 @@ const DestinationQueryForm = ({
           {buttonText}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl">Enquire about {destinationName}</DialogTitle>
           <DialogDescription>
@@ -157,19 +166,25 @@ const DestinationQueryForm = ({
                         "w-full justify-start text-left font-normal",
                         !travelDate && "text-muted-foreground"
                       )}
+                      onClick={() => setCalendarOpen(true)}
+                      onKeyDown={handleCalendarKeyDown}
+                      tabIndex={0}
+                      role="combobox"
+                      aria-expanded={calendarOpen}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
                       {travelDate ? format(travelDate, "PPP") : "Select date"}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
+                  <PopoverContent 
+                    className="w-auto p-0" 
+                    align="start"
+                    sideOffset={4}
+                  >
                     <Calendar
                       mode="single"
                       selected={travelDate}
-                      onSelect={(date) => {
-                        setTravelDate(date);
-                        setCalendarOpen(false);
-                      }}
+                      onSelect={handleDateSelect}
                       initialFocus
                       disabled={(date) => date < new Date()}
                     />
