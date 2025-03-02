@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Clock, MapPin, Calendar, IndianRupee } from "lucide-react";
+import { Clock, MapPin, Calendar, IndianRupee, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   Dialog,
@@ -12,6 +12,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export interface TourCardProps {
   imageSrc: string;
@@ -48,6 +56,14 @@ const TourCard = ({
     Luxury: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300",
     Premier: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300",
   };
+
+  // Function to get a preview of the itinerary (first day only)
+  const getItineraryPreview = () => {
+    if (!itinerary || itinerary.length === 0) return null;
+    return itinerary[0];
+  };
+
+  const itineraryPreview = getItineraryPreview();
 
   return (
     <div 
@@ -103,6 +119,18 @@ const TourCard = ({
 
         {description && (
           <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{description}</p>
+        )}
+
+        {itineraryPreview && (
+          <div className="mb-3">
+            <h4 className="text-sm font-medium mb-1 flex items-center">
+              <FileText className="w-3 h-3 mr-1 text-primary" />
+              Day 1: {itineraryPreview.title}
+            </h4>
+            <p className="text-xs text-muted-foreground line-clamp-2">
+              {itineraryPreview.description}
+            </p>
+          </div>
         )}
 
         {itinerary && itinerary.length > 0 && (
