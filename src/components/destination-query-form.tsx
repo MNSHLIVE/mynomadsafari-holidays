@@ -49,6 +49,7 @@ const DestinationQueryForm = ({
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [travelDate, setTravelDate] = useState<Date | undefined>(undefined);
+  const [calendarOpen, setCalendarOpen] = useState(false);
   const [adults, setAdults] = useState(2);
   const [children, setChildren] = useState(0);
   const [packageType, setPackageType] = useState("");
@@ -148,7 +149,7 @@ const DestinationQueryForm = ({
                 <Label className="mb-1.5">
                   Travel Date
                 </Label>
-                <Popover>
+                <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
                   <PopoverTrigger asChild>
                     <Button
                       variant={"outline"}
@@ -161,13 +162,16 @@ const DestinationQueryForm = ({
                       {travelDate ? format(travelDate, "PPP") : "Select date"}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
+                  <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
                       mode="single"
                       selected={travelDate}
-                      onSelect={setTravelDate}
+                      onSelect={(date) => {
+                        setTravelDate(date);
+                        setCalendarOpen(false);
+                      }}
                       initialFocus
-                      disabled={date => date < new Date()}
+                      disabled={(date) => date < new Date()}
                     />
                   </PopoverContent>
                 </Popover>
