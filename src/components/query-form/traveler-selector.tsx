@@ -30,6 +30,7 @@ export const TravelerSelector = ({
           placeholder="Adults"
           value={adults}
           onChange={(e) => setAdults(parseInt(e.target.value) || 1)}
+          onClick={(e) => (e.target as HTMLInputElement).select()}
         />
         <Input
           type="number"
@@ -38,6 +39,7 @@ export const TravelerSelector = ({
           placeholder="Children"
           value={children}
           onChange={(e) => setChildren(parseInt(e.target.value) || 0)}
+          onClick={(e) => (e.target as HTMLInputElement).select()}
         />
       </div>
     </div>
