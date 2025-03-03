@@ -1,4 +1,4 @@
-<lov-code>
+
 import { useState } from "react";
 import Layout from "@/components/layout";
 import SectionHeading from "@/components/section-heading";
@@ -704,3 +704,53 @@ const Tours = () => {
                     ))
                   ) : (
                     <div className="col-span-full py-12 text-center">
+                      <h3 className="text-xl font-semibold mb-2">No tours found</h3>
+                      <p className="text-muted-foreground mb-4">Try adjusting your filters or search criteria</p>
+                      <Button onClick={clearFilters}>Clear All Filters</Button>
+                    </div>
+                  )}
+                </div>
+              </TabsContent>
+
+              <TabsContent value="international" className="mt-0">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {internationalTours.length > 0 ? (
+                    internationalTours.map((tour) => (
+                      <TourCard
+                        key={tour.id}
+                        imageSrc={tour.imageSrc}
+                        title={tour.title}
+                        location={tour.location}
+                        duration={tour.duration}
+                        price={`Starting from ₹${tour.price.toLocaleString()}`}
+                        bestTime={tour.bestTime}
+                        packageType={tour.packageType as "Budgeted" | "Luxury" | "Premier"}
+                        link={`#tour-${tour.id}`}
+                      />
+                    ))
+                  ) : (
+                    <div className="col-span-full py-12 text-center">
+                      <h3 className="text-xl font-semibold mb-2">No tours found</h3>
+                      <p className="text-muted-foreground mb-4">Try adjusting your filters or search criteria</p>
+                      <Button onClick={clearFilters}>Clear All Filters</Button>
+                    </div>
+                  )}
+                </div>
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <CTASection 
+        title="Create Your Custom Tour"
+        subtitle="Don't see what you're looking for? Let our experts design a personalized tour for you."
+        buttonText="Contact Us"
+        buttonLink="/contact"
+      />
+    </Layout>
+  );
+};
+
+export default Tours;
