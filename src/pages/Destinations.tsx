@@ -66,7 +66,7 @@ const indianDestinations = [
   },
   {
     state: "Himachal Pradesh",
-    image: "https://images.unsplash.com/photo-1626621432358-d4f4223897e7?q=80&w=800",
+    image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=800",
     description: "Experience the majestic Himalayas and charming hill stations.",
     bestTime: "March - June, September - November",
     places: ["Shimla (Mall Road)", "Manali (Rohtang Pass)", "Dharamshala (McLeodganj)", "Dalhousie", "Spiti Valley"],
@@ -81,7 +81,7 @@ const indianDestinations = [
   },
   {
     state: "Leh-Ladakh",
-    image: "https://images.unsplash.com/photo-1589881133595-a3c085cb731d?q=80&w=800",
+    image: "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?q=80&w=800",
     description: "Explore the high-altitude desert landscapes and Buddhist monasteries of this remote Himalayan region.",
     bestTime: "June - September",
     places: ["Leh Palace", "Pangong Lake", "Nubra Valley", "Magnetic Hill", "Thiksey Monastery"],
@@ -96,7 +96,7 @@ const indianDestinations = [
   },
   {
     state: "Andaman & Nicobar",
-    image: "https://images.unsplash.com/photo-1589802829985-817e51171b92?q=80&w=800",
+    image: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?q=80&w=800",
     description: "Discover pristine beaches, crystal clear waters, and rich marine life in this tropical paradise.",
     bestTime: "November - May",
     places: ["Radhanagar Beach", "Cellular Jail", "Ross Island", "Havelock Island", "Neil Island"],
@@ -114,7 +114,7 @@ const indianDestinations = [
 const internationalDestinations = [
   {
     country: "Thailand",
-    image: "https://images.unsplash.com/photo-1528181304800-259b08848526?q=80&w=800",
+    image: "https://images.unsplash.com/photo-1504214208698-ea1916a2195a?q=80&w=800",
     description: "Tropical beaches, opulent palaces, and a vibrant street life make Thailand unforgettable.",
     bestTime: "November - March",
     places: ["Bangkok (Grand Palace)", "Phuket (Phi Phi Islands)", "Chiang Mai (Old City)", "Krabi (Railay Beach)", "Ayutthaya (Historical Park)"],

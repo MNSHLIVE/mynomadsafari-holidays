@@ -174,13 +174,85 @@ const TourCard = ({
             <span className="text-xs text-muted-foreground">per person</span>
           </div>
 
-          <Link to={link}>
-            <Button 
-              className="w-full bg-primary hover:bg-primary/90"
-            >
-              View Details
-            </Button>
-          </Link>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button 
+                className="w-full bg-primary hover:bg-primary/90"
+              >
+                View Details
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+              <div className="space-y-6">
+                <div className="relative h-64 w-full overflow-hidden rounded-lg">
+                  <img 
+                    src={imageSrc} 
+                    alt={title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute top-4 right-4">
+                    <span className={cn(
+                      "text-xs font-medium px-2 py-1 rounded-full",
+                      packageColors[packageType]
+                    )}>
+                      {packageType}
+                    </span>
+                  </div>
+                </div>
+                
+                <div>
+                  <h2 className="text-2xl font-bold">{title}</h2>
+                  <div className="flex flex-wrap gap-4 mt-2">
+                    <div className="flex items-center text-sm text-muted-foreground">
+                      <MapPin className="w-4 h-4 mr-1" />
+                      <span>{location}</span>
+                    </div>
+                    <div className="flex items-center text-sm text-muted-foreground">
+                      <Clock className="w-4 h-4 mr-1" />
+                      <span>{duration}</span>
+                    </div>
+                    {bestTime && (
+                      <div className="flex items-center text-sm text-muted-foreground">
+                        <Calendar className="w-4 h-4 mr-1" />
+                        <span>Best time: {bestTime}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                {description && (
+                  <div>
+                    <h3 className="text-lg font-semibold mb-2">Description</h3>
+                    <p className="text-muted-foreground">{description}</p>
+                  </div>
+                )}
+                
+                {itinerary && itinerary.length > 0 && (
+                  <div>
+                    <h3 className="text-lg font-semibold mb-3">Itinerary</h3>
+                    <div className="space-y-4">
+                      {itinerary.map((day) => (
+                        <div key={day.day} className="p-4 border rounded-lg">
+                          <h4 className="font-medium flex items-center">
+                            <span className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs mr-2">
+                              {day.day}
+                            </span>
+                            {day.title}
+                          </h4>
+                          <p className="text-sm text-muted-foreground mt-1">{day.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                <div className="flex justify-between pt-4 border-t">
+                  <p className="text-xl font-semibold">{price}</p>
+                  <Button>Book Now</Button>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </div>

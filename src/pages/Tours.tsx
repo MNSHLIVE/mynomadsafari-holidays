@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Layout from "@/components/layout";
 import SectionHeading from "@/components/section-heading";
@@ -33,8 +32,9 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Card, CardContent } from "@/components/ui/card";
 
-// Tour data
 const tours = [
   // Featured Door-to-Door Packages
   {
@@ -52,7 +52,16 @@ const tours = [
     activities: ["Desert Safari", "Burj Khalifa Visit", "Dubai Mall Shopping", "Dhow Cruise Dinner"],
     included: ["Home Pickup & Drop", "5-Star Accommodation", "All Meals", "Private Tours", "Visa Processing", "Travel Insurance"],
     groupSize: "Family Package (4 persons)",
-    highlight: "Door-to-Door Service"
+    highlight: "Door-to-Door Service",
+    itinerary: [
+      { day: 1, title: "Arrive in Dubai", description: "Welcome to Dubai! Our representative will greet you at the airport and transfer you to your luxury hotel. Rest of the day at leisure." },
+      { day: 2, title: "Dubai City Tour", description: "Explore the highlights of Dubai including the Dubai Museum, Gold Souk, and enjoy a traditional abra ride across Dubai Creek." },
+      { day: 3, title: "Burj Khalifa & Dubai Mall", description: "Visit the world's tallest building, Burj Khalifa. Enjoy shopping at Dubai Mall and watch the spectacular Dubai Fountain show." },
+      { day: 4, title: "Desert Safari", description: "Experience an exciting desert safari with dune bashing, camel riding, and a BBQ dinner with entertainment under the stars." },
+      { day: 5, title: "Waterpark Adventure", description: "Enjoy a full day at Aquaventure Waterpark with thrilling slides and attractions for the whole family." },
+      { day: 6, title: "Abu Dhabi Day Trip", description: "Visit Sheikh Zayed Grand Mosque, Ferrari World, and other attractions in Abu Dhabi." },
+      { day: 7, title: "Departure", description: "After breakfast, check out and transfer to the airport for your return flight." }
+    ]
   },
   {
     id: 102,
@@ -69,7 +78,15 @@ const tours = [
     activities: ["Gardens by the Bay", "Universal Studios", "Sentosa Island", "Singapore Flyer"],
     included: ["Home Pickup & Drop", "4-Star Accommodation", "Breakfast & Dinner", "Skip-the-line Attraction Tickets", "Visa Processing", "Travel Insurance"],
     groupSize: "Up to 6 people",
-    highlight: "Door-to-Door Service"
+    highlight: "Door-to-Door Service",
+    itinerary: [
+      { day: 1, title: "Arrive in Singapore", description: "Arrive at Changi Airport and transfer to your hotel. Evening at leisure to explore the nearby area." },
+      { day: 2, title: "City Tour", description: "Explore Singapore's highlights including Merlion Park, Gardens by the Bay, and Marina Bay Sands." },
+      { day: 3, title: "Universal Studios", description: "Full day at Universal Studios Singapore with access to all attractions and shows." },
+      { day: 4, title: "Sentosa Island", description: "Enjoy the beaches and attractions of Sentosa Island, including the S.E.A. Aquarium and cable car ride." },
+      { day: 5, title: "Shopping & Cultural Tour", description: "Visit Chinatown, Little India, and enjoy shopping at Orchard Road." },
+      { day: 6, title: "Departure", description: "Check out and transfer to Changi Airport for your return flight." }
+    ]
   },
   {
     id: 103,
@@ -293,27 +310,24 @@ const Tours = () => {
   const [priceRange, setPriceRange] = useState([0, 100000]);
   const [filters, setFilters] = useState(false);
   const [selectedTour, setSelectedTour] = useState<number | null>(null);
+  const [tourDetailsOpen, setTourDetailsOpen] = useState(false);
+  const [currentTourDetail, setCurrentTourDetail] = useState<any>(null);
 
-  // Filter tours based on selection
   const filterTours = (tours: any[]) => {
     return tours.filter((tour) => {
-      // Search term filter
       const matchesSearch = 
         searchTerm === "" || 
         tour.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
         tour.location.toLowerCase().includes(searchTerm.toLowerCase());
       
-      // Region filter
       const matchesRegion = 
         selectedRegions.length === 0 || 
         selectedRegions.includes(tour.region);
       
-      // Activities filter
       const matchesActivities = 
         selectedActivities.length === 0 || 
         tour.activities.some((activity: string) => selectedActivities.includes(activity));
       
-      // Duration filter
       const matchesDuration = () => {
         if (selectedDuration === "") return true;
         const days = parseInt(tour.duration);
@@ -329,7 +343,6 @@ const Tours = () => {
         }
       };
       
-      // Price filter
       const matchesPrice = 
         tour.price >= priceRange[0] && tour.price <= priceRange[1];
       
@@ -337,10 +350,16 @@ const Tours = () => {
     });
   };
 
-  // Get door-to-door packages
+  const handleViewTourDetails = (tourId: number) => {
+    const tour = tours.find(t => t.id === tourId);
+    if (tour) {
+      setCurrentTourDetail(tour);
+      setTourDetailsOpen(true);
+    }
+  };
+
   const doorToDoorPackages = tours.filter(tour => tour.highlight === "Door-to-Door Service");
   
-  // Filter standard packages
   const indianTours = filterTours(tours.filter(tour => tour.country === "India" && !tour.highlight));
   const internationalTours = filterTours(tours.filter(tour => tour.country !== "India" && !tour.highlight));
 
@@ -370,7 +389,6 @@ const Tours = () => {
 
   return (
     <Layout>
-      {/* Hero Section */}
       <section className="pt-24 pb-16 container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center mb-12">
           <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-secondary/30 text-secondary-foreground mb-3">
@@ -383,7 +401,6 @@ const Tours = () => {
             Discover our handpicked tours for your next adventure
           </p>
           
-          {/* Search */}
           <div className="relative max-w-md mx-auto">
             <Input
               type="text"
@@ -397,7 +414,6 @@ const Tours = () => {
         </div>
       </section>
 
-      {/* Door-to-Door Service Banner */}
       <section className="container mx-auto px-4 mb-16">
         <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl p-6 md:p-8 shadow-sm border border-primary/20">
           <div className="flex flex-col md:flex-row gap-6 items-center">
@@ -423,7 +439,6 @@ const Tours = () => {
         </div>
       </section>
 
-      {/* Featured Door-to-Door Packages */}
       <section className="container mx-auto px-4 mb-16">
         <SectionHeading
           title="Featured Door-to-Door Packages"
@@ -442,8 +457,10 @@ const Tours = () => {
               price={`₹${tour.price}`}
               bestTime={tour.bestTime}
               packageType={tour.packageType as "Budgeted" | "Luxury" | "Premier"}
-              link={`/tours/${tour.id}`}
+              link="#"
               className="relative"
+              itinerary={tour.itinerary}
+              description={tour.description}
             />
           ))}
         </div>
@@ -509,10 +526,8 @@ const Tours = () => {
         </div>
       </section>
 
-      {/* Main Content */}
       <section className="container mx-auto px-4 mb-16">
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Filters - Mobile Toggle */}
           <div className="lg:hidden w-full mb-4">
             <Button 
               variant="outline" 
@@ -531,7 +546,6 @@ const Tours = () => {
             </Button>
           </div>
 
-          {/* Filters Sidebar */}
           <div className={cn(
             "lg:w-1/4 space-y-6",
             { "hidden": !filters, "block": filters, "lg:block": true }
@@ -549,7 +563,6 @@ const Tours = () => {
                 </Button>
               </div>
 
-              {/* Price Range */}
               <div className="mb-6">
                 <h4 className="text-sm font-medium mb-3">Price Range (₹)</h4>
                 <div className="px-2">
@@ -568,7 +581,6 @@ const Tours = () => {
                 </div>
               </div>
 
-              {/* Duration */}
               <div className="mb-6">
                 <h4 className="text-sm font-medium mb-3">Duration</h4>
                 <Select value={selectedDuration} onValueChange={setSelectedDuration}>
@@ -584,7 +596,6 @@ const Tours = () => {
                 </Select>
               </div>
 
-              {/* Regions */}
               <div className="mb-6">
                 <h4 className="text-sm font-medium mb-3">Regions</h4>
                 <div className="space-y-2">
@@ -609,7 +620,6 @@ const Tours = () => {
                 </div>
               </div>
 
-              {/* Activities */}
               <div>
                 <h4 className="text-sm font-medium mb-3">Activities</h4>
                 <div className="flex flex-wrap gap-2">
@@ -634,7 +644,6 @@ const Tours = () => {
             </div>
           </div>
 
-          {/* Tour Listings */}
           <div className="lg:w-3/4">
             <Tabs defaultValue="all" className="w-full">
               <div className="flex items-center justify-between mb-6">
@@ -673,7 +682,9 @@ const Tours = () => {
                         price={`Starting from ₹${tour.price.toLocaleString()}`}
                         bestTime={tour.bestTime}
                         packageType={tour.packageType as "Budgeted" | "Luxury" | "Premier"}
-                        link={`#tour-${tour.id}`}
+                        link="#"
+                        description={tour.description}
+                        itinerary={tour.itinerary}
                       />
                     ))
                   ) : (
@@ -699,7 +710,9 @@ const Tours = () => {
                         price={`Starting from ₹${tour.price.toLocaleString()}`}
                         bestTime={tour.bestTime}
                         packageType={tour.packageType as "Budgeted" | "Luxury" | "Premier"}
-                        link={`#tour-${tour.id}`}
+                        link="#"
+                        description={tour.description}
+                        itinerary={tour.itinerary}
                       />
                     ))
                   ) : (
@@ -725,7 +738,9 @@ const Tours = () => {
                         price={`Starting from ₹${tour.price.toLocaleString()}`}
                         bestTime={tour.bestTime}
                         packageType={tour.packageType as "Budgeted" | "Luxury" | "Premier"}
-                        link={`#tour-${tour.id}`}
+                        link="#"
+                        description={tour.description}
+                        itinerary={tour.itinerary}
                       />
                     ))
                   ) : (
@@ -742,10 +757,107 @@ const Tours = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
+      <Dialog open={tourDetailsOpen} onOpenChange={setTourDetailsOpen}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          {currentTourDetail && (
+            <div className="space-y-6">
+              <div className="relative h-64 w-full overflow-hidden rounded-lg">
+                <img 
+                  src={currentTourDetail.imageSrc} 
+                  alt={currentTourDetail.title}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute top-4 right-4">
+                  <Badge className={cn(
+                    currentTourDetail.packageType === "Budgeted" && "bg-blue-100 text-blue-700",
+                    currentTourDetail.packageType === "Luxury" && "bg-purple-100 text-purple-700",
+                    currentTourDetail.packageType === "Premier" && "bg-amber-100 text-amber-700",
+                  )}>
+                    {currentTourDetail.packageType}
+                  </Badge>
+                </div>
+              </div>
+              
+              <div>
+                <h2 className="text-2xl font-bold">{currentTourDetail.title}</h2>
+                <div className="flex flex-wrap gap-4 mt-2">
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <MapPin className="w-4 h-4 mr-1" />
+                    <span>{currentTourDetail.location}</span>
+                  </div>
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <Clock className="w-4 h-4 mr-1" />
+                    <span>{currentTourDetail.duration}</span>
+                  </div>
+                  <div className="flex items-center text-sm text-muted-foreground">
+                    <Calendar className="w-4 h-4 mr-1" />
+                    <span>Best time: {currentTourDetail.bestTime}</span>
+                  </div>
+                  <div className="flex items-center text-sm font-medium">
+                    <IndianRupee className="w-4 h-4 mr-1" />
+                    <span>₹{currentTourDetail.price.toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Description</h3>
+                <p className="text-muted-foreground">{currentTourDetail.description}</p>
+              </div>
+              
+              {currentTourDetail.itinerary && (
+                <div>
+                  <h3 className="text-lg font-semibold mb-3">Itinerary</h3>
+                  <div className="space-y-4">
+                    {currentTourDetail.itinerary.map((day: any) => (
+                      <div key={day.day} className="p-4 border rounded-lg">
+                        <h4 className="font-medium flex items-center">
+                          <span className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs mr-2">
+                            {day.day}
+                          </span>
+                          {day.title}
+                        </h4>
+                        <p className="text-sm text-muted-foreground mt-1">{day.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="text-lg font-semibold mb-2">Activities</h3>
+                  <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+                    {currentTourDetail.activities?.map((activity: string, idx: number) => (
+                      <li key={idx}>{activity}</li>
+                    ))}
+                  </ul>
+                </div>
+                
+                {currentTourDetail.included && (
+                  <div>
+                    <h3 className="text-lg font-semibold mb-2">Included in Package</h3>
+                    <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+                      {currentTourDetail.included.map((item: string, idx: number) => (
+                        <li key={idx}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+              
+              <div className="flex justify-between pt-4 border-t">
+                <p className="text-xl font-semibold">Total Price: ₹{currentTourDetail.price.toLocaleString()}</p>
+                <Button>Book Now</Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
       <CTASection 
         title="Create Your Custom Tour"
-        subtitle="Don't see what you're looking for? Let our experts design a personalized tour for you."
+        description="Don't see what you're looking for? Let our experts design a personalized tour for you."
         buttonText="Contact Us"
         buttonLink="/contact"
       />
