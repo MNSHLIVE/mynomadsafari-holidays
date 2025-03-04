@@ -20,6 +20,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import DestinationQueryForm from "./destination-query-form";
 
 export interface TourCardProps {
   imageSrc: string;
@@ -248,7 +249,10 @@ const TourCard = ({
                 
                 <div className="flex justify-between pt-4 border-t">
                   <p className="text-xl font-semibold">{price}</p>
-                  <Button>Book Now</Button>
+                  <DestinationQueryForm 
+                    destinationName={title} 
+                    buttonText="Book Now"
+                  />
                 </div>
               </div>
             </DialogContent>
