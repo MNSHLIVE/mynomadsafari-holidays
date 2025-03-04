@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -65,6 +64,15 @@ const TourCard = ({
   };
 
   const itineraryPreview = getItineraryPreview();
+
+  // Format price for better display
+  const formatPrice = (priceString: string) => {
+    // If price is already formatted with ₹, return as is
+    if (priceString.includes('₹')) return priceString;
+    
+    // Otherwise format it
+    return priceString;
+  };
 
   return (
     <div 
@@ -170,7 +178,7 @@ const TourCard = ({
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
               <IndianRupee className="w-4 h-4 mr-1 text-primary" />
-              <span className="font-semibold">{price}</span>
+              <span className="font-semibold">{formatPrice(price)}</span>
             </div>
             <span className="text-xs text-muted-foreground">per person</span>
           </div>
@@ -248,7 +256,7 @@ const TourCard = ({
                 )}
                 
                 <div className="flex justify-between pt-4 border-t">
-                  <p className="text-xl font-semibold">{price}</p>
+                  <p className="text-xl font-semibold">{formatPrice(price)}</p>
                   <DestinationQueryForm 
                     destinationName={title} 
                     buttonText="Book Now"
