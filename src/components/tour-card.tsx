@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -69,6 +70,18 @@ const TourCard = ({
   const formatPrice = (priceString: string) => {
     // If price is already formatted with ₹, return as is
     if (priceString.includes('₹')) return priceString;
+    
+    // Convert to number if it's a number string
+    const priceNumber = typeof priceString === 'string' ? Number(priceString) : NaN;
+    
+    // If it's a valid number, format it with the Indian numbering system
+    if (!isNaN(priceNumber)) {
+      return new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'INR',
+        maximumFractionDigits: 0,
+      }).format(priceNumber);
+    }
     
     // Otherwise format it
     return priceString;
