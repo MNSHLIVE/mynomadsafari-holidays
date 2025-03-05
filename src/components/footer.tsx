@@ -135,8 +135,14 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-border mt-10 pt-6 text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} My Nomadsafari Holidays. All rights reserved.</p>
+        <div className="border-t border-border mt-10 pt-6 text-center">
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-4 text-sm text-muted-foreground">
+            <Link to="/terms" className="hover:text-primary transition-colors">Terms & Conditions</Link>
+            <Link to="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
+            <Link to="/refund" className="hover:text-primary transition-colors">Refund Policy</Link>
+            <Link to="/faq" className="hover:text-primary transition-colors">FAQs</Link>
+          </div>
+          <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} My Nomadsafari Holidays. All rights reserved.</p>
         </div>
       </div>
     </footer>
