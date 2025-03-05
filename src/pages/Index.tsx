@@ -10,7 +10,7 @@ import BlogCard from "@/components/blog-card";
 import CTASection from "@/components/cta-section";
 import HeroSlider from "@/components/hero-slider";
 import PackageCalculator from "@/components/package-calculator";
-import { ArrowRight, Globe, MapPin, Compass, Shield, Headphones } from "lucide-react";
+import { ArrowRight, Globe, MapPin, Compass, Shield, Headphones, PrayingHands, Mountains, Map, Plane, Beach, Buildings, Star } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const heroSlides = [
@@ -64,6 +64,87 @@ const destinations = [
   },
 ];
 
+const religiousDestinations = [
+  {
+    imageSrc: "https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=800",
+    title: "Varanasi",
+    description: "Experience the spiritual capital of India along the sacred Ganges River.",
+    bestTime: "October - March",
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1567948596429-b0a5f3a22c99?q=80&w=800",
+    title: "Haridwar & Rishikesh",
+    description: "Visit the holy gateway to the Himalayas and the yoga capital of the world.",
+    bestTime: "September - April",
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1511296255053-90e256ae9d9a?q=80&w=800",
+    title: "Amritsar",
+    description: "Visit the Golden Temple, the holiest shrine in Sikhism.",
+    bestTime: "October - March",
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1572450656106-512193c51392?q=80&w=800",
+    title: "Tirupati",
+    description: "Visit one of the world's richest and most visited temples in South India.",
+    bestTime: "September - February",
+  },
+];
+
+const internationalDestinations = [
+  {
+    imageSrc: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=800",
+    title: "Dubai, UAE",
+    description: "Experience the luxurious desert metropolis with futuristic architecture.",
+    bestTime: "November - March",
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=800",
+    title: "Singapore",
+    description: "Explore the vibrant city-state with its perfect blend of culture and modernity.",
+    bestTime: "February - April",
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=800",
+    title: "Paris, France",
+    description: "Discover the romantic capital of the world with its iconic landmarks.",
+    bestTime: "April - June, September - October",
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1538332576228-eb5b4c4de6f5?q=80&w=800",
+    title: "Tokyo, Japan",
+    description: "Experience the ultra-modern metropolis with traditional Japanese culture.",
+    bestTime: "March - May, September - November",
+  },
+];
+
+const hillStations = [
+  {
+    imageSrc: "https://images.unsplash.com/photo-1505533321630-975218a5f66f?q=80&w=800",
+    title: "Shimla",
+    description: "Experience the former summer capital of British India in the Himalayas.",
+    bestTime: "March - June, September - November",
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=800",
+    title: "Manali",
+    description: "Explore the breathtaking valleys and snow-capped mountains of this Himalayan resort.",
+    bestTime: "October - June",
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1589136777052-654282d74f57?q=80&w=800",
+    title: "Darjeeling",
+    description: "Visit the Queen of Hills known for its tea plantations and views of Kanchenjunga.",
+    bestTime: "September - November, March - May",
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?q=80&w=800",
+    title: "Ooty",
+    description: "Experience the Queen of Hill Stations in South India with its lush landscapes.",
+    bestTime: "October - June",
+  },
+];
+
 const tours = [
   {
     imageSrc: "https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=800",
@@ -91,6 +172,54 @@ const tours = [
     price: "Starting from ₹75,000",
     bestTime: "October - March",
     packageType: "Premier",
+  },
+];
+
+const religiousTours = [
+  {
+    imageSrc: "https://images.unsplash.com/photo-1561361058-c24cecabbe95?q=80&w=800",
+    title: "Char Dham Yatra",
+    location: "Uttarakhand, India",
+    duration: "12 Days",
+    price: "64000",
+    bestTime: "May - June, September - October",
+    packageType: "Premier",
+    description: "A spiritual journey to the four sacred Hindu temples in the Himalayas: Yamunotri, Gangotri, Kedarnath, and Badrinath.",
+    itinerary: [
+      {day: 1, title: "Arrival in Haridwar", description: "Welcome at Haridwar and transfer to hotel. Evening Ganga Aarti at Har Ki Pauri."},
+      {day: 2, title: "Haridwar to Yamunotri", description: "Drive to Janki Chatti and trek to Yamunotri temple. Return to Barkot for overnight stay."},
+      {day: 3, title: "Barkot to Gangotri", description: "Drive to Gangotri through scenic Himalayan landscapes. Visit Gangotri Temple."},
+    ]
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=800",
+    title: "Varanasi Spiritual Tour",
+    location: "Uttar Pradesh, India",
+    duration: "4 Days",
+    price: "21332",
+    bestTime: "October - March",
+    packageType: "Budgeted",
+    description: "Experience the spiritual essence of India's oldest city with morning boat rides on the Ganges and evening aartis.",
+    itinerary: [
+      {day: 1, title: "Arrival in Varanasi", description: "Welcome at Varanasi Airport/Railway Station and transfer to hotel. Evening Ganga Aarti."},
+      {day: 2, title: "Morning Boat Ride & Temples", description: "Early morning boat ride on the Ganges to witness sunrise. Visit important temples."},
+      {day: 3, title: "Sarnath Excursion", description: "Day trip to Sarnath where Buddha gave his first sermon. Visit the Dhamek Stupa."},
+    ]
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1608021584625-35f8646fe1d6?q=80&w=800",
+    title: "Golden Temple & Amritsar",
+    location: "Punjab, India",
+    duration: "3 Days",
+    price: "15999",
+    bestTime: "October - March",
+    packageType: "Budgeted",
+    description: "Visit the magnificent Golden Temple and experience the vibrant Punjabi culture in Amritsar.",
+    itinerary: [
+      {day: 1, title: "Arrival in Amritsar", description: "Welcome at Amritsar and transfer to hotel. Evening visit to Golden Temple for Palki Ceremony."},
+      {day: 2, title: "Golden Temple & Wagah Border", description: "Morning visit to Golden Temple. Afternoon visit to Wagah Border for the Retreat Ceremony."},
+      {day: 3, title: "Amritsar City Tour", description: "Visit Jallianwala Bagh, Durgiana Temple, and local markets. Departure from Amritsar."},
+    ]
   },
 ];
 
@@ -142,6 +271,15 @@ const blogPosts = [
   },
 ];
 
+const travelCategories = [
+  { icon: <Beach className="h-6 w-6" />, name: "Beaches", link: "/destinations?category=beaches" },
+  { icon: <Mountains className="h-6 w-6" />, name: "Mountains", link: "/destinations?category=mountains" },
+  { icon: <PrayingHands className="h-6 w-6" />, name: "Pilgrimage", link: "/destinations?category=pilgrimage" },
+  { icon: <Buildings className="h-6 w-6" />, name: "Heritage", link: "/destinations?category=heritage" },
+  { icon: <Plane className="h-6 w-6" />, name: "International", link: "/destinations?category=international" },
+  { icon: <Map className="h-6 w-6" />, name: "Adventure", link: "/destinations?category=adventure" },
+];
+
 const Index = () => {
   const [searchValue, setSearchValue] = useState("");
 
@@ -149,6 +287,20 @@ const Index = () => {
     <Layout>
       {/* Hero Section */}
       <HeroSlider slides={heroSlides} />
+
+      {/* Travel Categories Section */}
+      <section className="py-10 container mx-auto px-4">
+        <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
+          {travelCategories.map((category, index) => (
+            <Link to={category.link} key={index} className="flex flex-col items-center group">
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-2 transition-all group-hover:bg-primary/20">
+                {category.icon}
+              </div>
+              <span className="text-xs md:text-sm text-center">{category.name}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       {/* Services Section */}
       <section className="section-padding container mx-auto px-4">
@@ -242,6 +394,39 @@ const Index = () => {
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
           </Link>
+        </div>
+      </section>
+
+      {/* Religious Destinations */}
+      <section className="section-padding bg-muted/30 py-16">
+        <div className="container mx-auto px-4">
+          <SectionHeading
+            title="Popular Religious Places"
+            subtitle="Embark on a spiritual journey to these sacred destinations"
+            tag="Religious Tourism"
+          />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {religiousDestinations.map((destination, index) => (
+              <DestinationCard
+                key={index}
+                imageSrc={destination.imageSrc}
+                title={destination.title}
+                description={destination.description}
+                bestTime={destination.bestTime}
+                link="/destinations?category=pilgrimage"
+              />
+            ))}
+          </div>
+
+          <div className="text-center mt-10">
+            <Link to="/destinations?category=pilgrimage">
+              <Button variant="outline" className="group">
+                <span>Explore Religious Tours</span>
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -351,6 +536,106 @@ const Index = () => {
               </Button>
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* Religious Tour Packages */}
+      <section className="section-padding container mx-auto px-4">
+        <SectionHeading
+          title="Religious Tour Packages"
+          subtitle="Discover our carefully curated religious tour packages for spiritual journeys"
+          tag="Pilgrimages & Spiritual Tours"
+        />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {religiousTours.map((tour, index) => (
+            <TourCard
+              key={index}
+              imageSrc={tour.imageSrc}
+              title={tour.title}
+              location={tour.location}
+              duration={tour.duration}
+              price={tour.price}
+              bestTime={tour.bestTime}
+              packageType={tour.packageType as "Budgeted" | "Luxury" | "Premier"}
+              description={tour.description}
+              itinerary={tour.itinerary}
+              link="/tours?category=religious"
+            />
+          ))}
+        </div>
+
+        <div className="text-center mt-10">
+          <Link to="/tours?category=religious">
+            <Button variant="outline" className="group">
+              <span>View All Religious Tours</span>
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+          </Link>
+        </div>
+      </section>
+
+      {/* International Destinations */}
+      <section className="section-padding bg-muted/30 py-16">
+        <div className="container mx-auto px-4">
+          <SectionHeading
+            title="International Destinations"
+            subtitle="Explore exotic locations around the world with our expertly crafted packages"
+            tag="Global Expeditions"
+          />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {internationalDestinations.map((destination, index) => (
+              <DestinationCard
+                key={index}
+                imageSrc={destination.imageSrc}
+                title={destination.title}
+                description={destination.description}
+                bestTime={destination.bestTime}
+                link="/destinations?category=international"
+              />
+            ))}
+          </div>
+
+          <div className="text-center mt-10">
+            <Link to="/destinations?category=international">
+              <Button variant="outline" className="group">
+                <span>Explore International Destinations</span>
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Hill Stations Section */}
+      <section className="section-padding container mx-auto px-4">
+        <SectionHeading
+          title="Popular Hill Stations"
+          subtitle="Escape to the serene mountains and breathtaking landscapes"
+          tag="Mountain Retreats"
+        />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {hillStations.map((destination, index) => (
+            <DestinationCard
+              key={index}
+              imageSrc={destination.imageSrc}
+              title={destination.title}
+              description={destination.description}
+              bestTime={destination.bestTime}
+              link="/destinations?category=hillstations"
+            />
+          ))}
+        </div>
+
+        <div className="text-center mt-10">
+          <Link to="/destinations?category=hillstations">
+            <Button variant="outline" className="group">
+              <span>Explore Hill Stations</span>
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+          </Link>
         </div>
       </section>
 
