@@ -23,7 +23,7 @@ import Faq from "./pages/Faq";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: <Layout>Outlet will be rendered here</Layout>,
     errorElement: <NotFound />,
     children: [
       {

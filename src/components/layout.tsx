@@ -1,11 +1,12 @@
 
 import { ReactNode, useEffect } from "react";
+import { Outlet } from "react-router-dom";
 import MainNav from "./main-nav";
 import Footer from "./footer";
 import WhatsAppButton from "./whatsapp-button";
 
 interface LayoutProps {
-  children: ReactNode;
+  children?: ReactNode;  // Make children optional
 }
 
 const Layout = ({ children }: LayoutProps) => {
@@ -66,7 +67,7 @@ const Layout = ({ children }: LayoutProps) => {
     <div className="flex min-h-screen flex-col">
       <MainNav />
       <main className="flex-1 pt-16">
-        {children}
+        {children || <Outlet />}
       </main>
       <Footer />
       <WhatsAppButton />
