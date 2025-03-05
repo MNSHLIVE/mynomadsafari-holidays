@@ -1,3 +1,4 @@
+
 import React from "react";
 import {
   createBrowserRouter,
@@ -13,7 +14,7 @@ import Visa from "./pages/Visa";
 import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
-import Layout from "./components/Layout";
+import Layout from "@/components/layout";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Refund from "./pages/Refund";
