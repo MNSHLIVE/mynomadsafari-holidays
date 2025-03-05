@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/layout";
@@ -10,7 +11,7 @@ import BlogCard from "@/components/blog-card";
 import CTASection from "@/components/cta-section";
 import HeroSlider from "@/components/hero-slider";
 import PackageCalculator from "@/components/package-calculator";
-import { ArrowRight, Globe, MapPin, Compass, Shield, Headphones, PrayingHands, Mountains, Map, Plane, Beach, Buildings, Star } from "lucide-react";
+import { ArrowRight, Globe, MapPin, Compass, Shield, Headphones, Palmtree, Mountain, Map, Plane, Building, Star } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const heroSlides = [
@@ -272,10 +273,10 @@ const blogPosts = [
 ];
 
 const travelCategories = [
-  { icon: <Beach className="h-6 w-6" />, name: "Beaches", link: "/destinations?category=beaches" },
-  { icon: <Mountains className="h-6 w-6" />, name: "Mountains", link: "/destinations?category=mountains" },
-  { icon: <PrayingHands className="h-6 w-6" />, name: "Pilgrimage", link: "/destinations?category=pilgrimage" },
-  { icon: <Buildings className="h-6 w-6" />, name: "Heritage", link: "/destinations?category=heritage" },
+  { icon: <Palmtree className="h-6 w-6" />, name: "Beaches", link: "/destinations?category=beaches" },
+  { icon: <Mountain className="h-6 w-6" />, name: "Mountains", link: "/destinations?category=mountains" },
+  { icon: <Star className="h-6 w-6" />, name: "Pilgrimage", link: "/destinations?category=pilgrimage" },
+  { icon: <Building className="h-6 w-6" />, name: "Heritage", link: "/destinations?category=heritage" },
   { icon: <Plane className="h-6 w-6" />, name: "International", link: "/destinations?category=international" },
   { icon: <Map className="h-6 w-6" />, name: "Adventure", link: "/destinations?category=adventure" },
 ];
