@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -30,7 +29,6 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { format } from "date-fns";
 
-// Hotel rates per night in INR
 const HOTEL_RATES = {
   "3-star": {
     single: 2500,
@@ -49,26 +47,22 @@ const HOTEL_RATES = {
   },
 };
 
-// Transport rates per km in INR
 const TRANSPORT_RATES = {
   sedan: 16,
   suv: 20,
 };
 
-// International travel base costs in INR
 const INTERNATIONAL_BASE_COSTS = {
-  "3-star": 45000, // per person for budget package
-  "4-star": 75000, // per person for luxury package
-  "5-star": 120000, // per person for premier package
+  "3-star": 45000,
+  "4-star": 75000,
+  "5-star": 120000,
 };
 
-// Additional costs
-const DRIVER_ALLOWANCE = 500; // per day
-const TOLL_PARKING_ESTIMATE = 300; // per day
+const DRIVER_ALLOWANCE = 500;
+const TOLL_PARKING_ESTIMATE = 300;
 
-// Km calculation based on days
 const calculateDistance = (days: number) => {
-  return days * 250; // 250km per day
+  return days * 250;
 };
 
 interface PackageCalculatorProps {
@@ -76,7 +70,6 @@ interface PackageCalculatorProps {
 }
 
 const PackageCalculator = ({ className }: PackageCalculatorProps) => {
-  // Form state
   const [calculatorType, setCalculatorType] = useState<"domestic" | "international">("domestic");
   const [destination, setDestination] = useState("");
   const [days, setDays] = useState(3);
@@ -86,17 +79,15 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
   const [adults, setAdults] = useState(2);
   const [children, setChildren] = useState(0);
   const [transportType, setTransportType] = useState<"sedan" | "suv">("sedan");
-  const [distance, setDistance] = useState(750); // Default for 3 days
+  const [distance, setDistance] = useState(750);
   const [packageType, setPackageType] = useState<"Budgeted" | "Luxury" | "Premier">("Budgeted");
   const [travelDate, setTravelDate] = useState<Date | undefined>(undefined);
 
-  // Calculated costs
   const [hotelCost, setHotelCost] = useState(0);
   const [transportCost, setTransportCost] = useState(0);
   const [additionalCost, setAdditionalCost] = useState(0);
   const [totalCost, setTotalCost] = useState(0);
 
-  // Destinations list
   const domesticDestinations = [
     "Delhi",
     "Agra",
@@ -111,7 +102,7 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
     "Darjeeling",
     "Andaman",
   ];
-  
+
   const internationalDestinations = [
     "Dubai",
     "Singapore",
@@ -127,18 +118,14 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
     "Maldives",
   ];
 
-  // Auto-adjust rooms when adults change
   useEffect(() => {
     if (adults > 4) {
-      // Automatically allocate 2 rooms for more than 4 adults
       setRooms(Math.max(2, Math.ceil(adults / 3)));
     } else if (rooms > 1 && adults <= 2) {
-      // Reduce to 1 room if 2 or fewer adults and currently more than 1 room
       setRooms(1);
     }
   }, [adults]);
 
-  // Update distance when days change (for domestic only)
   useEffect(() => {
     if (calculatorType === "domestic") {
       const calculatedDistance = calculateDistance(days);
@@ -146,57 +133,37 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
     }
   }, [days, calculatorType]);
 
-  // Calculate costs whenever inputs change
   useEffect(() => {
     if (calculatorType === "domestic") {
-      // Domestic tour calculation
-      
-      // Hotel cost calculation
       const perNightCost = HOTEL_RATES[hotelType][roomType] * rooms;
       const totalHotelCost = perNightCost * days;
       setHotelCost(totalHotelCost);
 
-      // Transport cost calculation
       const transportRate = TRANSPORT_RATES[transportType];
       const totalTransportCost = distance * transportRate;
       setTransportCost(totalTransportCost);
 
-      // Additional costs
       const driverAllowance = DRIVER_ALLOWANCE * days;
       const tollParking = TOLL_PARKING_ESTIMATE * days;
       setAdditionalCost(driverAllowance + tollParking);
 
-      // Total package cost
       const total = totalHotelCost + totalTransportCost + driverAllowance + tollParking;
       setTotalCost(total);
     } else {
-      // International tour calculation
-      
-      // Base cost per person
       const baseCost = INTERNATIONAL_BASE_COSTS[hotelType];
-      
-      // Calculate total cost for all adults and children
-      // Children get 30% discount
       const adultsCost = baseCost * adults;
       const childrenCost = baseCost * 0.7 * children;
-      
-      // Additional costs for premium rooms
       let roomUpgrade = 0;
-      if (roomType === "double") roomUpgrade = 0.15 * baseCost * adults; // 15% premium
-      if (roomType === "triple") roomUpgrade = 0.25 * baseCost * adults; // 25% premium
-      
-      // Set cost breakdowns
+      if (roomType === "double") roomUpgrade = 0.15 * baseCost * adults;
+      if (roomType === "triple") roomUpgrade = 0.25 * baseCost * adults;
       const totalBaseCost = adultsCost + childrenCost;
-      setHotelCost(totalBaseCost * 0.6); // 60% of cost allocated to accommodation
-      setTransportCost(totalBaseCost * 0.3); // 30% for transport
-      setAdditionalCost(totalBaseCost * 0.1 + roomUpgrade); // 10% for misc plus room upgrades
-      
-      // Calculate total
+      setHotelCost(totalBaseCost * 0.6);
+      setTransportCost(totalBaseCost * 0.3);
+      setAdditionalCost(totalBaseCost * 0.1 + roomUpgrade);
       const total = totalBaseCost + roomUpgrade;
       setTotalCost(total);
     }
 
-    // Set package type based on hotel type
     if (hotelType === "5-star") {
       setPackageType("Premier");
     } else if (hotelType === "4-star") {
@@ -209,7 +176,6 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate form
     if (!destination) {
       toast.error("Please select a destination");
       return;
@@ -220,11 +186,30 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
       return;
     }
 
-    // Success message
     toast.success("Your package has been calculated! Our team will contact you shortly for more details.");
+    
+    const contactForm = document.getElementById("query-form");
+    if (contactForm) {
+      contactForm.scrollIntoView({ behavior: "smooth" });
+    } else {
+      const dialog = document.createElement("div");
+      dialog.id = "query-form-dialog";
+      document.body.appendChild(dialog);
+      
+      setTimeout(() => {
+        if (document.getElementById("query-form-dialog")) {
+          document.body.removeChild(dialog);
+        }
+      }, 100);
+      
+      const destinationName = destination || "Tour Package";
+      const dialogTriggerEvent = new CustomEvent("open-query-form", { 
+        detail: { destinationName } 
+      });
+      document.dispatchEvent(dialogTriggerEvent);
+    }
   };
 
-  // Format currency
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
