@@ -1,6 +1,5 @@
 
 import { useState } from "react";
-import Layout from "@/components/layout";
 import CTASection from "@/components/cta-section";
 import HeroSlider from "@/components/hero-slider";
 import TravelCategories from "@/components/home/travel-categories";
@@ -27,7 +26,7 @@ const Index = () => {
   const [searchValue, setSearchValue] = useState("");
 
   return (
-    <Layout>
+    <>
       {/* Hero Section */}
       <HeroSlider slides={heroSlides} />
 
@@ -120,7 +119,7 @@ const Index = () => {
 
       {/* Recent Blog Posts */}
       <BlogSection posts={blogPosts} />
-    </Layout>
+    </>
   );
 };
 
