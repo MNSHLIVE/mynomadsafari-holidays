@@ -30,7 +30,7 @@ import {
   Calendar,
   IndianRupee,
   Plane,
-  Passport,
+  CreditCard,
   Hotel,
   Bus,
   UtensilsCrossed
@@ -489,7 +489,7 @@ const Tours = () => {
                   <Plane className="mr-1 h-3 w-3" /> Return Flights
                 </Badge>
                 <Badge className="px-3 py-1 text-sm bg-primary/20 text-primary hover:bg-primary/30 flex items-center">
-                  <Passport className="mr-1 h-3 w-3" /> Visa Processing
+                  <CreditCard className="mr-1 h-3 w-3" /> Visa Processing
                 </Badge>
                 <Badge className="px-3 py-1 text-sm bg-primary/20 text-primary hover:bg-primary/30 flex items-center">
                   <Hotel className="mr-1 h-3 w-3" /> Premium Accommodations

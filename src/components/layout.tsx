@@ -46,11 +46,8 @@ const Layout = ({ children }: LayoutProps) => {
         style: {
           buttonColor: "#25D366",
           headerColor: "#128C7E"
-        },
-        labels: [
-          { id: "delhi", label: "Chat Delhi Office", phone: "+919968682200" },
-          { id: "mumbai", label: "Chat Mumbai Office", phone: "+917042910449" }
-        ]
+        }
+        // Removed the 'labels' property as it's not supported by the type
       };
       
       // Manually initiate widget rendering
