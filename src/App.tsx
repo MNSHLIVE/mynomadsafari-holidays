@@ -3,6 +3,8 @@ import React from "react";
 import {
   createBrowserRouter,
   RouterProvider,
+  Route,
+  createRoutesFromElements,
 } from "react-router-dom";
 import { ThemeProvider } from "@/components/theme-provider"
 
@@ -20,59 +22,24 @@ import Privacy from "./pages/Privacy";
 import Refund from "./pages/Refund";
 import Faq from "./pages/Faq";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout />,
-    errorElement: <NotFound />,
-    children: [
-      {
-        index: true,
-        element: <Index />,
-      },
-      {
-        path: "about",
-        element: <AboutUs />,
-      },
-      {
-        path: "destinations",
-        element: <Destinations />,
-      },
-      {
-        path: "tours",
-        element: <Tours />,
-      },
-      {
-        path: "visa",
-        element: <Visa />,
-      },
-      {
-        path: "blog",
-        element: <Blog />,
-      },
-      {
-        path: "contact",
-        element: <Contact />,
-      },
-      {
-        path: "terms",
-        element: <Terms />,
-      },
-      {
-        path: "privacy",
-        element: <Privacy />,
-      },
-      {
-        path: "refund",
-        element: <Refund />,
-      },
-      {
-        path: "faq",
-        element: <Faq />,
-      },
-    ],
-  },
-]);
+// Using createRoutesFromElements for better readability
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<Layout />} errorElement={<Layout><NotFound /></Layout>}>
+      <Route index element={<Index />} />
+      <Route path="about" element={<AboutUs />} />
+      <Route path="destinations" element={<Destinations />} />
+      <Route path="tours" element={<Tours />} />
+      <Route path="visa" element={<Visa />} />
+      <Route path="blog" element={<Blog />} />
+      <Route path="contact" element={<Contact />} />
+      <Route path="terms" element={<Terms />} />
+      <Route path="privacy" element={<Privacy />} />
+      <Route path="refund" element={<Refund />} />
+      <Route path="faq" element={<Faq />} />
+    </Route>
+  )
+);
 
 function App() {
   return (

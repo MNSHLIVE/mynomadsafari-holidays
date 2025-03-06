@@ -6,7 +6,7 @@ import Footer from "./footer";
 import WhatsAppButton from "./whatsapp-button";
 
 interface LayoutProps {
-  children?: ReactNode;  // Make children optional
+  children?: ReactNode;
 }
 
 const Layout = ({ children }: LayoutProps) => {
@@ -67,7 +67,7 @@ const Layout = ({ children }: LayoutProps) => {
     <div className="flex min-h-screen flex-col">
       <MainNav />
       <main className="flex-1 pt-16">
-        <Outlet />
+        {children || <Outlet />}
       </main>
       <Footer />
       <WhatsAppButton />
