@@ -6,7 +6,7 @@ import CTASection from "@/components/cta-section";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Church, Temple } from "lucide-react";
+import { Church, Landmark } from "lucide-react";
 import DestinationQueryForm from "@/components/destination-query-form";
 import { Badge } from "@/components/ui/badge";
 
@@ -238,7 +238,7 @@ const ReligiousTours = () => {
             <div className="flex flex-col md:flex-row gap-6 items-center">
               <div className="md:w-3/4">
                 <h2 className="text-2xl font-bold mb-4 flex items-center">
-                  <Temple className="mr-2 h-5 w-5 text-primary" />
+                  <Landmark className="mr-2 h-5 w-5 text-primary" />
                   Sacred Pilgrimages Across India
                 </h2>
                 <p className="text-lg mb-4">
