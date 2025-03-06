@@ -3,7 +3,6 @@ import { ReactNode, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import MainNav from "./main-nav";
 import Footer from "./footer";
-import WhatsAppButton from "./whatsapp-button";
 
 interface LayoutProps {
   children?: ReactNode;
@@ -71,7 +70,6 @@ const Layout = ({ children }: LayoutProps) => {
         {children || <Outlet />}
       </main>
       <Footer />
-      <WhatsAppButton />
     </div>
   );
 };

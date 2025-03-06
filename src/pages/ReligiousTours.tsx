@@ -1,10 +1,17 @@
 
+import React, { useState } from "react";
 import SectionHeading from "@/components/section-heading";
 import TourCard from "@/components/tour-card";
 import CTASection from "@/components/cta-section";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Church, Temple } from "lucide-react";
+import DestinationQueryForm from "@/components/destination-query-form";
+import { Badge } from "@/components/ui/badge";
 
 const religiousTours = [
+  // Original tours
   {
     id: 201,
     title: "Char Dham Yatra",
@@ -93,10 +100,124 @@ const religiousTours = [
       { day: 7, title: "Tirupati", description: "Visit Tirumala Venkateswara Temple (optional darshan)." },
       { day: 8, title: "Departure", description: "Transfer to Chennai for departure." }
     ]
+  },
+  
+  // New tours based on user input
+  {
+    id: 205,
+    title: "Vaishno Devi Pilgrimage",
+    imageSrc: "https://images.unsplash.com/photo-1574271143515-5cddf8da19be?q=80&w=800",
+    location: "Katra, Jammu & Kashmir",
+    duration: "5 Days",
+    price: "30000",
+    bestTime: "March - June, Sept - Oct",
+    packageType: "Premier",
+    country: "India",
+    region: "North India",
+    description: "Embark on a sacred journey to the holy shrine of Vaishno Devi, located in the Trikuta Mountains of Jammu & Kashmir.",
+    itinerary: [
+      { day: 1, title: "Arrival in Jammu", description: "Arrive in Jammu and transfer to hotel. Visit Raghunath Temple and local markets." },
+      { day: 2, title: "Jammu to Katra", description: "Drive to Katra, the base town for Vaishno Devi pilgrimage. Evening preparation for the trek." },
+      { day: 3, title: "Vaishno Devi Trek", description: "Early morning start for the 13 km trek to Vaishno Devi Shrine. Darshan and prayers at the temple." },
+      { day: 4, title: "Bhairavnath Temple & Return", description: "Visit Bhairavnath Temple and return to Katra. Afternoon rest and local exploration." },
+      { day: 5, title: "Departure", description: "Return to Jammu and departure." }
+    ]
+  },
+  {
+    id: 206,
+    title: "Badrinath & Kedarnath Yatra",
+    imageSrc: "https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?q=80&w=800",
+    location: "Uttarakhand, India",
+    duration: "8 Days",
+    price: "65000",
+    bestTime: "May - June, Sept - Oct",
+    packageType: "Luxury",
+    country: "India",
+    region: "North India",
+    description: "Visit the sacred shrines of Badrinath and Kedarnath, two of the Char Dhams located in the beautiful Himalayas of Uttarakhand.",
+    itinerary: [
+      { day: 1, title: "Arrival in Haridwar", description: "Arrive in Haridwar and transfer to hotel. Evening Ganga Aarti at Har Ki Pauri." },
+      { day: 2, title: "Haridwar to Joshimath", description: "Drive to Joshimath (250 km) via Devprayag and Rudraprayag." },
+      { day: 3, title: "Joshimath to Badrinath", description: "Drive to Badrinath (45 km). Visit Badrinath Temple and Tapt Kund." },
+      { day: 4, title: "Badrinath to Guptkashi", description: "Drive to Guptkashi (190 km) via Joshimath and Chamoli." },
+      { day: 5, title: "Guptkashi to Kedarnath", description: "Drive to Sonprayag and trek to Kedarnath (16 km) or take helicopter services." },
+      { day: 6, title: "Kedarnath Temple", description: "Early morning visit to Kedarnath Temple. Return to Guptkashi." },
+      { day: 7, title: "Guptkashi to Rishikesh", description: "Drive to Rishikesh (180 km). Evening at leisure or visit ashrams." },
+      { day: 8, title: "Departure", description: "Transfer to Dehradun for departure." }
+    ]
+  },
+  {
+    id: 207,
+    title: "Jyotirlinga Darshan",
+    imageSrc: "https://images.unsplash.com/photo-1545126178-862cdb469409?q=80&w=800",
+    location: "Various locations across India",
+    duration: "15 Days",
+    price: "120000",
+    bestTime: "October - March",
+    packageType: "Premier",
+    country: "India",
+    region: "All India",
+    description: "Embark on a spiritual journey to visit the sacred Jyotirlingas of Lord Shiva spread across different parts of India.",
+    itinerary: [
+      { day: 1, title: "Start in Varanasi", description: "Arrive in Varanasi and visit Kashi Vishwanath Temple, one of the 12 Jyotirlingas." },
+      { day: 3, title: "Ujjain", description: "Visit Mahakaleshwar Temple in Ujjain, Madhya Pradesh." },
+      { day: 5, title: "Omkareshwar", description: "Visit Omkareshwar Temple on an island in Narmada River, Madhya Pradesh." },
+      { day: 7, title: "Somnath", description: "Visit the historic Somnath Temple in Gujarat." },
+      { day: 9, title: "Dwarka", description: "Visit Nageshwar Temple near Dwarka, Gujarat." },
+      { day: 11, title: "Nashik", description: "Visit Trimbakeshwar Temple in Nashik, Maharashtra." },
+      { day: 13, title: "Rameswaram", description: "Visit Ramanathaswamy Temple in Rameswaram, Tamil Nadu." },
+      { day: 15, title: "Conclusion", description: "Return journey with memories of the sacred pilgrimage." }
+    ]
+  },
+  {
+    id: 208,
+    title: "Ashtavinayak Darshan",
+    imageSrc: "https://images.unsplash.com/photo-1627894006066-b1872ba3fb2b?q=80&w=800",
+    location: "Maharashtra, India",
+    duration: "7 Days",
+    price: "45000",
+    bestTime: "October - March",
+    packageType: "Budgeted",
+    country: "India",
+    region: "West India",
+    description: "Visit the eight ancient temples of Lord Ganesha in Maharashtra, known as the Ashtavinayak.",
+    itinerary: [
+      { day: 1, title: "Start in Pune", description: "Arrive in Pune and visit Morgaon (Moreshwar) and Siddhatek (Siddhivinayak)." },
+      { day: 2, title: "Pali and Mahad", description: "Visit Ballaleshwar Temple in Pali and Varadvinayak Temple in Mahad." },
+      { day: 3, title: "Theur and Lenyadri", description: "Visit Chintamani Temple in Theur and Girijatmaj Temple in Lenyadri." },
+      { day: 4, title: "Ozar and Ranjangaon", description: "Visit Vighneshwar Temple in Ozar and Mahaganapati Temple in Ranjangaon." },
+      { day: 5, title: "Lonavala Exploration", description: "Relax in the scenic hill station of Lonavala." },
+      { day: 6, title: "Matheran Hill Station", description: "Visit Matheran, a charming car-free hill station." },
+      { day: 7, title: "Return to Pune", description: "Return to Pune for departure." }
+    ]
+  },
+  {
+    id: 209,
+    title: "Devi Darshan Yatra",
+    imageSrc: "https://images.unsplash.com/photo-1518911470819-083a8f8f5046?q=80&w=800",
+    location: "Various locations across India",
+    duration: "12 Days",
+    price: "95000",
+    bestTime: "October - March",
+    packageType: "Luxury",
+    country: "India",
+    region: "All India",
+    description: "Visit the most significant temples dedicated to various forms of the Divine Goddess across India.",
+    itinerary: [
+      { day: 1, title: "Start in Kolkata", description: "Arrive in Kolkata and visit Kalighat Temple and Dakshineswar Kali Temple." },
+      { day: 3, title: "Kamakhya Temple", description: "Fly to Guwahati and visit the sacred Kamakhya Temple in Assam." },
+      { day: 5, title: "Varanasi", description: "Visit Durga Temple and other sacred sites in Varanasi." },
+      { day: 7, title: "Jammu", description: "Travel to Jammu for Vaishno Devi pilgrimage." },
+      { day: 9, title: "Chennai", description: "Fly to Chennai and visit Kapaleeshwarar Temple." },
+      { day: 11, title: "Kanyakumari", description: "Visit Kanyakumari Temple at the southernmost tip of India." },
+      { day: 12, title: "Departure", description: "Return journey with blessings of the Divine Mother." }
+    ]
   }
 ];
 
 const ReligiousTours = () => {
+  const [selectedTour, setSelectedTour] = useState<number | null>(null);
+
   return (
     <div className="container mx-auto px-4 pt-24 pb-16">
       <div className="max-w-3xl mx-auto text-center mb-12">
@@ -111,6 +232,39 @@ const ReligiousTours = () => {
         </p>
       </div>
 
+      <section className="mb-16">
+        <Card className="border-primary/20 bg-primary/5">
+          <CardContent className="p-6 md:p-8">
+            <div className="flex flex-col md:flex-row gap-6 items-center">
+              <div className="md:w-3/4">
+                <h2 className="text-2xl font-bold mb-4 flex items-center">
+                  <Temple className="mr-2 h-5 w-5 text-primary" />
+                  Sacred Pilgrimages Across India
+                </h2>
+                <p className="text-lg mb-4">
+                  India is home to some of the world's most revered religious sites. Our carefully curated tours 
+                  combine spiritual experiences with comfortable travel arrangements.
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
+                  <Badge className="justify-start" variant="outline">Hindu Temples</Badge>
+                  <Badge className="justify-start" variant="outline">Buddhist Sites</Badge>
+                  <Badge className="justify-start" variant="outline">Sikh Gurdwaras</Badge>
+                  <Badge className="justify-start" variant="outline">Sacred Rivers</Badge>
+                </div>
+              </div>
+              <div className="md:w-1/4 flex justify-center">
+                <DestinationQueryForm
+                  destinationName="Religious Tours"
+                  buttonText="Plan Your Pilgrimage"
+                  buttonVariant="default"
+                  className="px-6"
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
       <Tabs defaultValue="hindu" className="w-full mb-10">
         <div className="flex justify-center mb-6">
           <TabsList>
@@ -123,7 +277,9 @@ const ReligiousTours = () => {
 
         <TabsContent value="hindu" className="mt-0">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-            {religiousTours.filter(tour => tour.id === 201 || tour.id === 204).map((tour) => (
+            {religiousTours.filter(tour => 
+              [201, 204, 205, 206, 207, 208, 209].includes(tour.id)
+            ).map((tour) => (
               <TourCard
                 key={tour.id}
                 imageSrc={tour.imageSrc}
@@ -252,6 +408,32 @@ const ReligiousTours = () => {
           </div>
         </div>
       </div>
+
+      <section className="my-16">
+        <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl p-6 md:p-8 shadow-sm border border-primary/20">
+          <div className="flex flex-col md:flex-row gap-6 items-center">
+            <div className="md:w-3/4">
+              <h2 className="text-2xl md:text-3xl font-bold mb-4">Custom Religious Tours</h2>
+              <p className="text-lg mb-4">
+                Looking for a personalized pilgrimage experience? We can create a custom itinerary based on your spiritual preferences, 
+                time constraints, and specific temples or sites you wish to visit.
+              </p>
+              <p className="text-muted-foreground">
+                Our team of experts will help you plan every detail of your sacred journey, from transportation and accommodation 
+                to special pujas and ritual arrangements at the temples.
+              </p>
+            </div>
+            <div className="md:w-1/4 flex justify-center">
+              <DestinationQueryForm
+                destinationName="Custom Religious Tour"
+                buttonText="Request Custom Tour"
+                buttonVariant="default"
+                className="px-6"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
 
       <CTASection 
         title="Plan Your Spiritual Journey"
