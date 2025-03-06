@@ -1,6 +1,6 @@
 
 import { ReactNode, useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import MainNav from "./main-nav";
 import Footer from "./footer";
 
@@ -9,6 +9,22 @@ interface LayoutProps {
 }
 
 const Layout = ({ children }: LayoutProps) => {
+  const location = useLocation();
+  
+  useEffect(() => {
+    // Track page views on route change
+    if (window.gtag) {
+      window.gtag('event', 'page_view', {
+        page_path: location.pathname + location.search,
+      });
+    }
+    
+    // Track Facebook page views
+    if (window.fbq) {
+      window.fbq('track', 'PageView');
+    }
+  }, [location]);
+
   useEffect(() => {
     // Add WhatsApp widget script
     const script = document.createElement("script");
@@ -46,7 +62,6 @@ const Layout = ({ children }: LayoutProps) => {
           buttonColor: "#25D366",
           headerColor: "#128C7E"
         }
-        // Removed the 'labels' property as it's not supported by the type
       };
       
       // Manually initiate widget rendering
