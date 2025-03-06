@@ -12,6 +12,8 @@ import Index from "./pages/Index";
 import AboutUs from "./pages/AboutUs";
 import Destinations from "./pages/Destinations";
 import Tours from "./pages/Tours";
+import ReligiousTours from "./pages/ReligiousTours";
+import GroupTours from "./pages/GroupTours";
 import Visa from "./pages/Visa";
 import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
@@ -30,6 +32,8 @@ const router = createBrowserRouter(
       <Route path="about" element={<AboutUs />} />
       <Route path="destinations" element={<Destinations />} />
       <Route path="tours" element={<Tours />} />
+      <Route path="tours/religious" element={<ReligiousTours />} />
+      <Route path="tours/group" element={<GroupTours />} />
       <Route path="visa" element={<Visa />} />
       <Route path="blog" element={<Blog />} />
       <Route path="contact" element={<Contact />} />

@@ -1,28 +1,31 @@
 
 import { Phone } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const WhatsAppButton = () => {
-  const openWhatsApp = (phone: string) => {
-    const message = encodeURIComponent("Hi! I'd like to know more about your travel packages.");
-    window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+  const openWhatsApp = (office: 'delhi' | 'mumbai') => {
+    const phoneNumber = office === 'delhi' ? "+919968682200" : "+917042910449";
+    const message = "Hi! I'd like to know more about your travel packages.";
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank");
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
-      <button 
-        onClick={() => openWhatsApp("919968682200")}
-        className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full shadow-lg transition-colors"
+    <div className="fixed bottom-8 right-8 flex flex-col gap-2 z-50">
+      <Button 
+        onClick={() => openWhatsApp('delhi')}
+        className="rounded-full bg-green-500 hover:bg-green-600 text-white shadow-lg"
       >
-        <Phone className="h-5 w-5" />
-        <span className="hidden md:inline">Chat on WhatsApp (1)</span>
-      </button>
-      <button 
-        onClick={() => openWhatsApp("917042910449")}
-        className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full shadow-lg transition-colors"
+        <Phone className="mr-2 h-4 w-4" />
+        Chat Delhi Office
+      </Button>
+      <Button 
+        onClick={() => openWhatsApp('mumbai')}
+        className="rounded-full bg-green-500 hover:bg-green-600 text-white shadow-lg"
       >
-        <Phone className="h-5 w-5" />
-        <span className="hidden md:inline">Chat on WhatsApp (2)</span>
-      </button>
+        <Phone className="mr-2 h-4 w-4" />
+        Chat Mumbai Office
+      </Button>
     </div>
   );
 };

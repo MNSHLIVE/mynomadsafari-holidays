@@ -41,12 +41,16 @@ const Layout = ({ children }: LayoutProps) => {
         buttonText: "Chat with us",
         buttonIcon: "whatsapp",
         buttonPosition: "right",
-        headerTitle: "Chat with us on WhatsApp",
-        headerSubtitle: "We typically reply within minutes",
+        headerTitle: "Chat with our offices",
+        headerSubtitle: "Delhi and Mumbai offices available",
         style: {
           buttonColor: "#25D366",
           headerColor: "#128C7E"
-        }
+        },
+        labels: [
+          { id: "delhi", label: "Chat Delhi Office", phone: "+919968682200" },
+          { id: "mumbai", label: "Chat Mumbai Office", phone: "+917042910449" }
+        ]
       };
       
       // Manually initiate widget rendering
