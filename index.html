@@ -31,13 +31,15 @@
       fbq('init', 'FACEBOOK_PIXEL_ID');
       fbq('track', 'PageView');
     </script>
+  </head>
+
+  <body>
+    <!-- Facebook Pixel (noscript) -->
     <noscript>
       <img height="1" width="1" style="display:none"
       src="https://www.facebook.com/tr?id=FACEBOOK_PIXEL_ID&ev=PageView&noscript=1"/>
     </noscript>
-  </head>
-
-  <body>
+    
     <div id="root"></div>
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
