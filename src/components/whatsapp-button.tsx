@@ -1,5 +1,5 @@
 
-import { Phone } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const WhatsAppButton = () => {
@@ -14,16 +14,16 @@ const WhatsAppButton = () => {
     <div className="fixed bottom-8 right-8 flex flex-col gap-2 z-50">
       <Button 
         onClick={() => openWhatsApp('delhi')}
-        className="rounded-full bg-green-500 hover:bg-green-600 text-white shadow-lg"
+        className="rounded-full bg-green-500 hover:bg-green-600 text-white shadow-lg flex items-center gap-2"
       >
-        <Phone className="mr-2 h-4 w-4" />
+        <MessageCircle className="h-5 w-5" />
         Chat Delhi Office
       </Button>
       <Button 
         onClick={() => openWhatsApp('mumbai')}
-        className="rounded-full bg-green-500 hover:bg-green-600 text-white shadow-lg"
+        className="rounded-full bg-green-500 hover:bg-green-600 text-white shadow-lg flex items-center gap-2"
       >
-        <Phone className="mr-2 h-4 w-4" />
+        <MessageCircle className="h-5 w-5" />
         Chat Mumbai Office
       </Button>
     </div>

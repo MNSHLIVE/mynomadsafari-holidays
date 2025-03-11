@@ -9,6 +9,7 @@ import DestinationsSection from "@/components/home/destinations-section";
 import ToursSection from "@/components/home/tours-section";
 import TestimonialsSection from "@/components/home/testimonials-section";
 import BlogSection from "@/components/home/blog-section";
+import WhatsAppButton from "@/components/whatsapp-button";
 
 import {
   heroSlides,
@@ -119,6 +120,9 @@ const Index = () => {
 
       {/* Recent Blog Posts */}
       <BlogSection posts={blogPosts} />
+
+      {/* WhatsApp Button as a fallback */}
+      <WhatsAppButton />
     </>
   );
 };

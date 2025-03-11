@@ -35,40 +35,11 @@ const Layout = ({ children }: LayoutProps) => {
     // Create the WhatsApp widget container if it doesn't exist
     if (!document.getElementById("whatsapp-widget")) {
       const widgetContainer = document.createElement("div");
-      widgetContainer.className = "elfsight-app-whatsapp-chat";
+      widgetContainer.className = "elfsight-app-a66932d0-6134-4f31-a0eb-1464fb2300a4"; // Updated correct widget class
       widgetContainer.id = "whatsapp-widget";
       widgetContainer.setAttribute("data-elfsight-app-lazy", "");
-      widgetContainer.setAttribute("data-elfsight-app-widget-id", "whatsapp-chat-1");
       document.body.appendChild(widgetContainer);
     }
-    
-    // Define custom WhatsApp widget configuration
-    window.addEventListener("load", function() {
-      if (window.elfsightWhatsAppChatConfig) return;
-      
-      window.elfsightWhatsAppChatConfig = {
-        phone: "+919968682200, +917042910449",
-        name: "My Nomadsafari Holidays",
-        message: "Hi! I'd like to know more about your travel packages.",
-        position: "right",
-        availability: "24/7",
-        welcomeMessage: "Hello! How can we help you plan your perfect vacation?",
-        buttonText: "Chat with us",
-        buttonIcon: "whatsapp",
-        buttonPosition: "right",
-        headerTitle: "Chat with our offices",
-        headerSubtitle: "Delhi and Mumbai offices available",
-        style: {
-          buttonColor: "#25D366",
-          headerColor: "#128C7E"
-        }
-      };
-      
-      // Manually initiate widget rendering
-      if (window.ElfsightApp) {
-        window.ElfsightApp.initWidgets();
-      }
-    });
     
     return () => {
       // Cleanup script when component unmounts

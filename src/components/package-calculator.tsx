@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { format } from "date-fns";
+import DestinationQueryForm from "./destination-query-form";
 
 const HOTEL_RATES = {
   "3-star": {
@@ -70,6 +71,7 @@ interface PackageCalculatorProps {
 }
 
 const PackageCalculator = ({ className }: PackageCalculatorProps) => {
+  const [showQueryForm, setShowQueryForm] = useState(false);
   const [calculatorType, setCalculatorType] = useState<"domestic" | "international">("domestic");
   const [destination, setDestination] = useState("");
   const [days, setDays] = useState(3);
@@ -186,28 +188,7 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
       return;
     }
 
-    toast.success("Your package has been calculated! Our team will contact you shortly for more details.");
-    
-    const contactForm = document.getElementById("query-form");
-    if (contactForm) {
-      contactForm.scrollIntoView({ behavior: "smooth" });
-    } else {
-      const dialog = document.createElement("div");
-      dialog.id = "query-form-dialog";
-      document.body.appendChild(dialog);
-      
-      setTimeout(() => {
-        if (document.getElementById("query-form-dialog")) {
-          document.body.removeChild(dialog);
-        }
-      }, 100);
-      
-      const destinationName = destination || "Tour Package";
-      const dialogTriggerEvent = new CustomEvent("open-query-form", { 
-        detail: { destinationName } 
-      });
-      document.dispatchEvent(dialogTriggerEvent);
-    }
+    setShowQueryForm(true);
   };
 
   const formatCurrency = (amount: number) => {
@@ -480,9 +461,18 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
                 </div>
               </div>
 
-              <Button type="submit" className="w-full mt-6">
-                Get Detailed Quote
-              </Button>
+              {showQueryForm ? (
+                <DestinationQueryForm 
+                  destinationName={destination || "Custom Tour Package"} 
+                  buttonText="Get Detailed Quote"
+                  buttonVariant="default"
+                  className="w-full mt-6"
+                />
+              ) : (
+                <Button type="submit" className="w-full mt-6">
+                  Get Detailed Quote
+                </Button>
+              )}
             </form>
           </Tabs>
         </CardContent>
