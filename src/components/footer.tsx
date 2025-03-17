@@ -1,8 +1,7 @@
-
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
+import { Facebook, Instagram, Twitter, Mail, Phone, MapPin, Linkedin } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 const Footer = () => {
@@ -35,34 +34,37 @@ const Footer = () => {
             <p className="text-sm text-muted-foreground">
               Your one-stop travel expert helping you explore the world your way since 2010.
             </p>
-            <div className="flex space-x-4 pt-2">
-              <a 
-                href="https://facebook.com" 
-                target="_blank" 
-                rel="noreferrer"
-                className="text-foreground/70 hover:text-primary transition-colors"
-              >
-                <Facebook size={20} />
-                <span className="sr-only">Facebook</span>
-              </a>
-              <a 
-                href="https://instagram.com" 
-                target="_blank" 
-                rel="noreferrer"
-                className="text-foreground/70 hover:text-primary transition-colors"
-              >
-                <Instagram size={20} />
-                <span className="sr-only">Instagram</span>
-              </a>
-              <a 
-                href="https://twitter.com" 
-                target="_blank" 
-                rel="noreferrer"
-                className="text-foreground/70 hover:text-primary transition-colors"
-              >
-                <Twitter size={20} />
-                <span className="sr-only">Twitter</span>
-              </a>
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold">Follow Us</h3>
+              <div className="flex space-x-4">
+                <a
+                  href="https://www.instagram.com/mynomadsafari/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-primary"
+                >
+                  <Instagram className="h-6 w-6" />
+                  <span className="sr-only">Instagram</span>
+                </a>
+                <a
+                  href="https://www.facebook.com/mynomadsafari"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-primary"
+                >
+                  <Facebook className="h-6 w-6" />
+                  <span className="sr-only">Facebook</span>
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/devandeshpande/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-primary"
+                >
+                  <Linkedin className="h-6 w-6" />
+                  <span className="sr-only">LinkedIn</span>
+                </a>
+              </div>
             </div>
           </div>
 
@@ -94,23 +96,39 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="font-bold text-lg">Contact Us</h3>
             <ul className="space-y-3">
+              {/* Mumbai Office */}
               <li className="flex items-start space-x-3">
                 <MapPin size={18} className="text-primary mt-0.5 flex-shrink-0" />
-                <span className="text-sm text-muted-foreground">
-                  123 Travel Street, Wanderlust City, 10001
-                </span>
+                <div className="text-sm text-muted-foreground">
+                  <span className="font-semibold">Mumbai Office:</span><br />
+                  My Nomadsafari Holidays, 102 T.V Tower Badlapur East, Thane, Mumbai - 421503
+                </div>
               </li>
-              <li className="flex items-center space-x-3">
+              {/* Delhi Office */}
+              <li className="flex items-start space-x-3">
+                <MapPin size={18} className="text-primary mt-0.5 flex-shrink-0" />
+                <div className="text-sm text-muted-foreground">
+                  <span className="font-semibold">Delhi Office:</span><br />
+                  My Nomadsafari Holidays, Dwarka Sec 3, New Delhi - 110078<br />
+                  Contact: Deven Deshpande
+                </div>
+              </li>
+              {/* Phone Numbers */}
+              <li className="flex items-start space-x-3">
                 <Phone size={18} className="text-primary flex-shrink-0" />
-                <span className="text-sm text-muted-foreground">
-                  +1 (555) 123-4567
-                </span>
+                <div className="text-sm text-muted-foreground">
+                  <a href="tel:+919968682200" className="block hover:text-primary transition-colors">Mumbai: +91 9968682200</a>
+                  <a href="tel:+917042910449" className="block hover:text-primary transition-colors">Delhi: +91 7042910449</a>
+                </div>
               </li>
               <li className="flex items-center space-x-3">
                 <Mail size={18} className="text-primary flex-shrink-0" />
-                <span className="text-sm text-muted-foreground">
-                  info@mynomadsafari.com
-                </span>
+                <a 
+                  href="mailto:info@mynomadsafariholidays.in"
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
+                  info@mynomadsafariholidays.in
+                </a>
               </li>
             </ul>
           </div>
