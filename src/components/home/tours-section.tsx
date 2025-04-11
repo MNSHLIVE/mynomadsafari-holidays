@@ -76,7 +76,7 @@ const ToursSection = ({
                     packageType={tour.packageType}
                     description={tour.description}
                     itinerary={tour.itinerary}
-                    link={viewAllLink}
+                    link={`/tours?destination=${encodeURIComponent(tour.location)}&package=${encodeURIComponent(tour.title)}`}
                   />
                 ))}
               </div>
@@ -98,7 +98,7 @@ const ToursSection = ({
                       packageType={tour.packageType}
                       description={tour.description}
                       itinerary={tour.itinerary}
-                      link={viewAllLink}
+                      link={`/tours?destination=${encodeURIComponent(tour.location)}&package=${encodeURIComponent(tour.title)}`}
                     />
                   ))}
               </div>
@@ -120,7 +120,7 @@ const ToursSection = ({
                       packageType={tour.packageType}
                       description={tour.description}
                       itinerary={tour.itinerary}
-                      link={viewAllLink}
+                      link={`/tours?destination=${encodeURIComponent(tour.location)}&package=${encodeURIComponent(tour.title)}`}
                     />
                   ))}
               </div>
@@ -142,7 +142,7 @@ const ToursSection = ({
                       packageType={tour.packageType}
                       description={tour.description}
                       itinerary={tour.itinerary}
-                      link={viewAllLink}
+                      link={`/tours?destination=${encodeURIComponent(tour.location)}&package=${encodeURIComponent(tour.title)}`}
                     />
                   ))}
               </div>
@@ -162,7 +162,7 @@ const ToursSection = ({
                 packageType={tour.packageType}
                 description={tour.description}
                 itinerary={tour.itinerary}
-                link={viewAllLink}
+                link={`/tours?destination=${encodeURIComponent(tour.location)}&package=${encodeURIComponent(tour.title)}`}
               />
             ))}
           </div>
