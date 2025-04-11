@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ModeToggle } from "@/components/theme-toggle";
+import { ThemeToggle } from "@/components/theme-toggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -180,7 +180,7 @@ export function MainNav({
       </div>
 
       <div className="flex items-center space-x-2">
-        <ModeToggle />
+        <ThemeToggle />
       </div>
     </div>
   );

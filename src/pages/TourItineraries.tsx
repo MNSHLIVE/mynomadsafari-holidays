@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import SectionHeading from "@/components/section-heading";
@@ -155,7 +156,7 @@ const TourItineraries = () => {
                     duration={tour.duration}
                     price={tour.price}
                     bestTime={tour.bestTime}
-                    packageType={tour.packageType}
+                    packageType={tour.packageType as TourTier}
                     description={tour.overview}
                     itinerary={tour.dailyPlans}
                     link={`/tours?destination=${encodeURIComponent(tour.location)}&package=${encodeURIComponent(tour.title)}`}
@@ -184,7 +185,7 @@ const TourItineraries = () => {
                     duration={tour.duration}
                     price={tour.price}
                     bestTime={tour.bestTime}
-                    packageType={tour.packageType}
+                    packageType={tour.packageType as TourTier}
                     description={tour.overview}
                     itinerary={tour.dailyPlans}
                     link={`/tours?destination=${encodeURIComponent(tour.location)}&package=${encodeURIComponent(tour.title)}`}
