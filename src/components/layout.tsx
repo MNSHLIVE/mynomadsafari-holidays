@@ -1,7 +1,7 @@
 
 import { ReactNode, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import MainNav from "./main-nav";
+import { MainNav } from "./main-nav";
 import Footer from "./footer";
 
 interface LayoutProps {

@@ -1,13 +1,10 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { usePathname } from "next/navigation";
 
-import { siteConfig } from "@/config/site";
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+
 import { cn } from "@/lib/utils";
-import { Icons } from "@/components/icons";
-import { ModeToggle } from "@/components/mode-toggle";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/theme-toggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,8 +13,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Sheet,
   SheetContent,
@@ -28,6 +23,31 @@ import {
 } from "@/components/ui/sheet";
 import { ChevronDown, Menu } from "lucide-react";
 
+// Create a simple site config here instead of importing it
+const siteConfig = {
+  name: "My Nomadsafari Holidays"
+};
+
+// Create a simple Icons object
+const Icons = {
+  logo: ({ className, ...props }: { className?: string, [key: string]: any }) => (
+    <svg 
+      xmlns="http://www.w3.org/2000/svg" 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="currentColor" 
+      strokeWidth="2" 
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+      className={cn("h-6 w-6", className)}
+      {...props}
+    >
+      <path d="M18 6a4 4 0 0 0-4-4 7 7 0 0 0-7 7c0 4 3 6 4 6v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3a9 9 0 0 0 3-9Z" />
+      <path d="M6.33 20H4a1 1 0 0 1-1-1v-1a6 6 0 0 1 6-6h2" />
+    </svg>
+  )
+};
+
 interface MainNavProps {
   className?: string;
 }
@@ -36,7 +56,7 @@ export function MainNav({
   className,
 }: MainNavProps) {
   const [open, setOpen] = useState(false);
-  const pathname = usePathname()
+  const location = useLocation();
 
   return (
     <div className={cn("flex h-16 items-center space-x-4 sm:space-x-6 lg:justify-between lg:space-x-0", className)}>

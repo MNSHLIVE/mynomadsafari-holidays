@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import SectionHeading from "@/components/section-heading";
@@ -15,6 +14,9 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+
+// Update type definitions for tier property
+type TourTier = "Budgeted" | "Luxury" | "Premier";
 
 const TourItineraries = () => {
   const [searchTerm, setSearchTerm] = useState("");
