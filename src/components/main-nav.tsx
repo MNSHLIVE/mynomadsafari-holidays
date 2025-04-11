@@ -66,7 +66,7 @@ export function MainNav({
           alt="My Nomadsafari Holidays" 
           className="h-8 w-auto"
         />
-        <span className="font-bold">{siteConfig.name}</span>
+        <span className="font-montserrat font-bold">{siteConfig.name}</span>
       </Link>
 
       <Sheet open={open} onOpenChange={setOpen}>
@@ -89,7 +89,7 @@ export function MainNav({
                 alt="My Nomadsafari Holidays" 
                 className="h-8 w-auto"
               />
-              <span className="font-bold">{siteConfig.name}</span>
+              <span className="font-montserrat font-bold">{siteConfig.name}</span>
             </Link>
             <Link to="/" className="px-6 py-2">
               Home
@@ -121,14 +121,14 @@ export function MainNav({
 
       <div className="hidden lg:flex items-center gap-4">
         <Link to="/" className={cn(
-          "px-3 py-2",
+          "px-3 py-2 hover:text-primary transition-colors",
           location.pathname === "/" ? "font-medium text-primary" : ""
         )}>
           Home
         </Link>
         
         <Link to="/about" className={cn(
-          "px-3 py-2",
+          "px-3 py-2 hover:text-primary transition-colors",
           location.pathname === "/about" ? "font-medium text-primary" : ""
         )}>
           About Us
@@ -206,21 +206,21 @@ export function MainNav({
         </DropdownMenu>
         
         <Link to="/visa" className={cn(
-          "px-3 py-2",
+          "px-3 py-2 hover:text-primary transition-colors",
           location.pathname === "/visa" ? "font-medium text-primary" : ""
         )}>
           Visa
         </Link>
 
         <Link to="/blog" className={cn(
-          "px-3 py-2",
+          "px-3 py-2 hover:text-primary transition-colors",
           location.pathname === "/blog" ? "font-medium text-primary" : ""
         )}>
           Blog
         </Link>
         
         <Link to="/contact" className={cn(
-          "px-3 py-2",
+          "px-3 py-2 hover:text-primary transition-colors",
           location.pathname === "/contact" ? "font-medium text-primary" : ""
         )}>
           Contact
