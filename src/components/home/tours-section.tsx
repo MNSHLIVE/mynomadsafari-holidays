@@ -76,7 +76,7 @@ const ToursSection = ({
                     packageType={tour.packageType}
                     description={tour.description}
                     itinerary={tour.itinerary}
-                    link={`/tours?destination=${encodeURIComponent(tour.location)}&package=${encodeURIComponent(tour.title)}`}
+                    link={`/tour-itineraries`}
                   />
                 ))}
               </div>
@@ -98,7 +98,7 @@ const ToursSection = ({
                       packageType={tour.packageType}
                       description={tour.description}
                       itinerary={tour.itinerary}
-                      link={`/tours?destination=${encodeURIComponent(tour.location)}&package=${encodeURIComponent(tour.title)}`}
+                      link={`/tour-itineraries`}
                     />
                   ))}
               </div>
@@ -120,7 +120,7 @@ const ToursSection = ({
                       packageType={tour.packageType}
                       description={tour.description}
                       itinerary={tour.itinerary}
-                      link={`/tours?destination=${encodeURIComponent(tour.location)}&package=${encodeURIComponent(tour.title)}`}
+                      link={`/tour-itineraries`}
                     />
                   ))}
               </div>
@@ -142,7 +142,7 @@ const ToursSection = ({
                       packageType={tour.packageType}
                       description={tour.description}
                       itinerary={tour.itinerary}
-                      link={`/tours?destination=${encodeURIComponent(tour.location)}&package=${encodeURIComponent(tour.title)}`}
+                      link={`/tour-itineraries`}
                     />
                   ))}
               </div>
@@ -162,7 +162,7 @@ const ToursSection = ({
                 packageType={tour.packageType}
                 description={tour.description}
                 itinerary={tour.itinerary}
-                link={`/tours?destination=${encodeURIComponent(tour.location)}&package=${encodeURIComponent(tour.title)}`}
+                link={`/tour-itineraries`}
               />
             ))}
           </div>

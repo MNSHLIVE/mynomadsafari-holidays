@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   createBrowserRouter,
@@ -23,8 +22,8 @@ import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Refund from "./pages/Refund";
 import Faq from "./pages/Faq";
+import TourItineraries from "./pages/TourItineraries";
 
-// Using createRoutesFromElements for better readability
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />} errorElement={<Layout><NotFound /></Layout>}>
@@ -41,6 +40,7 @@ const router = createBrowserRouter(
       <Route path="privacy" element={<Privacy />} />
       <Route path="refund" element={<Refund />} />
       <Route path="faq" element={<Faq />} />
+      <Route path="/tour-itineraries" element={<TourItineraries />} />
     </Route>
   )
 );
