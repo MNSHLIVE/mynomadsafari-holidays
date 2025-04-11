@@ -61,7 +61,11 @@ export function MainNav({
   return (
     <div className={cn("flex h-16 items-center space-x-4 sm:space-x-6 lg:justify-between lg:space-x-0", className)}>
       <Link to="/" className="hidden items-center space-x-2 md:flex">
-        <Icons.logo className="h-6 w-6" />
+        <img 
+          src="/lovable-uploads/3e515213-741f-498e-add3-8b8f70b7fe4c.png" 
+          alt="My Nomadsafari Holidays" 
+          className="h-8 w-auto"
+        />
         <span className="font-bold">{siteConfig.name}</span>
       </Link>
 
@@ -80,14 +84,30 @@ export function MainNav({
           </SheetHeader>
           <div className="grid gap-4 py-4">
             <Link to="/" className="flex items-center space-x-2">
-              <Icons.logo className="h-6 w-6" />
+              <img 
+                src="/lovable-uploads/3e515213-741f-498e-add3-8b8f70b7fe4c.png" 
+                alt="My Nomadsafari Holidays" 
+                className="h-8 w-auto"
+              />
               <span className="font-bold">{siteConfig.name}</span>
+            </Link>
+            <Link to="/" className="px-6 py-2">
+              Home
+            </Link>
+            <Link to="/about" className="px-6 py-2">
+              About Us
             </Link>
             <Link to="/destinations" className="px-6 py-2">
               Destinations
             </Link>
             <Link to="/tours" className="px-6 py-2">
               Tours
+            </Link>
+            <Link to="/tour-itineraries" className="px-6 py-2">
+              Tour Itineraries
+            </Link>
+            <Link to="/visa" className="px-6 py-2">
+              Visa
             </Link>
             <Link to="/blog" className="px-6 py-2">
               Blog
@@ -100,6 +120,20 @@ export function MainNav({
       </Sheet>
 
       <div className="hidden lg:flex items-center gap-4">
+        <Link to="/" className={cn(
+          "px-3 py-2",
+          location.pathname === "/" ? "font-medium text-primary" : ""
+        )}>
+          Home
+        </Link>
+        
+        <Link to="/about" className={cn(
+          "px-3 py-2",
+          location.pathname === "/about" ? "font-medium text-primary" : ""
+        )}>
+          About Us
+        </Link>
+        
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="group">
@@ -170,11 +204,25 @@ export function MainNav({
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        
+        <Link to="/visa" className={cn(
+          "px-3 py-2",
+          location.pathname === "/visa" ? "font-medium text-primary" : ""
+        )}>
+          Visa
+        </Link>
 
-        <Link to="/blog" className="px-3 py-2">
+        <Link to="/blog" className={cn(
+          "px-3 py-2",
+          location.pathname === "/blog" ? "font-medium text-primary" : ""
+        )}>
           Blog
         </Link>
-        <Link to="/contact" className="px-3 py-2">
+        
+        <Link to="/contact" className={cn(
+          "px-3 py-2",
+          location.pathname === "/contact" ? "font-medium text-primary" : ""
+        )}>
           Contact
         </Link>
       </div>

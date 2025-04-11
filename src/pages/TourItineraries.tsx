@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 
-// Update type definitions for tier property
+// Define tour tier type
 type TourTier = "Budgeted" | "Luxury" | "Premier";
 
 const TourItineraries = () => {
