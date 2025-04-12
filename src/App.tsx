@@ -1,3 +1,4 @@
+
 import React from "react";
 import {
   createBrowserRouter,
@@ -47,10 +48,12 @@ const router = createBrowserRouter(
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="system" storageKey="vite-react-theme">
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <React.StrictMode>
+      <ThemeProvider defaultTheme="system" storageKey="vite-react-theme">
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </React.StrictMode>
   )
 }
 
-export default App
+export default App;
