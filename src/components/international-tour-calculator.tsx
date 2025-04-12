@@ -23,20 +23,21 @@ import {
   IndianRupee
 } from "lucide-react";
 import DestinationQueryForm from "./destination-query-form";
-import { HotelCategory, TourRegion } from "./tour-itineraries/types";
+import { 
+  HotelCategory, 
+  TourRegion,
+  BASE_RATE_EUROPE_3STAR,
+  BASE_RATE_SOUTH_ASIA_DUBAI,
+  MULTIPLIER_4STAR,
+  MULTIPLIER_5STAR,
+  ADDITIONAL_ADULT_COST,
+  CHILD_COST
+} from "./tour-itineraries/types";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 
 interface InternationalTourCalculatorProps {
   className?: string;
 }
-
-// Constants for pricing logic
-const BASE_RATE_EUROPE_3STAR = 20000; // INR per person per day
-const BASE_RATE_SOUTH_ASIA_DUBAI = 15000; // INR for 2 adults for entire trip
-const MULTIPLIER_4STAR = 1.5;
-const MULTIPLIER_5STAR = 2.5;
-const ADDITIONAL_ADULT_COST = 5000; // For South Asia/Dubai, per additional adult
-const CHILD_COST = 3500; // For South Asia/Dubai, per child
 
 const REGION_NAMES: Record<TourRegion, string> = {
   europe: "Europe",
@@ -107,28 +108,29 @@ const InternationalTourCalculator = ({ className }: InternationalTourCalculatorP
     let calculatedTotalCost = 0;
     let calculatedPerPersonCost = 0;
 
-    // Calculate based on region
+    // European calculation logic (per person per day based)
     if (region === "europe") {
-      // Get chosen rate based on hotel category
-      let chosenRatePerPersonPerDay = BASE_RATE_EUROPE_3STAR;
+      // Get base rate based on hotel category
+      let chosenPPPD = BASE_RATE_EUROPE_3STAR;
       
       if (hotelCategory === "4-Star") {
-        chosenRatePerPersonPerDay = BASE_RATE_EUROPE_3STAR * MULTIPLIER_4STAR;
+        chosenPPPD = BASE_RATE_EUROPE_3STAR * MULTIPLIER_4STAR;
       } else if (hotelCategory === "5-Star") {
-        chosenRatePerPersonPerDay = BASE_RATE_EUROPE_3STAR * MULTIPLIER_5STAR;
+        chosenPPPD = BASE_RATE_EUROPE_3STAR * MULTIPLIER_5STAR;
       }
       
-      // Calculate cost for one adult
-      const costOneAdult = chosenRatePerPersonPerDay * nights;
+      // Calculate cost for one adult for the entire stay
+      const costOneAdult = chosenPPPD * nights;
       
-      // Calculate total cost: all adults at full price
+      // Calculate total cost for all adults
       calculatedTotalCost = costOneAdult * adults;
       
-      // Add cost for children (25% of adult cost)
+      // Add child costs (25% of adult cost per night)
       calculatedTotalCost += costOneAdult * 0.25 * children;
-      
-    } else { // southAsiaDubai
-      // Base cost includes 2 adults for the entire stay
+    } 
+    // South Asia/Dubai calculation logic (fixed package price)
+    else { 
+      // Base cost for 2 adults for the entire trip
       calculatedTotalCost = BASE_RATE_SOUTH_ASIA_DUBAI;
       
       // Add cost for additional adults beyond the first two

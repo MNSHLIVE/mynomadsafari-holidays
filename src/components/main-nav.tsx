@@ -138,7 +138,7 @@ export function MainNav({
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="group">
               Destinations
-              <ChevronDown className="ml-1 h-4 w-4 transition-transform group-hover:rotate-180" />
+              <ChevronDown className="ml-1 h-4 w-4 transition-transform group-data-[state=open]:rotate-180 group-hover:rotate-180" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56 bg-background">
@@ -171,7 +171,7 @@ export function MainNav({
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="group">
               Tours
-              <ChevronDown className="ml-1 h-4 w-4 transition-transform group-hover:rotate-180" />
+              <ChevronDown className="ml-1 h-4 w-4 transition-transform group-data-[state=open]:rotate-180 group-hover:rotate-180" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56 bg-background">
