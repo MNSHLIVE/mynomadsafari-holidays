@@ -32,8 +32,8 @@ const router = createBrowserRouter(
       <Route path="about" element={<AboutUs />} />
       <Route path="destinations" element={<Destinations />} />
       <Route path="tours" element={<Tours />} />
-      <Route path="tours/religious" element={<ReligiousTours />} />
-      <Route path="tours/group" element={<GroupTours />} />
+      <Route path="religious-tours" element={<ReligiousTours />} />
+      <Route path="group-tours" element={<GroupTours />} />
       <Route path="visa" element={<Visa />} />
       <Route path="blog" element={<Blog />} />
       <Route path="contact" element={<Contact />} />
@@ -41,7 +41,7 @@ const router = createBrowserRouter(
       <Route path="privacy" element={<Privacy />} />
       <Route path="refund" element={<Refund />} />
       <Route path="faq" element={<Faq />} />
-      <Route path="/tour-itineraries" element={<TourItineraries />} />
+      <Route path="tour-itineraries" element={<TourItineraries />} />
     </Route>
   )
 );
