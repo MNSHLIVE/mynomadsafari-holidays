@@ -538,4 +538,109 @@ export const domesticItineraries = [
       {
         day: 4,
         title: "Excursion to Tsomgo Lake & Baba Mandir",
-        description: "After breakfast, enjoy a day excursion to Tsomgo Lake (45 kms, 3 hours drive, altitude 3,780 mts) and continue to Baba Mandir (16 kms from Tsomgo Lake, 1 hour drive, altitude 4,000 mts). Evening free for leisure.
+        description: "After breakfast, enjoy a day excursion to Tsomgo Lake (45 kms, 3 hours drive, altitude 3,780 mts) and continue to Baba Mandir (16 kms from Tsomgo Lake, 1 hour drive, altitude 4,000 mts). Evening free for leisure. Overnight stay at the hotel in Gangtok."
+      },
+      {
+        day: 5,
+        title: "Gangtok Local Sightseeing",
+        description: "After breakfast, proceed for a full day city tour covering Tashi viewpoint, Ganesh Tok, Flower show, Directorate of Handicraft & Handloom (Sunday Closed), Institute of Tibetology (Sunday Closed), Gangtok Ropeway Ride (Ticket cost not included), Dro-dul Chorten, Enchey Monastery & Bakthang Falls (maximum 6 hours). Evening free for leisure. Overnight stay at Gangtok."
+      },
+      {
+        day: 6,
+        title: "Gangtok – NJP Railway Station / Bagdogra (IXB) Airport",
+        description: "After breakfast, you would be dropped at the NJP Railway Station / IXB Airport for your return journey."
+      }
+    ],
+    inclusions: [
+      "Accommodation in comfortable 3-Star Hotels",
+      "Daily Breakfast at the hotel",
+      "All transfers and sightseeing by private non-AC vehicle (due to hilly terrain)",
+      "Airport/Railway Station pick-up and drop-off",
+      "Driver allowance, tolls, parking fees",
+      "All applicable taxes (GST)"
+    ],
+    exclusions: [
+      "Airfare/Train tickets",
+      "Monument entrance fees",
+      "Activity charges (ropeway rides, etc.)",
+      "Meals not mentioned (Lunch & Dinner)",
+      "Personal expenses (tips, laundry, phone calls)",
+      "Travel Insurance",
+      "Guide charges (available on request at additional cost)",
+      "Inner Line Permits for Tsomgo Lake & Baba Mandir",
+      "Anything not mentioned in inclusions"
+    ],
+    notes: "This is a suggested itinerary. Contact My Nomadsafari Holidays to customize it to your preferences and budget. Tsomgo Lake & Baba Mandir visit requires special permits and is subject to weather conditions."
+  },
+  
+  // Uttarakhand Itinerary
+  {
+    id: "uttarakhand-delight-6d",
+    title: "Uttarakhand Hills & Lakes - 6 Days",
+    destinations: ["Nainital", "Mussoorie", "Dhanaulti"],
+    duration: "5 Nights / 6 Days",
+    overview: "Discover the scenic beauty of Uttarakhand with this comprehensive tour of Nainital and Mussoorie, featuring panoramic views, lakes, and adventure activities.",
+    packageType: "Budgeted",
+    price: "₹17,500",
+    bestTime: "March to June, September to November",
+    imageSrc: "/Destination/Domestic/main/Uttrakhand-main.jpg",
+    location: "Uttarakhand",
+    dailyPlans: [
+      {
+        day: 1,
+        title: "Kathgodam Railway Station – Nainital",
+        description: "Arrive at Kathgodam Railway Station and transfer to Nainital (35 km / 1.5 hrs / altitude 2,084 m). Check-in at your hotel upon arrival. Evening free for leisure with an option of boating on Naini Lake (at additional cost). Overnight stay in Nainital."
+      },
+      {
+        day: 2,
+        title: "Nainital Sightseeing",
+        description: "After breakfast, proceed for Nainital sightseeing. Visit Tiffin Top for sunrise views (2,260 m, trek or horseback), Snow View Point (cable car ride at additional cost), Eco Cave Gardens, Governor's House (Raj Bhawan), and St. John's Church. Evening free for shopping at the Tibetan Market. Overnight stay in Nainital."
+      },
+      {
+        day: 3,
+        title: "Nainital – Mussoorie",
+        description: "After breakfast, check-out and drive to Mussoorie (300 km / 7 hrs / altitude 2,005 m). En route, stop at Pangot for birdwatching. Upon arrival in Mussoorie, check-in at your hotel. If time permits, visit Kempty Falls. Evening stroll on Mall Road. Overnight stay in Mussoorie."
+      },
+      {
+        day: 4,
+        title: "Mussoorie Sightseeing",
+        description: "After breakfast, proceed for Mussoorie sightseeing. Visit Lal Tibba (highest point with panoramic sunrise views), Company Garden (flower displays and adventure activities), Gun Hill (cable car ride at additional cost), Christ Church, and Camel's Back Road. Evening free for leisure. Overnight stay in Mussoorie."
+      },
+      {
+        day: 5,
+        title: "Excursion to Dhanaulti",
+        description: "After breakfast, proceed for a day excursion to Dhanaulti (25 km / 1 hr / altitude 2,286 m). Visit Eco Park and Surkanda Devi Temple (short trek). Optional adventure activities like zip-lining or camping (at additional cost). Return to Mussoorie by evening. Overnight stay in Mussoorie."
+      },
+      {
+        day: 6,
+        title: "Mussoorie – Dehradun Airport/Station",
+        description: "After breakfast, check-out and drive to Dehradun Airport/Railway Station (35 km / 1.5 hrs) for your onward journey."
+      }
+    ],
+    inclusions: [
+      "Accommodation in comfortable 3-Star Hotels",
+      "Daily Breakfast at the hotel",
+      "All transfers and sightseeing by private vehicle (non-AC due to hilly terrain)",
+      "Airport/Railway Station pick-up and drop-off",
+      "Driver allowance, tolls, parking fees",
+      "All applicable taxes (GST)"
+    ],
+    exclusions: [
+      "Airfare/Train tickets",
+      "Monument entrance fees",
+      "Adventure activities and cable car rides",
+      "Meals not mentioned (Lunch & Dinner)",
+      "Personal expenses (tips, laundry, phone calls)",
+      "Travel Insurance",
+      "Guide charges",
+      "Any activity costs not mentioned in inclusions",
+      "Anything not mentioned in inclusions"
+    ],
+    notes: "This is a suggested itinerary. Contact My Nomadsafari Holidays to customize it to your preferences and budget."
+  }
+];
+
+// International Itineraries
+export const internationalItineraries = [
+  // ... keep existing code (all international itineraries)
+];
