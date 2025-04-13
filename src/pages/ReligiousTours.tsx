@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import SectionHeading from "@/components/section-heading";
 import TourCard from "@/components/tour-card";
@@ -11,7 +10,6 @@ import DestinationQueryForm from "@/components/destination-query-form";
 import { Badge } from "@/components/ui/badge";
 
 const religiousTours = [
-  // Original tours
   {
     id: 201,
     title: "Char Dham Yatra",
@@ -101,8 +99,6 @@ const religiousTours = [
       { day: 8, title: "Departure", description: "Transfer to Chennai for departure." }
     ]
   },
-  
-  // New tours based on user input
   {
     id: 205,
     title: "Vaishno Devi Pilgrimage",
@@ -212,6 +208,49 @@ const religiousTours = [
       { day: 11, title: "Kanyakumari", description: "Visit Kanyakumari Temple at the southernmost tip of India." },
       { day: 12, title: "Departure", description: "Return journey with blessings of the Divine Mother." }
     ]
+  },
+  {
+    id: 210,
+    title: "Shri Amarnath Yatra",
+    imageSrc: "/public/Destination/Domestic/Tours/Pilgrimage/Hindu/VaishnoDevi/VaishnoDevi-Main.jpg",
+    location: "Jammu & Kashmir, India",
+    duration: "4 Days",
+    price: "45000",
+    bestTime: "July - August",
+    packageType: "Premier",
+    country: "India",
+    region: "North India",
+    description: "Embark on the sacred journey to Shri Amarnath Cave, home to the naturally formed ice Shivalingam in the mountains of Kashmir.",
+    itinerary: [
+      { day: 1, title: "Arrival Srinagar - Sonmarg", description: "Welcome at Srinagar Airport with transfer to Sonmarg (3 hrs drive). Check into hotel and enjoy natural surroundings. Overnight stay in Sonmarg." },
+      { day: 2, title: "Sonmarg - Baltal - Neelgrath - Panchtarni - Neelgrath - Baltal - Sonmarg", description: "Early morning breakfast followed by transfer to Neelgrath Helipad for helicopter ride to Panchtarni. Visit Amarnath Cave for darshan of the ice lingam. Evening return to Sonmarg for overnight stay." },
+      { day: 3, title: "Sonmarg - Srinagar Local Sightseeing", description: "After breakfast, visit famous Mughal Gardens in Srinagar: Chashma Shahi (The Royal Springs), Nishat Bagh (Garden of Delight), and Shalimar Garden (Adobe of Love). Evening Shikara ride on Dal Lake (optional). Overnight stay in Srinagar." },
+      { day: 4, title: "Departure Srinagar - Airport", description: "After breakfast, transfer to Srinagar Airport for your onward flight back home." }
+    ]
+  },
+  {
+    id: 211,
+    title: "Kailash Mansarovar Yatra",
+    imageSrc: "/public/Destination/Domestic/Tours/Pilgrimage/Hindu/CharDham/CharDham-Main.jpg.jpg",
+    location: "Tibet (via Nepal)",
+    duration: "9 Days",
+    price: "140000",
+    bestTime: "May - September",
+    packageType: "Premier",
+    country: "Tibet/Nepal",
+    region: "Himalayas",
+    description: "Experience the ultimate spiritual journey to Mount Kailash and Lake Mansarovar, considered sacred by Hindus, Buddhists, and Jains alike.",
+    itinerary: [
+      { day: 1, title: "Nepalgunj (165m)", description: "Arrive in Lucknow, transfer to Nepalgunj (5 hr drive). Welcome with Rudrakshya mala. Brief program in the evening by tour manager." },
+      { day: 2, title: "Taklakot (3800m)", description: "Early morning flight to Simikot (1 hr), immigration clearance, then helicopter to Hilsa (15 min). Cross border to China and drive to Taklakot (1 hr)." },
+      { day: 3, title: "Taklakot (3800m)", description: "Rest day for acclimatization at Taklakot. Walk around market for shopping and souvenirs." },
+      { day: 4, title: "Lake Manasarovar (4560m)", description: "Drive from Purang to Lake Manasarovar (2 hrs). Perform Lake Parikrama (3 hrs) with holy bath and puja at Chiugompa." },
+      { day: 5, title: "Diraphuk (4950m)", description: "Drive to Yama Dwar via Darchen (50 km/1.5 hrs). Darshan of Mt. Kailash (south face) and trek to Diraphuk (5-6 hrs/14 km)." },
+      { day: 6, title: "Zuthulphuk (4850m)", description: "Early morning darshan of Golden Kailash. Trek from Diraphuk to Zuthulphuk passing through Dolma La High Pass (5600m) and Gauri Kunda (9-10 hrs/22 km)." },
+      { day: 7, title: "Hilsa (3700m)/Simikot (2950m)", description: "Complete trek near Darchen (1.5 hrs/8 km) and drive to Taklakot. Exit to Hilsa (1 hr) and fly to Simikot by helicopter if conditions permit." },
+      { day: 8, title: "Nepalgunj (165m)", description: "Early morning flight to Nepalgunj. Option to continue to Lucknow for groups of 3-5 people." },
+      { day: 9, title: "Departure", description: "Morning breakfast and transfer to Lucknow. Airport drop for connecting flight to India." }
+    ]
   }
 ];
 
@@ -278,7 +317,7 @@ const ReligiousTours = () => {
         <TabsContent value="hindu" className="mt-0">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
             {religiousTours.filter(tour => 
-              [201, 204, 205, 206, 207, 208, 209].includes(tour.id)
+              [201, 204, 205, 206, 207, 208, 209, 210, 211].includes(tour.id)
             ).map((tour) => (
               <TourCard
                 key={tour.id}
