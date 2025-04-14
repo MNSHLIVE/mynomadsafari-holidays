@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import Layout from "@/components/layout";
 import SectionHeading from "@/components/section-heading";
 import TourCard from "@/components/tour-card";
@@ -29,11 +28,6 @@ import {
   Clock,
   Calendar,
   IndianRupee,
-  Plane,
-  CreditCard,
-  Hotel,
-  Bus,
-  UtensilsCrossed
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -438,42 +432,31 @@ const Tours = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 pt-24 pb-16">
-      <div className="max-w-3xl mx-auto text-center mb-12">
-        <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-secondary/30 text-secondary-foreground mb-3">
-          Explore Our Tours
-        </span>
-        <h1 className="text-4xl md:text-5xl font-bold mb-6">
-          Curated Tour Packages
-        </h1>
-        <p className="text-xl text-muted-foreground mb-8">
-          Discover our handpicked tours for your next adventure
-        </p>
-        
-        <div className="relative max-w-md mx-auto mb-8">
-          <Input
-            type="text"
-            placeholder="Search tours by name or location..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+    <Layout>
+      <section className="pt-24 pb-16 container mx-auto px-4">
+        <div className="max-w-3xl mx-auto text-center mb-12">
+          <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-secondary/30 text-secondary-foreground mb-3">
+            Explore Our Tours
+          </span>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            Curated Tour Packages
+          </h1>
+          <p className="text-xl text-muted-foreground mb-8">
+            Discover our handpicked tours for your next adventure
+          </p>
+          
+          <div className="relative max-w-md mx-auto">
+            <Input
+              type="text"
+              placeholder="Search tours by name or location..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          </div>
         </div>
-        
-        <div className="flex flex-wrap justify-center gap-4 mb-4">
-          <Link to="/tours/religious">
-            <Button variant="outline" className="rounded-full">
-              Religious Tours
-            </Button>
-          </Link>
-          <Link to="/tours/group">
-            <Button variant="outline" className="rounded-full">
-              Group Tours
-            </Button>
-          </Link>
-        </div>
-      </div>
+      </section>
 
       <section className="container mx-auto px-4 mb-16">
         <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl p-6 md:p-8 shadow-sm border border-primary/20">
@@ -485,26 +468,11 @@ const Tours = () => {
                 take care of everything during your journey, and drop you back safely.
               </p>
               <div className="flex flex-wrap gap-4 mb-4">
-                <Badge className="px-3 py-1 text-sm bg-primary/20 text-primary hover:bg-primary/30 flex items-center">
-                  <Plane className="mr-1 h-3 w-3" /> Return Flights
-                </Badge>
-                <Badge className="px-3 py-1 text-sm bg-primary/20 text-primary hover:bg-primary/30 flex items-center">
-                  <CreditCard className="mr-1 h-3 w-3" /> Visa Processing
-                </Badge>
-                <Badge className="px-3 py-1 text-sm bg-primary/20 text-primary hover:bg-primary/30 flex items-center">
-                  <Hotel className="mr-1 h-3 w-3" /> Premium Accommodations
-                </Badge>
-                <Badge className="px-3 py-1 text-sm bg-primary/20 text-primary hover:bg-primary/30 flex items-center">
-                  <Bus className="mr-1 h-3 w-3" /> Private Transfers
-                </Badge>
-                <Badge className="px-3 py-1 text-sm bg-primary/20 text-primary hover:bg-primary/30 flex items-center">
-                  <UtensilsCrossed className="mr-1 h-3 w-3" /> Daily Meals
-                </Badge>
+                <Badge className="px-3 py-1 text-sm bg-primary/20 text-primary hover:bg-primary/30">Home Pickup & Drop</Badge>
+                <Badge className="px-3 py-1 text-sm bg-primary/20 text-primary hover:bg-primary/30">Visa Assistance</Badge>
+                <Badge className="px-3 py-1 text-sm bg-primary/20 text-primary hover:bg-primary/30">Travel Insurance</Badge>
+                <Badge className="px-3 py-1 text-sm bg-primary/20 text-primary hover:bg-primary/30">24/7 Support</Badge>
               </div>
-              <p className="text-muted-foreground">
-                <strong>Note:</strong> All door-to-door packages include return flights, visa processing, 
-                premium accommodations, private transfers, sightseeing, and most meals.
-              </p>
             </div>
             <div className="md:w-1/4 flex justify-center">
               <Button size="lg" className="rounded-full px-6">
@@ -558,15 +526,6 @@ const Tours = () => {
                 <Check className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <h4 className="font-medium">Return Flights</h4>
-                <p className="text-sm text-muted-foreground">Economy class flights from your nearest airport</p>
-              </div>
-            </div>
-            <div className="flex items-start">
-              <div className="bg-primary/10 p-2 rounded-full mr-3">
-                <Check className="h-5 w-5 text-primary" />
-              </div>
-              <div>
                 <h4 className="font-medium">Premium Accommodations</h4>
                 <p className="text-sm text-muted-foreground">4 & 5-star hotels with breakfast included</p>
               </div>
@@ -596,24 +555,6 @@ const Tours = () => {
               <div>
                 <h4 className="font-medium">Private Transfers</h4>
                 <p className="text-sm text-muted-foreground">Between airports, hotels, and attractions</p>
-              </div>
-            </div>
-            <div className="flex items-start">
-              <div className="bg-primary/10 p-2 rounded-full mr-3">
-                <Check className="h-5 w-5 text-primary" />
-              </div>
-              <div>
-                <h4 className="font-medium">Sightseeing Tours</h4>
-                <p className="text-sm text-muted-foreground">Guided tours at all destinations</p>
-              </div>
-            </div>
-            <div className="flex items-start">
-              <div className="bg-primary/10 p-2 rounded-full mr-3">
-                <Check className="h-5 w-5 text-primary" />
-              </div>
-              <div>
-                <h4 className="font-medium">Daily Meals</h4>
-                <p className="text-sm text-muted-foreground">Breakfast and dinner included</p>
               </div>
             </div>
             <div className="flex items-start">
@@ -964,7 +905,7 @@ const Tours = () => {
         buttonText="Contact Us"
         buttonLink="/contact"
       />
-    </div>
+    </Layout>
   );
 };
 

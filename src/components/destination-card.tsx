@@ -13,7 +13,6 @@ interface DestinationCardProps {
   link?: string;
   className?: string;
   isPopular?: boolean;
-  continent?: string;
 }
 
 const DestinationCard = ({
@@ -24,7 +23,6 @@ const DestinationCard = ({
   link = "#",
   className,
   isPopular = false,
-  continent,
 }: DestinationCardProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -39,11 +37,6 @@ const DestinationCard = ({
         {isPopular && (
           <div className="absolute top-2 left-2 z-10 bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full">
             Popular
-          </div>
-        )}
-        {continent && (
-          <div className="absolute top-2 right-2 z-10 bg-secondary/80 text-secondary-foreground text-xs px-2 py-1 rounded-full">
-            {continent}
           </div>
         )}
         <div className={cn(
@@ -67,13 +60,13 @@ const DestinationCard = ({
         </p>
         {bestTime && (
           <p className="text-xs text-muted-foreground mt-auto mb-3">
-            <span className="font-medium">Best time:</span> {bestTime}
+            <span className="font-medium">Best time to visit:</span> {bestTime}
           </p>
         )}
         <Link to={link} className="mt-auto">
           <Button 
-            variant="default" 
-            className="w-full group bg-primary hover:bg-primary/90"
+            variant="outline" 
+            className="w-full group border-primary/20 hover:border-primary hover:bg-primary/5"
           >
             <span>Explore</span>
             <ArrowRight className="h-4 w-4 ml-2 transition-transform group-hover:translate-x-1" />

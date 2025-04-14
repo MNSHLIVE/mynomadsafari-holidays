@@ -1,235 +1,142 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-
-import { cn } from "@/lib/utils";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { ChevronDown, Menu } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-// Create a simple site config here instead of importing it
-const siteConfig = {
-  name: "My Nomadsafari Holidays"
-};
-
-// Create a simple Icons object
-const Icons = {
-  logo: ({ className, ...props }: { className?: string, [key: string]: any }) => (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-      className={cn("h-6 w-6", className)}
-      {...props}
-    >
-      <path d="M18 6a4 4 0 0 0-4-4 7 7 0 0 0-7 7c0 4 3 6 4 6v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3a9 9 0 0 0 3-9Z" />
-      <path d="M6.33 20H4a1 1 0 0 1-1-1v-1a6 6 0 0 1 6-6h2" />
-    </svg>
-  )
-};
-
-interface MainNavProps {
-  className?: string;
-}
-
-export function MainNav({
-  className,
-}: MainNavProps) {
-  const [open, setOpen] = useState(false);
+const MainNav = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
 
-  return (
-    <div className={cn("flex h-16 items-center space-x-4 sm:space-x-6 lg:justify-between lg:space-x-0", className)}>
-      <Link to="/" className="hidden items-center space-x-2 md:flex">
-        <img 
-          src="/lovable-uploads/3e515213-741f-498e-add3-8b8f70b7fe4c.png" 
-          alt="My Nomadsafari Holidays" 
-          className="h-8 w-auto"
-        />
-        <span className="font-montserrat font-bold">{siteConfig.name}</span>
-      </Link>
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger asChild className="md:hidden">
-          <Button variant="ghost" size="sm" className="ml-auto">
-            <Menu className="h-5 w-5" />
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="right" className="pl-0">
-          <SheetHeader className="pl-6 pb-10 pt-6">
-            <SheetTitle>Menu</SheetTitle>
-            <SheetDescription>
-              Explore our site and discover new destinations and tours.
-            </SheetDescription>
-          </SheetHeader>
-          <div className="grid gap-4 py-4">
-            <Link to="/" className="flex items-center space-x-2">
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      setIsScrolled(scrollPosition > 10);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    // Close mobile menu when route changes
+    setIsOpen(false);
+  }, [location]);
+
+  const navLinks = [
+    { href: "/", label: "Home" },
+    { href: "/about", label: "About Us" },
+    { href: "/destinations", label: "Destinations" },
+    { href: "/visa", label: "Visa" },
+    { href: "/tours", label: "Tours" },
+    { href: "/contact", label: "Contact Us" },
+    { href: "/blog", label: "Blog" },
+  ];
+
+  return (
+    <nav 
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300",
+        isScrolled 
+          ? "bg-background/90 backdrop-blur-md shadow-sm" 
+          : "bg-transparent"
+      )}
+    >
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="flex h-16 items-center justify-between">
+          <div className="flex items-center">
+            <Link 
+              to="/" 
+              className="text-xl font-bold text-primary flex items-center space-x-3"
+            >
               <img 
                 src="/lovable-uploads/3e515213-741f-498e-add3-8b8f70b7fe4c.png" 
                 alt="My Nomadsafari Holidays" 
-                className="h-8 w-auto"
+                className="h-10 w-auto"
               />
-              <span className="font-montserrat font-bold">{siteConfig.name}</span>
-            </Link>
-            <Link to="/" className="px-6 py-2">
-              Home
-            </Link>
-            <Link to="/about" className="px-6 py-2">
-              About Us
-            </Link>
-            <Link to="/destinations" className="px-6 py-2">
-              Destinations
-            </Link>
-            <Link to="/tours" className="px-6 py-2">
-              Tours
-            </Link>
-            <Link to="/tour-itineraries" className="px-6 py-2">
-              Tour Itineraries
-            </Link>
-            <Link to="/visa" className="px-6 py-2">
-              Visa
-            </Link>
-            <Link to="/blog" className="px-6 py-2">
-              Blog
-            </Link>
-            <Link to="/contact" className="px-6 py-2">
-              Contact
+              <span className="text-lg md:text-xl font-medium">
+                My Nomadsafari Holidays
+              </span>
             </Link>
           </div>
-        </SheetContent>
-      </Sheet>
 
-      <div className="hidden lg:flex items-center gap-4">
-        <Link to="/" className={cn(
-          "px-3 py-2 hover:text-primary transition-colors",
-          location.pathname === "/" ? "font-medium text-primary" : ""
-        )}>
-          Home
-        </Link>
-        
-        <Link to="/about" className={cn(
-          "px-3 py-2 hover:text-primary transition-colors",
-          location.pathname === "/about" ? "font-medium text-primary" : ""
-        )}>
-          About Us
-        </Link>
-        
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="group">
-              Destinations
-              <ChevronDown className="ml-1 h-4 w-4 transition-transform group-data-[state=open]:rotate-180 group-hover:rotate-180" />
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex md:items-center md:space-x-6">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                to={link.href}
+                className={cn(
+                  "text-sm font-medium transition-all duration-300 relative group py-2 px-3 rounded-md hover:bg-primary/10",
+                  location.pathname === link.href 
+                    ? "text-primary bg-primary/10" 
+                    : "text-foreground/80 hover:text-primary"
+                )}
+              >
+                {link.label}
+                <span 
+                  className={cn(
+                    "absolute bottom-0 left-0 w-full h-0.5 transform scale-x-0 transition-transform duration-300 bg-primary rounded-full",
+                    location.pathname === link.href 
+                      ? "scale-x-100" 
+                      : "group-hover:scale-x-100"
+                  )}
+                />
+              </Link>
+            ))}
+            <ThemeToggle />
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="flex md:hidden items-center space-x-2">
+            <ThemeToggle />
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="text-foreground"
+              onClick={toggleMenu}
+            >
+              {isOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+              <span className="sr-only">Toggle menu</span>
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 bg-background">
-            <DropdownMenuLabel>Destinations</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link to="/destinations?category=domestic">
-                Domestic Destinations
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to="/destinations?category=international">
-                International Destinations
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to="/destinations?category=pilgrimage">
-                Pilgrimage Destinations
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to="/destinations?category=honeymoon">
-                Honeymoon Destinations
-              </Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="group">
-              Tours
-              <ChevronDown className="ml-1 h-4 w-4 transition-transform group-data-[state=open]:rotate-180 group-hover:rotate-180" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 bg-background">
-            <DropdownMenuLabel>Tour Packages</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link to="/tour-itineraries">
-                All Tour Itineraries
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to="/tours?category=domestic">
-                Domestic Tours
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to="/religious-tours">
-                Religious Tours
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to="/group-tours">
-                Group Tours
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to="/tours?category=international">
-                International Tours
-              </Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-        
-        <Link to="/visa" className={cn(
-          "px-3 py-2 hover:text-primary transition-colors",
-          location.pathname === "/visa" ? "font-medium text-primary" : ""
-        )}>
-          Visa
-        </Link>
-
-        <Link to="/blog" className={cn(
-          "px-3 py-2 hover:text-primary transition-colors",
-          location.pathname === "/blog" ? "font-medium text-primary" : ""
-        )}>
-          Blog
-        </Link>
-        
-        <Link to="/contact" className={cn(
-          "px-3 py-2 hover:text-primary transition-colors",
-          location.pathname === "/contact" ? "font-medium text-primary" : ""
-        )}>
-          Contact
-        </Link>
+          </div>
+        </div>
       </div>
 
-      <div className="flex items-center space-x-2">
-        <ThemeToggle />
-      </div>
-    </div>
+      {/* Mobile Navigation */}
+      {isOpen && (
+        <div className="md:hidden bg-background/95 backdrop-blur-sm animate-fade-in">
+          <div className="container mx-auto px-4 pt-2 pb-6 space-y-1">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                to={link.href}
+                className={cn(
+                  "block py-3 px-4 rounded-md text-base font-medium transition-colors",
+                  location.pathname === link.href 
+                    ? "bg-primary/10 text-primary" 
+                    : "hover:bg-muted"
+                )}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </nav>
   );
-}
+};
+
+export default MainNav;

@@ -1,4 +1,6 @@
+
 import { useState } from "react";
+import Layout from "@/components/layout";
 import SectionHeading from "@/components/section-heading";
 import DestinationCard from "@/components/destination-card";
 import DestinationQueryForm from "@/components/destination-query-form";
@@ -220,7 +222,7 @@ const Destinations = () => {
   };
 
   return (
-    <>
+    <Layout>
       {/* Hero Section */}
       <section className="pt-24 pb-16 container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center mb-12">
@@ -565,7 +567,7 @@ const Destinations = () => {
           </TabsContent>
         </Tabs>
       </section>
-    </>
+    </Layout>
   );
 };
 

@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -57,6 +58,7 @@ const TourCard = ({
     Premier: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300",
   };
 
+  // Function to get a preview of the itinerary (first day only)
   const getItineraryPreview = () => {
     if (!itinerary || itinerary.length === 0) return null;
     return itinerary[0];
@@ -64,9 +66,15 @@ const TourCard = ({
 
   const itineraryPreview = getItineraryPreview();
 
+  // Format price for better display
   const formatPrice = (priceString: string) => {
+    // If price is already formatted with ₹, return as is
     if (priceString.includes('₹')) return priceString;
+    
+    // Convert to number if it's a number string
     const priceNumber = typeof priceString === 'string' ? Number(priceString) : NaN;
+    
+    // If it's a valid number, format it with the Indian numbering system
     if (!isNaN(priceNumber)) {
       return new Intl.NumberFormat('en-IN', {
         style: 'currency',
@@ -74,6 +82,8 @@ const TourCard = ({
         maximumFractionDigits: 0,
       }).format(priceNumber);
     }
+    
+    // Otherwise format it
     return priceString;
   };
 
