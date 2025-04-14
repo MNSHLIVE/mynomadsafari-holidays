@@ -1,4 +1,5 @@
 
+
 export type TourTier = "Budgeted" | "Luxury" | "Premier";
 
 export interface TourData {
@@ -12,6 +13,11 @@ export interface TourData {
   imageSrc: string;
   destinations: string[];
   dailyPlans: Array<{day: number, title: string, description: string}>;
+  // Optional fields
+  id?: string;
+  inclusions?: string[];
+  exclusions?: string[];
+  notes?: string;
 }
 
 // International Tour Calculator Types

@@ -1,5 +1,8 @@
+// Import the TourData type to ensure type safety
+import { TourData } from "@/components/tour-itineraries/types";
+
 // Domestic Itineraries
-export const domesticItineraries = [
+export const domesticItineraries: TourData[] = [
   // Rajasthan Itineraries
   {
     id: "rajasthan-golden-triangle-4d",
@@ -538,7 +541,7 @@ export const domesticItineraries = [
       {
         day: 4,
         title: "Excursion to Tsomgo Lake & Baba Mandir",
-        description: "After breakfast, enjoy a day excursion to Tsomgo Lake (45 kms, 3 hours drive, altitude 3,780 mts) and continue to Baba Mandir (16 kms from Tsomgo Lake, 1 hour drive, altitude 4,000 mts). Evening free for leisure. Overnight stay at the hotel in Gangtok."
+        description: "After breakfast, enjoy a day excursion to Tsomgo Lake (45 kms, 3 hours drive, altitude 3,780 m) and continue to Baba Mandir (16 kms from Tsomgo Lake, 1 hour drive, altitude 4,000 m). Evening free for leisure. Overnight stay at the hotel in Gangtok."
       },
       {
         day: 5,
@@ -641,6 +644,6 @@ export const domesticItineraries = [
 ];
 
 // International Itineraries
-export const internationalItineraries = [
-  // ... keep existing code (all international itineraries)
+export const internationalItineraries: TourData[] = [
+  // ... keep existing code (all international tour itineraries)
 ];
