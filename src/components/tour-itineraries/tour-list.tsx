@@ -1,12 +1,16 @@
 
 import TourCard from "@/components/tour-card";
-import { TourData, TourTier } from "./types";
+import { TourData } from "./types";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface TourListProps {
   tours: TourData[];
+  isInternational?: boolean;
 }
 
-const TourList = ({ tours }: TourListProps) => {
+const TourList = ({ tours, isInternational = false }: TourListProps) => {
+  const isMobile = useIsMobile();
+  
   if (tours.length === 0) {
     return (
       <div className="text-center py-12">
@@ -29,9 +33,11 @@ const TourList = ({ tours }: TourListProps) => {
           duration={tour.duration}
           price={tour.price}
           bestTime={tour.bestTime}
-          packageType={tour.packageType as TourTier}
-          description={tour.overview}
-          itinerary={tour.dailyPlans}
+          packageType={tour.packageType}
+          description={isInternational ? 
+            `International package: ${tour.overview?.substring(0, 60)}...` : 
+            `Domestic package: ${tour.overview?.substring(0, 60)}...`}
+          itinerary={isMobile ? (tour.dailyPlans?.slice(0, 1) || []) : tour.dailyPlans}
           link={`/tours?destination=${encodeURIComponent(tour.location)}&package=${encodeURIComponent(tour.title)}`}
         />
       ))}
