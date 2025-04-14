@@ -7,7 +7,7 @@ export interface TourData {
   duration: string;
   price: string;
   bestTime: string;
-  packageType: string;
+  packageType: TourTier;
   overview: string;
   imageSrc: string;
   destinations: string[];

@@ -33,7 +33,7 @@ const TourList = ({ tours, isInternational = false }: TourListProps) => {
           duration={tour.duration}
           price={tour.price}
           bestTime={tour.bestTime}
-          packageType={tour.packageType}
+          packageType={tour.packageType as "Budgeted" | "Luxury" | "Premier"}
           description={isInternational ? 
             `International package: ${tour.overview?.substring(0, 60)}...` : 
             `Domestic package: ${tour.overview?.substring(0, 60)}...`}
