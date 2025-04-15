@@ -17,11 +17,11 @@ const ToursTabs = ({ domesticTours, internationalTours }: ToursTabsProps) => {
       </TabsList>
       
       <TabsContent value="domestic" className="mt-0">
-        <TourList tours={domesticTours} isInternational={false} />
+        <TourList tours={domesticTours} />
       </TabsContent>
       
       <TabsContent value="international" className="mt-0">
-        <TourList tours={internationalTours} isInternational={true} />
+        <TourList tours={internationalTours} />
       </TabsContent>
     </Tabs>
   );

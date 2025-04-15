@@ -10,7 +10,6 @@ import {
   filterInternationalTours, 
   getUniqueDestinations 
 } from "@/components/tour-itineraries/tour-filters";
-import { TourData } from "@/components/tour-itineraries/types";
 
 const TourItineraries = () => {
   const [searchTerm, setSearchTerm] = useState("");

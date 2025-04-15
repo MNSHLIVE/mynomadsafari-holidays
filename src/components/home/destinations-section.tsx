@@ -15,12 +15,10 @@ interface DestinationsProps {
     description: string;
     bestTime?: string;
     isPopular?: boolean;
-    continent?: string;
   }>;
   viewAllLink: string;
   viewAllText: string;
   bgColor?: string;
-  continentFilter?: string;
 }
 
 const DestinationsSection = ({
@@ -31,12 +29,7 @@ const DestinationsSection = ({
   viewAllLink,
   viewAllText,
   bgColor,
-  continentFilter,
 }: DestinationsProps) => {
-  const filteredDestinations = continentFilter ? 
-    destinations.filter(dest => dest.continent === continentFilter) : 
-    destinations;
-
   return (
     <section className={`section-padding ${bgColor ? bgColor : ''}`}>
       <div className="container mx-auto px-4">
@@ -47,7 +40,7 @@ const DestinationsSection = ({
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {filteredDestinations.map((destination, index) => (
+          {destinations.map((destination, index) => (
             <DestinationCard
               key={index}
               imageSrc={destination.imageSrc}
@@ -55,8 +48,7 @@ const DestinationsSection = ({
               description={destination.description}
               bestTime={destination.bestTime}
               isPopular={destination.isPopular}
-              continent={destination.continent}
-              link={`${viewAllLink}${destination.continent ? `?continent=${encodeURIComponent(destination.continent)}` : ''}`}
+              link={viewAllLink}
             />
           ))}
         </div>

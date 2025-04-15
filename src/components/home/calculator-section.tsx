@@ -1,7 +1,7 @@
 
 import SectionHeading from "@/components/section-heading";
 import PackageCalculator from "@/components/package-calculator";
-import InternationalTourCalculator from "@/components/tour-calculators/international-tour-calculator";
+import InternationalTourCalculator from "@/components/international-tour-calculator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const CalculatorSection = () => {

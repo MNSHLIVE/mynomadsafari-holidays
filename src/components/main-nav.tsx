@@ -71,11 +71,11 @@ export function MainNav({
 
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild className="md:hidden">
-          <Button variant="ghost" size="sm" className="ml-auto">
+          <Button variant="ghost" size="sm">
             <Menu className="h-5 w-5" />
           </Button>
         </SheetTrigger>
-        <SheetContent side="right" className="pl-0">
+        <SheetContent side="left" className="pr-0">
           <SheetHeader className="pl-6 pb-10 pt-6">
             <SheetTitle>Menu</SheetTitle>
             <SheetDescription>
@@ -138,7 +138,7 @@ export function MainNav({
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="group">
               Destinations
-              <ChevronDown className="ml-1 h-4 w-4 transition-transform group-data-[state=open]:rotate-180 group-hover:rotate-180" />
+              <ChevronDown className="ml-1 h-4 w-4 transition-transform group-hover:rotate-180" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56 bg-background">
@@ -171,7 +171,7 @@ export function MainNav({
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="group">
               Tours
-              <ChevronDown className="ml-1 h-4 w-4 transition-transform group-data-[state=open]:rotate-180 group-hover:rotate-180" />
+              <ChevronDown className="ml-1 h-4 w-4 transition-transform group-hover:rotate-180" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56 bg-background">

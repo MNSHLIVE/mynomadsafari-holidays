@@ -10,8 +10,6 @@ import ToursSection from "@/components/home/tours-section";
 import TestimonialsSection from "@/components/home/testimonials-section";
 import BlogSection from "@/components/home/blog-section";
 import WhatsAppButton from "@/components/whatsapp-button";
-import ContinentDestinations from "@/components/destinations/continent-destinations";
-import { allContinentDestinations } from "@/data/continent-destinations";
 
 import {
   heroSlides,
@@ -52,23 +50,6 @@ const Index = () => {
         viewAllText="View All Destinations"
       />
 
-      {/* Global Destinations Showcase */}
-      <section className="section-padding bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-8">
-            <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-primary/10 text-primary mb-3">
-              Global Destinations
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Explore the World With Us</h2>
-            <p className="text-muted-foreground">
-              Discover amazing destinations across every continent with our expertly curated travel experiences
-            </p>
-          </div>
-          
-          <ContinentDestinations destinations={allContinentDestinations} />
-        </div>
-      </section>
-
       {/* Religious Destinations */}
       <DestinationsSection
         title="Popular Religious Places"
@@ -77,6 +58,7 @@ const Index = () => {
         destinations={religiousDestinations}
         viewAllLink="/destinations?category=pilgrimage"
         viewAllText="Explore Religious Tours"
+        bgColor="bg-muted/30 py-16"
       />
 
       {/* Featured Tours */}
@@ -102,6 +84,17 @@ const Index = () => {
         showTabs={false}
       />
 
+      {/* International Destinations */}
+      <DestinationsSection
+        title="International Destinations"
+        subtitle="Explore exotic locations around the world with our expertly crafted packages"
+        tag="Global Expeditions"
+        destinations={internationalDestinations}
+        viewAllLink="/destinations?category=international"
+        viewAllText="Explore International Destinations"
+        bgColor="bg-muted/30 py-16"
+      />
+
       {/* Hill Stations Section */}
       <DestinationsSection
         title="Popular Hill Stations"
@@ -110,7 +103,6 @@ const Index = () => {
         destinations={hillStations}
         viewAllLink="/destinations?category=hillstations"
         viewAllText="Explore Hill Stations"
-        bgColor="bg-muted/30 py-16"
       />
 
       {/* Testimonials */}

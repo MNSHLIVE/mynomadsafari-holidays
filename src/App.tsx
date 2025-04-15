@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   createBrowserRouter,
@@ -25,16 +24,15 @@ import Refund from "./pages/Refund";
 import Faq from "./pages/Faq";
 import TourItineraries from "./pages/TourItineraries";
 
-// Modified router configuration to prevent Layout component duplication
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Layout />} errorElement={<NotFound />}>
+    <Route path="/" element={<Layout />} errorElement={<Layout><NotFound /></Layout>}>
       <Route index element={<Index />} />
       <Route path="about" element={<AboutUs />} />
       <Route path="destinations" element={<Destinations />} />
       <Route path="tours" element={<Tours />} />
-      <Route path="religious-tours" element={<ReligiousTours />} />
-      <Route path="group-tours" element={<GroupTours />} />
+      <Route path="tours/religious" element={<ReligiousTours />} />
+      <Route path="tours/group" element={<GroupTours />} />
       <Route path="visa" element={<Visa />} />
       <Route path="blog" element={<Blog />} />
       <Route path="contact" element={<Contact />} />
@@ -42,19 +40,17 @@ const router = createBrowserRouter(
       <Route path="privacy" element={<Privacy />} />
       <Route path="refund" element={<Refund />} />
       <Route path="faq" element={<Faq />} />
-      <Route path="tour-itineraries" element={<TourItineraries />} />
+      <Route path="/tour-itineraries" element={<TourItineraries />} />
     </Route>
   )
 );
 
 function App() {
   return (
-    <React.StrictMode>
-      <ThemeProvider defaultTheme="system" storageKey="vite-react-theme">
-        <RouterProvider router={router} />
-      </ThemeProvider>
-    </React.StrictMode>
+    <ThemeProvider defaultTheme="system" storageKey="vite-react-theme">
+      <RouterProvider router={router} />
+    </ThemeProvider>
   )
 }
 
-export default App;
+export default App
