@@ -50,6 +50,36 @@ const router = createBrowserRouter([
   },
 ]);
 
+// Add scroll behavior for hash links
+if (typeof window !== "undefined") {
+  window.addEventListener("load", () => {
+    // Handle hash navigation when page loads
+    const hash = window.location.hash;
+    if (hash) {
+      setTimeout(() => {
+        const element = document.querySelector(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    }
+  });
+
+  // Add smooth scroll for all hash links
+  document.addEventListener("click", (e) => {
+    if (e.target instanceof HTMLAnchorElement) {
+      const href = e.target.getAttribute("href");
+      if (href?.startsWith("#")) {
+        e.preventDefault();
+        const element = document.querySelector(href);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    }
+  });
+}
+
 function App() {
   return (
     <React.StrictMode>
