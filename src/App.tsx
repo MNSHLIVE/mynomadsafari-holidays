@@ -25,9 +25,10 @@ import Refund from "./pages/Refund";
 import Faq from "./pages/Faq";
 import TourItineraries from "./pages/TourItineraries";
 
+// Modified router configuration to prevent Layout component duplication
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Layout />} errorElement={<Layout><NotFound /></Layout>}>
+    <Route path="/" element={<Layout />} errorElement={<NotFound />}>
       <Route index element={<Index />} />
       <Route path="about" element={<AboutUs />} />
       <Route path="destinations" element={<Destinations />} />

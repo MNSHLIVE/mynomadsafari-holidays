@@ -33,7 +33,11 @@ const Layout = ({ children }: LayoutProps) => {
     const script = document.createElement("script");
     script.src = "https://static.elfsight.com/platform/platform.js";
     script.defer = true;
-    document.body.appendChild(script);
+    
+    // Only append the script if it doesn't already exist
+    if (!document.querySelector('script[src="https://static.elfsight.com/platform/platform.js"]')) {
+      document.body.appendChild(script);
+    }
     
     // Create the WhatsApp widget container if it doesn't exist
     if (!document.getElementById("whatsapp-widget")) {
@@ -45,10 +49,8 @@ const Layout = ({ children }: LayoutProps) => {
     }
     
     return () => {
-      // Cleanup script when component unmounts
-      if (script.parentNode) {
-        document.body.removeChild(script);
-      }
+      // Don't remove the script on unmount to prevent reinitializing on route changes
+      // This prevents duplicate scripts and errors
     };
   }, []);
 

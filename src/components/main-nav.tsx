@@ -71,11 +71,11 @@ export function MainNav({
 
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild className="md:hidden">
-          <Button variant="ghost" size="sm">
+          <Button variant="ghost" size="sm" className="ml-auto">
             <Menu className="h-5 w-5" />
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="pr-0">
+        <SheetContent side="right" className="pl-0">
           <SheetHeader className="pl-6 pb-10 pt-6">
             <SheetTitle>Menu</SheetTitle>
             <SheetDescription>

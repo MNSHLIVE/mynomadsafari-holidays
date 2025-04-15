@@ -7,11 +7,16 @@ export interface TourData {
   duration: string;
   price: string;
   bestTime: string;
-  packageType: string;
+  packageType: TourTier;
   overview: string;
   imageSrc: string;
   destinations: string[];
   dailyPlans: Array<{day: number, title: string, description: string}>;
+  // Optional fields
+  id?: string;
+  inclusions?: string[];
+  exclusions?: string[];
+  notes?: string;
 }
 
 // International Tour Calculator Types
@@ -29,3 +34,11 @@ export const MULTIPLIER_4STAR = 1.5;
 export const MULTIPLIER_5STAR = 2.5;
 export const ADDITIONAL_ADULT_COST = 5000; // For South Asia/Dubai, per additional adult
 export const CHILD_COST = 3500; // For South Asia/Dubai, per child
+
+// Helper function to ensure packageType is a valid TourTier
+export function validateTourTier(packageType: string): TourTier {
+  const validTiers: TourTier[] = ["Budgeted", "Luxury", "Premier"];
+  return validTiers.includes(packageType as TourTier) 
+    ? packageType as TourTier 
+    : "Budgeted"; // Default to Budgeted if invalid
+}
