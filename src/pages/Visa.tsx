@@ -1,6 +1,4 @@
-
 import { useState } from "react";
-import Layout from "@/components/layout";
 import SectionHeading from "@/components/section-heading";
 import CTASection from "@/components/cta-section";
 import { Button } from "@/components/ui/button";
@@ -109,7 +107,7 @@ const Visa = () => {
   }
 
   return (
-    <Layout>
+    <>
       {/* Hero Section */}
       <section className="pt-24 pb-16 container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center mb-16">
@@ -444,7 +442,7 @@ const Visa = () => {
         imageSrc="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2000"
         align="center"
       />
-    </Layout>
+    </>
   );
 };
 

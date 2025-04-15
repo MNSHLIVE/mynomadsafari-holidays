@@ -1,6 +1,4 @@
-
 import { useState } from "react";
-import Layout from "@/components/layout";
 import SectionHeading from "@/components/section-heading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -79,7 +77,7 @@ const Contact = () => {
   }
 
   return (
-    <Layout>
+    <>
       {/* Hero Section */}
       <section className="pt-24 pb-16 container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center mb-16">
@@ -371,7 +369,7 @@ const Contact = () => {
           </div>
         </div>
       </section>
-    </Layout>
+    </>
   );
 };
 

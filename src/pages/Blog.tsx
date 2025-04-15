@@ -1,6 +1,4 @@
-
 import { useState } from "react";
-import Layout from "@/components/layout";
 import SectionHeading from "@/components/section-heading";
 import BlogCard from "@/components/blog-card";
 import { Button } from "@/components/ui/button";
@@ -121,7 +119,7 @@ const Blog = () => {
   const featuredPosts = blogPosts.filter(post => post.featured);
 
   return (
-    <Layout>
+    <>
       {/* Hero Section */}
       <section className="pt-24 pb-16 container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center mb-12">
@@ -356,7 +354,7 @@ const Blog = () => {
           </div>
         </div>
       </section>
-    </Layout>
+    </>
   );
 };
 
