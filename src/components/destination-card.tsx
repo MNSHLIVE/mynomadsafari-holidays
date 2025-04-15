@@ -65,8 +65,8 @@ const DestinationCard = ({
         )}
         <Link to={link} className="mt-auto">
           <Button 
-            variant="outline" 
-            className="w-full group border-primary/20 hover:border-primary hover:bg-primary/5"
+            variant="default" 
+            className="w-full group bg-primary hover:bg-primary/90"
           >
             <span>Explore</span>
             <ArrowRight className="h-4 w-4 ml-2 transition-transform group-hover:translate-x-1" />
