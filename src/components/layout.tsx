@@ -1,7 +1,7 @@
 
 import { ReactNode, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import { MainNav } from "./main-nav";
+import MainNav from "./main-nav";
 import Footer from "./footer";
 
 interface LayoutProps {
@@ -23,9 +23,6 @@ const Layout = ({ children }: LayoutProps) => {
     if (window.fbq) {
       window.fbq('track', 'PageView');
     }
-    
-    // Scroll to top on route change
-    window.scrollTo(0, 0);
   }, [location]);
 
   useEffect(() => {
@@ -54,12 +51,8 @@ const Layout = ({ children }: LayoutProps) => {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/95 backdrop-blur">
-        <div className="container mx-auto px-4">
-          <MainNav />
-        </div>
-      </header>
-      <main className="flex-1 pt-8">
+      <MainNav />
+      <main className="flex-1 pt-16">
         {children || <Outlet />}
       </main>
       <Footer />
