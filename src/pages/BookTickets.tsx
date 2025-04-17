@@ -90,7 +90,7 @@ const BookTickets = () => {
     <div className="container mx-auto py-12">
       <SectionHeading 
         title="Book Travel Tickets"
-        description="Air, Train, and Bus ticket booking services"
+        subtitle="Air, Train, and Bus ticket booking services"
         align="center"
       />
 
@@ -900,3 +900,4 @@ const BookTickets = () => {
 };
 
 export default BookTickets;
+

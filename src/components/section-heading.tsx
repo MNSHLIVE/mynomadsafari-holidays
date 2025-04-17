@@ -42,3 +42,4 @@ const SectionHeading = ({
 };
 
 export default SectionHeading;
+
