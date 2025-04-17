@@ -700,4 +700,51 @@ const Tours = () => {
         <div className="text-center mt-10">
           <Link to="/tour-itineraries?category=adventure">
             <Button variant="outline" className="group">
-              <span>Explore All Adventure
+              <span>Explore All Adventure Tours</span>
+              <Mountain className="ml-2 h-4 w-4 transition-transform group-hover:scale-125" />
+            </Button>
+          </Link>
+        </div>
+      </section>
+
+      {/* Jungle Safari Section */}
+      <section className="container mx-auto px-4 mb-16 bg-muted/30 py-16 rounded-lg">
+        <SectionHeading
+          title="Jungle Safari Tours"
+          subtitle="Explore wildlife in their natural habitat with our guided safari tours"
+          tag="Wildlife Experiences"
+          align="center"
+        />
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+          {jungleSafariTours.map((tour, index) => (
+            <TourCard
+              key={`jungle-${index}`}
+              imageSrc={tour.imageSrc}
+              title={tour.title}
+              location={tour.location}
+              duration={tour.duration}
+              price={tour.price}
+              bestTime={tour.bestTime}
+              packageType={tour.packageType}
+              link={`/tour-itineraries?category=jungle`}
+              description={tour.description}
+              className="animate-fade-in"
+            />
+          ))}
+        </div>
+        
+        <div className="text-center mt-10">
+          <Link to="/tour-itineraries?category=jungle">
+            <Button variant="outline" className="group">
+              <span>View All Jungle Safari Tours</span>
+              <TreePalm className="ml-2 h-4 w-4 transition-transform group-hover:scale-125" />
+            </Button>
+          </Link>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default Tours;
