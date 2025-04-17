@@ -1,3 +1,4 @@
+
 import React from "react";
 import {
   createBrowserRouter,
@@ -11,6 +12,7 @@ import Index from "./pages/Index";
 import AboutUs from "./pages/AboutUs";
 import Destinations from "./pages/Destinations";
 import Tours from "./pages/Tours";
+import TourItineraries from "./pages/TourItineraries";
 import ReligiousTours from "./pages/ReligiousTours";
 import GroupTours from "./pages/GroupTours";
 import Visa from "./pages/Visa";
@@ -22,7 +24,6 @@ import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Refund from "./pages/Refund";
 import Faq from "./pages/Faq";
-import TourItineraries from "./pages/TourItineraries";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,8 +32,9 @@ const router = createBrowserRouter(
       <Route path="about" element={<AboutUs />} />
       <Route path="destinations" element={<Destinations />} />
       <Route path="tours" element={<Tours />} />
-      <Route path="tours/religious" element={<ReligiousTours />} />
-      <Route path="tours/group" element={<GroupTours />} />
+      <Route path="religious-tours" element={<ReligiousTours />} />
+      <Route path="group-tours" element={<GroupTours />} />
+      <Route path="tour-itineraries" element={<TourItineraries />} />
       <Route path="visa" element={<Visa />} />
       <Route path="blog" element={<Blog />} />
       <Route path="contact" element={<Contact />} />
@@ -40,7 +42,6 @@ const router = createBrowserRouter(
       <Route path="privacy" element={<Privacy />} />
       <Route path="refund" element={<Refund />} />
       <Route path="faq" element={<Faq />} />
-      <Route path="/tour-itineraries" element={<TourItineraries />} />
     </Route>
   )
 );
@@ -53,4 +54,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

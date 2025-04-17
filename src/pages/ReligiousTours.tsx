@@ -1,447 +1,181 @@
 
-import React, { useState } from "react";
+import { Helmet } from "react-helmet";
 import SectionHeading from "@/components/section-heading";
 import TourCard from "@/components/tour-card";
 import CTASection from "@/components/cta-section";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Church, Landmark } from "lucide-react";
-import DestinationQueryForm from "@/components/destination-query-form";
-import { Badge } from "@/components/ui/badge";
 
 const religiousTours = [
-  // Original tours
   {
-    id: 201,
+    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/CharDham/CharDham-Main.jpg.jpg",
     title: "Char Dham Yatra",
-    imageSrc: "https://images.unsplash.com/photo-1588096344356-9b798468eedb?q=80&w=800",
-    location: "Uttarakhand, India",
-    duration: "12 Days",
-    price: "85000",
+    location: "Uttarakhand",
+    duration: "11 Days / 10 Nights",
+    price: "Starting from ₹45,000",
     bestTime: "May - June, Sept - Oct",
-    packageType: "Premier",
-    country: "India",
-    region: "North India",
-    description: "Embark on the sacred Char Dham pilgrimage covering Yamunotri, Gangotri, Kedarnath, and Badrinath temples in the Himalayas.",
-    itinerary: [
-      { day: 1, title: "Arrival in Haridwar", description: "Arrive in Haridwar and transfer to hotel. Evening Ganga Aarti." },
-      { day: 2, title: "Haridwar to Barkot", description: "Drive to Barkot (210 km), gateway to Yamunotri." },
-      { day: 3, title: "Yamunotri Temple", description: "Trek to Yamunotri temple (6 km), perform puja, and return to Barkot." },
-      { day: 4, title: "Barkot to Uttarkashi", description: "Drive to Uttarkashi (100 km), visit Vishwanath Temple." },
-      { day: 5, title: "Gangotri Temple", description: "Visit Gangotri temple and perform rituals." },
-      { day: 6, title: "Uttarkashi to Guptkashi", description: "Drive to Guptkashi (220 km), visit Kashi Vishwanath Temple." },
-      { day: 7, title: "Kedarnath Temple", description: "Helicopter to Kedarnath, visit temple, and return to Guptkashi." },
-      { day: 8, title: "Guptkashi to Badrinath", description: "Drive to Badrinath (175 km) via Joshimath." },
-      { day: 9, title: "Badrinath Temple", description: "Visit Badrinath temple and nearby attractions." },
-      { day: 10, title: "Badrinath to Rudraprayag", description: "Drive to Rudraprayag (160 km)." },
-      { day: 11, title: "Rudraprayag to Rishikesh", description: "Drive to Rishikesh (140 km), visit ashrams." },
-      { day: 12, title: "Departure", description: "Transfer to Delhi for departure." }
-    ]
+    packageType: "Budgeted" as const,
+    description: "Embark on the sacred journey to all four divine sites: Yamunotri, Gangotri, Kedarnath, and Badrinath, in the majestic Himalayas."
   },
   {
-    id: 202,
-    title: "Varanasi Spiritual Tour",
-    imageSrc: "https://images.unsplash.com/photo-1561361058-c24cecae35ca?q=80&w=800",
-    location: "Varanasi, India",
-    duration: "5 Days",
-    price: "35000",
+    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/BadrinathKedarnath/BK-Main.jpg.jpg",
+    title: "Badrinath-Kedarnath Pilgrimage",
+    location: "Uttarakhand",
+    duration: "7 Days / 6 Nights",
+    price: "Starting from ₹35,000",
+    bestTime: "May - June, Sept - Oct",
+    packageType: "Budgeted" as const,
+    description: "Visit two of the most sacred sites dedicated to Lord Vishnu and Lord Shiva nestled in the Garhwal Himalayas."
+  },
+  {
+    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/VaishnoDevi/VaishnoDevi-Main.jpg.jpg",
+    title: "Vaishno Devi Darshan",
+    location: "Jammu & Kashmir",
+    duration: "4 Days / 3 Nights",
+    price: "Starting from ₹18,000",
+    bestTime: "March - July, Sept - Oct",
+    packageType: "Budgeted" as const,
+    description: "Trek to the holy cave shrine of Mata Vaishno Devi situated in the Trikuta Mountains."
+  },
+  {
+    imageSrc: "/Destination/Home/Religious-Places/Varanasi-religious.jpg",
+    title: "Varanasi Spiritual Journey",
+    location: "Uttar Pradesh",
+    duration: "5 Days / 4 Nights",
+    price: "Starting from ₹22,000",
     bestTime: "October - March",
-    packageType: "Luxury",
-    country: "India",
-    region: "North India",
-    description: "Experience the spiritual heart of India with a comprehensive tour of Varanasi and nearby Buddhist sites.",
-    itinerary: [
-      { day: 1, title: "Arrival in Varanasi", description: "Arrive in Varanasi and transfer to hotel. Evening Ganga Aarti at Dashashwamedh Ghat." },
-      { day: 2, title: "Sunrise Boat Ride", description: "Early morning boat ride on the Ganges, visit prominent temples and ghats of Varanasi." },
-      { day: 3, title: "Sarnath Excursion", description: "Day trip to Sarnath where Buddha gave his first sermon, visit Buddhist temples and Sarnath Museum." },
-      { day: 4, title: "Varanasi Temples", description: "Visit Kashi Vishwanath Temple, Durga Temple, Sankat Mochan Hanuman Temple, and evening aarti." },
-      { day: 5, title: "Departure", description: "Transfer to airport for departure." }
-    ]
+    packageType: "Luxury" as const,
+    description: "Experience the spiritual essence of India's oldest city with Ganga aarti, temple visits, and boat rides on the sacred river."
   },
   {
-    id: 203,
-    title: "Golden Temple & Amritsar",
-    imageSrc: "https://images.unsplash.com/photo-1588100099020-2212b4c2449b?q=80&w=800",
-    location: "Amritsar, Punjab",
-    duration: "4 Days",
-    price: "25000",
-    bestTime: "October - March",
-    packageType: "Budgeted",
-    country: "India",
-    region: "North India",
-    description: "Visit the magnificent Golden Temple and explore the rich cultural heritage of Amritsar.",
-    itinerary: [
-      { day: 1, title: "Arrival in Amritsar", description: "Arrive in Amritsar and transfer to hotel. Evening visit to Golden Temple for Palki Sahib ceremony." },
-      { day: 2, title: "Golden Temple & City Tour", description: "Full day tour of Golden Temple complex, Jallianwala Bagh, and Durgiana Temple." },
-      { day: 3, title: "Wagah Border & Local Culture", description: "Visit Wagah Border for the retreat ceremony, explore local markets and authentic Punjabi cuisine." },
-      { day: 4, title: "Departure", description: "Transfer to airport for departure." }
-    ]
+    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/Ashthavinayak/Asthavinayak-Main.jpg",
+    title: "Ashtavinayak Yatra",
+    location: "Maharashtra",
+    duration: "6 Days / 5 Nights",
+    price: "Starting from ₹25,000",
+    bestTime: "Throughout the year",
+    packageType: "Budgeted" as const,
+    description: "Visit all eight sacred temples of Lord Ganesha spread across Maharashtra."
   },
   {
-    id: 204,
-    title: "South India Temple Tour",
-    imageSrc: "https://images.unsplash.com/photo-1621373284020-87cea2607829?q=80&w=800",
+    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/SouthIndia/SouthIndia-Main.jpg.jpg",
+    title: "South Indian Temple Trail",
     location: "Tamil Nadu & Kerala",
-    duration: "8 Days",
-    price: "60000",
+    duration: "9 Days / 8 Nights",
+    price: "Starting from ₹40,000",
     bestTime: "October - March",
-    packageType: "Luxury",
-    country: "India",
-    region: "South India",
-    description: "Explore the magnificent temples of South India, known for their Dravidian architecture and cultural significance.",
-    itinerary: [
-      { day: 1, title: "Arrival in Chennai", description: "Arrive in Chennai and transfer to Mahabalipuram." },
-      { day: 2, title: "Mahabalipuram", description: "Visit Shore Temple, Five Rathas, and Arjuna's Penance." },
-      { day: 3, title: "Kanchipuram", description: "Explore the temples of Kanchipuram, the City of Thousand Temples." },
-      { day: 4, title: "Madurai", description: "Visit Meenakshi Amman Temple and experience the evening ceremony." },
-      { day: 5, title: "Rameswaram", description: "Visit Ramanathaswamy Temple and Dhanushkodi." },
-      { day: 6, title: "Thanjavur", description: "Explore Brihadeeswarar Temple (UNESCO World Heritage Site)." },
-      { day: 7, title: "Tirupati", description: "Visit Tirumala Venkateswara Temple (optional darshan)." },
-      { day: 8, title: "Departure", description: "Transfer to Chennai for departure." }
-    ]
-  },
-  
-  // New tours based on user input
-  {
-    id: 205,
-    title: "Vaishno Devi Pilgrimage",
-    imageSrc: "https://images.unsplash.com/photo-1574271143515-5cddf8da19be?q=80&w=800",
-    location: "Katra, Jammu & Kashmir",
-    duration: "5 Days",
-    price: "30000",
-    bestTime: "March - June, Sept - Oct",
-    packageType: "Premier",
-    country: "India",
-    region: "North India",
-    description: "Embark on a sacred journey to the holy shrine of Vaishno Devi, located in the Trikuta Mountains of Jammu & Kashmir.",
-    itinerary: [
-      { day: 1, title: "Arrival in Jammu", description: "Arrive in Jammu and transfer to hotel. Visit Raghunath Temple and local markets." },
-      { day: 2, title: "Jammu to Katra", description: "Drive to Katra, the base town for Vaishno Devi pilgrimage. Evening preparation for the trek." },
-      { day: 3, title: "Vaishno Devi Trek", description: "Early morning start for the 13 km trek to Vaishno Devi Shrine. Darshan and prayers at the temple." },
-      { day: 4, title: "Bhairavnath Temple & Return", description: "Visit Bhairavnath Temple and return to Katra. Afternoon rest and local exploration." },
-      { day: 5, title: "Departure", description: "Return to Jammu and departure." }
-    ]
-  },
-  {
-    id: 206,
-    title: "Badrinath & Kedarnath Yatra",
-    imageSrc: "https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?q=80&w=800",
-    location: "Uttarakhand, India",
-    duration: "8 Days",
-    price: "65000",
-    bestTime: "May - June, Sept - Oct",
-    packageType: "Luxury",
-    country: "India",
-    region: "North India",
-    description: "Visit the sacred shrines of Badrinath and Kedarnath, two of the Char Dhams located in the beautiful Himalayas of Uttarakhand.",
-    itinerary: [
-      { day: 1, title: "Arrival in Haridwar", description: "Arrive in Haridwar and transfer to hotel. Evening Ganga Aarti at Har Ki Pauri." },
-      { day: 2, title: "Haridwar to Joshimath", description: "Drive to Joshimath (250 km) via Devprayag and Rudraprayag." },
-      { day: 3, title: "Joshimath to Badrinath", description: "Drive to Badrinath (45 km). Visit Badrinath Temple and Tapt Kund." },
-      { day: 4, title: "Badrinath to Guptkashi", description: "Drive to Guptkashi (190 km) via Joshimath and Chamoli." },
-      { day: 5, title: "Guptkashi to Kedarnath", description: "Drive to Sonprayag and trek to Kedarnath (16 km) or take helicopter services." },
-      { day: 6, title: "Kedarnath Temple", description: "Early morning visit to Kedarnath Temple. Return to Guptkashi." },
-      { day: 7, title: "Guptkashi to Rishikesh", description: "Drive to Rishikesh (180 km). Evening at leisure or visit ashrams." },
-      { day: 8, title: "Departure", description: "Transfer to Dehradun for departure." }
-    ]
-  },
-  {
-    id: 207,
-    title: "Jyotirlinga Darshan",
-    imageSrc: "https://images.unsplash.com/photo-1545126178-862cdb469409?q=80&w=800",
-    location: "Various locations across India",
-    duration: "15 Days",
-    price: "120000",
-    bestTime: "October - March",
-    packageType: "Premier",
-    country: "India",
-    region: "All India",
-    description: "Embark on a spiritual journey to visit the sacred Jyotirlingas of Lord Shiva spread across different parts of India.",
-    itinerary: [
-      { day: 1, title: "Start in Varanasi", description: "Arrive in Varanasi and visit Kashi Vishwanath Temple, one of the 12 Jyotirlingas." },
-      { day: 3, title: "Ujjain", description: "Visit Mahakaleshwar Temple in Ujjain, Madhya Pradesh." },
-      { day: 5, title: "Omkareshwar", description: "Visit Omkareshwar Temple on an island in Narmada River, Madhya Pradesh." },
-      { day: 7, title: "Somnath", description: "Visit the historic Somnath Temple in Gujarat." },
-      { day: 9, title: "Dwarka", description: "Visit Nageshwar Temple near Dwarka, Gujarat." },
-      { day: 11, title: "Nashik", description: "Visit Trimbakeshwar Temple in Nashik, Maharashtra." },
-      { day: 13, title: "Rameswaram", description: "Visit Ramanathaswamy Temple in Rameswaram, Tamil Nadu." },
-      { day: 15, title: "Conclusion", description: "Return journey with memories of the sacred pilgrimage." }
-    ]
-  },
-  {
-    id: 208,
-    title: "Ashtavinayak Darshan",
-    imageSrc: "https://images.unsplash.com/photo-1627894006066-b1872ba3fb2b?q=80&w=800",
-    location: "Maharashtra, India",
-    duration: "7 Days",
-    price: "45000",
-    bestTime: "October - March",
-    packageType: "Budgeted",
-    country: "India",
-    region: "West India",
-    description: "Visit the eight ancient temples of Lord Ganesha in Maharashtra, known as the Ashtavinayak.",
-    itinerary: [
-      { day: 1, title: "Start in Pune", description: "Arrive in Pune and visit Morgaon (Moreshwar) and Siddhatek (Siddhivinayak)." },
-      { day: 2, title: "Pali and Mahad", description: "Visit Ballaleshwar Temple in Pali and Varadvinayak Temple in Mahad." },
-      { day: 3, title: "Theur and Lenyadri", description: "Visit Chintamani Temple in Theur and Girijatmaj Temple in Lenyadri." },
-      { day: 4, title: "Ozar and Ranjangaon", description: "Visit Vighneshwar Temple in Ozar and Mahaganapati Temple in Ranjangaon." },
-      { day: 5, title: "Lonavala Exploration", description: "Relax in the scenic hill station of Lonavala." },
-      { day: 6, title: "Matheran Hill Station", description: "Visit Matheran, a charming car-free hill station." },
-      { day: 7, title: "Return to Pune", description: "Return to Pune for departure." }
-    ]
-  },
-  {
-    id: 209,
-    title: "Devi Darshan Yatra",
-    imageSrc: "https://images.unsplash.com/photo-1518911470819-083a8f8f5046?q=80&w=800",
-    location: "Various locations across India",
-    duration: "12 Days",
-    price: "95000",
-    bestTime: "October - March",
-    packageType: "Luxury",
-    country: "India",
-    region: "All India",
-    description: "Visit the most significant temples dedicated to various forms of the Divine Goddess across India.",
-    itinerary: [
-      { day: 1, title: "Start in Kolkata", description: "Arrive in Kolkata and visit Kalighat Temple and Dakshineswar Kali Temple." },
-      { day: 3, title: "Kamakhya Temple", description: "Fly to Guwahati and visit the sacred Kamakhya Temple in Assam." },
-      { day: 5, title: "Varanasi", description: "Visit Durga Temple and other sacred sites in Varanasi." },
-      { day: 7, title: "Jammu", description: "Travel to Jammu for Vaishno Devi pilgrimage." },
-      { day: 9, title: "Chennai", description: "Fly to Chennai and visit Kapaleeshwarar Temple." },
-      { day: 11, title: "Kanyakumari", description: "Visit Kanyakumari Temple at the southernmost tip of India." },
-      { day: 12, title: "Departure", description: "Return journey with blessings of the Divine Mother." }
-    ]
+    packageType: "Luxury" as const,
+    description: "Explore the ancient and magnificently carved temples of South India with their rich cultural heritage."
   }
 ];
 
 const ReligiousTours = () => {
-  const [selectedTour, setSelectedTour] = useState<number | null>(null);
-
   return (
-    <div className="container mx-auto px-4 pt-24 pb-16">
-      <div className="max-w-3xl mx-auto text-center mb-12">
-        <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-secondary/30 text-secondary-foreground mb-3">
-          Spiritual Journeys
-        </span>
-        <h1 className="text-4xl md:text-5xl font-bold mb-6">
-          Religious Tours
-        </h1>
-        <p className="text-xl text-muted-foreground mb-8">
-          Embark on a journey of spiritual discovery with our curated religious and pilgrimage tours
-        </p>
-      </div>
-
-      <section className="mb-16">
-        <Card className="border-primary/20 bg-primary/5">
-          <CardContent className="p-6 md:p-8">
-            <div className="flex flex-col md:flex-row gap-6 items-center">
-              <div className="md:w-3/4">
-                <h2 className="text-2xl font-bold mb-4 flex items-center">
-                  <Landmark className="mr-2 h-5 w-5 text-primary" />
-                  Sacred Pilgrimages Across India
-                </h2>
-                <p className="text-lg mb-4">
-                  India is home to some of the world's most revered religious sites. Our carefully curated tours 
-                  combine spiritual experiences with comfortable travel arrangements.
-                </p>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
-                  <Badge className="justify-start" variant="outline">Hindu Temples</Badge>
-                  <Badge className="justify-start" variant="outline">Buddhist Sites</Badge>
-                  <Badge className="justify-start" variant="outline">Sikh Gurdwaras</Badge>
-                  <Badge className="justify-start" variant="outline">Sacred Rivers</Badge>
-                </div>
-              </div>
-              <div className="md:w-1/4 flex justify-center">
-                <DestinationQueryForm
-                  destinationName="Religious Tours"
-                  buttonText="Plan Your Pilgrimage"
-                  buttonVariant="default"
-                  className="px-6"
-                />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </section>
-
-      <Tabs defaultValue="hindu" className="w-full mb-10">
-        <div className="flex justify-center mb-6">
-          <TabsList>
-            <TabsTrigger value="hindu">Hindu Pilgrimages</TabsTrigger>
-            <TabsTrigger value="buddhist">Buddhist Circuits</TabsTrigger>
-            <TabsTrigger value="sikh">Sikh Pilgrimages</TabsTrigger>
-            <TabsTrigger value="all">All Religious Tours</TabsTrigger>
-          </TabsList>
+    <>
+      <Helmet>
+        <title>Religious Tours | My Nomadsafari Holidays</title>
+        <meta
+          name="description"
+          content="Embark on spiritual journeys with our religious tour packages. Visit sacred sites, temples, and pilgrimage destinations with My Nomadsafari Holidays."
+        />
+      </Helmet>
+      
+      {/* Hero Section */}
+      <section className="pt-24 pb-16 container mx-auto px-4">
+        <div className="max-w-3xl mx-auto text-center mb-16">
+          <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-secondary/30 text-secondary-foreground mb-3">
+            Pilgrimage
+          </span>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            Religious Tours & Pilgrimages
+          </h1>
+          <p className="text-xl text-muted-foreground mb-8">
+            Embark on a spiritual journey to sacred destinations across India
+          </p>
         </div>
-
-        <TabsContent value="hindu" className="mt-0">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-            {religiousTours.filter(tour => 
-              [201, 204, 205, 206, 207, 208, 209].includes(tour.id)
-            ).map((tour) => (
-              <TourCard
-                key={tour.id}
-                imageSrc={tour.imageSrc}
-                title={tour.title}
-                location={tour.location}
-                duration={tour.duration}
-                price={tour.price}
-                bestTime={tour.bestTime}
-                packageType={tour.packageType as "Budgeted" | "Luxury" | "Premier"}
-                description={tour.description}
-                itinerary={tour.itinerary}
-              />
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="buddhist" className="mt-0">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-            {religiousTours.filter(tour => tour.id === 202).map((tour) => (
-              <TourCard
-                key={tour.id}
-                imageSrc={tour.imageSrc}
-                title={tour.title}
-                location={tour.location}
-                duration={tour.duration}
-                price={tour.price}
-                bestTime={tour.bestTime}
-                packageType={tour.packageType as "Budgeted" | "Luxury" | "Premier"}
-                description={tour.description}
-                itinerary={tour.itinerary}
-              />
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="sikh" className="mt-0">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-            {religiousTours.filter(tour => tour.id === 203).map((tour) => (
-              <TourCard
-                key={tour.id}
-                imageSrc={tour.imageSrc}
-                title={tour.title}
-                location={tour.location}
-                duration={tour.duration}
-                price={tour.price}
-                bestTime={tour.bestTime}
-                packageType={tour.packageType as "Budgeted" | "Luxury" | "Premier"}
-                description={tour.description}
-                itinerary={tour.itinerary}
-              />
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="all" className="mt-0">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-            {religiousTours.map((tour) => (
-              <TourCard
-                key={tour.id}
-                imageSrc={tour.imageSrc}
-                title={tour.title}
-                location={tour.location}
-                duration={tour.duration}
-                price={tour.price}
-                bestTime={tour.bestTime}
-                packageType={tour.packageType as "Budgeted" | "Luxury" | "Premier"}
-                description={tour.description}
-                itinerary={tour.itinerary}
-              />
-            ))}
-          </div>
-        </TabsContent>
-      </Tabs>
-
-      <div className="max-w-3xl mx-auto bg-card rounded-xl p-6 border my-10">
+      </section>
+      
+      {/* Tours Section */}
+      <section className="py-12 container mx-auto px-4">
         <SectionHeading
-          title="Benefits of Religious Tours"
-          subtitle="Why choose our guided spiritual journeys"
-          align="left"
+          title="Our Religious Tour Packages"
+          subtitle="Carefully curated spiritual journeys to connect with your faith"
+          tag="Sacred Journeys"
         />
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-          <div className="flex items-start">
-            <div className="bg-primary/10 p-2 rounded-full mr-3">
-              <svg className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <div>
-              <h4 className="font-medium">Expert Spiritual Guides</h4>
-              <p className="text-sm text-muted-foreground">Knowledgeable guides who understand the cultural and religious significance</p>
-            </div>
-          </div>
-          <div className="flex items-start">
-            <div className="bg-primary/10 p-2 rounded-full mr-3">
-              <svg className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <div>
-              <h4 className="font-medium">Priority Darshan</h4>
-              <p className="text-sm text-muted-foreground">Skip long queues with our special arrangements at major temples</p>
-            </div>
-          </div>
-          <div className="flex items-start">
-            <div className="bg-primary/10 p-2 rounded-full mr-3">
-              <svg className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <div>
-              <h4 className="font-medium">Comfortable Accommodations</h4>
-              <p className="text-sm text-muted-foreground">Stay in comfortable hotels near the pilgrimage sites</p>
-            </div>
-          </div>
-          <div className="flex items-start">
-            <div className="bg-primary/10 p-2 rounded-full mr-3">
-              <svg className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <div>
-              <h4 className="font-medium">Assistance with Rituals</h4>
-              <p className="text-sm text-muted-foreground">Help with performing the appropriate rituals at each sacred site</p>
-            </div>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+          {religiousTours.map((tour, index) => (
+            <TourCard
+              key={index}
+              imageSrc={tour.imageSrc}
+              title={tour.title}
+              location={tour.location}
+              duration={tour.duration}
+              price={tour.price}
+              bestTime={tour.bestTime}
+              packageType={tour.packageType}
+              description={tour.description}
+              link={`/tour-itineraries?category=religious&package=${encodeURIComponent(tour.title)}`}
+            />
+          ))}
         </div>
-      </div>
-
-      <section className="my-16">
-        <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl p-6 md:p-8 shadow-sm border border-primary/20">
-          <div className="flex flex-col md:flex-row gap-6 items-center">
-            <div className="md:w-3/4">
-              <h2 className="text-2xl md:text-3xl font-bold mb-4">Custom Religious Tours</h2>
-              <p className="text-lg mb-4">
-                Looking for a personalized pilgrimage experience? We can create a custom itinerary based on your spiritual preferences, 
-                time constraints, and specific temples or sites you wish to visit.
-              </p>
-              <p className="text-muted-foreground">
-                Our team of experts will help you plan every detail of your sacred journey, from transportation and accommodation 
-                to special pujas and ritual arrangements at the temples.
-              </p>
+      </section>
+      
+      {/* Why Choose Us Section */}
+      <section className="py-16 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <SectionHeading
+            title="Why Choose Our Pilgrimage Tours"
+            subtitle="We take care of every detail so you can focus on your spiritual journey"
+            align="center"
+          />
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+            <div className="bg-card p-6 rounded-lg shadow-sm text-center">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                  <path d="M2 17l10 5 10-5"></path>
+                  <path d="M2 12l10 5 10-5"></path>
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Experienced Guides</h3>
+              <p className="text-muted-foreground">Our guides are well-versed in the religious and cultural significance of each site, enhancing your spiritual experience.</p>
             </div>
-            <div className="md:w-1/4 flex justify-center">
-              <DestinationQueryForm
-                destinationName="Custom Religious Tour"
-                buttonText="Request Custom Tour"
-                buttonVariant="default"
-                className="px-6"
-              />
+            
+            <div className="bg-card p-6 rounded-lg shadow-sm text-center">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="m4.9 4.9 14.2 14.2"></path>
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Comfortable Accommodations</h3>
+              <p className="text-muted-foreground">Stay in carefully selected accommodations close to pilgrimage sites, offering comfort after a day of spiritual exploration.</p>
+            </div>
+            
+            <div className="bg-card p-6 rounded-lg shadow-sm text-center">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                  <path d="M14 2v6h6"></path>
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Hassle-Free Planning</h3>
+              <p className="text-muted-foreground">We handle all logistics including permits, accommodations, and local transportation, allowing you to focus on your spiritual journey.</p>
             </div>
           </div>
         </div>
       </section>
-
-      <CTASection 
-        title="Plan Your Spiritual Journey"
-        description="Let us help you plan a meaningful and hassle-free pilgrimage to the most sacred sites."
-        buttonText="Contact Us"
+      
+      {/* CTA Section */}
+      <CTASection
+        title="Ready to Begin Your Spiritual Journey?"
+        subtitle="Let us help you plan your perfect pilgrimage"
+        buttonText="Enquire Now"
         buttonLink="/contact"
+        imageSrc="https://images.unsplash.com/photo-1623743593511-eaa32b8b4035?q=80&w=2000"
+        align="center"
       />
-    </div>
+    </>
   );
 };
 

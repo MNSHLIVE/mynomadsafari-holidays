@@ -32,7 +32,7 @@ const TourList = ({ tours }: TourListProps) => {
           packageType={tour.packageType as TourTier}
           description={tour.overview}
           itinerary={tour.dailyPlans}
-          link={`/tours?destination=${encodeURIComponent(tour.location)}&package=${encodeURIComponent(tour.title)}`}
+          link={`/tour-itineraries?destination=${encodeURIComponent(tour.location)}&package=${encodeURIComponent(tour.title)}`}
         />
       ))}
     </div>

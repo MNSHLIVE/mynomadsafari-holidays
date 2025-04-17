@@ -17,11 +17,29 @@ const ToursTabs = ({ domesticTours, internationalTours }: ToursTabsProps) => {
       </TabsList>
       
       <TabsContent value="domestic" className="mt-0">
-        <TourList tours={domesticTours} />
+        {domesticTours.length > 0 ? (
+          <TourList tours={domesticTours} />
+        ) : (
+          <div className="text-center py-12">
+            <h3 className="text-xl font-medium mb-2">No tours found</h3>
+            <p className="text-muted-foreground">
+              Please try adjusting your search criteria
+            </p>
+          </div>
+        )}
       </TabsContent>
       
       <TabsContent value="international" className="mt-0">
-        <TourList tours={internationalTours} />
+        {internationalTours.length > 0 ? (
+          <TourList tours={internationalTours} />
+        ) : (
+          <div className="text-center py-12">
+            <h3 className="text-xl font-medium mb-2">No tours found</h3>
+            <p className="text-muted-foreground">
+              Please try adjusting your search criteria
+            </p>
+          </div>
+        )}
       </TabsContent>
     </Tabs>
   );

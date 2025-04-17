@@ -13,3 +13,19 @@ export interface TourData {
   destinations: string[];
   dailyPlans: Array<{day: number, title: string, description: string}>;
 }
+
+export interface DestinationData {
+  name: string;
+  region: string; // "India" | "Southeast Asia" | "Europe" | "Middle East" | etc.
+  imageSrc: string;
+  description: string;
+  bestTimeToVisit: string;
+  budgetRange: {
+    economy: string;
+    standard: string;
+    luxury: string;
+  };
+  highlights: string[];
+  isPilgrimage?: boolean;
+  isHoneymoon?: boolean;
+}

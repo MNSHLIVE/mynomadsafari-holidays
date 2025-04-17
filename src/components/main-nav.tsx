@@ -100,11 +100,14 @@ export function MainNav({
             <Link to="/destinations" className="px-6 py-2">
               Destinations
             </Link>
-            <Link to="/tours" className="px-6 py-2">
-              Tours
-            </Link>
             <Link to="/tour-itineraries" className="px-6 py-2">
               Tour Itineraries
+            </Link>
+            <Link to="/religious-tours" className="px-6 py-2">
+              Religious Tours
+            </Link>
+            <Link to="/group-tours" className="px-6 py-2">
+              Group Tours
             </Link>
             <Link to="/visa" className="px-6 py-2">
               Visa
@@ -134,39 +137,13 @@ export function MainNav({
           About Us
         </Link>
         
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="group">
-              Destinations
-              <ChevronDown className="ml-1 h-4 w-4 transition-transform group-hover:rotate-180" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 bg-background">
-            <DropdownMenuLabel>Destinations</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link to="/destinations?category=domestic">
-                Domestic Destinations
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to="/destinations?category=international">
-                International Destinations
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to="/destinations?category=pilgrimage">
-                Pilgrimage Destinations
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to="/destinations?category=honeymoon">
-                Honeymoon Destinations
-              </Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-
+        <Link to="/destinations" className={cn(
+          "px-3 py-2 hover:text-primary transition-colors",
+          location.pathname === "/destinations" ? "font-medium text-primary" : ""
+        )}>
+          Destinations
+        </Link>
+        
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="group">
@@ -179,12 +156,7 @@ export function MainNav({
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
               <Link to="/tour-itineraries">
-                All Tour Itineraries
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to="/tours?category=domestic">
-                Domestic Tours
+                Tour Itineraries
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
@@ -195,11 +167,6 @@ export function MainNav({
             <DropdownMenuItem asChild>
               <Link to="/group-tours">
                 Group Tours
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to="/tours?category=international">
-                International Tours
               </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
