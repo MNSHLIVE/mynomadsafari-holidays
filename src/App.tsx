@@ -18,6 +18,7 @@ import GroupTours from "./pages/GroupTours";
 import Visa from "./pages/Visa";
 import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
+import BookTickets from "./pages/BookTickets";
 import NotFound from "./pages/NotFound";
 import Layout from "@/components/layout";
 import Terms from "./pages/Terms";
@@ -36,6 +37,7 @@ const router = createBrowserRouter(
       <Route path="group-tours" element={<GroupTours />} />
       <Route path="tour-itineraries" element={<TourItineraries />} />
       <Route path="visa" element={<Visa />} />
+      <Route path="book-tickets" element={<BookTickets />} />
       <Route path="blog" element={<Blog />} />
       <Route path="contact" element={<Contact />} />
       <Route path="terms" element={<Terms />} />

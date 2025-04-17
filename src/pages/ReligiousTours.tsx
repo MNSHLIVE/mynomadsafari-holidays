@@ -1,181 +1,199 @@
 
-import { Helmet } from "react-helmet";
-import SectionHeading from "@/components/section-heading";
-import TourCard from "@/components/tour-card";
-import CTASection from "@/components/cta-section";
-
-const religiousTours = [
-  {
-    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/CharDham/CharDham-Main.jpg.jpg",
-    title: "Char Dham Yatra",
-    location: "Uttarakhand",
-    duration: "11 Days / 10 Nights",
-    price: "Starting from ₹45,000",
-    bestTime: "May - June, Sept - Oct",
-    packageType: "Budgeted" as const,
-    description: "Embark on the sacred journey to all four divine sites: Yamunotri, Gangotri, Kedarnath, and Badrinath, in the majestic Himalayas."
-  },
-  {
-    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/BadrinathKedarnath/BK-Main.jpg.jpg",
-    title: "Badrinath-Kedarnath Pilgrimage",
-    location: "Uttarakhand",
-    duration: "7 Days / 6 Nights",
-    price: "Starting from ₹35,000",
-    bestTime: "May - June, Sept - Oct",
-    packageType: "Budgeted" as const,
-    description: "Visit two of the most sacred sites dedicated to Lord Vishnu and Lord Shiva nestled in the Garhwal Himalayas."
-  },
-  {
-    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/VaishnoDevi/VaishnoDevi-Main.jpg.jpg",
-    title: "Vaishno Devi Darshan",
-    location: "Jammu & Kashmir",
-    duration: "4 Days / 3 Nights",
-    price: "Starting from ₹18,000",
-    bestTime: "March - July, Sept - Oct",
-    packageType: "Budgeted" as const,
-    description: "Trek to the holy cave shrine of Mata Vaishno Devi situated in the Trikuta Mountains."
-  },
-  {
-    imageSrc: "/Destination/Home/Religious-Places/Varanasi-religious.jpg",
-    title: "Varanasi Spiritual Journey",
-    location: "Uttar Pradesh",
-    duration: "5 Days / 4 Nights",
-    price: "Starting from ₹22,000",
-    bestTime: "October - March",
-    packageType: "Luxury" as const,
-    description: "Experience the spiritual essence of India's oldest city with Ganga aarti, temple visits, and boat rides on the sacred river."
-  },
-  {
-    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/Ashthavinayak/Asthavinayak-Main.jpg",
-    title: "Ashtavinayak Yatra",
-    location: "Maharashtra",
-    duration: "6 Days / 5 Nights",
-    price: "Starting from ₹25,000",
-    bestTime: "Throughout the year",
-    packageType: "Budgeted" as const,
-    description: "Visit all eight sacred temples of Lord Ganesha spread across Maharashtra."
-  },
-  {
-    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/SouthIndia/SouthIndia-Main.jpg.jpg",
-    title: "South Indian Temple Trail",
-    location: "Tamil Nadu & Kerala",
-    duration: "9 Days / 8 Nights",
-    price: "Starting from ₹40,000",
-    bestTime: "October - March",
-    packageType: "Luxury" as const,
-    description: "Explore the ancient and magnificently carved temples of South India with their rich cultural heritage."
-  }
-];
+import React from 'react';
+import CTASection from '@/components/cta-section';
 
 const ReligiousTours = () => {
   return (
-    <>
-      <Helmet>
-        <title>Religious Tours | My Nomadsafari Holidays</title>
-        <meta
-          name="description"
-          content="Embark on spiritual journeys with our religious tour packages. Visit sacred sites, temples, and pilgrimage destinations with My Nomadsafari Holidays."
-        />
-      </Helmet>
+    <div className="container mx-auto py-12">
+      <h1 className="text-3xl font-bold mb-6">Religious Tours</h1>
       
-      {/* Hero Section */}
-      <section className="pt-24 pb-16 container mx-auto px-4">
-        <div className="max-w-3xl mx-auto text-center mb-16">
-          <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-secondary/30 text-secondary-foreground mb-3">
-            Pilgrimage
-          </span>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Religious Tours & Pilgrimages
-          </h1>
-          <p className="text-xl text-muted-foreground mb-8">
-            Embark on a spiritual journey to sacred destinations across India
-          </p>
-        </div>
-      </section>
+      <div className="prose max-w-none mb-8">
+        <p className="text-lg">
+          Embark on a spiritual journey with our carefully crafted religious tour packages. 
+          We offer pilgrimages to sacred sites across India and around the world, 
+          allowing you to connect with your faith while we handle all the logistics.
+        </p>
+      </div>
       
-      {/* Tours Section */}
-      <section className="py-12 container mx-auto px-4">
-        <SectionHeading
-          title="Our Religious Tour Packages"
-          subtitle="Carefully curated spiritual journeys to connect with your faith"
-          tag="Sacred Journeys"
-        />
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-          {religiousTours.map((tour, index) => (
-            <TourCard
-              key={index}
-              imageSrc={tour.imageSrc}
-              title={tour.title}
-              location={tour.location}
-              duration={tour.duration}
-              price={tour.price}
-              bestTime={tour.bestTime}
-              packageType={tour.packageType}
-              description={tour.description}
-              link={`/tour-itineraries?category=religious&package=${encodeURIComponent(tour.title)}`}
-            />
-          ))}
-        </div>
-      </section>
-      
-      {/* Why Choose Us Section */}
-      <section className="py-16 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <SectionHeading
-            title="Why Choose Our Pilgrimage Tours"
-            subtitle="We take care of every detail so you can focus on your spiritual journey"
-            align="center"
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <div className="border rounded-lg overflow-hidden shadow-sm">
+          <img 
+            src="/public/Destination/Domestic/Tours/Pilgrimage/Hindu/CharDham/CharDham-Main.jpg.jpg" 
+            alt="Char Dham Yatra"
+            className="w-full h-48 object-cover"
           />
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-            <div className="bg-card p-6 rounded-lg shadow-sm text-center">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-                  <path d="M2 17l10 5 10-5"></path>
-                  <path d="M2 12l10 5 10-5"></path>
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Experienced Guides</h3>
-              <p className="text-muted-foreground">Our guides are well-versed in the religious and cultural significance of each site, enhancing your spiritual experience.</p>
+          <div className="p-4">
+            <h2 className="text-xl font-semibold mb-2">Char Dham Yatra</h2>
+            <p className="text-muted-foreground mb-4">
+              Visit the four sacred sites of Yamunotri, Gangotri, Kedarnath, and Badrinath in the Himalayas.
+            </p>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium">Duration:</span>
+              <span className="text-sm">11-12 days</span>
             </div>
-            
-            <div className="bg-card p-6 rounded-lg shadow-sm text-center">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <path d="m4.9 4.9 14.2 14.2"></path>
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Comfortable Accommodations</h3>
-              <p className="text-muted-foreground">Stay in carefully selected accommodations close to pilgrimage sites, offering comfort after a day of spiritual exploration.</p>
-            </div>
-            
-            <div className="bg-card p-6 rounded-lg shadow-sm text-center">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
-                  <path d="M14 2v6h6"></path>
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Hassle-Free Planning</h3>
-              <p className="text-muted-foreground">We handle all logistics including permits, accommodations, and local transportation, allowing you to focus on your spiritual journey.</p>
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-sm font-medium">Best Time:</span>
+              <span className="text-sm">May-June, Sept-Oct</span>
             </div>
           </div>
         </div>
-      </section>
+        
+        <div className="border rounded-lg overflow-hidden shadow-sm">
+          <img 
+            src="/public/Destination/Domestic/Tours/Pilgrimage/Hindu/Jyotirlinga/Jyotirlinga-Main.jpg.jpg" 
+            alt="Jyotirlinga Darshan"
+            className="w-full h-48 object-cover"
+          />
+          <div className="p-4">
+            <h2 className="text-xl font-semibold mb-2">Jyotirlinga Darshan</h2>
+            <p className="text-muted-foreground mb-4">
+              Visit the sacred Jyotirlinga temples dedicated to Lord Shiva across India.
+            </p>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium">Duration:</span>
+              <span className="text-sm">Various packages</span>
+            </div>
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-sm font-medium">Best Time:</span>
+              <span className="text-sm">Year-round</span>
+            </div>
+          </div>
+        </div>
+        
+        <div className="border rounded-lg overflow-hidden shadow-sm">
+          <img 
+            src="/public/Destination/Home/Religious-Tours/Varanasi-Spiritual.jpg" 
+            alt="Varanasi Spiritual Tour"
+            className="w-full h-48 object-cover"
+          />
+          <div className="p-4">
+            <h2 className="text-xl font-semibold mb-2">Varanasi Spiritual Tour</h2>
+            <p className="text-muted-foreground mb-4">
+              Experience the spiritual heart of India with a tour of sacred Varanasi.
+            </p>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium">Duration:</span>
+              <span className="text-sm">3-5 days</span>
+            </div>
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-sm font-medium">Best Time:</span>
+              <span className="text-sm">Oct-Mar</span>
+            </div>
+          </div>
+        </div>
+      </div>
       
-      {/* CTA Section */}
+      <div className="mb-12">
+        <h2 className="text-2xl font-semibold mb-4">Religious Tours By Faith</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="p-6 border rounded-lg text-center">
+            <h3 className="font-medium mb-2">Hindu Pilgrimages</h3>
+            <ul className="space-y-2 text-sm text-muted-foreground text-left">
+              <li>• Char Dham Yatra</li>
+              <li>• Jyotirlinga Tours</li>
+              <li>• Varanasi & Gaya</li>
+              <li>• Shakti Peetha Tours</li>
+              <li>• South India Temple Tours</li>
+            </ul>
+          </div>
+          <div className="p-6 border rounded-lg text-center">
+            <h3 className="font-medium mb-2">Buddhist Circuits</h3>
+            <ul className="space-y-2 text-sm text-muted-foreground text-left">
+              <li>• Bodh Gaya</li>
+              <li>• Sarnath</li>
+              <li>• Kushinagar</li>
+              <li>• Lumbini (Nepal)</li>
+              <li>• Tibetan Buddhism Tour</li>
+            </ul>
+          </div>
+          <div className="p-6 border rounded-lg text-center">
+            <h3 className="font-medium mb-2">Sikh Pilgrimages</h3>
+            <ul className="space-y-2 text-sm text-muted-foreground text-left">
+              <li>• Golden Temple, Amritsar</li>
+              <li>• Patna Sahib</li>
+              <li>• Anandpur Sahib</li>
+              <li>• Hemkund Sahib</li>
+              <li>• Panj Takht Tour</li>
+            </ul>
+          </div>
+          <div className="p-6 border rounded-lg text-center">
+            <h3 className="font-medium mb-2">Jain Pilgrimages</h3>
+            <ul className="space-y-2 text-sm text-muted-foreground text-left">
+              <li>• Palitana</li>
+              <li>• Mount Abu</li>
+              <li>• Shravanabelagola</li>
+              <li>• Ranakpur Temple</li>
+              <li>• Gomateshwara Circuit</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div className="bg-muted/30 p-8 rounded-lg mb-12">
+        <h2 className="text-2xl font-semibold mb-4">Our Religious Tour Services</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h3 className="font-medium mb-3">What We Offer</h3>
+            <ul className="space-y-2">
+              <li className="flex items-center">
+                <span className="mr-2 text-primary">✓</span>
+                <span>Expert guides knowledgeable in religious customs and traditions</span>
+              </li>
+              <li className="flex items-center">
+                <span className="mr-2 text-primary">✓</span>
+                <span>Accommodation near religious sites</span>
+              </li>
+              <li className="flex items-center">
+                <span className="mr-2 text-primary">✓</span>
+                <span>Assistance with religious rituals and ceremonies</span>
+              </li>
+              <li className="flex items-center">
+                <span className="mr-2 text-primary">✓</span>
+                <span>Vegetarian meal options available</span>
+              </li>
+              <li className="flex items-center">
+                <span className="mr-2 text-primary">✓</span>
+                <span>Special arrangements for elderly pilgrims</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="font-medium mb-3">Why Choose Our Religious Tours</h3>
+            <ul className="space-y-2">
+              <li className="flex items-center">
+                <span className="mr-2 text-primary">✓</span>
+                <span>Respectful approach to sacred sites and customs</span>
+              </li>
+              <li className="flex items-center">
+                <span className="mr-2 text-primary">✓</span>
+                <span>Hassle-free arrangements for a peaceful spiritual journey</span>
+              </li>
+              <li className="flex items-center">
+                <span className="mr-2 text-primary">✓</span>
+                <span>Balance of spiritual activities and comfortable travel</span>
+              </li>
+              <li className="flex items-center">
+                <span className="mr-2 text-primary">✓</span>
+                <span>Options for both group and private pilgrimages</span>
+              </li>
+              <li className="flex items-center">
+                <span className="mr-2 text-primary">✓</span>
+                <span>Years of experience handling religious tours</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
       <CTASection
-        title="Ready to Begin Your Spiritual Journey?"
-        subtitle="Let us help you plan your perfect pilgrimage"
-        buttonText="Enquire Now"
+        title="Begin Your Spiritual Journey"
+        description="Contact us today to plan a meaningful pilgrimage to the sacred sites that matter most to you."
+        buttonText="Plan Your Pilgrimage"
         buttonLink="/contact"
-        imageSrc="https://images.unsplash.com/photo-1623743593511-eaa32b8b4035?q=80&w=2000"
+        imageSrc="/public/Destination/Home/Religious-Tours/Char-Dham.jpg"
         align="center"
       />
-    </>
+    </div>
   );
 };
 
