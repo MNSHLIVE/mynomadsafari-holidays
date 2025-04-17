@@ -39,16 +39,16 @@ export function MainNav({
           alt="My Nomadsafari Holidays" 
           className="h-8 w-auto"
         />
-        <span className="font-montserrat font-bold">{siteConfig.name}</span>
+        <span className="font-montserrat font-bold text-brand-green">{siteConfig.name}</span>
       </Link>
 
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild className="md:hidden">
-          <Button variant="ghost" size="sm">
+          <Button variant="ghost" size="sm" className="ml-auto">
             <Menu className="h-5 w-5" />
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="pr-0">
+        <SheetContent side="right" className="pl-0">
           <SheetHeader className="pl-6 pb-10 pt-6">
             <SheetTitle>Menu</SheetTitle>
             <SheetDescription>
@@ -62,7 +62,7 @@ export function MainNav({
                 alt="My Nomadsafari Holidays" 
                 className="h-8 w-auto"
               />
-              <span className="font-montserrat font-bold">{siteConfig.name}</span>
+              <span className="font-montserrat font-bold text-brand-green">{siteConfig.name}</span>
             </Link>
             <Link to="/" className="px-6 py-2">
               Home
@@ -100,21 +100,21 @@ export function MainNav({
 
       <div className="hidden lg:flex items-center gap-4">
         <Link to="/" className={cn(
-          "px-3 py-2 hover:text-primary transition-colors",
+          "px-3 py-2 hover:text-primary transition-colors relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
           location.pathname === "/" ? "font-medium text-primary" : ""
         )}>
           Home
         </Link>
         
         <Link to="/about" className={cn(
-          "px-3 py-2 hover:text-primary transition-colors",
+          "px-3 py-2 hover:text-primary transition-colors relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
           location.pathname === "/about" ? "font-medium text-primary" : ""
         )}>
           About Us
         </Link>
         
         <Link to="/destinations" className={cn(
-          "px-3 py-2 hover:text-primary transition-colors",
+          "px-3 py-2 hover:text-primary transition-colors relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
           location.pathname === "/destinations" ? "font-medium text-primary" : ""
         )}>
           Destinations
@@ -123,21 +123,21 @@ export function MainNav({
         <MainNavMenu />
         
         <Link to="/visa" className={cn(
-          "px-3 py-2 hover:text-primary transition-colors",
+          "px-3 py-2 hover:text-primary transition-colors relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
           location.pathname === "/visa" ? "font-medium text-primary" : ""
         )}>
           Visa
         </Link>
 
         <Link to="/blog" className={cn(
-          "px-3 py-2 hover:text-primary transition-colors",
+          "px-3 py-2 hover:text-primary transition-colors relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
           location.pathname === "/blog" ? "font-medium text-primary" : ""
         )}>
           Blog
         </Link>
         
         <Link to="/contact" className={cn(
-          "px-3 py-2 hover:text-primary transition-colors",
+          "px-3 py-2 hover:text-primary transition-colors relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
           location.pathname === "/contact" ? "font-medium text-primary" : ""
         )}>
           Contact
@@ -145,8 +145,67 @@ export function MainNav({
       </div>
 
       <div className="flex items-center space-x-2">
+        <LanguageSelector />
         <ThemeToggle />
       </div>
+    </div>
+  );
+}
+
+// New language selector component
+function LanguageSelector() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const languages = {
+    domestic: ["Hindi", "Bengali", "Tamil", "Telugu", "Marathi", "Gujarati"],
+    international: ["English", "Spanish", "French", "German", "Arabic", "Chinese"]
+  };
+
+  return (
+    <div className="relative">
+      <Button 
+        variant="ghost" 
+        size="sm" 
+        onClick={() => setIsOpen(!isOpen)} 
+        className="flex items-center space-x-1"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          <path d="M2 12h20"></path>
+        </svg>
+        <span className="hidden sm:inline">Language</span>
+      </Button>
+      
+      {isOpen && (
+        <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-card z-50 overflow-hidden border border-border">
+          <div className="py-1">
+            <div className="px-4 py-2 text-sm font-medium text-muted-foreground">Domestic</div>
+            {languages.domestic.map((lang) => (
+              <button
+                key={`domestic-${lang}`}
+                className="block w-full text-left px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
+                onClick={() => setIsOpen(false)}
+              >
+                {lang}
+              </button>
+            ))}
+            
+            <div className="border-t border-border"></div>
+            
+            <div className="px-4 py-2 text-sm font-medium text-muted-foreground">International</div>
+            {languages.international.map((lang) => (
+              <button
+                key={`international-${lang}`}
+                className="block w-full text-left px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
+                onClick={() => setIsOpen(false)}
+              >
+                {lang}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

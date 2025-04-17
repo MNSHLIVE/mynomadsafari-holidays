@@ -33,13 +33,17 @@ import {
   CreditCard,
   Hotel,
   Bus,
-  UtensilsCrossed
+  UtensilsCrossed,
+  Heart,
+  Mountain,
+  TreePalm
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
+import { honeymoonTours, adventureTours, jungleSafariTours } from "@/components/home/home-data";
 
 const tours = [
   // Featured Door-to-Door Packages
@@ -462,12 +466,12 @@ const Tours = () => {
         </div>
         
         <div className="flex flex-wrap justify-center gap-4 mb-4">
-          <Link to="/tours/religious">
+          <Link to="/religious-tours">
             <Button variant="outline" className="rounded-full">
               Religious Tours
             </Button>
           </Link>
-          <Link to="/tours/group">
+          <Link to="/group-tours">
             <Button variant="outline" className="rounded-full">
               Group Tours
             </Button>
@@ -629,343 +633,71 @@ const Tours = () => {
         </div>
       </section>
 
-      <section className="container mx-auto px-4 mb-16">
-        <div className="flex flex-col lg:flex-row gap-8">
-          <div className="lg:hidden w-full mb-4">
-            <Button 
-              variant="outline" 
-              className="w-full flex items-center justify-between"
-              onClick={() => setFilters(!filters)}
-            >
-              <span className="flex items-center">
-                <Filter className="mr-2 h-4 w-4" />
-                Filter Tours
-              </span>
-              {(selectedRegions.length > 0 || selectedActivities.length > 0 || selectedDuration !== "" || priceRange[0] > 0 || priceRange[1] < 100000) && (
-                <Badge variant="secondary" className="ml-2">
-                  Active Filters
-                </Badge>
-              )}
+      {/* Honeymoon Tours Section */}
+      <section className="container mx-auto px-4 mb-16 bg-muted/30 py-16 rounded-lg">
+        <SectionHeading
+          title="Romantic Honeymoon Packages"
+          subtitle="Begin your journey of love with our specially curated honeymoon packages"
+          tag="Honeymoon Specials"
+          align="center"
+        />
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+          {honeymoonTours.map((tour, index) => (
+            <TourCard
+              key={`honeymoon-${index}`}
+              imageSrc={tour.imageSrc}
+              title={tour.title}
+              location={tour.location}
+              duration={tour.duration}
+              price={tour.price}
+              bestTime={tour.bestTime}
+              packageType={tour.packageType}
+              link={`/tour-itineraries?category=honeymoon`}
+              description={tour.description}
+              className="animate-fade-in"
+            />
+          ))}
+        </div>
+        
+        <div className="text-center mt-10">
+          <Link to="/tour-itineraries?category=honeymoon">
+            <Button variant="outline" className="group">
+              <span>View All Honeymoon Packages</span>
+              <Heart className="ml-2 h-4 w-4 transition-transform group-hover:scale-125" />
             </Button>
-          </div>
-
-          <div className={cn(
-            "lg:w-1/4 space-y-6",
-            { "hidden": !filters, "block": filters, "lg:block": true }
-          )}>
-            <div className="bg-card rounded-lg border border-border/50 shadow-sm p-5">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold">Filters</h3>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={clearFilters}
-                  className="h-8 text-xs"
-                >
-                  Clear All
-                </Button>
-              </div>
-
-              <div className="mb-6">
-                <h4 className="text-sm font-medium mb-3">Price Range (₹)</h4>
-                <div className="px-2">
-                  <Slider
-                    defaultValue={[0, 100000]}
-                    value={priceRange}
-                    onValueChange={setPriceRange}
-                    max={100000}
-                    step={5000}
-                    className="mb-2"
-                  />
-                  <div className="flex items-center justify-between text-sm">
-                    <span>₹{priceRange[0].toLocaleString()}</span>
-                    <span>₹{priceRange[1].toLocaleString()}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mb-6">
-                <h4 className="text-sm font-medium mb-3">Duration</h4>
-                <Select value={selectedDuration} onValueChange={setSelectedDuration}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Any duration" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="any">Any duration</SelectItem>
-                    <SelectItem value="short">Short (1-5 days)</SelectItem>
-                    <SelectItem value="medium">Medium (6-9 days)</SelectItem>
-                    <SelectItem value="long">Long (10+ days)</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="mb-6">
-                <h4 className="text-sm font-medium mb-3">Regions</h4>
-                <div className="space-y-2">
-                  {regions.map((region) => (
-                    <label key={region} className="flex items-center space-x-2 cursor-pointer">
-                      <div 
-                        className={cn(
-                          "w-4 h-4 border rounded flex items-center justify-center",
-                          selectedRegions.includes(region) 
-                            ? "bg-primary border-primary" 
-                            : "border-muted-foreground"
-                        )}
-                        onClick={() => toggleRegion(region)}
-                      >
-                        {selectedRegions.includes(region) && (
-                          <Check className="h-3 w-3 text-primary-foreground" />
-                        )}
-                      </div>
-                      <span className="text-sm">{region}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <h4 className="text-sm font-medium mb-3">Activities</h4>
-                <div className="flex flex-wrap gap-2">
-                  {activities.map((activity) => (
-                    <Badge 
-                      key={activity}
-                      variant={selectedActivities.includes(activity) ? "default" : "outline"}
-                      className="cursor-pointer"
-                      onClick={() => toggleActivity(activity)}
-                    >
-                      {activity}
-                      {selectedActivities.includes(activity) && (
-                        <X className="ml-1 h-3 w-3" onClick={(e) => {
-                          e.stopPropagation();
-                          toggleActivity(activity);
-                        }} />
-                      )}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="lg:w-3/4">
-            <Tabs defaultValue="all" className="w-full">
-              <div className="flex items-center justify-between mb-6">
-                <TabsList>
-                  <TabsTrigger value="all">All Tours</TabsTrigger>
-                  <TabsTrigger value="india">India</TabsTrigger>
-                  <TabsTrigger value="international">International</TabsTrigger>
-                </TabsList>
-                
-                <div className="hidden md:flex items-center gap-2">
-                  <Select defaultValue="recommended">
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Sort by" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="recommended">Recommended</SelectItem>
-                      <SelectItem value="price-low">Price: Low to High</SelectItem>
-                      <SelectItem value="price-high">Price: High to Low</SelectItem>
-                      <SelectItem value="duration-short">Duration: Shortest</SelectItem>
-                      <SelectItem value="duration-long">Duration: Longest</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <TabsContent value="all" className="mt-0">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {filterTours([...tours]).length > 0 ? (
-                    filterTours([...tours]).map((tour) => (
-                      <TourCard
-                        key={tour.id}
-                        imageSrc={tour.imageSrc}
-                        title={tour.title}
-                        location={tour.location}
-                        duration={tour.duration}
-                        price={`Starting from ₹${tour.price.toLocaleString()}`}
-                        bestTime={tour.bestTime}
-                        packageType={tour.packageType as "Budgeted" | "Luxury" | "Premier"}
-                        link="#"
-                        description={tour.description}
-                        itinerary={tour.itinerary}
-                      />
-                    ))
-                  ) : (
-                    <div className="col-span-full py-12 text-center">
-                      <h3 className="text-xl font-semibold mb-2">No tours found</h3>
-                      <p className="text-muted-foreground mb-4">Try adjusting your filters or search criteria</p>
-                      <Button onClick={clearFilters}>Clear All Filters</Button>
-                    </div>
-                  )}
-                </div>
-              </TabsContent>
-
-              <TabsContent value="india" className="mt-0">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {indianTours.length > 0 ? (
-                    indianTours.map((tour) => (
-                      <TourCard
-                        key={tour.id}
-                        imageSrc={tour.imageSrc}
-                        title={tour.title}
-                        location={tour.location}
-                        duration={tour.duration}
-                        price={`Starting from ₹${tour.price.toLocaleString()}`}
-                        bestTime={tour.bestTime}
-                        packageType={tour.packageType as "Budgeted" | "Luxury" | "Premier"}
-                        link="#"
-                        description={tour.description}
-                        itinerary={tour.itinerary}
-                      />
-                    ))
-                  ) : (
-                    <div className="col-span-full py-12 text-center">
-                      <h3 className="text-xl font-semibold mb-2">No tours found</h3>
-                      <p className="text-muted-foreground mb-4">Try adjusting your filters or search criteria</p>
-                      <Button onClick={clearFilters}>Clear All Filters</Button>
-                    </div>
-                  )}
-                </div>
-              </TabsContent>
-
-              <TabsContent value="international" className="mt-0">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {internationalTours.length > 0 ? (
-                    internationalTours.map((tour) => (
-                      <TourCard
-                        key={tour.id}
-                        imageSrc={tour.imageSrc}
-                        title={tour.title}
-                        location={tour.location}
-                        duration={tour.duration}
-                        price={`Starting from ₹${tour.price.toLocaleString()}`}
-                        bestTime={tour.bestTime}
-                        packageType={tour.packageType as "Budgeted" | "Luxury" | "Premier"}
-                        link="#"
-                        description={tour.description}
-                        itinerary={tour.itinerary}
-                      />
-                    ))
-                  ) : (
-                    <div className="col-span-full py-12 text-center">
-                      <h3 className="text-xl font-semibold mb-2">No tours found</h3>
-                      <p className="text-muted-foreground mb-4">Try adjusting your filters or search criteria</p>
-                      <Button onClick={clearFilters}>Clear All Filters</Button>
-                    </div>
-                  )}
-                </div>
-              </TabsContent>
-            </Tabs>
-          </div>
+          </Link>
         </div>
       </section>
 
-      <Dialog open={tourDetailsOpen} onOpenChange={setTourDetailsOpen}>
-        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-          {currentTourDetail && (
-            <div className="space-y-6">
-              <div className="relative h-64 w-full overflow-hidden rounded-lg">
-                <img 
-                  src={currentTourDetail.imageSrc} 
-                  alt={currentTourDetail.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute top-4 right-4">
-                  <Badge className={cn(
-                    currentTourDetail.packageType === "Budgeted" && "bg-blue-100 text-blue-700",
-                    currentTourDetail.packageType === "Luxury" && "bg-purple-100 text-purple-700",
-                    currentTourDetail.packageType === "Premier" && "bg-amber-100 text-amber-700",
-                  )}>
-                    {currentTourDetail.packageType}
-                  </Badge>
-                </div>
-              </div>
-              
-              <div>
-                <h2 className="text-2xl font-bold">{currentTourDetail.title}</h2>
-                <div className="flex flex-wrap gap-4 mt-2">
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <MapPin className="w-4 h-4 mr-1" />
-                    <span>{currentTourDetail.location}</span>
-                  </div>
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <Clock className="w-4 h-4 mr-1" />
-                    <span>{currentTourDetail.duration}</span>
-                  </div>
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <Calendar className="w-4 h-4 mr-1" />
-                    <span>Best time: {currentTourDetail.bestTime}</span>
-                  </div>
-                  <div className="flex items-center text-sm font-medium">
-                    <IndianRupee className="w-4 h-4 mr-1" />
-                    <span>₹{currentTourDetail.price.toLocaleString()}</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Description</h3>
-                <p className="text-muted-foreground">{currentTourDetail.description}</p>
-              </div>
-              
-              {currentTourDetail.itinerary && (
-                <div>
-                  <h3 className="text-lg font-semibold mb-3">Itinerary</h3>
-                  <div className="space-y-4">
-                    {currentTourDetail.itinerary.map((day: any) => (
-                      <div key={day.day} className="p-4 border rounded-lg">
-                        <h4 className="font-medium flex items-center">
-                          <span className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs mr-2">
-                            {day.day}
-                          </span>
-                          {day.title}
-                        </h4>
-                        <p className="text-sm text-muted-foreground mt-1">{day.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">Activities</h3>
-                  <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-                    {currentTourDetail.activities?.map((activity: string, idx: number) => (
-                      <li key={idx}>{activity}</li>
-                    ))}
-                  </ul>
-                </div>
-                
-                {currentTourDetail.included && (
-                  <div>
-                    <h3 className="text-lg font-semibold mb-2">Included in Package</h3>
-                    <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-                      {currentTourDetail.included.map((item: string, idx: number) => (
-                        <li key={idx}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-              
-              <div className="flex justify-between pt-4 border-t">
-                <p className="text-xl font-semibold">Total Price: ₹{currentTourDetail.price.toLocaleString()}</p>
-                <Button>Book Now</Button>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
-
-      <CTASection 
-        title="Create Your Custom Tour"
-        description="Don't see what you're looking for? Let our experts design a personalized tour for you."
-        buttonText="Contact Us"
-        buttonLink="/contact"
-      />
-    </div>
-  );
-};
-
-export default Tours;
+      {/* Adventure Tours Section */}
+      <section className="container mx-auto px-4 mb-16">
+        <SectionHeading
+          title="Adventure Tours"
+          subtitle="For thrill-seekers looking for an adrenaline-filled vacation"
+          tag="Adventure Awaits"
+          align="center"
+        />
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+          {adventureTours.map((tour, index) => (
+            <TourCard
+              key={`adventure-${index}`}
+              imageSrc={tour.imageSrc}
+              title={tour.title}
+              location={tour.location}
+              duration={tour.duration}
+              price={tour.price}
+              bestTime={tour.bestTime}
+              packageType={tour.packageType}
+              link={`/tour-itineraries?category=adventure`}
+              description={tour.description}
+              className="animate-fade-in"
+            />
+          ))}
+        </div>
+        
+        <div className="text-center mt-10">
+          <Link to="/tour-itineraries?category=adventure">
+            <Button variant="outline" className="group">
+              <span>Explore All Adventure

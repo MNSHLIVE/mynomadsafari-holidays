@@ -1,4 +1,3 @@
-
 // Shared data for home page components
 
 export const heroSlides = [
@@ -26,26 +25,26 @@ export const heroSlides = [
 
 export const popularDestinations = [
   {
-    imageSrc: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?q=80&w=800",
+    imageSrc: "/public/Destination/Domestic/main/Rajasthan-main.jpg",
     title: "Rajasthan, India",
     description: "Experience the vibrant culture and majestic forts of the royal state.",
     bestTime: "October - March",
     isPopular: true,
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1602851169118-3159e9696c14?q=80&w=800",
+    imageSrc: "/public/Destination/Domestic/main/Kerala-main.jpg",
     title: "Kerala, India",
     description: "Discover the serene backwaters and lush greenery of God's own country.",
     bestTime: "September - March",
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=800",
+    imageSrc: "/public/Destination/Domestic/main/Goa-main.jpg",
     title: "Goa, India",
     description: "Relax on sandy beaches and enjoy the vibrant nightlife of this coastal paradise.",
     bestTime: "November - February",
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1518002054494-3a6f94352e9d?q=80&w=800",
+    imageSrc: "/public/Destination/International/Main/Bali-main.jpg",
     title: "Bali, Indonesia",
     description: "Experience the perfect blend of beaches, culture, and adventure in this island paradise.",
     bestTime: "April - October",
@@ -54,25 +53,25 @@ export const popularDestinations = [
 
 export const religiousDestinations = [
   {
-    imageSrc: "https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=800",
+    imageSrc: "/public/Destination/Domestic/Tours/Pilgrimage/Hindu/CharDham/CharDham-Main.jpg.jpg",
     title: "Varanasi",
     description: "Experience the spiritual capital of India along the sacred Ganges River.",
     bestTime: "October - March",
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1567948596429-b0a5f3a22c99?q=80&w=800",
+    imageSrc: "/public/Destination/Domestic/main/Uttrakhand-main.jpg",
     title: "Haridwar & Rishikesh",
     description: "Visit the holy gateway to the Himalayas and the yoga capital of the world.",
     bestTime: "September - April",
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1511296255053-90e256ae9d9a?q=80&w=800",
+    imageSrc: "/public/Destination/Domestic/Tours/Pilgrimage/Hindu/VaishnoDevi/VaishnoDevi-Main.jpg.jpg",
     title: "Amritsar",
     description: "Visit the Golden Temple, the holiest shrine in Sikhism.",
     bestTime: "October - March",
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1572450656106-512193c51392?q=80&w=800",
+    imageSrc: "/public/Destination/Domestic/Tours/Pilgrimage/Hindu/SouthIndia/SouthIndia-Main.jpg.jpg",
     title: "Tirupati",
     description: "Visit one of the world's richest and most visited temples in South India.",
     bestTime: "September - February",
@@ -81,25 +80,25 @@ export const religiousDestinations = [
 
 export const internationalDestinations = [
   {
-    imageSrc: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=800",
+    imageSrc: "/public/Destination/International/Main/Dubai-main.jpg",
     title: "Dubai, UAE",
     description: "Experience the luxurious desert metropolis with futuristic architecture.",
     bestTime: "November - March",
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=800",
+    imageSrc: "/public/Destination/International/Main/Singapore-main.jpg",
     title: "Singapore",
     description: "Explore the vibrant city-state with its perfect blend of culture and modernity.",
     bestTime: "February - April",
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=800",
+    imageSrc: "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?q=80&w=800",
     title: "Paris, France",
     description: "Discover the romantic capital of the world with its iconic landmarks.",
     bestTime: "April - June, September - October",
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1538332576228-eb5b4c4de6f5?q=80&w=800",
+    imageSrc: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?q=80&w=800",
     title: "Tokyo, Japan",
     description: "Experience the ultra-modern metropolis with traditional Japanese culture.",
     bestTime: "March - May, September - November",
@@ -108,25 +107,25 @@ export const internationalDestinations = [
 
 export const hillStations = [
   {
-    imageSrc: "https://images.unsplash.com/photo-1505533321630-975218a5f66f?q=80&w=800",
+    imageSrc: "/public/Destination/Domestic/main/Himachal-Main.jpg",
     title: "Shimla",
     description: "Experience the former summer capital of British India in the Himalayas.",
     bestTime: "March - June, September - November",
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=800",
+    imageSrc: "/public/Destination/Domestic/gallery/Nanital.jpg",
     title: "Manali",
     description: "Explore the breathtaking valleys and snow-capped mountains of this Himalayan resort.",
     bestTime: "October - June",
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1589136777052-654282d74f57?q=80&w=800",
+    imageSrc: "/public/Destination/Domestic/gallery/pangong-lake.jpg",
     title: "Darjeeling",
     description: "Visit the Queen of Hills known for its tea plantations and views of Kanchenjunga.",
     bestTime: "September - November, March - May",
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?q=80&w=800",
+    imageSrc: "/public/Destination/Domestic/gallery/Valley-Flowers.jpg",
     title: "Ooty",
     description: "Experience the Queen of Hill Stations in South India with its lush landscapes.",
     bestTime: "October - June",
@@ -135,7 +134,7 @@ export const hillStations = [
 
 export const popularTours = [
   {
-    imageSrc: "https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=800",
+    imageSrc: "/public/Destination/Domestic/Tours/Himachal/Himachal-Adventure.jpg",
     title: "Golden Triangle Tour",
     location: "Delhi, Agra, Jaipur",
     duration: "6 Days",
@@ -144,7 +143,7 @@ export const popularTours = [
     packageType: "Budgeted" as const,
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=800",
+    imageSrc: "/public/Destination/Domestic/Tours/Kerala/Kerala-Backwaters-Luxury.jpg",
     title: "Kerala Backwaters Luxury",
     location: "Kochi, Munnar, Alleppey",
     duration: "7 Days",
@@ -153,7 +152,7 @@ export const popularTours = [
     packageType: "Luxury" as const,
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1580439471383-30ab8d7b0e3c?q=80&w=800",
+    imageSrc: "/public/Destination/Domestic/main/Rajasthan-3.jpg",
     title: "Premier Rajasthan Heritage",
     location: "Jaipur, Udaipur, Jodhpur",
     duration: "10 Days",
@@ -165,7 +164,7 @@ export const popularTours = [
 
 export const religiousTours = [
   {
-    imageSrc: "https://images.unsplash.com/photo-1561361058-c24cecabbe95?q=80&w=800",
+    imageSrc: "/public/Destination/Domestic/Tours/Pilgrimage/Hindu/CharDham/CharDham-Main.jpg.jpg",
     title: "Char Dham Yatra",
     location: "Uttarakhand, India",
     duration: "12 Days",
@@ -180,7 +179,7 @@ export const religiousTours = [
     ]
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=800",
+    imageSrc: "/public/Destination/Domestic/Tours/Pilgrimage/Hindu/DwarkaShirdi/Dwarkashirdi-Main.jpg",
     title: "Varanasi Spiritual Tour",
     location: "Uttar Pradesh, India",
     duration: "4 Days",
@@ -195,7 +194,7 @@ export const religiousTours = [
     ]
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1608021584625-35f8646fe1d6?q=80&w=800",
+    imageSrc: "/public/Destination/Domestic/Tours/Pilgrimage/Hindu/Ashthavinayak/Asthavinayak-Main.jpg",
     title: "Golden Temple & Amritsar",
     location: "Punjab, India",
     duration: "3 Days",
@@ -257,4 +256,142 @@ export const blogPosts = [
     author: "Travel Expert",
     tags: ["Travel Tips", "Visa"],
   },
+];
+
+export const honeymoonTours = [
+  {
+    imageSrc: "/public/Destination/International/Tours/Bali/Bali-Bliss.jpg",
+    title: "Romantic Bali Retreat",
+    location: "Bali, Indonesia",
+    duration: "7 Days",
+    price: "Starting from ₹85,000",
+    bestTime: "April - October",
+    packageType: "Luxury" as const,
+    description: "A perfect romantic escape for newlyweds featuring private villa stays, couple spa treatments, and candlelit beach dinners.",
+  },
+  {
+    imageSrc: "/public/Destination/Domestic/main/Kerala-main.jpg",
+    title: "Kerala Romance",
+    location: "Kerala, India",
+    duration: "6 Days",
+    price: "Starting from ₹45,000",
+    bestTime: "September - March",
+    packageType: "Luxury" as const,
+    description: "Enjoy private houseboat cruises through backwaters, romantic hillside resorts in Munnar, and sunset beach experiences.",
+  },
+  {
+    imageSrc: "/public/Destination/International/Main/Maldives-main.jpg",
+    title: "Maldives Paradise",
+    location: "Maldives",
+    duration: "5 Days",
+    price: "Starting from ₹110,000",
+    bestTime: "November - April",
+    packageType: "Premier" as const,
+    description: "Overwater bungalows, crystal clear waters, private island experiences, and underwater dining create unforgettable memories.",
+  }
+];
+
+export const adventureTours = [
+  {
+    imageSrc: "/public/Destination/Domestic/gallery/Rishikesh-Rafting.jpg",
+    title: "Rishikesh Adventure",
+    location: "Uttarakhand, India",
+    duration: "5 Days",
+    price: "Starting from ₹25,000",
+    bestTime: "September - June",
+    packageType: "Budgeted" as const,
+    description: "Experience white water rafting, bungee jumping, cliff jumping, and trekking in the adventure capital of India.",
+  },
+  {
+    imageSrc: "/public/Destination/Domestic/main/Ladhak-main.jpg",
+    title: "Ladakh Bike Expedition",
+    location: "Ladakh, India",
+    duration: "10 Days",
+    price: "Starting from ₹45,000",
+    bestTime: "June - September",
+    packageType: "Premier" as const,
+    description: "A thrilling motorcycle journey through the highest motorable roads, stunning passes, and remote villages of Ladakh.",
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=800",
+    title: "Nepal Everest Base Camp Trek",
+    location: "Nepal",
+    duration: "14 Days",
+    price: "Starting from ₹65,000",
+    bestTime: "March - May, September - November",
+    packageType: "Premier" as const,
+    description: "Trek to the base of the world's highest mountain through stunning Himalayan landscapes and Sherpa villages.",
+  }
+];
+
+export const jungleSafariTours = [
+  {
+    imageSrc: "/public/Destination/Domestic/gallery/Jim-corbett.jpg",
+    title: "Jim Corbett Tiger Safari",
+    location: "Uttarakhand, India",
+    duration: "3 Days",
+    price: "Starting from ₹18,000",
+    bestTime: "November - June",
+    packageType: "Budgeted" as const,
+    description: "Explore India's oldest national park with jeep safaris to spot tigers, elephants, and diverse wildlife in their natural habitat.",
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1535338454770-8be927b5a00b?q=80&w=800",
+    title: "Ranthambore Tiger Reserve",
+    location: "Rajasthan, India",
+    duration: "4 Days",
+    price: "Starting from ₹22,000",
+    bestTime: "October - June",
+    packageType: "Luxury" as const,
+    description: "Visit one of India's best tiger reserves with guided safaris, luxurious jungle lodges, and the historic Ranthambore Fort.",
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=800",
+    title: "Kaziranga Rhino Safari",
+    location: "Assam, India",
+    duration: "4 Days",
+    price: "Starting from ₹24,000",
+    bestTime: "November - April",
+    packageType: "Luxury" as const,
+    description: "Encounter the one-horned rhinoceros, wild elephants, and tigers in this UNESCO World Heritage Site.",
+  }
+];
+
+export const europeanDestinations = [
+  {
+    imageSrc: "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?q=80&w=800",
+    title: "Paris, France",
+    description: "Experience the romance, history, and culture of the City of Light with its iconic landmarks.",
+    bestTime: "April - June, September - October"
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=800",
+    title: "Rome, Italy",
+    description: "Discover ancient history, remarkable art, and world-class cuisine in the Eternal City.",
+    bestTime: "April - May, September - October"
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?q=80&w=800",
+    title: "Santorini, Greece",
+    description: "Visit the stunning white-washed buildings, blue-domed churches, and breathtaking views of this Greek island paradise.",
+    bestTime: "April - October"
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1565622832101-358788927c53?q=80&w=800",
+    title: "Swiss Alps, Switzerland",
+    description: "Experience scenic mountain views, charming villages, and world-class skiing in this Alpine wonderland.",
+    bestTime: "December - April (for skiing), June - September (for hiking)"
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=800",
+    title: "London, United Kingdom",
+    description: "Explore the historic landmarks, cultural attractions, and vibrant neighborhoods of this global metropolis.",
+    bestTime: "May - September"
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1561704061-7b246d29c9a9?q=80&w=800",
+    title: "Barcelona, Spain",
+    description: "Enjoy the unique architecture, beautiful beaches, and lively atmosphere of this Mediterranean gem.",
+    bestTime: "April - June, September - October"
+  }
 ];
