@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -242,7 +243,7 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
     e.preventDefault();
     
     if (!destination) {
-      toast.error("Please select a destination");
+      toast.error("Please enter a destination");
       return;
     }
 
@@ -260,6 +261,34 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
       currency: 'INR',
       maximumFractionDigits: 0,
     }).format(amount);
+  };
+
+  const handleDaysChange = (increment: boolean) => {
+    setDays(prevDays => {
+      const newValue = increment ? prevDays + 1 : prevDays - 1;
+      return Math.max(1, Math.min(30, newValue));
+    });
+  };
+
+  const handleAdultsChange = (increment: boolean) => {
+    setAdults(prevAdults => {
+      const newValue = increment ? prevAdults + 1 : prevAdults - 1;
+      return Math.max(1, Math.min(20, newValue));
+    });
+  };
+
+  const handleChildrenChange = (increment: boolean) => {
+    setChildren(prevChildren => {
+      const newValue = increment ? prevChildren + 1 : prevChildren - 1;
+      return Math.max(0, Math.min(10, newValue));
+    });
+  };
+
+  const handleRoomsChange = (increment: boolean) => {
+    setRooms(prevRooms => {
+      const newValue = increment ? prevRooms + 1 : prevRooms - 1;
+      return Math.max(1, Math.min(10, newValue));
+    });
   };
 
   return (
@@ -289,21 +318,13 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
                       <MapPin className="h-4 w-4 text-primary" />
                       Destination
                     </Label>
-                    <Select
+                    <Input
+                      id="destination"
+                      type="text"
                       value={destination}
-                      onValueChange={setDestination}
-                    >
-                      <SelectTrigger id="destination">
-                        <SelectValue placeholder="Select destination" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {(calculatorType === "domestic" ? domesticDestinations : internationalDestinations).map((dest) => (
-                          <SelectItem key={dest} value={dest}>
-                            {dest}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      onChange={(e) => setDestination(e.target.value)}
+                      placeholder="Enter destination name"
+                    />
                   </div>
 
                   <div>
@@ -311,14 +332,39 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
                       <Calendar className="h-4 w-4 text-primary" />
                       Duration (Days)
                     </Label>
-                    <Input
-                      id="days"
-                      type="number"
-                      min={1}
-                      max={30}
-                      value={days}
-                      onChange={(e) => setDays(parseInt(e.target.value) || 1)}
-                    />
+                    <div className="flex">
+                      <div className="flex-1 flex items-center">
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          size="icon" 
+                          className="rounded-r-none"
+                          onClick={() => handleDaysChange(false)}
+                          disabled={days <= 1}
+                        >
+                          -
+                        </Button>
+                        <Input
+                          id="days"
+                          type="number"
+                          min={1}
+                          max={30}
+                          value={days}
+                          onChange={(e) => setDays(parseInt(e.target.value) || 1)}
+                          className="rounded-none text-center"
+                        />
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          size="icon" 
+                          className="rounded-l-none"
+                          onClick={() => handleDaysChange(true)}
+                          disabled={days >= 30}
+                        >
+                          +
+                        </Button>
+                      </div>
+                    </div>
                   </div>
 
                   <div>
@@ -356,25 +402,71 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="adults" className="text-xs">Adults</Label>
-                        <Input
-                          id="adults"
-                          type="number"
-                          min={1}
-                          max={20}
-                          value={adults}
-                          onChange={(e) => setAdults(parseInt(e.target.value) || 1)}
-                        />
+                        <div className="flex">
+                          <Button 
+                            type="button" 
+                            variant="outline" 
+                            size="icon" 
+                            className="rounded-r-none"
+                            onClick={() => handleAdultsChange(false)}
+                            disabled={adults <= 1}
+                          >
+                            -
+                          </Button>
+                          <Input
+                            id="adults"
+                            type="number"
+                            min={1}
+                            max={20}
+                            value={adults}
+                            onChange={(e) => setAdults(parseInt(e.target.value) || 1)}
+                            className="rounded-none text-center"
+                          />
+                          <Button 
+                            type="button" 
+                            variant="outline" 
+                            size="icon" 
+                            className="rounded-l-none"
+                            onClick={() => handleAdultsChange(true)}
+                            disabled={adults >= 20}
+                          >
+                            +
+                          </Button>
+                        </div>
                       </div>
                       <div>
                         <Label htmlFor="children" className="text-xs">Children (4-12 yrs)</Label>
-                        <Input
-                          id="children"
-                          type="number"
-                          min={0}
-                          max={10}
-                          value={children}
-                          onChange={(e) => setChildren(parseInt(e.target.value) || 0)}
-                        />
+                        <div className="flex">
+                          <Button 
+                            type="button" 
+                            variant="outline" 
+                            size="icon" 
+                            className="rounded-r-none"
+                            onClick={() => handleChildrenChange(false)}
+                            disabled={children <= 0}
+                          >
+                            -
+                          </Button>
+                          <Input
+                            id="children"
+                            type="number"
+                            min={0}
+                            max={10}
+                            value={children}
+                            onChange={(e) => setChildren(parseInt(e.target.value) || 0)}
+                            className="rounded-none text-center"
+                          />
+                          <Button 
+                            type="button" 
+                            variant="outline" 
+                            size="icon" 
+                            className="rounded-l-none"
+                            onClick={() => handleChildrenChange(true)}
+                            disabled={children >= 10}
+                          >
+                            +
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -441,14 +533,37 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
                     <Label htmlFor="rooms" className="flex items-center gap-1 mb-1.5">
                       Number of Rooms
                     </Label>
-                    <Input
-                      id="rooms"
-                      type="number"
-                      min={1}
-                      max={10}
-                      value={rooms}
-                      onChange={(e) => setRooms(parseInt(e.target.value) || 1)}
-                    />
+                    <div className="flex">
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        size="icon" 
+                        className="rounded-r-none"
+                        onClick={() => handleRoomsChange(false)}
+                        disabled={rooms <= 1}
+                      >
+                        -
+                      </Button>
+                      <Input
+                        id="rooms"
+                        type="number"
+                        min={1}
+                        max={10}
+                        value={rooms}
+                        onChange={(e) => setRooms(parseInt(e.target.value) || 1)}
+                        className="rounded-none text-center"
+                      />
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        size="icon" 
+                        className="rounded-l-none"
+                        onClick={() => handleRoomsChange(true)}
+                        disabled={rooms >= 10}
+                      >
+                        +
+                      </Button>
+                    </div>
                     {adults > 4 && (
                       <p className="text-xs text-amber-600 mt-1">
                         2+ rooms recommended for {adults} adults
