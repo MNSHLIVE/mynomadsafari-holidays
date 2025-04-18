@@ -311,128 +311,124 @@ export const activities = [
 // Define Jungle Safari Tours
 export const jungleSafariTours = [
   {
-    imageSrc: "https://images.unsplash.com/photo-1544985361-b420d7a77f51?q=80&w=800",
-    title: "Jim Corbett National Park Safari",
+    imageSrc: "/public/Destination/Domestic/gallery/Jim-corbett.jpg",
+    title: "Jim Corbett Tiger Safari",
     location: "Uttarakhand, India",
     duration: "4 Days",
     price: "19999",
     bestTime: "November - June",
     packageType: "Luxury" as "Budgeted" | "Luxury" | "Premier",
-    description: "Experience India's oldest national park with our guided tiger tracking safaris and jungle expeditions."
+    description: "Experience India's oldest national park with our guided tiger tracking safaris and jungle expeditions.",
+    itinerary: [
+      { day: 1, title: "Arrival & Evening Safari", description: "Arrive at Jim Corbett, check-in to jungle resort. Evening jeep safari in Bijrani zone." },
+      { day: 2, title: "Morning & Evening Safaris", description: "Early morning safari in Dhikala zone. After lunch, evening safari in Durga Devi zone." },
+      { day: 3, title: "Full Day Safari Experience", description: "Full day canter safari in Dhikala zone with packed meals. Best chances for tiger sighting." },
+      { day: 4, title: "Final Safari & Departure", description: "Early morning safari in Bijrani zone. After breakfast, departure with fond memories." }
+    ]
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1503656142023-618e7d1f435a?q=80&w=800",
-    title: "Tadoba National Park Tiger Trail",
+    imageSrc: "https://images.unsplash.com/photo-1544985361-b420d7a77f51?q=80&w=800",
+    title: "Tadoba Tiger Trail",
     location: "Maharashtra, India",
     duration: "3 Days",
     price: "17999",
     bestTime: "October - June",
-    packageType: "Budgeted" as "Budgeted" | "Luxury" | "Premier",
-    description: "Explore one of central India's tiger reserves with high chances of tiger sightings and diverse wildlife."
+    packageType: "Premier" as "Budgeted" | "Luxury" | "Premier",
+    description: "100% Tiger sighting guarantee at Tadoba, Maharashtra's largest national park with highest tiger density.",
+    itinerary: [
+      { day: 1, title: "Welcome to Tiger Territory", description: "Arrive at Nagpur, transfer to Tadoba. Evening safari in core zone." },
+      { day: 2, title: "Double Safari Day", description: "Morning and evening safaris in different zones. High probability of tiger sightings." },
+      { day: 3, title: "Final Safari & Return", description: "Morning safari followed by departure to Nagpur." }
+    ]
   },
   {
     imageSrc: "https://images.unsplash.com/photo-1566497472397-8a3c761b7498?q=80&w=800",
-    title: "Kaziranga Rhino Expedition",
+    title: "Kaziranga Wildlife Explorer",
     location: "Assam, India",
-    duration: "5 Days",
+    duration: "4 Days",
     price: "23999",
     bestTime: "November - April",
     packageType: "Premier" as "Budgeted" | "Luxury" | "Premier",
-    description: "Discover the UNESCO site home to two-thirds of the world's one-horned rhinoceros population."
-  },
-  {
-    imageSrc: "https://images.unsplash.com/photo-1582470925033-bed67bb89af7?q=80&w=800",
-    title: "Kanha & Pench Tiger Tour",
-    location: "Madhya Pradesh, India",
-    duration: "6 Days",
-    price: "25999",
-    bestTime: "October - June",
-    packageType: "Luxury" as "Budgeted" | "Luxury" | "Premier",
-    description: "Combine two of India's premier tiger reserves on this dual safari adventure through central India."
-  },
-  {
-    imageSrc: "https://images.unsplash.com/photo-1576324567084-69fc7772b131?q=80&w=800",
-    title: "Bandhavgarh Tiger Safari",
-    location: "Madhya Pradesh, India",
-    duration: "4 Days",
-    price: "21999",
-    bestTime: "October - June",
-    packageType: "Luxury" as "Budgeted" | "Luxury" | "Premier",
-    description: "Explore the park with one of India's highest tiger densities for exceptional wildlife viewing."
-  },
-  {
-    imageSrc: "https://images.unsplash.com/photo-1603041668665-998ebf1d4f4d?q=80&w=800",
-    title: "Bharatpur Bird Sanctuary Excursion",
-    location: "Rajasthan, India",
-    duration: "3 Days",
-    price: "14999",
-    bestTime: "October - March",
-    packageType: "Budgeted" as "Budgeted" | "Luxury" | "Premier", 
-    description: "Witness one of the world's greatest bird watching destinations with over 350 bird species."
+    description: "Discover the UNESCO site home to two-thirds of the world's one-horned rhinoceros population.",
+    itinerary: [
+      { day: 1, title: "Arrival & Orientation", description: "Arrive at Guwahati, transfer to Kaziranga. Evening nature walk and briefing." },
+      { day: 2, title: "Central Range Safari", description: "Early morning elephant safari followed by jeep safari in Central Range." },
+      { day: 3, title: "Eastern Range Explorer", description: "Full day exploration of Eastern Range, known for rhinos and water birds." },
+      { day: 4, title: "Western Range & Departure", description: "Morning safari in Western Range, afternoon departure to Guwahati." }
+    ]
   }
 ];
 
 // Define Adventure Tours
 export const adventureTours = [
   {
-    imageSrc: "https://images.unsplash.com/photo-1572845471572-8163485f89e8?q=80&w=800",
-    title: "Leh Ladakh Bike Expedition",
-    location: "Ladakh, India",
-    duration: "11 Days",
-    price: "42999",
-    bestTime: "June - September",
-    packageType: "Premier" as "Budgeted" | "Luxury" | "Premier",
-    description: "Conquer the world's highest motorable passes on a motorcycle adventure through the Himalayan moonscape."
-  },
-  {
-    imageSrc: "https://images.unsplash.com/photo-1580981433573-c5479e797843?q=80&w=800",
-    title: "Manali to Leh Cycling Expedition",
-    location: "Himachal & Ladakh, India",
-    duration: "14 Days",
-    price: "53999",
-    bestTime: "July - September",
-    packageType: "Premier" as "Budgeted" | "Luxury" | "Premier",
-    description: "Challenge yourself with this epic cycling journey across multiple high-altitude passes of the Himalayas."
-  },
-  {
-    imageSrc: "https://images.unsplash.com/photo-1525087740718-304971c5e6a4?q=80&w=800",
-    title: "Spiti Valley Adventure",
-    location: "Himachal Pradesh, India",
-    duration: "9 Days",
-    price: "35999",
-    bestTime: "July - September",
-    packageType: "Luxury" as "Budgeted" | "Luxury" | "Premier",
-    description: "Explore the remote Buddhist kingdom with stunning landscapes, ancient monasteries, and unique cultural experiences."
-  },
-  {
-    imageSrc: "https://images.unsplash.com/photo-1571401835393-8c5f35328320?q=80&w=800",
-    title: "Rishikesh River Rafting Escape",
+    imageSrc: "/public/Destination/Domestic/gallery/Rishikesh-Rafting.jpg",
+    title: "Rishikesh River Rafting Adventure",
     location: "Uttarakhand, India",
     duration: "4 Days",
     price: "15999",
     bestTime: "September - June",
     packageType: "Budgeted" as "Budgeted" | "Luxury" | "Premier",
-    description: "Experience thrilling white water rafting on the sacred Ganges River with yoga and camping."
+    description: "Experience thrilling white water rafting on the sacred Ganges River with camping and yoga.",
+    itinerary: [
+      { day: 1, title: "Arrival & Basic Training", description: "Arrive in Rishikesh, check-in to camp. Evening safety briefing and training." },
+      { day: 2, title: "Beginner Rapids", description: "Start with 16km stretch covering Grade II & III rapids. Evening bonfire and camping." },
+      { day: 3, title: "Advanced Rapids", description: "24km advanced rafting covering Grade III & IV rapids including famous 'Golf Course' rapid." },
+      { day: 4, title: "Yoga & Departure", description: "Morning yoga session, leisure time for local exploration, and departure." }
+    ]
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1527631746610-bca00a040d60?q=80&w=800",
-    title: "Himalayan Trekking Adventure",
-    location: "Uttarakhand, India",
-    duration: "7 Days",
-    price: "22999",
+    imageSrc: "https://images.unsplash.com/photo-1572845471572-8163485f89e8?q=80&w=800",
+    title: "Ladakh Bike Expedition",
+    location: "Ladakh, India",
+    duration: "11 Days",
+    price: "42999",
+    bestTime: "June - September",
+    packageType: "Premier" as "Budgeted" | "Luxury" | "Premier",
+    description: "Epic motorcycle journey through world's highest motorable passes and stunning landscapes.",
+    itinerary: [
+      { day: 1, title: "Arrival in Leh", description: "Acclimatization day in Leh (11,500 ft), bike allocation and briefing." },
+      { day: 2, title: "Local Monasteries", description: "Short ride to Hemis and Thiksey monasteries for acclimatization." },
+      { day: 3, title: "Khardung La Pass", description: "Ride to world's highest motorable pass (18,380 ft) and Nubra Valley." },
+      { day: 4, title: "Nubra Valley", description: "Explore Diskit Monastery, sand dunes, and double-humped camels." },
+      { day: 5, title: "Pangong Lake", description: "Ride to stunning Pangong Lake (14,270 ft) via Shyok Valley." },
+      { day: 6, title: "Return to Leh", description: "Return ride to Leh via Chang La Pass (17,688 ft)." },
+      { day: 7, title: "Departure", description: "Final breakfast and departure with lifetime memories." }
+    ]
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1525087740718-304971c5e6a4?q=80&w=800",
+    title: "Spiti Valley Expedition",
+    location: "Himachal Pradesh, India",
+    duration: "10 Days",
+    price: "35999",
+    bestTime: "July - September",
+    packageType: "Luxury" as "Budgeted" | "Luxury" | "Premier",
+    description: "Journey through the remote Buddhist kingdom with stunning landscapes and ancient monasteries.",
+    itinerary: [
+      { day: 1, title: "Start from Manali", description: "Drive from Manali to Kaza via Rohtang Pass and Kunzum La." },
+      { day: 2, title: "Kaza Acclimatization", description: "Local sightseeing and acclimatization in Kaza (12,500 ft)." },
+      { day: 3, title: "Key Monastery", description: "Visit Key Monastery and Kibber Village (14,200 ft)." },
+      { day: 4, title: "Chandrataal Lake", description: "Drive to stunning Chandrataal Lake (14,100 ft). Camp under stars." },
+      { day: 5, title: "Return to Manali", description: "Return journey to Manali via different route for new views." }
+    ]
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1571401835393-8c5f35328320?q=80&w=800",
+    title: "Himachal Adventure Camp",
+    location: "Himachal Pradesh, India",
+    duration: "5 Days",
+    price: "18999",
     bestTime: "April - June, September - November",
     packageType: "Budgeted" as "Budgeted" | "Luxury" | "Premier",
-    description: "Trek through pristine mountain landscapes to alpine meadows and panoramic Himalayan vistas."
-  },
-  {
-    imageSrc: "https://images.unsplash.com/photo-1544551763-92ab472cad5d?q=80&w=800",
-    title: "Andaman Scuba Adventure",
-    location: "Andaman Islands, India",
-    duration: "6 Days",
-    price: "32999",
-    bestTime: "October - May",
-    packageType: "Luxury" as "Budgeted" | "Luxury" | "Premier",
-    description: "Discover the underwater paradise with scuba diving, snorkeling, and sea walking in crystal clear waters."
+    description: "Multi-activity camping experience in the beautiful Himalayan valleys.",
+    itinerary: [
+      { day: 1, title: "Camp Setup", description: "Arrive at basecamp in Solang Valley. Evening bonfire and briefing." },
+      { day: 2, title: "Paragliding Day", description: "Paragliding experience and rock climbing basics." },
+      { day: 3, title: "Trekking Day", description: "Day trek to nearby peak with packed lunch. Evening rappelling." },
+      { day: 4, title: "River Activities", description: "River crossing and zip lining activities. Evening cultural show." },
+      { day: 5, title: "Departure", description: "Morning yoga, leisure time, and departure." }
+    ]
   }
 ];
 
