@@ -4,21 +4,13 @@ import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/section-heading";
 import TourCard from "@/components/tour-card";
 import { Heart, Mountain, TreePalm } from "lucide-react";
+import { BaseTourType } from "./data/tour-core";
 
 interface ThemeTourSectionProps {
   title: string;
   subtitle: string;
   tag: string;
-  tours: Array<{
-    imageSrc: string;
-    title: string;
-    location: string;
-    duration: string;
-    price: string | number;
-    bestTime: string;
-    packageType: "Budgeted" | "Luxury" | "Premier";
-    description?: string;
-  }>;
+  tours: BaseTourType[];
   categorySlug: string;
   actionText: string;
   actionIcon: "heart" | "mountain" | "tree";
@@ -70,6 +62,7 @@ const ThemeTourSection = ({
             packageType={tour.packageType}
             link={`/tour-itineraries?category=${categorySlug}`}
             description={tour.description}
+            itinerary={tour.itinerary}
             className="animate-fade-in"
           />
         ))}
