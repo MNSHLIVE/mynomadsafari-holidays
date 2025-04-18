@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -52,6 +51,17 @@ const HOTEL_RATES = {
 const TRANSPORT_RATES = {
   sedan: 16,
   suv: 20,
+  tempo9: 24,
+  tempo16: 32,
+  minibus: 45,
+};
+
+const getVehicleType = (adults: number) => {
+  if (adults >= 16) return "minibus";
+  if (adults >= 9) return "tempo16";
+  if (adults >= 7) return "tempo9";
+  if (adults >= 5) return "suv";
+  return "sedan";
 };
 
 const INTERNATIONAL_BASE_COSTS = {
@@ -205,7 +215,8 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
       const totalHotelCost = perNightCost * days;
       setHotelCost(totalHotelCost);
 
-      const transportRate = TRANSPORT_RATES[transportType];
+      const vehicleType = getVehicleType(adults);
+      const transportRate = TRANSPORT_RATES[vehicleType];
       const totalTransportCost = distance * transportRate;
       setTransportCost(totalTransportCost);
 
@@ -587,6 +598,9 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
                         <SelectContent>
                           <SelectItem value="sedan">Sedan Car</SelectItem>
                           <SelectItem value="suv">SUV</SelectItem>
+                          <SelectItem value="tempo9">Tempo 9</SelectItem>
+                          <SelectItem value="tempo16">Tempo 16</SelectItem>
+                          <SelectItem value="minibus">Minibus</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>

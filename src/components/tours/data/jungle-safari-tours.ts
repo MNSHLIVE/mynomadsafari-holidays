@@ -6,16 +6,27 @@ export const jungleSafariTours: BaseTourType[] = [
     imageSrc: "/public/Destination/Domestic/gallery/Jim-corbett.jpg",
     title: "Jim Corbett Tiger Safari",
     location: "Uttarakhand, India",
-    duration: "4 Days",
+    duration: "3 Days",
     price: "19999",
     bestTime: "November - June",
     packageType: "Luxury",
     description: "Experience India's oldest national park with our guided tiger tracking safaris and jungle expeditions.",
     itinerary: [
-      { day: 1, title: "Arrival & Evening Safari", description: "Arrive at Jim Corbett, check-in to jungle resort. Evening jeep safari in Bijrani zone." },
-      { day: 2, title: "Morning & Evening Safaris", description: "Early morning safari in Dhikala zone. After lunch, evening safari in Durga Devi zone." },
-      { day: 3, title: "Full Day Safari Experience", description: "Full day canter safari in Dhikala zone with packed meals. Best chances for tiger sighting." },
-      { day: 4, title: "Final Safari & Departure", description: "Early morning safari in Bijrani zone. After breakfast, departure with fond memories." }
+      { 
+        day: 1, 
+        title: "Arrival & Jungle Vibes", 
+        description: "Arrive at Ramnagar, check-in at a jungle resort. Evening at leisure with a nature walk or local village visit." 
+      },
+      { 
+        day: 2, 
+        title: "Jeep Safari & Wildlife Exploration", 
+        description: "Early morning Jeep Safari in Bijrani or Dhikala zone. Spot Bengal tigers, elephants, deer, and exotic birds. Return to resort for lunch. Optional evening safari or visit the Corbett Museum." 
+      },
+      { 
+        day: 3, 
+        title: "River Fun & Departure", 
+        description: "Morning by the Kosi River – relax or try a short trek. Breakfast and check-out. Head back with memories of the wild." 
+      }
     ]
   },
   {
@@ -28,25 +39,22 @@ export const jungleSafariTours: BaseTourType[] = [
     packageType: "Premier",
     description: "100% Tiger sighting guarantee at Tadoba, Maharashtra's largest national park with highest tiger density.",
     itinerary: [
-      { day: 1, title: "Welcome to Tiger Territory", description: "Arrive at Nagpur, transfer to Tadoba. Evening safari in core zone." },
-      { day: 2, title: "Double Safari Day", description: "Morning and evening safaris in different zones. High probability of tiger sightings." },
-      { day: 3, title: "Final Safari & Return", description: "Morning safari followed by departure to Nagpur." }
-    ]
-  },
-  {
-    imageSrc: "https://images.unsplash.com/photo-1566497472397-8a3c761b7498?q=80&w=800",
-    title: "Kaziranga Wildlife Explorer",
-    location: "Assam, India",
-    duration: "4 Days",
-    price: "23999",
-    bestTime: "November - April",
-    packageType: "Premier",
-    description: "Discover the UNESCO site home to two-thirds of the world's one-horned rhinoceros population.",
-    itinerary: [
-      { day: 1, title: "Arrival & Orientation", description: "Arrive at Guwahati, transfer to Kaziranga. Evening nature walk and briefing." },
-      { day: 2, title: "Central Range Safari", description: "Early morning elephant safari followed by jeep safari in Central Range." },
-      { day: 3, title: "Eastern Range Explorer", description: "Full day exploration of Eastern Range, known for rhinos and water birds." },
-      { day: 4, title: "Western Range & Departure", description: "Morning safari in Western Range, afternoon departure to Guwahati." }
+      { 
+        day: 1, 
+        title: "Welcome to the Wild", 
+        description: "Arrive at Tadoba, check-in to a forest lodge. Relax with a sunset walk around the buffer zone. Enjoy tribal cuisine and cultural interaction." 
+      },
+      { 
+        day: 2, 
+        title: "Into the Jungle", 
+        description: "Early morning Jeep Safari in the Moharli or Kolara gate. Spot tigers, sloth bears, leopards, wild dogs, and birds. Return for lunch and rest. Evening buffer zone safari or lake visit for bird watching." 
+      },
+      { 
+        day: 3, 
+        title: "Nature Connect & Goodbye", 
+        description: "Morning walk or photography session. Breakfast and check-out with unforgettable wildlife memories." 
+      }
     ]
   }
 ];
+
