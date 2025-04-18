@@ -14,7 +14,7 @@ interface ThemeTourSectionProps {
     title: string;
     location: string;
     duration: string;
-    price: string;
+    price: string | number;
     bestTime: string;
     packageType: "Budgeted" | "Luxury" | "Premier";
     description?: string;

@@ -1,4 +1,3 @@
-
 // Tour data for the Tours page
 export const tours = [
   // Featured Door-to-Door Packages
@@ -309,5 +308,133 @@ export const activities = [
   "Water Sports"
 ];
 
+// Define Jungle Safari Tours
+export const jungleSafariTours = [
+  {
+    imageSrc: "https://images.unsplash.com/photo-1544985361-b420d7a77f51?q=80&w=800",
+    title: "Jim Corbett National Park Safari",
+    location: "Uttarakhand, India",
+    duration: "4 Days",
+    price: "19999",
+    bestTime: "November - June",
+    packageType: "Luxury" as "Budgeted" | "Luxury" | "Premier",
+    description: "Experience India's oldest national park with our guided tiger tracking safaris and jungle expeditions."
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1503656142023-618e7d1f435a?q=80&w=800",
+    title: "Tadoba National Park Tiger Trail",
+    location: "Maharashtra, India",
+    duration: "3 Days",
+    price: "17999",
+    bestTime: "October - June",
+    packageType: "Budgeted" as "Budgeted" | "Luxury" | "Premier",
+    description: "Explore one of central India's tiger reserves with high chances of tiger sightings and diverse wildlife."
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1566497472397-8a3c761b7498?q=80&w=800",
+    title: "Kaziranga Rhino Expedition",
+    location: "Assam, India",
+    duration: "5 Days",
+    price: "23999",
+    bestTime: "November - April",
+    packageType: "Premier" as "Budgeted" | "Luxury" | "Premier",
+    description: "Discover the UNESCO site home to two-thirds of the world's one-horned rhinoceros population."
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1582470925033-bed67bb89af7?q=80&w=800",
+    title: "Kanha & Pench Tiger Tour",
+    location: "Madhya Pradesh, India",
+    duration: "6 Days",
+    price: "25999",
+    bestTime: "October - June",
+    packageType: "Luxury" as "Budgeted" | "Luxury" | "Premier",
+    description: "Combine two of India's premier tiger reserves on this dual safari adventure through central India."
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1576324567084-69fc7772b131?q=80&w=800",
+    title: "Bandhavgarh Tiger Safari",
+    location: "Madhya Pradesh, India",
+    duration: "4 Days",
+    price: "21999",
+    bestTime: "October - June",
+    packageType: "Luxury" as "Budgeted" | "Luxury" | "Premier",
+    description: "Explore the park with one of India's highest tiger densities for exceptional wildlife viewing."
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1603041668665-998ebf1d4f4d?q=80&w=800",
+    title: "Bharatpur Bird Sanctuary Excursion",
+    location: "Rajasthan, India",
+    duration: "3 Days",
+    price: "14999",
+    bestTime: "October - March",
+    packageType: "Budgeted" as "Budgeted" | "Luxury" | "Premier", 
+    description: "Witness one of the world's greatest bird watching destinations with over 350 bird species."
+  }
+];
+
+// Define Adventure Tours
+export const adventureTours = [
+  {
+    imageSrc: "https://images.unsplash.com/photo-1572845471572-8163485f89e8?q=80&w=800",
+    title: "Leh Ladakh Bike Expedition",
+    location: "Ladakh, India",
+    duration: "11 Days",
+    price: "42999",
+    bestTime: "June - September",
+    packageType: "Premier" as "Budgeted" | "Luxury" | "Premier",
+    description: "Conquer the world's highest motorable passes on a motorcycle adventure through the Himalayan moonscape."
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1580981433573-c5479e797843?q=80&w=800",
+    title: "Manali to Leh Cycling Expedition",
+    location: "Himachal & Ladakh, India",
+    duration: "14 Days",
+    price: "53999",
+    bestTime: "July - September",
+    packageType: "Premier" as "Budgeted" | "Luxury" | "Premier",
+    description: "Challenge yourself with this epic cycling journey across multiple high-altitude passes of the Himalayas."
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1525087740718-304971c5e6a4?q=80&w=800",
+    title: "Spiti Valley Adventure",
+    location: "Himachal Pradesh, India",
+    duration: "9 Days",
+    price: "35999",
+    bestTime: "July - September",
+    packageType: "Luxury" as "Budgeted" | "Luxury" | "Premier",
+    description: "Explore the remote Buddhist kingdom with stunning landscapes, ancient monasteries, and unique cultural experiences."
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1571401835393-8c5f35328320?q=80&w=800",
+    title: "Rishikesh River Rafting Escape",
+    location: "Uttarakhand, India",
+    duration: "4 Days",
+    price: "15999",
+    bestTime: "September - June",
+    packageType: "Budgeted" as "Budgeted" | "Luxury" | "Premier",
+    description: "Experience thrilling white water rafting on the sacred Ganges River with yoga and camping."
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1527631746610-bca00a040d60?q=80&w=800",
+    title: "Himalayan Trekking Adventure",
+    location: "Uttarakhand, India",
+    duration: "7 Days",
+    price: "22999",
+    bestTime: "April - June, September - November",
+    packageType: "Budgeted" as "Budgeted" | "Luxury" | "Premier",
+    description: "Trek through pristine mountain landscapes to alpine meadows and panoramic Himalayan vistas."
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1544551763-92ab472cad5d?q=80&w=800",
+    title: "Andaman Scuba Adventure",
+    location: "Andaman Islands, India",
+    duration: "6 Days",
+    price: "32999",
+    bestTime: "October - May",
+    packageType: "Luxury" as "Budgeted" | "Luxury" | "Premier",
+    description: "Discover the underwater paradise with scuba diving, snorkeling, and sea walking in crystal clear waters."
+  }
+];
+
 // Import these from their original location
-export { honeymoonTours, adventureTours, jungleSafariTours } from "@/components/home/home-data";
+export { honeymoonTours } from "@/components/home/home-data";
