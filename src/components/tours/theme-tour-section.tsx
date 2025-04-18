@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/section-heading";
 import TourCard from "@/components/tour-card";
 import { Heart, Mountain, TreePalm } from "lucide-react";
-import { BaseTourType, formatPrice } from "./data/tour-core";
+import { formatPrice } from "./data/tour-core";
+import type { BaseTourType } from "./data/tour-core";
 
 interface ThemeTourSectionProps {
   title: string;
