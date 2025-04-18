@@ -9,7 +9,7 @@ export const tours = [
     duration: "7 Days",
     price: 159999,
     bestTime: "October - April",
-    packageType: "Luxury",
+    packageType: "Luxury" as "Budgeted" | "Luxury" | "Premier",
     country: "UAE",
     region: "Middle East",
     description: "Experience the magic of Dubai with this exclusive family package. From doorstep pickup to airport transfers, everything is taken care of for a hassle-free vacation.",
@@ -35,7 +35,7 @@ export const tours = [
     duration: "6 Days",
     price: 145999,
     bestTime: "Year Round",
-    packageType: "Luxury",
+    packageType: "Luxury" as "Budgeted" | "Luxury" | "Premier",
     country: "Singapore",
     region: "Southeast Asia",
     description: "Discover the beauty of Singapore with our complete package that takes care of every detail from your doorstep to Singapore and back.",
@@ -60,7 +60,7 @@ export const tours = [
     duration: "8 Days",
     price: 135999,
     bestTime: "April - October",
-    packageType: "Luxury",
+    packageType: "Luxury" as "Budgeted" | "Luxury" | "Premier",
     country: "Indonesia",
     region: "Southeast Asia",
     description: "A carefully crafted door-to-door Bali experience with personal assistance throughout the journey. Perfect for couples and honeymooners.",
@@ -77,7 +77,7 @@ export const tours = [
     duration: "9 Days",
     price: 179999,
     bestTime: "November - March",
-    packageType: "Luxury",
+    packageType: "Luxury" as "Budgeted" | "Luxury" | "Premier",
     country: "Thailand",
     region: "Southeast Asia",
     description: "Experience the best of Thailand with our comprehensive door-to-door package perfect for families seeking adventure and relaxation.",
@@ -96,7 +96,7 @@ export const tours = [
     duration: "4 Days",
     price: 21332,
     bestTime: "November - February",
-    packageType: "Budgeted",
+    packageType: "Budgeted" as "Budgeted" | "Luxury" | "Premier",
     country: "India",
     region: "West India",
     description: "Enjoy the pristine beaches, vibrant nightlife, and Portuguese heritage of India's favorite coastal destination.",
@@ -119,7 +119,7 @@ export const tours = [
     duration: "6 Days",
     price: 31998,
     bestTime: "September - March",
-    packageType: "Luxury",
+    packageType: "Luxury" as "Budgeted" | "Luxury" | "Premier",
     country: "India",
     region: "South India",
     description: "Experience the serene backwaters of Kerala in luxury houseboats, explore tea plantations, and enjoy Ayurvedic treatments.",
@@ -144,7 +144,7 @@ export const tours = [
     duration: "7 Days",
     price: 37331,
     bestTime: "October - March",
-    packageType: "Premier",
+    packageType: "Premier" as "Budgeted" | "Luxury" | "Premier",
     country: "India",
     region: "North India",
     description: "A luxury journey through the beautiful landscapes of Himachal Pradesh with premium accommodations and exclusive experiences.",
@@ -172,7 +172,7 @@ export const tours = [
     duration: "7 Days",
     price: "73885",
     bestTime: "October - April",
-    packageType: "Luxury",
+    packageType: "Luxury" as "Budgeted" | "Luxury" | "Premier",
     country: "UAE",
     region: "Middle East",
     description: "Experience the glamour of Dubai with this exclusive package. Visit the iconic Burj Khalifa, enjoy desert safaris, and shop at the Dubai Mall.",
@@ -222,7 +222,7 @@ export const tours = [
     duration: "6 Days",
     price: "63330",
     bestTime: "Year Round",
-    packageType: "Luxury",
+    packageType: "Luxury" as "Budgeted" | "Luxury" | "Premier",
     country: "Singapore",
     region: "Southeast Asia",
     description: "Discover the island city-state of Singapore with its futuristic architecture, lush gardens, and diverse culture.",
@@ -267,7 +267,7 @@ export const tours = [
     duration: "8 Days",
     price: "84440",
     bestTime: "April - October",
-    packageType: "Luxury",
+    packageType: "Luxury" as "Budgeted" | "Luxury" | "Premier",
     country: "Indonesia",
     region: "Southeast Asia",
     description: "Experience the paradise island of Bali with its stunning beaches, rice terraces, and spiritual retreats."
@@ -280,7 +280,7 @@ export const tours = [
     duration: "9 Days",
     price: "94995",
     bestTime: "November - March",
-    packageType: "Luxury",
+    packageType: "Luxury" as "Budgeted" | "Luxury" | "Premier",
     country: "Thailand",
     region: "Southeast Asia",
     description: "Experience the best of Thailand from the bustling capital to idyllic beaches and stunning limestone cliffs."
@@ -436,5 +436,66 @@ export const adventureTours = [
   }
 ];
 
-// Import these from their original location
-export { honeymoonTours } from "@/components/home/home-data";
+// Define honeymoon tours here rather than importing from home-data
+export const honeymoonTours = [
+  {
+    imageSrc: "https://images.unsplash.com/photo-1578530332818-6ba472e67b9f?q=80&w=800",
+    title: "Romantic Bali Getaway",
+    location: "Bali, Indonesia",
+    duration: "7 Days",
+    price: "65999",
+    bestTime: "April - October",
+    packageType: "Luxury" as "Budgeted" | "Luxury" | "Premier",
+    description: "Experience paradise with your loved one in the exotic island of Bali."
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1586500036706-41963de24d8f?q=80&w=800",
+    title: "Maldives Honeymoon Bliss",
+    location: "Maldives",
+    duration: "6 Days",
+    price: "95999",
+    bestTime: "November - April",
+    packageType: "Premier" as "Budgeted" | "Luxury" | "Premier",
+    description: "Unwind in overwater villas and pristine beaches in this tropical paradise."
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?q=80&w=800",
+    title: "Santorini Romance",
+    location: "Santorini, Greece",
+    duration: "8 Days",
+    price: "85999",
+    bestTime: "April - October",
+    packageType: "Luxury" as "Budgeted" | "Luxury" | "Premier",
+    description: "Enjoy breathtaking sunsets and whitewashed buildings on this romantic Greek island."
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1595815771614-ade85d14f9f0?q=80&w=800",
+    title: "Majestic Rajasthan",
+    location: "Rajasthan, India",
+    duration: "9 Days",
+    price: "32999",
+    bestTime: "October - March",
+    packageType: "Luxury" as "Budgeted" | "Luxury" | "Premier",
+    description: "Experience royal luxury in palaces and forts across the romantic cities of Rajasthan."
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?q=80&w=800",
+    title: "Swiss Alps Romance",
+    location: "Switzerland",
+    duration: "8 Days",
+    price: "89999",
+    bestTime: "May - October",
+    packageType: "Premier" as "Budgeted" | "Luxury" | "Premier",
+    description: "Explore the stunning Swiss Alps and picturesque towns on this magical honeymoon."
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1533088339130-9ca255c7ddcd?q=80&w=800",
+    title: "Goa Beach Honeymoon",
+    location: "Goa, India",
+    duration: "5 Days",
+    price: "24999",
+    bestTime: "October - March",
+    packageType: "Budgeted" as "Budgeted" | "Luxury" | "Premier",
+    description: "Enjoy sun-kissed beaches, romantic sunsets, and vibrant nightlife in Goa."
+  }
+];

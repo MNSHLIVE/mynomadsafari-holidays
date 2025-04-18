@@ -65,7 +65,7 @@ const ThemeTourSection = ({
             title={tour.title}
             location={tour.location}
             duration={tour.duration}
-            price={tour.price}
+            price={String(tour.price)}
             bestTime={tour.bestTime}
             packageType={tour.packageType}
             link={`/tour-itineraries?category=${categorySlug}`}
