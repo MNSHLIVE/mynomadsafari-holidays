@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import ToursSearchHeader from "@/components/tours/tours-search-header";
 import DoorToDoorSection from "@/components/tours/door-to-door-section";
@@ -7,7 +6,8 @@ import {
   honeymoonTours, 
   adventureTours, 
   jungleSafariTours,
-  doorToDoorTours
+  doorToDoorTours,
+  hillStationTours
 } from "@/components/tours/data";
 
 const Tours = () => {
@@ -21,6 +21,18 @@ const Tours = () => {
       />
       
       <DoorToDoorSection doorToDoorPackages={doorToDoorTours.slice(0, 3)} />
+
+      {/* Hill Station Tours Section */}
+      <ThemeTourSection
+        title="Summer Special Hill Station Tours"
+        subtitle="Escape the heat with our specially curated hill station packages"
+        tag="Summer Escapes"
+        tours={hillStationTours}
+        categorySlug="hill-stations"
+        actionText="View All Hill Station Tours"
+        actionIcon="mountain"
+        className="bg-muted/30 py-16 rounded-lg"
+      />
 
       {/* Honeymoon Tours Section */}
       <ThemeTourSection
