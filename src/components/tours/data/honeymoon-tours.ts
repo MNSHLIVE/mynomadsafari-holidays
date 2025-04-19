@@ -63,3 +63,6 @@ export const honeymoonTours: BaseTourType[] = [
     description: "Enjoy sun-kissed beaches, romantic sunsets, and vibrant nightlife in Goa."
   }
 ];
+
+// Add note about honeymoon inclusions at the end of the file
+export const honeymoonNote = "Note: Special honeymoon inclusions such as bed decoration, chocolate cake, and surprise gifts are available at additional charges.";
