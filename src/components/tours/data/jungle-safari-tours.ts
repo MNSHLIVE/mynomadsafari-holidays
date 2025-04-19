@@ -91,7 +91,7 @@ export const jungleSafariTours: BaseTourType[] = [
     duration: "4 Days",
     price: "21999",
     bestTime: "September - June",
-    packageType: "Adventure",
+    packageType: "Premier",
     description: "Experience thrilling white water rafting on the Ganges and enjoy adventure sports in the adventure capital of India.",
     itinerary: [
       {

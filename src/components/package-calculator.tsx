@@ -91,7 +91,7 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
   const [rooms, setRooms] = useState(1);
   const [adults, setAdults] = useState(2);
   const [children, setChildren] = useState(0);
-  const [transportType, setTransportType] = useState<"sedan" | "suv">("sedan");
+  const [transportType, setTransportType] = useState<"sedan" | "suv" | "tempo9" | "tempo16" | "minibus">("sedan");
   const [distance, setDistance] = useState(750);
   const [packageType, setPackageType] = useState<"Budgeted" | "Luxury" | "Premier">("Budgeted");
   const [travelDate, setTravelDate] = useState<Date | undefined>(undefined);
@@ -595,7 +595,7 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
                       </Label>
                       <Select
                         value={transportType}
-                        onValueChange={(value) => setTransportType(value as "sedan" | "suv")}
+                        onValueChange={(value) => setTransportType(value as "sedan" | "suv" | "tempo9" | "tempo16" | "minibus")}
                       >
                         <SelectTrigger id="transportType">
                           <SelectValue placeholder="Select transport type" />
