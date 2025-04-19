@@ -1,4 +1,3 @@
-
 // Shared data for home page components
 
 export const heroSlides = [
@@ -26,7 +25,7 @@ export const heroSlides = [
 
 export const popularDestinations = [
   {
-    imageSrc: "/public/Destination/Domestic/main/Rajasthan-main.jpg",
+    imageSrc: "/Destination/Domestic/main/Rajasthan-main.jpg",
     title: "Rajasthan, India",
     description: "Experience the vibrant culture and majestic forts of the royal state.",
     bestTime: "October - March",
@@ -54,7 +53,7 @@ export const popularDestinations = [
 
 export const religiousDestinations = [
   {
-    imageSrc: "/public/Destination/Domestic/Tours/Pilgrimage/Hindu/CharDham/CharDham-Main.jpg.jpg",
+    imageSrc: "/Destination/Home/Religious-Places/Varanasi-religious.jpg",
     title: "Varanasi",
     description: "Experience the spiritual capital of India along the sacred Ganges River.",
     bestTime: "October - March",
@@ -108,25 +107,25 @@ export const internationalDestinations = [
 
 export const hillStations = [
   {
-    imageSrc: "/public/Destination/Domestic/main/Himachal-Main.jpg",
+    imageSrc: "/Destination/Home/Hill-Stations/Shimla-hill.jpg",
     title: "Shimla",
     description: "Experience the former summer capital of British India in the Himalayas.",
     bestTime: "March - June, September - November",
   },
   {
-    imageSrc: "/public/Destination/Domestic/gallery/Rishikesh-Rafting.jpg", // Changed from Nanital.jpg to Rishikesh-Rafting.jpg as a placeholder for Manali
+    imageSrc: "/Destination/Home/Hill-Stations/Manali-hill.jpg",
     title: "Manali",
     description: "Explore the breathtaking valleys and snow-capped mountains of this Himalayan resort.",
     bestTime: "October - June",
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=800", // Changed to a more appropriate Darjeeling-like image
+    imageSrc: "/Destination/Home/Hill-Stations/Darjeeling-hill.jpg",
     title: "Darjeeling",
     description: "Visit the Queen of Hills known for its tea plantations and views of Kanchenjunga.",
     bestTime: "September - November, March - May",
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=800", // Changed to a south Indian hill landscape without snow
+    imageSrc: "/Destination/Home/Hill-Stations/Ooty-hill.jpg",
     title: "Ooty",
     description: "Experience the Queen of Hill Stations in South India with its lush landscapes.",
     bestTime: "October - June",
@@ -165,7 +164,7 @@ export const popularTours = [
 
 export const religiousTours = [
   {
-    imageSrc: "/public/Destination/Domestic/Tours/Pilgrimage/Hindu/CharDham/CharDham-Main.jpg.jpg",
+    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/CharDham/CharDham-Main.jpg.jpg",
     title: "Char Dham Yatra",
     location: "Uttarakhand, India",
     duration: "12 Days",
@@ -180,7 +179,7 @@ export const religiousTours = [
     ]
   },
   {
-    imageSrc: "/public/Destination/Home/Religious-Tours/Varanasi-Spiritual.jpg", // Changed to correct Varanasi image
+    imageSrc: "/Destination/Home/Religious-Tours/Varanasi-Spiritual.jpg",
     title: "Varanasi Spiritual Tour",
     location: "Uttar Pradesh, India",
     duration: "4 Days",
@@ -195,7 +194,7 @@ export const religiousTours = [
     ]
   },
   {
-    imageSrc: "/public/Destination/Home/Religious-Places/Amritsar-religious.jpg", // Changed to correct Golden Temple image
+    imageSrc: "/Destination/Home/Religious-Places/Amritsar-religious.jpg",
     title: "Golden Temple & Amritsar",
     location: "Punjab, India",
     duration: "3 Days",
