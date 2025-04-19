@@ -31,16 +31,22 @@ export const CalendarSelector = ({ travelDate, setTravelDate }: CalendarSelector
     }
   };
 
+  const handleButtonClick = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent form submission on button click
+    setCalendarOpen(true);
+  };
+
   return (
     <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
       <PopoverTrigger asChild>
         <Button
+          type="button" // Explicitly set type to button to prevent form submission
           variant={"outline"}
           className={cn(
             "w-full justify-start text-left font-normal",
             !travelDate && "text-muted-foreground"
           )}
-          onClick={() => setCalendarOpen(true)}
+          onClick={handleButtonClick}
           onKeyDown={handleCalendarKeyDown}
           tabIndex={0}
           role="combobox"

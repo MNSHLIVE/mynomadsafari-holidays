@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { format } from "date-fns";
 import { ContactFields } from "./contact-fields";
 import { CalendarSelector } from "./calendar-selector";
 import { TravelerSelector } from "./traveler-selector";
@@ -60,6 +61,9 @@ export const QueryFormContent = ({ destinationName, onClose }: QueryFormContentP
     setIsSubmitted(false);
   };
 
+  // Format the travel date for display in the thank you message
+  const formattedTravelDate = travelDate ? format(travelDate, "MMMM dd, yyyy") : "Not specified";
+
   if (isSubmitted) {
     return (
       <div className="py-6">
@@ -69,6 +73,9 @@ export const QueryFormContent = ({ destinationName, onClose }: QueryFormContentP
           <AlertDescription className="space-y-4">
             <p>
               We've received your request about {destinationName} and will contact you at {email} within 24 hours with a customized itinerary.
+            </p>
+            <p>
+              <span className="font-medium">Travel Date:</span> {formattedTravelDate}
             </p>
             <p className="text-sm text-muted-foreground">
               If you have any urgent questions, please feel free to contact us directly.
