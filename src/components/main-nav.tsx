@@ -1,153 +1,76 @@
-
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-
+import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { MainNavMenu } from "@/components/main-nav-menu";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { ModeToggle } from "./mode-toggle";
+import { useEffect, useState } from "react";
 
-// Create a simple site config here instead of importing it
-const siteConfig = {
-  name: "My Nomadsafari Holidays"
-};
+export function MainNav() {
+  const [isScrolled, setIsScrolled] = useState(false);
 
-interface MainNavProps {
-  className?: string;
-}
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
 
-export function MainNav({
-  className,
-}: MainNavProps) {
-  const [open, setOpen] = useState(false);
-  const location = useLocation();
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <div className={cn("flex h-16 items-center space-x-4 sm:space-x-6 lg:justify-between lg:space-x-0", className)}>
-      <Link to="/" className="flex items-center space-x-2">
-        <img 
-          src="/lovable-uploads/3e515213-741f-498e-add3-8b8f70b7fe4c.png" 
-          alt="My Nomadsafari Holidays" 
-          className="h-8 w-auto"
-        />
-        <span className="font-montserrat font-bold text-brand-green">{siteConfig.name}</span>
-      </Link>
-
-      <div className="hidden lg:flex items-center gap-4">
-        <Link to="/" className={cn(
-          "px-3 py-2 hover:text-primary transition-colors relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
-          location.pathname === "/" ? "font-medium text-primary" : ""
-        )}>
-          Home
-        </Link>
-        
-        <Link to="/about" className={cn(
-          "px-3 py-2 hover:text-primary transition-colors relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
-          location.pathname === "/about" ? "font-medium text-primary" : ""
-        )}>
-          About Us
-        </Link>
-        
-        <Link to="/destinations" className={cn(
-          "px-3 py-2 hover:text-primary transition-colors relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
-          location.pathname === "/destinations" ? "font-medium text-primary" : ""
-        )}>
-          Destinations
-        </Link>
-        
-        <MainNavMenu />
-        
-        <Link to="/visa" className={cn(
-          "px-3 py-2 hover:text-primary transition-colors relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
-          location.pathname === "/visa" ? "font-medium text-primary" : ""
-        )}>
-          Visa
-        </Link>
-
-        <Link to="/blog" className={cn(
-          "px-3 py-2 hover:text-primary transition-colors relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
-          location.pathname === "/blog" ? "font-medium text-primary" : ""
-        )}>
-          Blog
-        </Link>
-        
-        <Link to="/contact" className={cn(
-          "px-3 py-2 hover:text-primary transition-colors relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
-          location.pathname === "/contact" ? "font-medium text-primary" : ""
-        )}>
-          Contact
-        </Link>
+    <header className={cn(
+      "sticky top-0 z-50 w-full transition-all duration-200",
+      isScrolled ? "bg-background/80 backdrop-blur-md border-b" : "bg-transparent"
+    )}>
+      <div className="container flex h-16 items-center justify-between">
+        <div className="flex items-center gap-6 md:gap-10">
+          <NavLink to="/" className="flex items-center space-x-2">
+            <span className="font-bold text-xl md:text-2xl">WanderLuxe</span>
+          </NavLink>
+          <nav className="hidden md:flex gap-6">
+            <NavLink to="/" className={({isActive}) => 
+              isActive ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"
+            }>
+              Home
+            </NavLink>
+            <NavLink to="/destinations" className={({isActive}) => 
+              isActive ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"
+            }>
+              Destinations
+            </NavLink>
+            <NavLink to="/packages" className={({isActive}) => 
+              isActive ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"
+            }>
+              Packages
+            </NavLink>
+            <NavLink to="/visa" className={({isActive}) => 
+              isActive ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"
+            }>
+              Visa
+            </NavLink>
+            <NavLink to="/about" className={({isActive}) => 
+              isActive ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"
+            }>
+              About
+            </NavLink>
+            <NavLink to="/contact" className={({isActive}) => 
+              isActive ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"
+            }>
+              Contact
+            </NavLink>
+            <NavLink to="/crm" className={({isActive}) => 
+              isActive ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"
+            }>
+              CRM
+            </NavLink>
+          </nav>
+        </div>
+        <div className="flex items-center gap-2">
+          <ModeToggle />
+          <Button asChild>
+            <NavLink to="/contact">Book Now</NavLink>
+          </Button>
+        </div>
       </div>
-
-      <div className="flex ml-auto items-center space-x-2">
-        <ThemeToggle />
-        
-        {/* Mobile Menu Button - Now on the right side */}
-        <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger asChild className="lg:hidden">
-            <Button variant="ghost" size="sm">
-              <Menu className="h-5 w-5" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="right" className="pl-0">
-            <SheetHeader className="pl-6 pb-10 pt-6">
-              <SheetTitle>Menu</SheetTitle>
-              <SheetDescription>
-                Explore our site and discover new destinations and tours.
-              </SheetDescription>
-            </SheetHeader>
-            <div className="grid gap-4 py-4">
-              <Link to="/" className="flex items-center space-x-2">
-                <img 
-                  src="/lovable-uploads/3e515213-741f-498e-add3-8b8f70b7fe4c.png" 
-                  alt="My Nomadsafari Holidays" 
-                  className="h-8 w-auto"
-                />
-                <span className="font-montserrat font-bold text-brand-green">{siteConfig.name}</span>
-              </Link>
-              <Link to="/" className="px-6 py-2">
-                Home
-              </Link>
-              <Link to="/about" className="px-6 py-2">
-                About Us
-              </Link>
-              <Link to="/destinations" className="px-6 py-2">
-                Destinations
-              </Link>
-              <Link to="/tour-itineraries" className="px-6 py-2">
-                Tour Itineraries
-              </Link>
-              <Link to="/religious-tours" className="px-6 py-2">
-                Religious Tours
-              </Link>
-              <Link to="/group-tours" className="px-6 py-2">
-                Group Tours
-              </Link>
-              <Link to="/visa" className="px-6 py-2">
-                Visa
-              </Link>
-              <Link to="/book-tickets" className="px-6 py-2">
-                Book Tickets
-              </Link>
-              <Link to="/blog" className="px-6 py-2">
-                Blog
-              </Link>
-              <Link to="/contact" className="px-6 py-2">
-                Contact
-              </Link>
-            </div>
-          </SheetContent>
-        </Sheet>
-      </div>
-    </div>
+    </header>
   );
 }

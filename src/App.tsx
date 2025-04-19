@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   createBrowserRouter,
@@ -25,6 +24,7 @@ import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Refund from "./pages/Refund";
 import Faq from "./pages/Faq";
+import CRM from "./pages/CRM";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -44,6 +44,7 @@ const router = createBrowserRouter(
       <Route path="privacy" element={<Privacy />} />
       <Route path="refund" element={<Refund />} />
       <Route path="faq" element={<Faq />} />
+      <Route path="/crm" element={<CRM />} />
     </Route>
   )
 );
