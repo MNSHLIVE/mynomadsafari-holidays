@@ -33,6 +33,7 @@ import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { useToast } from "@/components/ui/use-toast";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const visaServices = [
   {
@@ -86,6 +87,7 @@ const formSchema = z.object({
 const Visa = () => {
   const { toast } = useToast();
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submittedEmail, setSubmittedEmail] = useState("");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -99,12 +101,18 @@ const Visa = () => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+    setSubmittedEmail(values.email);
     setIsSubmitted(true);
     toast({
       title: "Visa inquiry submitted",
       description: "We'll get back to you within 24 hours.",
     });
   }
+
+  const resetForm = () => {
+    form.reset();
+    setIsSubmitted(false);
+  };
 
   return (
     <>
@@ -197,13 +205,16 @@ const Visa = () => {
                   <div className="mx-auto w-16 h-16 flex items-center justify-center bg-primary/10 rounded-full">
                     <CheckCircle className="h-8 w-8 text-primary" />
                   </div>
-                  <h3 className="text-xl font-semibold">Inquiry Submitted!</h3>
-                  <p className="text-muted-foreground">
-                    Thank you for your inquiry. Our visa expert will contact you within 24 hours.
-                  </p>
+                  <h3 className="text-xl font-semibold">Thank You for Your Visa Inquiry!</h3>
+                  <Alert className="bg-primary/5 border-primary/20 text-left">
+                    <AlertDescription className="space-y-3">
+                      <p>We've received your visa assistance request and will contact you at <span className="font-medium">{submittedEmail}</span> within 24 hours.</p>
+                      <p>Our visa experts will review your requirements and provide personalized guidance for your application process.</p>
+                    </AlertDescription>
+                  </Alert>
                   <Button 
                     className="mt-4" 
-                    onClick={() => setIsSubmitted(false)}
+                    onClick={resetForm}
                   >
                     Submit Another Inquiry
                   </Button>

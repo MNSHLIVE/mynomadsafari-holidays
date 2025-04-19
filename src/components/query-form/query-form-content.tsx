@@ -8,6 +8,8 @@ import { CalendarSelector } from "./calendar-selector";
 import { TravelerSelector } from "./traveler-selector";
 import { PackageSelector } from "./package-selector";
 import { SpecialRequirements } from "./special-requirements";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { CheckCircle } from "lucide-react";
 
 interface QueryFormContentProps {
   destinationName: string;
@@ -24,6 +26,7 @@ export const QueryFormContent = ({ destinationName, onClose }: QueryFormContentP
   const [packageType, setPackageType] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,11 +38,13 @@ export const QueryFormContent = ({ destinationName, onClose }: QueryFormContentP
       return;
     }
 
+    // Here would be the Supabase integration code to store form data
+
     setTimeout(() => {
       toast.success("Thank you for your inquiry! Our team will contact you shortly.");
       setIsSubmitting(false);
-      onClose();
-      resetForm();
+      setIsSubmitted(true);
+      // onClose(); - We don't immediately close so user can see the thank you message
     }, 1500);
   };
 
@@ -52,7 +57,31 @@ export const QueryFormContent = ({ destinationName, onClose }: QueryFormContentP
     setChildren(0);
     setPackageType("");
     setMessage("");
+    setIsSubmitted(false);
   };
+
+  if (isSubmitted) {
+    return (
+      <div className="py-6">
+        <Alert className="bg-primary/5 border-primary/20">
+          <CheckCircle className="h-5 w-5 text-primary" />
+          <AlertTitle className="text-lg font-medium mb-2">Thank you for your inquiry!</AlertTitle>
+          <AlertDescription className="space-y-4">
+            <p>
+              We've received your request about {destinationName} and will contact you at {email} within 24 hours with a customized itinerary.
+            </p>
+            <p className="text-sm text-muted-foreground">
+              If you have any urgent questions, please feel free to contact us directly.
+            </p>
+            <div className="flex gap-4 mt-4">
+              <Button onClick={onClose} variant="outline">Close</Button>
+              <Button onClick={resetForm}>Submit Another Inquiry</Button>
+            </div>
+          </AlertDescription>
+        </Alert>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 py-4">
