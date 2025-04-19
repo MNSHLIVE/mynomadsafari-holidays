@@ -9,6 +9,13 @@ export type TourDay = {
   description: string;
 };
 
+// Additional information for tours
+export interface TourAdditionalInfo {
+  howToReach?: string[];
+  experiences?: string[];
+  [key: string]: any; // Allow for other properties
+}
+
 export interface BaseTourType {
   imageSrc: string;
   title: string;
@@ -19,6 +26,7 @@ export interface BaseTourType {
   packageType: PackageType;
   description?: string;
   itinerary?: TourDay[];
+  additionalInfo?: TourAdditionalInfo;
 }
 
 export interface DetailedTourType extends BaseTourType {
