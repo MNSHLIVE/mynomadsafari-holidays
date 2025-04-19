@@ -38,10 +38,10 @@ export function MainNav() {
             }>
               Destinations
             </NavLink>
-            <NavLink to="/packages" className={({isActive}) => 
+            <NavLink to="/tours" className={({isActive}) => 
               isActive ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"
             }>
-              Packages
+              Tours
             </NavLink>
             <NavLink to="/visa" className={({isActive}) => 
               isActive ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"

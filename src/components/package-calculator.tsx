@@ -200,6 +200,11 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
     } else if (rooms > 1 && adults <= 2) {
       setRooms(1);
     }
+    
+    const recommendedVehicle = getVehicleType(adults);
+    if (calculatorType === "domestic") {
+      setTransportType(recommendedVehicle as any);
+    }
   }, [adults]);
 
   useEffect(() => {
@@ -628,6 +633,20 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
                       <span>Total Estimated Cost:</span>
                       <span className="text-primary">{formatCurrency(totalCost)}</span>
                     </div>
+                    {calculatorType === "domestic" && adults >= 5 && (
+                      <div className="text-sm mt-2 bg-primary/5 p-2 rounded">
+                        <p className="font-medium">Recommended Vehicle: {transportType === "tempo9" ? "9-seater Tempo Traveller" : 
+                                                   transportType === "tempo16" ? "16-seater Tempo Traveller" : 
+                                                   transportType === "minibus" ? "Mini Bus" : 
+                                                   transportType === "suv" ? "SUV" : "Sedan"}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {adults >= 16 ? "For large groups (16+ people)" : 
+                           adults >= 9 ? "For medium groups (9-15 people)" : 
+                           adults >= 7 ? "For groups of 7-8 people" : 
+                           "Based on your group size"}
+                        </p>
+                      </div>
+                    )}
                   </div>
                   <div className="bg-primary/5 p-4 rounded-lg">
                     <h4 className="font-medium mb-2">Package Type: <span className="font-bold">{packageType}</span></h4>

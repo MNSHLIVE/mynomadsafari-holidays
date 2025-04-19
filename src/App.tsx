@@ -1,9 +1,11 @@
+
 import React from "react";
 import {
   createBrowserRouter,
   RouterProvider,
   Route,
   createRoutesFromElements,
+  Navigate,
 } from "react-router-dom";
 import { ThemeProvider } from "@/components/theme-provider"
 
@@ -33,6 +35,7 @@ const router = createBrowserRouter(
       <Route path="about" element={<AboutUs />} />
       <Route path="destinations" element={<Destinations />} />
       <Route path="tours" element={<Tours />} />
+      <Route path="packages" element={<Navigate to="/tours" replace />} />
       <Route path="religious-tours" element={<ReligiousTours />} />
       <Route path="group-tours" element={<GroupTours />} />
       <Route path="tour-itineraries" element={<TourItineraries />} />
