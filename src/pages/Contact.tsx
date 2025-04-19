@@ -231,8 +231,13 @@ const Contact = () => {
                   <div>
                     <h3 className="font-medium">Our Location</h3>
                     <address className="text-muted-foreground not-italic">
-                      123 Travel Street, Wanderlust City<br />
-                      Mumbai, Maharashtra 10001
+                      <strong>Mumbai Office:</strong><br />
+                      My Nomadsafari Holidays, 102 T.V Tower<br />
+                      Badlapur East, Thane, Mumbai - 421503<br /><br />
+                      <strong>Delhi Office:</strong><br />
+                      My Nomadsafari Holidays, Dwarka Sec 3<br />
+                      New Delhi - 110078<br />
+                      Contact: Deven Deshpande
                     </address>
                   </div>
                 </div>
@@ -243,8 +248,8 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-medium">Phone</h3>
-                    <p className="text-muted-foreground">+1 (555) 123-4567</p>
-                    <p className="text-muted-foreground">+1 (555) 987-6543</p>
+                    <p className="text-muted-foreground">Mumbai: +91 9968682200</p>
+                    <p className="text-muted-foreground">Delhi: +91 7042910449</p>
                   </div>
                 </div>
                 
@@ -254,8 +259,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-medium">Email</h3>
-                    <p className="text-muted-foreground">info@wanderluxetravel.com</p>
-                    <p className="text-muted-foreground">support@wanderluxetravel.com</p>
+                    <p className="text-muted-foreground">info@mynomadsafariholidays.in</p>
                   </div>
                 </div>
                 

@@ -1,4 +1,3 @@
-
 import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -65,11 +64,8 @@ export function MainNav() {
             </NavLink>
           </nav>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center">
           <ThemeToggle />
-          <Button asChild>
-            <NavLink to="/contact">Book Now</NavLink>
-          </Button>
         </div>
       </div>
     </header>
