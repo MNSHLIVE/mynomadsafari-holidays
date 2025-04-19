@@ -2,7 +2,7 @@
 import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "./theme-toggle"; // Changed from ModeToggle to ThemeToggle
+import { ThemeToggle } from "./theme-toggle"; 
 import { useEffect, useState } from "react";
 
 export function MainNav() {
@@ -25,7 +25,12 @@ export function MainNav() {
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-6 md:gap-10">
           <NavLink to="/" className="flex items-center space-x-2">
-            <span className="font-bold text-xl md:text-2xl">WanderLuxe</span>
+            <img 
+              src="/lovable-uploads/3e515213-741f-498e-add3-8b8f70b7fe4c.png" 
+              alt="My Nomadsafari Holidays"
+              className="h-10 w-auto"
+            />
+            <span className="font-bold text-xl md:text-2xl">My Nomadsafari Holidays</span>
           </NavLink>
           <nav className="hidden md:flex gap-6">
             <NavLink to="/" className={({isActive}) => 
@@ -58,15 +63,10 @@ export function MainNav() {
             }>
               Contact
             </NavLink>
-            <NavLink to="/crm" className={({isActive}) => 
-              isActive ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"
-            }>
-              CRM
-            </NavLink>
           </nav>
         </div>
         <div className="flex items-center gap-2">
-          <ThemeToggle /> {/* Changed from ModeToggle to ThemeToggle */}
+          <ThemeToggle />
           <Button asChild>
             <NavLink to="/contact">Book Now</NavLink>
           </Button>
