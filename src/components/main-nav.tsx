@@ -1,4 +1,3 @@
-
 import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -32,7 +31,7 @@ export function MainNav() {
               alt="My Nomadsafari Holidays"
               className="h-10 w-auto"
             />
-            <span className="font-bold text-lg md:text-xl lg:text-2xl text-brand-green">My Nomadsafari Holidays</span>
+            <span className="font-bold text-sm md:text-base lg:text-lg text-brand-green">My Nomadsafari Holidays</span>
           </NavLink>
           <nav className="hidden md:flex gap-6">
             {["Home", "Destinations", "Tours", "Visa", "About", "Contact"].map((item) => (
