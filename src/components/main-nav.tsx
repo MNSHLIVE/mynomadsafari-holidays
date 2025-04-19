@@ -1,3 +1,4 @@
+
 import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -29,36 +30,54 @@ export function MainNav() {
               alt="My Nomadsafari Holidays"
               className="h-10 w-auto"
             />
-            <span className="font-bold text-xl md:text-2xl">My Nomadsafari Holidays</span>
+            <span className="font-bold text-xl md:text-2xl text-brand-green">My Nomadsafari Holidays</span>
           </NavLink>
           <nav className="hidden md:flex gap-6">
             <NavLink to="/" className={({isActive}) => 
-              isActive ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"
+              cn(
+                "relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
+                isActive ? "text-brand-green font-medium" : "text-muted-foreground hover:text-foreground"
+              )
             }>
               Home
             </NavLink>
             <NavLink to="/destinations" className={({isActive}) => 
-              isActive ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"
+              cn(
+                "relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
+                isActive ? "text-brand-green font-medium" : "text-muted-foreground hover:text-foreground"
+              )
             }>
               Destinations
             </NavLink>
             <NavLink to="/tours" className={({isActive}) => 
-              isActive ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"
+              cn(
+                "relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
+                isActive ? "text-brand-green font-medium" : "text-muted-foreground hover:text-foreground"
+              )
             }>
               Tours
             </NavLink>
             <NavLink to="/visa" className={({isActive}) => 
-              isActive ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"
+              cn(
+                "relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
+                isActive ? "text-brand-green font-medium" : "text-muted-foreground hover:text-foreground"
+              )
             }>
               Visa
             </NavLink>
             <NavLink to="/about" className={({isActive}) => 
-              isActive ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"
+              cn(
+                "relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
+                isActive ? "text-brand-green font-medium" : "text-muted-foreground hover:text-foreground"
+              )
             }>
               About
             </NavLink>
             <NavLink to="/contact" className={({isActive}) => 
-              isActive ? "text-primary font-medium" : "text-muted-foreground hover:text-foreground"
+              cn(
+                "relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
+                isActive ? "text-brand-green font-medium" : "text-muted-foreground hover:text-foreground"
+              )
             }>
               Contact
             </NavLink>

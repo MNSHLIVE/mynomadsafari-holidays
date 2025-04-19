@@ -29,7 +29,7 @@ const DestinationCard = ({
   return (
     <div 
       className={cn(
-        "group overflow-hidden rounded-xl card-hover relative flex flex-col bg-card shadow-sm",
+        "group overflow-hidden rounded-xl card-hover relative flex flex-col bg-card shadow-sm border border-border/50",
         className
       )}
     >
