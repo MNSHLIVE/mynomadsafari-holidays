@@ -54,9 +54,9 @@ const AboutUs = () => {
           </div>
           <div className="order-1 md:order-2 relative">
             <img
-              src="https://images.unsplash.com/photo-1516689935744-2a213f28f940?q=80&w=800"
+              src="/Destination/Home/Featured-Tours/Rajasthan-Heritage.jpg"
               alt="Travel Expert"
-              className="rounded-xl shadow-lg w-full"
+              className="rounded-xl shadow-lg w-full object-cover h-[400px]"
             />
             <div className="absolute -bottom-5 -right-5 bg-primary text-white p-4 rounded-lg shadow-lg hidden md:block">
               <p className="font-bold">10+ Years</p>
@@ -99,9 +99,9 @@ const AboutUs = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div>
             <img
-              src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=800"
+              src="/Destination/Home/Hero/Rajasthan-hero.jpg"
               alt="Travel Journey"
-              className="rounded-xl shadow-lg w-full"
+              className="rounded-xl shadow-lg w-full h-[400px] object-cover"
             />
           </div>
           <div className="space-y-6">
@@ -190,7 +190,7 @@ const AboutUs = () => {
         description="Contact us today to plan your perfect trip with personalized service and expert guidance."
         buttonText="Plan Your Trip Now"
         buttonLink="/contact"
-        imageSrc="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2000"
+        imageSrc="/Destination/Home/Hero/Kerala-hero.jpg"
         align="center"
       />
     </>
