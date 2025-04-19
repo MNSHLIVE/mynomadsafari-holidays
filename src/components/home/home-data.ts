@@ -1,3 +1,4 @@
+
 // Shared data for home page components
 
 export const heroSlides = [
@@ -113,19 +114,19 @@ export const hillStations = [
     bestTime: "March - June, September - November",
   },
   {
-    imageSrc: "/public/Destination/Domestic/gallery/Nanital.jpg",
+    imageSrc: "/public/Destination/Domestic/gallery/Rishikesh-Rafting.jpg", // Changed from Nanital.jpg to Rishikesh-Rafting.jpg as a placeholder for Manali
     title: "Manali",
     description: "Explore the breathtaking valleys and snow-capped mountains of this Himalayan resort.",
     bestTime: "October - June",
   },
   {
-    imageSrc: "/public/Destination/Domestic/gallery/pangong-lake.jpg",
+    imageSrc: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=800", // Changed to a more appropriate Darjeeling-like image
     title: "Darjeeling",
     description: "Visit the Queen of Hills known for its tea plantations and views of Kanchenjunga.",
     bestTime: "September - November, March - May",
   },
   {
-    imageSrc: "/public/Destination/Domestic/gallery/Valley-Flowers.jpg",
+    imageSrc: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=800", // Changed to a south Indian hill landscape without snow
     title: "Ooty",
     description: "Experience the Queen of Hill Stations in South India with its lush landscapes.",
     bestTime: "October - June",
@@ -179,7 +180,7 @@ export const religiousTours = [
     ]
   },
   {
-    imageSrc: "/public/Destination/Domestic/Tours/Pilgrimage/Hindu/DwarkaShirdi/Dwarkashirdi-Main.jpg",
+    imageSrc: "/public/Destination/Home/Religious-Tours/Varanasi-Spiritual.jpg", // Changed to correct Varanasi image
     title: "Varanasi Spiritual Tour",
     location: "Uttar Pradesh, India",
     duration: "4 Days",
@@ -194,7 +195,7 @@ export const religiousTours = [
     ]
   },
   {
-    imageSrc: "/public/Destination/Domestic/Tours/Pilgrimage/Hindu/Ashthavinayak/Asthavinayak-Main.jpg",
+    imageSrc: "/public/Destination/Home/Religious-Places/Amritsar-religious.jpg", // Changed to correct Golden Temple image
     title: "Golden Temple & Amritsar",
     location: "Punjab, India",
     duration: "3 Days",
