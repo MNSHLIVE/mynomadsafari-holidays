@@ -1,4 +1,3 @@
-
 import { BaseTourType } from "./tour-core";
 
 export const hillStationTours: BaseTourType[] = [
@@ -71,6 +70,25 @@ export const hillStationTours: BaseTourType[] = [
       { day: 2, title: "Local Sightseeing", description: "Visit various points and strawberry farms." },
       { day: 3, title: "Panchgani Excursion", description: "Visit Table Land and other attractions." },
       { day: 4, title: "Departure", description: "Return journey with fresh strawberries." }
+    ]
+  },
+  {
+    title: "Northeast Explorer - Meghalaya, Assam & Arunachal",
+    location: "Northeast India",
+    duration: "6 Nights / 7 Days",
+    price: "₹39,999",
+    bestTime: "October to May",
+    packageType: "Premier",
+    imageSrc: "/Destination/Domestic/gallery/Thiksey-Monastery.jpg",
+    description: "Experience the untouched beauty of Northeast India, from living root bridges to majestic monasteries.",
+    itinerary: [
+      { day: 1, title: "Guwahati to Shillong", description: "Arrival at Guwahati, visit Kamakhya Temple and drive to Shillong." },
+      { day: 2, title: "Shillong to Cherrapunjee", description: "Explore Shillong and drive to Cherrapunjee, visit Nohkalikai Falls." },
+      { day: 3, title: "Cherrapunjee - Dawki - Mawlynnong - Shillong", description: "Visit Dawki and Mawlynnong village, return to Shillong." },
+      { day: 4, title: "Shillong to Kaziranga National Park", description: "Drive to Kaziranga National Park for wildlife experience." },
+      { day: 5, title: "Kaziranga to Dirang", description: "Morning safari and drive to Dirang in Arunachal Pradesh." },
+      { day: 6, title: "Dirang to Tawang", description: "Journey to Tawang via Sela Pass, visit Tawang Monastery." },
+      { day: 7, title: "Tawang - Bomdila - Guwahati", description: "Return journey to Guwahati with stops at Bomdila." }
     ]
   }
 ];

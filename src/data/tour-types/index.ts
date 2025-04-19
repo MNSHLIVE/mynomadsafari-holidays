@@ -8,6 +8,7 @@ export * from './international-tours';
 export * from './udaipur-tours';
 export * from './jaisalmer-tours';
 export * from './kashmir-tours';
+export * from './northeast-tours';
 
 // For backward compatibility
 import { rajasthanTours } from './rajasthan-tours';
@@ -17,6 +18,7 @@ import { himachalTours } from './himachal-tours';
 import { udaipurTours } from './udaipur-tours';
 import { jaisalmerTours } from './jaisalmer-tours';
 import { kashmirTours } from './kashmir-tours';
+import { northeastTours } from './northeast-tours';
 import { dubaiTours, singaporeTours, baliTours } from './international-tours';
 
 export const domesticItineraries = [
@@ -26,7 +28,8 @@ export const domesticItineraries = [
   ...himachalTours,
   ...udaipurTours,
   ...jaisalmerTours,
-  ...kashmirTours
+  ...kashmirTours,
+  ...northeastTours
 ];
 
 export const internationalItineraries = [
