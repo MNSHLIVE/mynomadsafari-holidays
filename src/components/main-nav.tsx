@@ -1,7 +1,8 @@
+
 import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ModeToggle } from "./mode-toggle";
+import { ThemeToggle } from "./theme-toggle"; // Changed from ModeToggle to ThemeToggle
 import { useEffect, useState } from "react";
 
 export function MainNav() {
@@ -65,7 +66,7 @@ export function MainNav() {
           </nav>
         </div>
         <div className="flex items-center gap-2">
-          <ModeToggle />
+          <ThemeToggle /> {/* Changed from ModeToggle to ThemeToggle */}
           <Button asChild>
             <NavLink to="/contact">Book Now</NavLink>
           </Button>
