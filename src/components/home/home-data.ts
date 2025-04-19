@@ -225,9 +225,9 @@ export const testimonials = [
     rating: 5,
   },
   {
-    quote: "The visa assistance service saved me so much time and stress. Everything was processed smoothly, and I received great advice about my trip to Thailand.",
+    quote: "The visa assistance service for my Greece trip was exceptional. The team provided comprehensive guidance and made the entire planning process smooth and stress-free.",
     author: "Priya Sharma",
-    role: "Traveled to Thailand",
+    role: "Traveled to Greece",
     rating: 4,
   },
 ];
