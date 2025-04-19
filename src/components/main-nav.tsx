@@ -33,54 +33,20 @@ export function MainNav() {
             <span className="font-bold text-xl md:text-2xl text-brand-green">My Nomadsafari Holidays</span>
           </NavLink>
           <nav className="hidden md:flex gap-6">
-            <NavLink to="/" className={({isActive}) => 
-              cn(
-                "relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
-                isActive ? "text-brand-green font-medium" : "text-muted-foreground hover:text-foreground"
-              )
-            }>
-              Home
-            </NavLink>
-            <NavLink to="/destinations" className={({isActive}) => 
-              cn(
-                "relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
-                isActive ? "text-brand-green font-medium" : "text-muted-foreground hover:text-foreground"
-              )
-            }>
-              Destinations
-            </NavLink>
-            <NavLink to="/tours" className={({isActive}) => 
-              cn(
-                "relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
-                isActive ? "text-brand-green font-medium" : "text-muted-foreground hover:text-foreground"
-              )
-            }>
-              Tours
-            </NavLink>
-            <NavLink to="/visa" className={({isActive}) => 
-              cn(
-                "relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
-                isActive ? "text-brand-green font-medium" : "text-muted-foreground hover:text-foreground"
-              )
-            }>
-              Visa
-            </NavLink>
-            <NavLink to="/about" className={({isActive}) => 
-              cn(
-                "relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
-                isActive ? "text-brand-green font-medium" : "text-muted-foreground hover:text-foreground"
-              )
-            }>
-              About
-            </NavLink>
-            <NavLink to="/contact" className={({isActive}) => 
-              cn(
-                "relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
-                isActive ? "text-brand-green font-medium" : "text-muted-foreground hover:text-foreground"
-              )
-            }>
-              Contact
-            </NavLink>
+            {["Home", "Destinations", "Tours", "Visa", "About", "Contact"].map((item) => (
+              <NavLink 
+                key={item} 
+                to={`/${item.toLowerCase() === 'home' ? '' : item.toLowerCase()}`} 
+                className={({isActive}) => 
+                  cn(
+                    "text-base font-medium relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
+                    isActive ? "text-brand-green" : "text-muted-foreground hover:text-foreground"
+                  )
+                }
+              >
+                {item}
+              </NavLink>
+            ))}
           </nav>
         </div>
         <div className="flex items-center">
