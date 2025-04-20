@@ -38,7 +38,7 @@ export function MainNav() {
               alt="My Nomadsafari Holidays"
               className="h-12 w-auto sm:h-14 md:h-16 lg:h-16" // Increased logo size (was h-10...) to match footer/make more prominent
             />
-            <span className="font-bold text-base xs:text-xl sm:text-2xl md:text-3xl lg:text-3xl ml-2 text-brand-green hidden xs:block">
+            <span className="font-bold font-montserrat text-base xs:text-xl sm:text-2xl md:text-3xl lg:text-3xl ml-2 text-brand-green">
               My Nomadsafari Holidays
             </span>
           </NavLink>
@@ -107,4 +107,3 @@ export function MainNav() {
     </header>
   );
 }
-
