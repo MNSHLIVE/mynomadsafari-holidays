@@ -6,7 +6,7 @@ set -e
 
 # Install dependencies if needed
 echo "Installing dependencies..."
-npm ci --omit=dev
+npm ci
 
 # Make sure vite is installed globally
 echo "Installing Vite globally..."
