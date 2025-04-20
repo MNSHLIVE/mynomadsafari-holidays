@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
@@ -11,6 +10,8 @@ import { PackageSelector } from "./package-selector";
 import { SpecialRequirements } from "./special-requirements";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CheckCircle } from "lucide-react";
+import { sendEmail } from "@/utils/email";
+import { createThankYouEmailHTML } from "@/utils/email-templates";
 
 interface QueryFormContentProps {
   destinationName: string;
@@ -29,7 +30,7 @@ export const QueryFormContent = ({ destinationName, onClose }: QueryFormContentP
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -39,14 +40,39 @@ export const QueryFormContent = ({ destinationName, onClose }: QueryFormContentP
       return;
     }
 
-    // Here would be the Supabase integration code to store form data
+    try {
+      // Send thank you email to customer
+      await sendEmail({
+        to: email,
+        subject: "Thank you for your travel query - Nomadsafari Holidays",
+        html: createThankYouEmailHTML(name, 'query'),
+      });
 
-    setTimeout(() => {
+      // Send notification to admin
+      await sendEmail({
+        to: "info@mynomadsafariholidays.in",
+        subject: `New Travel Query - ${destinationName}`,
+        html: `
+          <h2>New Travel Query</h2>
+          <p><strong>Destination:</strong> ${destinationName}</p>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Phone:</strong> ${phone}</p>
+          <p><strong>Travel Date:</strong> ${travelDate ? format(travelDate, "MMMM dd, yyyy") : "Not specified"}</p>
+          <p><strong>Number of Travelers:</strong> ${adults} adults, ${children} children</p>
+          <p><strong>Package Type:</strong> ${packageType || "Not specified"}</p>
+          <p><strong>Special Requirements:</strong> ${message || "None"}</p>
+        `
+      });
+
       toast.success("Thank you for your inquiry! Our team will contact you shortly.");
       setIsSubmitting(false);
       setIsSubmitted(true);
-      // onClose(); - We don't immediately close so user can see the thank you message
-    }, 1500);
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setIsSubmitting(false);
+      toast.error("There was an error sending your inquiry. Please try again.");
+    }
   };
 
   const resetForm = () => {
@@ -61,7 +87,6 @@ export const QueryFormContent = ({ destinationName, onClose }: QueryFormContentP
     setIsSubmitted(false);
   };
 
-  // Format the travel date for display in the thank you message
   const formattedTravelDate = travelDate ? format(travelDate, "MMMM dd, yyyy") : "Not specified";
 
   if (isSubmitted) {

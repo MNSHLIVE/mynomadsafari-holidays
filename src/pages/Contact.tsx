@@ -34,6 +34,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useToast } from "@/components/ui/use-toast";
+import { sendEmail } from "@/utils/email";
+import { createThankYouEmailHTML } from "@/utils/email-templates";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -56,6 +58,7 @@ const formSchema = z.object({
 const Contact = () => {
   const { toast } = useToast();
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -67,14 +70,49 @@ const Contact = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    setIsSubmitted(true);
-    toast({
-      title: "Message sent!",
-      description: "We'll get back to you as soon as possible.",
-    });
-  }
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    setIsSubmitted(false);
+    setIsSubmitting(true);
+
+    try {
+      // Send email to customer
+      await sendEmail({
+        to: values.email,
+        subject: "Thank you for contacting Nomadsafari Holidays",
+        html: createThankYouEmailHTML(values.name, 'contact'),
+      });
+
+      // Send notification to admin
+      await sendEmail({
+        to: "info@mynomadsafariholidays.in",
+        subject: "New Contact Form Submission",
+        html: `
+          <h2>New Contact Form Submission</h2>
+          <p><strong>Name:</strong> ${values.name}</p>
+          <p><strong>Email:</strong> ${values.email}</p>
+          <p><strong>Phone:</strong> ${values.phone}</p>
+          <p><strong>Subject:</strong> ${values.subject}</p>
+          <p><strong>Message:</strong> ${values.message}</p>
+        `
+      });
+
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+      toast({
+        title: "Message sent!",
+        description: "We'll get back to you as soon as possible.",
+      });
+      form.reset();
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setIsSubmitting(false);
+      toast({
+        title: "Error",
+        description: "There was an error sending your message. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <>
@@ -121,7 +159,7 @@ const Contact = () => {
               <>
                 <h2 className="text-2xl font-semibold mb-6">Send Us a Message</h2>
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <FormField
                         control={form.control}
