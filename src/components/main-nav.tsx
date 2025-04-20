@@ -1,3 +1,4 @@
+
 import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -34,7 +35,7 @@ export function MainNav() {
             <span className="font-bold text-sm md:text-base lg:text-lg text-brand-green">My Nomadsafari Holidays</span>
           </NavLink>
           <nav className="hidden md:flex gap-6">
-            {["Home", "Destinations", "Tours", "Visa", "About", "Contact"].map((item) => (
+            {["Home", "Destinations", "Tours", "Tickets", "Visa", "About", "Contact"].map((item) => (
               <NavLink 
                 key={item} 
                 to={`/${item.toLowerCase() === 'home' ? '' : item.toLowerCase()}`} 
@@ -67,7 +68,7 @@ export function MainNav() {
       {isMobileMenuOpen && (
         <div className="md:hidden bg-background border-b py-4">
           <nav className="container flex flex-col gap-4">
-            {["Home", "Destinations", "Tours", "Visa", "About", "Contact"].map((item) => (
+            {["Home", "Destinations", "Tours", "Tickets", "Visa", "About", "Contact"].map((item) => (
               <NavLink 
                 key={item} 
                 to={`/${item.toLowerCase() === 'home' ? '' : item.toLowerCase()}`} 

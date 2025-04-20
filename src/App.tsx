@@ -39,7 +39,8 @@ const router = createBrowserRouter(
       <Route path="group-tours" element={<GroupTours />} />
       <Route path="tour-itineraries" element={<TourItineraries />} />
       <Route path="visa" element={<Visa />} />
-      <Route path="book-tickets" element={<BookTickets />} />
+      <Route path="tickets" element={<BookTickets />} />
+      <Route path="book-tickets" element={<Navigate to="/tickets" replace />} />
       <Route path="blog" element={<Blog />} />
       <Route path="contact" element={<Contact />} />
       <Route path="terms" element={<Terms />} />
