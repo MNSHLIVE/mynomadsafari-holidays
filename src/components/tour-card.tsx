@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -50,6 +51,7 @@ const TourCard = ({
 }: TourCardProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [open, setOpen] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const packageColors = {
     Budgeted: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
@@ -76,6 +78,9 @@ const TourCard = ({
     }
     return priceString;
   };
+  
+  // Fallback image for when loading fails
+  const fallbackImageSrc = "/placeholder.svg";
 
   return (
     <div 
@@ -87,17 +92,22 @@ const TourCard = ({
       <div className="relative h-48 overflow-hidden">
         <div className={cn(
           "absolute inset-0 bg-gray-200",
-          isLoaded ? "hidden" : "block"
+          isLoaded && !imageError ? "hidden" : "block"
         )} />
         <img
-          src={imageSrc}
+          src={imageError ? fallbackImageSrc : imageSrc}
           alt={title}
           className={cn(
             "h-full w-full object-cover transition-all duration-500 group-hover:scale-105",
-            isLoaded ? "block" : "invisible"
+            isLoaded && !imageError ? "block" : "invisible"
           )}
           onLoad={() => setIsLoaded(true)}
+          onError={() => {
+            setImageError(true);
+            setIsLoaded(true);
+          }}
           loading="lazy"
+          decoding="async"
         />
         <div className="absolute top-3 left-3">
           <span className={cn(
