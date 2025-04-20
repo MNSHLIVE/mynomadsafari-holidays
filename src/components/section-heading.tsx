@@ -19,7 +19,7 @@ const SectionHeading = ({
   return (
     <div
       className={cn(
-        "mb-10",
+        "mb-8 md:mb-10",
         {
           "text-left": align === "left",
           "text-center": align === "center",
@@ -33,13 +33,12 @@ const SectionHeading = ({
           {tag}
         </span>
       )}
-      <h2 className="text-3xl md:text-4xl font-bold tracking-tight">{title}</h2>
+      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight break-words">{title}</h2>
       {subtitle && (
-        <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">{subtitle}</p>
+        <p className="mt-2 md:mt-3 text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto break-words">{subtitle}</p>
       )}
     </div>
   );
 };
 
 export default SectionHeading;
-
