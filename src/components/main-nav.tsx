@@ -30,9 +30,9 @@ export function MainNav() {
             <img 
               src="/lovable-uploads/3e515213-741f-498e-add3-8b8f70b7fe4c.png" 
               alt="My Nomadsafari Holidays"
-              className="h-8 w-auto"
+              className="h-9 w-auto sm:h-10 md:h-12" // Increased logo size
             />
-            <span className="font-bold text-base hidden xs:inline-block xs:text-sm sm:text-base md:text-lg lg:text-xl ml-2 text-brand-green">
+            <span className="font-bold text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl ml-2 text-brand-green">
               My Nomadsafari Holidays
             </span>
           </NavLink>

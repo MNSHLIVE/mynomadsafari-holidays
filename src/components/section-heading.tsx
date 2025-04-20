@@ -33,9 +33,13 @@ const SectionHeading = ({
           {tag}
         </span>
       )}
-      <h2 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight break-words">{title}</h2>
+      <h2 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight break-words hyphens-auto">
+        {title}
+      </h2>
       {subtitle && (
-        <p className="mt-2 md:mt-3 text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto break-words">{subtitle}</p>
+        <p className="mt-2 md:mt-3 text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto break-words hyphens-auto">
+          {subtitle}
+        </p>
       )}
     </div>
   );
