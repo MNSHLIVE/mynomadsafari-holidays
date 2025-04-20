@@ -30,7 +30,7 @@ const handler = async (req: Request): Promise<Response> => {
     const { to, subject, html, from, text, cc, bcc }: EmailRequest = await req.json();
 
     // Default sender if not provided
-    const sender = from || "Nomadsafari Holidays <noreply@yourdomainhere.com>";
+    const sender = from || "Nomadsafari Holidays <info@mynomadsafariholidays.in>";
 
     console.log(`Sending email to: ${Array.isArray(to) ? to.join(', ') : to}`);
     
