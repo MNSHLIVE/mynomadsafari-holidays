@@ -13,8 +13,14 @@ interface EmailOptions {
 
 export const sendEmail = async (options: EmailOptions) => {
   try {
+    // Ensure a consistent sender email
+    const sender = options.from || "Nomadsafari Holidays <info@mynomadsafariholidays.in>";
+    
     const { data, error } = await supabase.functions.invoke("send-email", {
-      body: options
+      body: {
+        ...options,
+        from: sender
+      }
     });
 
     if (error) {
