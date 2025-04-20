@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./theme-toggle"; 
 import { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
-import { MainNavMenu } from "./main-nav-menu";
 
 export function MainNav() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -35,21 +34,26 @@ export function MainNav() {
             />
             <span className="font-bold text-lg md:text-xl lg:text-2xl text-brand-green">My Nomadsafari Holidays</span>
           </NavLink>
+          <nav className="hidden md:flex gap-6">
+            {["Home", "Destinations", "Tours", "Tickets", "Visa", "Blog", "Contact"].map((item) => (
+              <NavLink 
+                key={item} 
+                to={`/${item.toLowerCase() === 'home' ? '' : item.toLowerCase()}`} 
+                className={({isActive}) => 
+                  cn(
+                    "text-lg font-medium relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left",
+                    isActive ? "text-brand-green" : "text-muted-foreground hover:text-foreground"
+                  )
+                }
+              >
+                {item}
+              </NavLink>
+            ))}
+          </nav>
         </div>
-
-        <nav className="hidden md:flex items-center justify-center flex-grow">
-          <MainNavMenu />
-        </nav>
 
         <div className="flex items-center gap-4">
           <ThemeToggle />
-          <Button 
-            variant="default" 
-            className="hidden md:inline-flex"
-            onClick={() => window.location.href = '/tickets'}
-          >
-            Book Tickets
-          </Button>
           <Button
             variant="ghost"
             size="icon"
@@ -65,7 +69,7 @@ export function MainNav() {
       {isMobileMenuOpen && (
         <div className="md:hidden bg-background border-b py-4">
           <nav className="container flex flex-col gap-4">
-            {["Home", "Destinations", "Tours", "Tickets", "Visa", "About", "Contact"].map((item) => (
+            {["Home", "Destinations", "Tours", "Tickets", "Visa", "Blog", "Contact"].map((item) => (
               <NavLink 
                 key={item} 
                 to={`/${item.toLowerCase() === 'home' ? '' : item.toLowerCase()}`} 
@@ -86,3 +90,4 @@ export function MainNav() {
     </header>
   );
 }
+
