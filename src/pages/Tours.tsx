@@ -8,7 +8,8 @@ import {
   adventureTours, 
   jungleSafariTours,
   doorToDoorTours,
-  hillStationTours
+  hillStationTours,
+  religiousTours
 } from "@/components/tours/data";
 
 const Tours = () => {
@@ -23,7 +24,19 @@ const Tours = () => {
       
       <DoorToDoorSection doorToDoorPackages={doorToDoorTours.slice(0, 3)} />
 
-      {/* Hill Station Tours Section - Highlighted for summer */}
+      {/* Religious Tours Section - Newly Added */}
+      <ThemeTourSection
+        title="Religious & Pilgrimage Tours"
+        subtitle="Embark on a spiritual journey to sacred destinations across India"
+        tag="Spiritual Journeys"
+        tours={religiousTours}
+        categorySlug="religious"
+        actionText="View All Pilgrimage Tours"
+        actionIcon="mountain"
+        className="bg-primary/10 py-16 rounded-lg border border-primary/20"
+      />
+
+      {/* Hill Station Tours Section */}
       <ThemeTourSection
         title="Summer Special Hill Station Tours"
         subtitle="Escape the summer heat with our specially curated hill station packages"
@@ -32,7 +45,6 @@ const Tours = () => {
         categorySlug="hill-stations"
         actionText="View All Hill Station Tours"
         actionIcon="mountain"
-        className="bg-primary/10 py-16 rounded-lg border border-primary/20"
       />
 
       {/* Honeymoon Tours Section */}

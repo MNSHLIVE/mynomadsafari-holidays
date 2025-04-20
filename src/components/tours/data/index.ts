@@ -1,3 +1,4 @@
+
 // Export all tour data from a central file
 import { regions, activities, formatPrice } from './tour-core';
 import type { PackageType, TourDay, BaseTourType, DetailedTourType } from './tour-core';
@@ -6,6 +7,7 @@ import { adventureTours } from './adventure-tours';
 import { honeymoonTours } from './honeymoon-tours';
 import { doorToDoorTours } from './door-to-door-tours';
 import { hillStationTours } from './hill-station-tours';
+import { religiousTours } from './religious-tours';
 
 // Export all data for use in other files
 export {
@@ -16,6 +18,7 @@ export {
   honeymoonTours,
   doorToDoorTours,
   hillStationTours,
+  religiousTours,
   formatPrice,
 };
 
@@ -28,5 +31,6 @@ export const tours = [
   ...adventureTours,
   ...jungleSafariTours,
   ...honeymoonTours,
-  ...hillStationTours
+  ...hillStationTours,
+  ...religiousTours
 ];
