@@ -1,6 +1,6 @@
 
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "chmod +x build.sh && ./build.sh",
   "outputDirectory": "dist",
   "framework": "vite",
   "rewrites": [
