@@ -132,19 +132,19 @@ const HeroSlider = ({ slides, interval = 5000, className }: HeroSliderProps) => 
               <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-primary/30 mb-4">
                 Discover the World with Us
               </span>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight">
+              <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-bold mb-4 md:mb-6 leading-tight break-words hyphens-auto">
                 {slide.title}
               </h1>
               {slide.subtitle && (
-                <p className="text-xl md:text-2xl text-white/80 mb-8">
+                <p className="text-lg xs:text-xl md:text-2xl text-white/80 mb-6 md:mb-8 break-words hyphens-auto">
                   {slide.subtitle}
                 </p>
               )}
-              <div className="flex flex-wrap justify-center gap-4">
-                <a href="#package-calculator" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 rounded-md px-8 py-2">
+              <div className="flex flex-wrap justify-center gap-3 md:gap-4">
+                <a href="#package-calculator" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 rounded-md px-4 xs:px-6 sm:px-8 py-2">
                   Calculate Your Trip
                 </a>
-                <a href="/contact" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-white/10 text-white hover:bg-white/20 h-11 rounded-md px-8 py-2">
+                <a href="/contact" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-white/10 text-white hover:bg-white/20 h-11 rounded-md px-4 xs:px-6 sm:px-8 py-2">
                   Contact Us
                 </a>
               </div>
@@ -155,27 +155,27 @@ const HeroSlider = ({ slides, interval = 5000, className }: HeroSliderProps) => 
 
       {/* Navigation arrows */}
       <button
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-black/30 hover:bg-black/50 text-white rounded-full p-2 transition-colors duration-300"
+        className="absolute left-2 xs:left-4 top-1/2 transform -translate-y-1/2 z-20 bg-black/30 hover:bg-black/50 text-white rounded-full p-1.5 xs:p-2 transition-colors duration-300"
         onClick={prevSlide}
         aria-label="Previous slide"
       >
-        <ChevronLeft className="h-6 w-6" />
+        <ChevronLeft className="h-5 w-5 xs:h-6 xs:w-6" />
       </button>
       <button
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-black/30 hover:bg-black/50 text-white rounded-full p-2 transition-colors duration-300"
+        className="absolute right-2 xs:right-4 top-1/2 transform -translate-y-1/2 z-20 bg-black/30 hover:bg-black/50 text-white rounded-full p-1.5 xs:p-2 transition-colors duration-300"
         onClick={nextSlide}
         aria-label="Next slide"
       >
-        <ChevronRight className="h-6 w-6" />
+        <ChevronRight className="h-5 w-5 xs:h-6 xs:w-6" />
       </button>
 
       {/* Indicators */}
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-20 flex space-x-2">
+      <div className="absolute bottom-4 xs:bottom-6 left-1/2 transform -translate-x-1/2 z-20 flex space-x-2">
         {slides.map((_, index) => (
           <button
             key={index}
             className={cn(
-              "w-3 h-3 rounded-full transition-all duration-300",
+              "w-2.5 h-2.5 xs:w-3 xs:h-3 rounded-full transition-all duration-300",
               index === currentSlide ? "bg-white scale-110" : "bg-white/50 hover:bg-white/70"
             )}
             onClick={() => goToSlide(index)}
@@ -185,6 +185,6 @@ const HeroSlider = ({ slides, interval = 5000, className }: HeroSliderProps) => 
       </div>
     </div>
   );
-};
+}
 
 export default HeroSlider;
