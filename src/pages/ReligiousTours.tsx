@@ -2,7 +2,7 @@
 import React from 'react';
 import { Helmet } from "react-helmet";
 import SectionHeading from "@/components/section-heading";
-import { religiousTours, religiousTourNote } from "@/components/tours/data";
+import { religiousTours, religiousTourNote, formatPrice } from "@/components/tours/data";
 import TourCard from "@/components/tour-card";
 import CTASection from "@/components/cta-section";
 
@@ -41,7 +41,7 @@ const ReligiousTours = () => {
               title={tour.title}
               location={tour.location}
               duration={tour.duration}
-              price={tour.price}
+              price={formatPrice(tour.price)}
               bestTime={tour.bestTime}
               packageType={tour.packageType}
               description={tour.description}

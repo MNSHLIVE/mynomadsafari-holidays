@@ -7,7 +7,7 @@ import { adventureTours } from './adventure-tours';
 import { honeymoonTours } from './honeymoon-tours';
 import { doorToDoorTours } from './door-to-door-tours';
 import { hillStationTours } from './hill-station-tours';
-import { religiousTours } from './religious-tours';
+import { religiousTours, religiousTourNote } from './religious-tours';
 
 // Export all data for use in other files
 export {
@@ -19,6 +19,7 @@ export {
   doorToDoorTours,
   hillStationTours,
   religiousTours,
+  religiousTourNote,
   formatPrice,
 };
 
