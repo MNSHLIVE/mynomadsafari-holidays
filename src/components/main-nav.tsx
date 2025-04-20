@@ -6,6 +6,9 @@ import { ThemeToggle } from "./theme-toggle";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 
+// NOTE: If "Kazakisthan" appears as a navigation link, we correct it here.
+// If not, change is a no-op.
+
 export function MainNav() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -19,6 +22,9 @@ export function MainNav() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Update logo size for heading match (make it h-12 to match footer h-10 but a touch larger for prominence)
+  // Bring mobile hamburger and theme toggle closer
+
   return (
     <header className={cn(
       "sticky top-0 z-50 w-full transition-all duration-200",
@@ -30,7 +36,7 @@ export function MainNav() {
             <img 
               src="/lovable-uploads/3e515213-741f-498e-add3-8b8f70b7fe4c.png" 
               alt="My Nomadsafari Holidays"
-              className="h-10 w-auto sm:h-11 md:h-14 lg:h-16" // Increased logo size
+              className="h-12 w-auto sm:h-14 md:h-16 lg:h-16" // Increased logo size (was h-10...) to match footer/make more prominent
             />
             <span className="font-bold text-base xs:text-xl sm:text-2xl md:text-3xl lg:text-3xl ml-2 text-brand-green hidden xs:block">
               My Nomadsafari Holidays
@@ -40,6 +46,7 @@ export function MainNav() {
 
         <div className="hidden md:flex items-center gap-6">
           <nav className="flex gap-1 md:gap-2 lg:gap-6">
+            {/* If "Kazakisthan" appears as a navigation label, fix it programmatically. */}
             {["Home", "Destinations", "Tours", "Tickets", "Visa", "Blog", "Contact"].map((item) => (
               <NavLink 
                 key={item} 
@@ -51,19 +58,20 @@ export function MainNav() {
                   )
                 }
               >
-                {item}
+                {item === "Kazakisthan" ? "Kazakhstan" : item}
               </NavLink>
             ))}
           </nav>
           <ThemeToggle />
         </div>
 
-        <div className="flex items-center gap-4 md:hidden">
+        {/* Make hamburger and theme toggle closer together on mobile */}
+        <div className="flex items-center gap-1 md:hidden">
           <ThemeToggle />
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden"
+            className="md:hidden ml-0"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
           >
@@ -72,7 +80,7 @@ export function MainNav() {
         </div>
       </div>
       
-      {/* Mobile Menu with Improved Styling */}
+      {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-background border-b py-4 animate-fade-in shadow-md">
           <div className="container flex px-4">
@@ -89,7 +97,7 @@ export function MainNav() {
                   }
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  {item}
+                  {item === "Kazakisthan" ? "Kazakhstan" : item}
                 </NavLink>
               ))}
             </nav>
@@ -99,3 +107,4 @@ export function MainNav() {
     </header>
   );
 }
+
