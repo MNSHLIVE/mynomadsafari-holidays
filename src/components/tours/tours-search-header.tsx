@@ -16,10 +16,10 @@ const ToursSearchHeader = ({ searchTerm, setSearchTerm }: ToursSearchHeaderProps
       <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-secondary/30 text-secondary-foreground mb-3">
         Explore Our Tours
       </span>
-      <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6 break-words">
+      <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6 break-words">
         Curated Tour Packages
       </h1>
-      <p className="text-lg md:text-xl text-muted-foreground mb-6 md:mb-8">
+      <p className="text-base xs:text-lg md:text-xl text-muted-foreground mb-6 md:mb-8">
         Discover our handpicked tours for your next adventure
       </p>
       

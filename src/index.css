@@ -106,6 +106,37 @@
     text-wrap: balance;
   }
 
+  /* Extra small screens */
+  @media (min-width: 375px) {
+    .xs\:text-sm {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+    .xs\:text-base {
+      font-size: 1rem;
+      line-height: 1.5rem;
+    }
+    .xs\:text-lg {
+      font-size: 1.125rem;
+      line-height: 1.75rem;
+    }
+    .xs\:text-xl {
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+    }
+    .xs\:text-2xl {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+    .xs\:text-3xl {
+      font-size: 1.875rem;
+      line-height: 2.25rem;
+    }
+    .xs\:inline-block {
+      display: inline-block;
+    }
+  }
+
   /* Responsive text utilities */
   .responsive-text-xl {
     @apply text-lg sm:text-xl md:text-2xl;
