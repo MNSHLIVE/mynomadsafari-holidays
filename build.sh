@@ -8,7 +8,7 @@ set -e
 echo "Installing dependencies..."
 npm ci
 
-# Build the project directly with npx
+# Build the project using npx to ensure vite is available
 echo "Building the project..."
 npx vite build
 
