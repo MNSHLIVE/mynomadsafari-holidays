@@ -1,20 +1,68 @@
+
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin, Linkedin } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { useState } from "react";
+import { sendEmail } from "@/utils/email";
+import { createThankYouEmailHTML } from "@/utils/email-templates";
 
 const Footer = () => {
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [email, setEmail] = useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    toast({
-      title: "Subscribed successfully!",
-      description: "You'll now receive our latest travel updates.",
-    });
-    // Reset form
-    e.currentTarget.reset();
+    
+    if (!email || !email.includes('@')) {
+      toast({
+        title: "Invalid email",
+        description: "Please enter a valid email address.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Send thank you email to subscriber
+      await sendEmail({
+        to: email,
+        subject: "Welcome to My Nomadsafari Holidays Newsletter!",
+        html: createThankYouEmailHTML("Traveler", 'subscription'),
+      });
+
+      // Send notification to admin
+      await sendEmail({
+        to: "info@mynomadsafariholidays.in",
+        subject: "New Newsletter Subscription",
+        html: `
+          <h2>New Newsletter Subscriber</h2>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+        `
+      });
+
+      toast({
+        title: "Subscribed successfully!",
+        description: "You'll now receive our latest travel updates.",
+      });
+      
+      // Reset form
+      setEmail("");
+    } catch (error) {
+      console.error("Error subscribing to newsletter:", error);
+      toast({
+        title: "Subscription failed",
+        description: "There was an error processing your subscription. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -144,10 +192,16 @@ const Footer = () => {
                 type="email" 
                 placeholder="Your email address" 
                 required 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="bg-background"
               />
-              <Button type="submit" className="w-full bg-primary hover:bg-primary/90">
-                Subscribe
+              <Button 
+                type="submit" 
+                className="w-full bg-primary hover:bg-primary/90"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Subscribing..." : "Subscribe"}
               </Button>
             </form>
           </div>
