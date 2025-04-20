@@ -33,6 +33,7 @@ const handler = async (req: Request): Promise<Response> => {
     const sender = from || "Nomadsafari Holidays <info@mynomadsafariholidays.in>";
 
     console.log(`Sending email to: ${Array.isArray(to) ? to.join(', ') : to}`);
+    console.log(`Email subject: ${subject}`);
     
     const emailResponse = await resend.emails.send({
       from: sender,

@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import SectionHeading from "@/components/section-heading";
 import { Button } from "@/components/ui/button";
@@ -71,11 +72,10 @@ const Contact = () => {
   });
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    setIsSubmitted(false);
-    setIsSubmitting(true);
-
     try {
-      // Send email to customer
+      setIsSubmitting(true);
+      
+      // Send thank you email to customer
       await sendEmail({
         to: values.email,
         subject: "Thank you for contacting Nomadsafari Holidays",
@@ -85,7 +85,7 @@ const Contact = () => {
       // Send notification to admin
       await sendEmail({
         to: "info@mynomadsafariholidays.in",
-        subject: "New Contact Form Submission",
+        subject: `New Contact Form Submission: ${values.subject}`,
         html: `
           <h2>New Contact Form Submission</h2>
           <p><strong>Name:</strong> ${values.name}</p>
@@ -107,9 +107,9 @@ const Contact = () => {
       console.error('Error sending email:', error);
       setIsSubmitting(false);
       toast({
-        title: "Error",
-        description: "There was an error sending your message. Please try again.",
         variant: "destructive",
+        title: "Error sending message",
+        description: "There was an error sending your message. Please try again.",
       });
     }
   };
