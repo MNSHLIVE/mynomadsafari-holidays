@@ -8,10 +8,8 @@ set -e
 echo "Installing dependencies..."
 npm ci
 
-# Make sure vite is installed globally
-echo "Installing Vite globally..."
-npm install -g vite
-
-# Build the project
+# Build the project directly with npx
 echo "Building the project..."
 npx vite build
+
+echo "Build completed successfully!"
