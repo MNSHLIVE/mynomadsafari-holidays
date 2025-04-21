@@ -1,8 +1,41 @@
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
+import { SMTPClient } from "npm:emailjs@4.0.3";
 
-const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+// Initialize Resend if API key is available
+const resendApiKey = Deno.env.get("RESEND_API_KEY");
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
+
+// Initialize SMTP if SMTP settings are available
+const smtpHost = Deno.env.get("SMTP_HOST");
+const smtpPort = Deno.env.get("SMTP_PORT");
+const smtpUser = Deno.env.get("SMTP_USER");
+const smtpPassword = Deno.env.get("SMTP_PASSWORD");
+const smtpSecure = Deno.env.get("SMTP_SECURE") === "true";
+
+// Default email sender
+const defaultSender = Deno.env.get("DEFAULT_SENDER") || "Nomadsafari Holidays <info@mynomadsafariholidays.in>";
+
+// Check if SMTP is configured
+const isSmtpConfigured = smtpHost && smtpPort && smtpUser && smtpPassword;
+
+// Create SMTP client if configured
+let smtpClient: SMTPClient | null = null;
+if (isSmtpConfigured) {
+  try {
+    smtpClient = new SMTPClient({
+      host: smtpHost,
+      port: parseInt(smtpPort!),
+      user: smtpUser,
+      password: smtpPassword,
+      ssl: smtpSecure,
+    });
+    console.log("SMTP client configured successfully");
+  } catch (error) {
+    console.error("Error configuring SMTP client:", error);
+  }
+}
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -30,30 +63,60 @@ const handler = async (req: Request): Promise<Response> => {
     const { to, subject, html, from, text, cc, bcc }: EmailRequest = await req.json();
 
     // Default sender if not provided
-    const sender = from || "Nomadsafari Holidays <info@mynomadsafariholidays.in>";
+    const sender = from || defaultSender;
 
     console.log(`Sending email to: ${Array.isArray(to) ? to.join(', ') : to}`);
     console.log(`Email subject: ${subject}`);
     console.log(`From address: ${sender}`);
     
-    // Check if we have API key
-    const apiKey = Deno.env.get("RESEND_API_KEY");
-    if (!apiKey) {
-      console.error("RESEND_API_KEY is not set");
-      throw new Error("Email service configuration error: Missing API key");
+    // Determine which email method to use
+    const useSmtp = isSmtpConfigured && smtpClient;
+    const useResend = resend !== null;
+    
+    if (!useSmtp && !useResend) {
+      console.error("No email sending method available. Configure either SMTP or Resend API.");
+      throw new Error("Email service configuration error: No sending method available");
     }
     
-    const emailResponse = await resend.emails.send({
-      from: sender,
-      to,
-      subject,
-      html,
-      text,
-      cc,
-      bcc,
-    });
-
-    console.log("Email send API response:", JSON.stringify(emailResponse));
+    let emailResponse;
+    
+    // Try to send email using the available method
+    if (useSmtp) {
+      console.log("Using SMTP for email delivery...");
+      
+      // Format recipients for SMTP
+      const toAddresses = Array.isArray(to) ? to.join(',') : to;
+      const ccAddresses = cc ? (Array.isArray(cc) ? cc.join(',') : cc) : undefined;
+      const bccAddresses = bcc ? (Array.isArray(bcc) ? bcc.join(',') : bcc) : undefined;
+      
+      // Send email via SMTP
+      emailResponse = await smtpClient!.sendAsync({
+        from: sender,
+        to: toAddresses,
+        cc: ccAddresses,
+        bcc: bccAddresses,
+        subject: subject,
+        text: text || "",
+        attachment: [{ data: html, alternative: true }],
+      });
+      
+      console.log("SMTP email sent:", emailResponse);
+    } else {
+      console.log("Using Resend API for email delivery...");
+      
+      // Send email via Resend API
+      emailResponse = await resend!.emails.send({
+        from: sender,
+        to,
+        subject,
+        html,
+        text,
+        cc,
+        bcc,
+      });
+      
+      console.log("Resend API response:", JSON.stringify(emailResponse));
+    }
 
     return new Response(JSON.stringify(emailResponse), {
       status: 200,

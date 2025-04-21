@@ -98,3 +98,4 @@ postgres_storage_engine = "lsm" # "pglsm" or "lsm" or "btree"
 [functions]
 [functions.send-email]
 verify_jwt = true
+
