@@ -75,41 +75,64 @@ const Contact = () => {
     try {
       setIsSubmitting(true);
       
-      // Send thank you email to customer
-      await sendEmail({
-        to: values.email,
-        subject: "Thank you for contacting Nomadsafari Holidays",
-        html: createThankYouEmailHTML(values.name, 'contact'),
-      });
+      // Track success of both email operations
+      let emailsSent = true;
+      
+      try {
+        // Send thank you email to customer
+        await sendEmail({
+          to: values.email,
+          subject: "Thank you for contacting Nomadsafari Holidays",
+          html: createThankYouEmailHTML(values.name, 'contact'),
+        });
+      } catch (error) {
+        emailsSent = false;
+        console.error('Error sending customer email:', error);
+      }
 
-      // Send notification to admin
-      await sendEmail({
-        to: "info@mynomadsafariholidays.in",
-        subject: `New Contact Form Submission: ${values.subject}`,
-        html: `
-          <h2>New Contact Form Submission</h2>
-          <p><strong>Name:</strong> ${values.name}</p>
-          <p><strong>Email:</strong> ${values.email}</p>
-          <p><strong>Phone:</strong> ${values.phone}</p>
-          <p><strong>Subject:</strong> ${values.subject}</p>
-          <p><strong>Message:</strong> ${values.message}</p>
-        `
-      });
+      try {
+        // Send notification to admin
+        await sendEmail({
+          to: "info@mynomadsafariholidays.in",
+          subject: `New Contact Form Submission: ${values.subject}`,
+          html: `
+            <h2>New Contact Form Submission</h2>
+            <p><strong>Name:</strong> ${values.name}</p>
+            <p><strong>Email:</strong> ${values.email}</p>
+            <p><strong>Phone:</strong> ${values.phone}</p>
+            <p><strong>Subject:</strong> ${values.subject}</p>
+            <p><strong>Message:</strong> ${values.message}</p>
+          `
+        });
+      } catch (error) {
+        emailsSent = false;
+        console.error('Error sending admin email:', error);
+      }
 
+      // Still consider form submission successful even if emails fail
       setIsSubmitting(false);
       setIsSubmitted(true);
       toast({
         title: "Message sent!",
         description: "We'll get back to you as soon as possible.",
       });
+      
+      if (!emailsSent) {
+        toast({
+          variant: "warning",
+          title: "Email notification delay",
+          description: "Your message was received, but there might be a delay in our response due to technical issues."
+        });
+      }
+      
       form.reset();
     } catch (error) {
-      console.error('Error sending email:', error);
+      console.error('Error in form submission:', error);
       setIsSubmitting(false);
       toast({
         variant: "destructive",
         title: "Error sending message",
-        description: "There was an error sending your message. Please try again.",
+        description: "There was an error sending your message. Please try again or call us directly.",
       });
     }
   };

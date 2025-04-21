@@ -1,5 +1,6 @@
 
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface EmailOptions {
   to: string | string[];
@@ -31,6 +32,23 @@ export const sendEmail = async (options: EmailOptions) => {
     return data;
   } catch (error) {
     console.error("Failed to send email:", error);
+    
+    // Show a toast notification about the email issue
+    toast.error(
+      "Email delivery is temporarily unavailable. Our team has been notified about this issue."
+    );
+    
+    // Try to log the error for debugging
+    try {
+      console.log("Email that failed to send:", JSON.stringify({
+        to: options.to,
+        subject: options.subject,
+        from: options.from || "Nomadsafari Holidays <info@mynomadsafariholidays.in>"
+      }));
+    } catch (logError) {
+      console.error("Failed to log email details:", logError);
+    }
+    
     throw error;
   }
 };

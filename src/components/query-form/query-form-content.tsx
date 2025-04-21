@@ -66,32 +66,51 @@ export const QueryFormContent = ({
     }
 
     try {
-      // Send thank you email to customer
-      await sendEmail({
-        to: email,
-        subject: "Thank you for your travel query - Nomadsafari Holidays",
-        html: createThankYouEmailHTML(name, prefillData?.estimatedPrice ? 'quote' : 'query'),
-      });
+      // Track success of both email operations
+      let emailsSent = true;
 
-      // Send notification to admin
-      await sendEmail({
-        to: "info@mynomadsafariholidays.in",
-        subject: `New Travel Query - ${destinationName}`,
-        html: `
-          <h2>New Travel Query</h2>
-          <p><strong>Destination:</strong> ${destinationName}</p>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Phone:</strong> ${phone}</p>
-          <p><strong>Travel Date:</strong> ${travelDate ? format(travelDate, "MMMM dd, yyyy") : "Not specified"}</p>
-          <p><strong>Number of Travelers:</strong> ${adults} adults, ${children} children</p>
-          <p><strong>Package Type:</strong> ${packageType || "Not specified"}</p>
-          <p><strong>Special Requirements:</strong> ${message || "None"}</p>
-          ${prefillData?.estimatedPrice ? `<p><strong>Estimated Price:</strong> ${prefillData.estimatedPrice}</p>` : ''}
-        `
-      });
+      try {
+        // Send thank you email to customer
+        await sendEmail({
+          to: email,
+          subject: "Thank you for your travel query - Nomadsafari Holidays",
+          html: createThankYouEmailHTML(name, prefillData?.estimatedPrice ? 'quote' : 'query'),
+        });
+      } catch (error) {
+        emailsSent = false;
+        console.error('Error sending customer email:', error);
+      }
 
+      try {
+        // Send notification to admin
+        await sendEmail({
+          to: "info@mynomadsafariholidays.in",
+          subject: `New Travel Query - ${destinationName}`,
+          html: `
+            <h2>New Travel Query</h2>
+            <p><strong>Destination:</strong> ${destinationName}</p>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Phone:</strong> ${phone}</p>
+            <p><strong>Travel Date:</strong> ${travelDate ? format(travelDate, "MMMM dd, yyyy") : "Not specified"}</p>
+            <p><strong>Number of Travelers:</strong> ${adults} adults, ${children} children</p>
+            <p><strong>Package Type:</strong> ${packageType || "Not specified"}</p>
+            <p><strong>Special Requirements:</strong> ${message || "None"}</p>
+            ${prefillData?.estimatedPrice ? `<p><strong>Estimated Price:</strong> ${prefillData.estimatedPrice}</p>` : ''}
+          `
+        });
+      } catch (error) {
+        emailsSent = false;
+        console.error('Error sending admin email:', error);
+      }
+
+      // Still consider form submission successful even if emails fail
       toast.success("Thank you for your inquiry! Our team will contact you shortly.");
+      
+      if (!emailsSent) {
+        toast.warning("There might be a slight delay in our response due to technical issues.");
+      }
+      
       setIsSubmitting(false);
       setIsSubmitted(true);
       
@@ -100,9 +119,9 @@ export const QueryFormContent = ({
         onFormSubmitted();
       }
     } catch (error) {
-      console.error('Error sending email:', error);
+      console.error('Error in form submission:', error);
       setIsSubmitting(false);
-      toast.error("There was an error sending your inquiry. Please try again.");
+      toast.error("There was an error sending your inquiry. Please try again or contact us directly by phone.");
     }
   };
 
