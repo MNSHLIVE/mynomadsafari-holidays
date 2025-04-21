@@ -1,23 +1,6 @@
-import { useState, useEffect } from "react";
+
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Check, IndianRupee } from "lucide-react";
-import DestinationQueryForm from "./destination-query-form";
 import InternationalTourForm from "./international-tour-form";
 import InternationalTourResults from "./international-tour-results";
 
@@ -41,6 +24,7 @@ const InternationalTourCalculator = ({
   const [showResults, setShowResults] = useState(false);
   const [showQuery, setShowQuery] = useState(false);
 
+  // Calculation logic
   const calculateCost = () => {
     const baseRate3Star = 20000;
     const multiplier4Star = 1.5;
@@ -145,3 +129,4 @@ const InternationalTourCalculator = ({
 };
 
 export default InternationalTourCalculator;
+
