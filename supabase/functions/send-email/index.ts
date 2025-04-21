@@ -8,14 +8,14 @@ const resendApiKey = Deno.env.get("RESEND_API_KEY");
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 // Initialize SMTP if SMTP settings are available
-const smtpHost = Deno.env.get("SMTP_HOST");
-const smtpPort = Deno.env.get("SMTP_PORT");
-const smtpUser = Deno.env.get("SMTP_USER");
+const smtpHost = Deno.env.get("SMTP_HOST") || "smtp.resend.com";
+const smtpPort = Deno.env.get("SMTP_PORT") || "465";
+const smtpUser = Deno.env.get("SMTP_USER") || "resend";
 const smtpPassword = Deno.env.get("SMTP_PASSWORD");
-const smtpSecure = Deno.env.get("SMTP_SECURE") === "true";
+const smtpSecure = true; // Always true for port 465
 
 // Default email sender
-const defaultSender = Deno.env.get("DEFAULT_SENDER") || "Nomadsafari Holidays <info@mynomadsafariholidays.in>";
+const defaultSender = Deno.env.get("DEFAULT_SENDER") || "My Nomadsafari Holidays <info@mynomadsafariholidays.in>";
 
 // Check if SMTP is configured
 const isSmtpConfigured = smtpHost && smtpPort && smtpUser && smtpPassword;
@@ -26,7 +26,7 @@ if (isSmtpConfigured) {
   try {
     smtpClient = new SMTPClient({
       host: smtpHost,
-      port: parseInt(smtpPort!),
+      port: parseInt(smtpPort),
       user: smtpUser,
       password: smtpPassword,
       ssl: smtpSecure,
@@ -82,7 +82,8 @@ const handler = async (req: Request): Promise<Response> => {
     
     // Try to send email using the available method
     if (useSmtp) {
-      console.log("Using SMTP for email delivery...");
+      console.log("Using SMTP for email delivery with Resend SMTP...");
+      console.log(`SMTP Configuration: Host=${smtpHost}, Port=${smtpPort}, User=${smtpUser}, Password=${smtpPassword ? "[MASKED]" : "not provided"}`);
       
       // Format recipients for SMTP
       const toAddresses = Array.isArray(to) ? to.join(',') : to;
