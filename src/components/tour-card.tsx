@@ -1,8 +1,7 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Clock, MapPin, Calendar, IndianRupee, FileText } from "lucide-react";
+import { Clock, MapPin, Calendar, IndianRupee, FileText, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   Dialog,
@@ -21,6 +20,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import DestinationQueryForm from "./destination-query-form";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export interface TourCardProps {
   imageSrc: string;
@@ -52,6 +52,9 @@ const TourCard = ({
   const [isLoaded, setIsLoaded] = useState(false);
   const [open, setOpen] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [isItineraryDialogOpen, setIsItineraryDialogOpen] = useState(false);
+  const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
+  const [isThankYouVisible, setIsThankYouVisible] = useState(false);
 
   const packageColors = {
     Budgeted: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
@@ -79,6 +82,16 @@ const TourCard = ({
     return priceString;
   };
   
+  const handleBookingSubmitted = () => {
+    setIsDetailDialogOpen(false);
+    setIsThankYouVisible(true);
+    
+    // Hide thank you message after 8 seconds
+    setTimeout(() => {
+      setIsThankYouVisible(false);
+    }, 8000);
+  };
+  
   // Fallback image for when loading fails
   const fallbackImageSrc = "/placeholder.svg";
 
@@ -89,6 +102,26 @@ const TourCard = ({
         className
       )}
     >
+      {isThankYouVisible && (
+        <div className="absolute inset-0 z-30 bg-background/95 flex items-center justify-center p-4">
+          <Alert className="bg-primary/5 border-primary/20 max-w-xs">
+            <CheckCircle className="h-5 w-5 text-primary" />
+            <AlertTitle className="text-base font-medium">Thank you for choosing My Nomadsafari Holidays!</AlertTitle>
+            <AlertDescription className="text-sm">
+              We've received your inquiry for {title}. Our team will contact you shortly with a detailed itinerary.
+            </AlertDescription>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="mt-3" 
+              onClick={() => setIsThankYouVisible(false)}
+            >
+              Close
+            </Button>
+          </Alert>
+        </div>
+      )}
+
       <div className="relative h-48 overflow-hidden">
         <div className={cn(
           "absolute inset-0 bg-gray-200",
@@ -156,7 +189,7 @@ const TourCard = ({
         )}
 
         {itinerary && itinerary.length > 0 && (
-          <Dialog open={open} onOpenChange={setOpen}>
+          <Dialog open={isItineraryDialogOpen} onOpenChange={setIsItineraryDialogOpen}>
             <DialogTrigger asChild>
               <Button variant="outline" size="sm" className="mb-3 mt-auto">
                 View Full Itinerary
@@ -196,7 +229,7 @@ const TourCard = ({
             <span className="text-xs text-muted-foreground">per person</span>
           </div>
 
-          <Dialog>
+          <Dialog open={isDetailDialogOpen} onOpenChange={setIsDetailDialogOpen}>
             <DialogTrigger asChild>
               <Button 
                 className="w-full bg-primary hover:bg-primary/90"
@@ -271,8 +304,9 @@ const TourCard = ({
                 <div className="flex justify-between pt-4 border-t">
                   <p className="text-xl font-semibold">{formatPrice(price)}</p>
                   <DestinationQueryForm 
-                    destinationName={title} 
+                    destinationName={title}
                     buttonText="Book Now"
+                    onFormSubmitted={handleBookingSubmitted}
                   />
                 </div>
               </div>

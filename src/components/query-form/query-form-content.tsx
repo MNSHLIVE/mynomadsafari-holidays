@@ -1,4 +1,5 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import { toast } from "sonner";
@@ -16,9 +17,20 @@ import { createThankYouEmailHTML } from "@/utils/email-templates";
 interface QueryFormContentProps {
   destinationName: string;
   onClose: () => void;
+  prefillData?: {
+    adults?: number;
+    children?: number;
+    estimatedPrice?: string;
+  };
+  onFormSubmitted?: () => void;
 }
 
-export const QueryFormContent = ({ destinationName, onClose }: QueryFormContentProps) => {
+export const QueryFormContent = ({ 
+  destinationName, 
+  onClose, 
+  prefillData, 
+  onFormSubmitted 
+}: QueryFormContentProps) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -29,6 +41,19 @@ export const QueryFormContent = ({ destinationName, onClose }: QueryFormContentP
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // Apply prefilled data if provided
+  useEffect(() => {
+    if (prefillData) {
+      if (prefillData.adults !== undefined) setAdults(prefillData.adults);
+      if (prefillData.children !== undefined) setChildren(prefillData.children);
+      if (prefillData.estimatedPrice) {
+        setMessage(message => 
+          `Estimated price from calculator: ${prefillData.estimatedPrice}\n${message || ""}`.trim()
+        );
+      }
+    }
+  }, [prefillData]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,7 +70,7 @@ export const QueryFormContent = ({ destinationName, onClose }: QueryFormContentP
       await sendEmail({
         to: email,
         subject: "Thank you for your travel query - Nomadsafari Holidays",
-        html: createThankYouEmailHTML(name, 'query'),
+        html: createThankYouEmailHTML(name, prefillData?.estimatedPrice ? 'quote' : 'query'),
       });
 
       // Send notification to admin
@@ -62,12 +87,18 @@ export const QueryFormContent = ({ destinationName, onClose }: QueryFormContentP
           <p><strong>Number of Travelers:</strong> ${adults} adults, ${children} children</p>
           <p><strong>Package Type:</strong> ${packageType || "Not specified"}</p>
           <p><strong>Special Requirements:</strong> ${message || "None"}</p>
+          ${prefillData?.estimatedPrice ? `<p><strong>Estimated Price:</strong> ${prefillData.estimatedPrice}</p>` : ''}
         `
       });
 
       toast.success("Thank you for your inquiry! Our team will contact you shortly.");
       setIsSubmitting(false);
       setIsSubmitted(true);
+      
+      // Notify parent component if callback is provided
+      if (onFormSubmitted) {
+        onFormSubmitted();
+      }
     } catch (error) {
       console.error('Error sending email:', error);
       setIsSubmitting(false);
@@ -80,10 +111,10 @@ export const QueryFormContent = ({ destinationName, onClose }: QueryFormContentP
     setEmail("");
     setPhone("");
     setTravelDate(undefined);
-    setAdults(2);
-    setChildren(0);
+    setAdults(prefillData?.adults || 2);
+    setChildren(prefillData?.children || 0);
     setPackageType("");
-    setMessage("");
+    setMessage(prefillData?.estimatedPrice ? `Estimated price from calculator: ${prefillData.estimatedPrice}` : "");
     setIsSubmitted(false);
   };
 

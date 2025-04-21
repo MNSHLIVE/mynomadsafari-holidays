@@ -2,16 +2,18 @@
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Facebook, Instagram, Twitter, Mail, Phone, MapPin, Linkedin } from "lucide-react";
+import { Facebook, Instagram, Twitter, Mail, Phone, MapPin, Linkedin, CheckCircle } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
 import { sendEmail } from "@/utils/email";
 import { createThankYouEmailHTML } from "@/utils/email-templates";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const Footer = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [email, setEmail] = useState("");
+  const [isSubscribed, setIsSubscribed] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,8 +53,16 @@ const Footer = () => {
         description: "You'll now receive our latest travel updates.",
       });
       
+      // Show thank you message
+      setIsSubscribed(true);
+      
       // Reset form
       setEmail("");
+      
+      // Hide thank you message after 8 seconds
+      setTimeout(() => {
+        setIsSubscribed(false);
+      }, 8000);
     } catch (error) {
       console.error("Error subscribing to newsletter:", error);
       toast({
@@ -187,23 +197,34 @@ const Footer = () => {
             <p className="text-sm text-muted-foreground">
               Subscribe to get special offers and travel tips.
             </p>
-            <form onSubmit={handleSubmit} className="space-y-2">
-              <Input 
-                type="email" 
-                placeholder="Your email address" 
-                required 
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="bg-background"
-              />
-              <Button 
-                type="submit" 
-                className="w-full bg-primary hover:bg-primary/90"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Subscribing..." : "Subscribe"}
-              </Button>
-            </form>
+            
+            {isSubscribed ? (
+              <Alert className="bg-primary/5 border-primary/20">
+                <CheckCircle className="h-5 w-5 text-primary" />
+                <AlertTitle className="text-sm font-medium">Thank you for subscribing!</AlertTitle>
+                <AlertDescription className="text-xs">
+                  You'll now receive our latest travel updates and special offers.
+                </AlertDescription>
+              </Alert>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-2">
+                <Input 
+                  type="email" 
+                  placeholder="Your email address" 
+                  required 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="bg-background"
+                />
+                <Button 
+                  type="submit" 
+                  className="w-full bg-primary hover:bg-primary/90"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Subscribing..." : "Subscribe"}
+                </Button>
+              </form>
+            )}
           </div>
         </div>
 

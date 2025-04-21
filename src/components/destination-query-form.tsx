@@ -1,48 +1,57 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { QueryFormContent } from "./query-form/query-form-content";
 
 interface DestinationQueryFormProps {
   destinationName: string;
-  className?: string;
-  buttonVariant?: "default" | "outline" | "secondary";
   buttonText?: string;
+  buttonClassName?: string;
+  buttonVariant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
+  initialOpen?: boolean;
+  onFormSubmitted?: () => void;
 }
 
-const DestinationQueryForm = ({
-  destinationName,
-  className,
-  buttonVariant = "default",
-  buttonText = "Enquire Now"
+const DestinationQueryForm = ({ 
+  destinationName, 
+  buttonText = "Enquire Now", 
+  buttonClassName,
+  buttonVariant = "default", 
+  initialOpen = false,
+  onFormSubmitted
 }: DestinationQueryFormProps) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(initialOpen);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleFormSubmitted = () => {
+    if (onFormSubmitted) {
+      onFormSubmitted();
+    }
+    // We don't close the dialog here as the QueryFormContent will handle showing the submitted state
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={buttonVariant} className={className}>
+        <Button className={buttonClassName} variant={buttonVariant}>
           {buttonText}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle className="text-xl">Enquire about {destinationName}</DialogTitle>
+          <DialogTitle>Enquire about {destinationName}</DialogTitle>
           <DialogDescription>
-            Fill in your details and we'll get back to you with the best packages
+            Fill in the form below and our travel experts will get back to you with a customized itinerary.
           </DialogDescription>
         </DialogHeader>
         <QueryFormContent 
-          destinationName={destinationName}
-          onClose={() => setOpen(false)} 
+          destinationName={destinationName} 
+          onClose={handleClose}
+          onFormSubmitted={handleFormSubmitted}
         />
       </DialogContent>
     </Dialog>

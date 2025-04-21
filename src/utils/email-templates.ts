@@ -5,17 +5,21 @@
  * @param formType The type of form submitted ('contact', 'query', etc.)
  * @returns HTML string for the email
  */
-export const createThankYouEmailHTML = (name: string, formType: 'contact' | 'query' | 'subscription') => {
+export const createThankYouEmailHTML = (name: string, formType: 'contact' | 'query' | 'subscription' | 'quote') => {
   const subject = formType === 'contact' 
     ? 'Thank you for contacting us!' 
     : formType === 'query'
     ? 'Thank you for your travel query!'
+    : formType === 'quote'
+    ? 'Thank you for requesting a quote!'
     : 'Thank you for subscribing!';
 
   const message = formType === 'contact'
     ? 'We have received your message and our team will get back to you within 24 hours.'
     : formType === 'query'
     ? 'We have received your travel query and our expert team will prepare a customized itinerary for you shortly.'
+    : formType === 'quote'
+    ? 'We have received your quote request and our travel experts will prepare a detailed personalized itinerary and quote for you shortly.'
     : 'You are now subscribed to our newsletter. Get ready for exclusive travel deals and inspiring destinations!';
 
   return `
@@ -31,7 +35,7 @@ export const createThankYouEmailHTML = (name: string, formType: 'contact' | 'que
       <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0;">
         <h2 style="color: #2A9D8F; margin-top: 0; font-size: 18px;">What happens next?</h2>
         <p>
-          ${formType === 'contact' || formType === 'query' 
+          ${formType === 'contact' || formType === 'query' || formType === 'quote'
             ? 'One of our travel experts will review your information and contact you via email or phone to discuss your requirements in more detail.' 
             : 'You will start receiving our newsletter with the latest travel deals, destination guides, and travel tips.'}
         </p>
