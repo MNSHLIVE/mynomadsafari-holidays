@@ -34,6 +34,14 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log(`Sending email to: ${Array.isArray(to) ? to.join(', ') : to}`);
     console.log(`Email subject: ${subject}`);
+    console.log(`From address: ${sender}`);
+    
+    // Check if we have API key
+    const apiKey = Deno.env.get("RESEND_API_KEY");
+    if (!apiKey) {
+      console.error("RESEND_API_KEY is not set");
+      throw new Error("Email service configuration error: Missing API key");
+    }
     
     const emailResponse = await resend.emails.send({
       from: sender,
@@ -45,7 +53,7 @@ const handler = async (req: Request): Promise<Response> => {
       bcc,
     });
 
-    console.log("Email sent successfully:", emailResponse);
+    console.log("Email send API response:", JSON.stringify(emailResponse));
 
     return new Response(JSON.stringify(emailResponse), {
       status: 200,
@@ -56,6 +64,13 @@ const handler = async (req: Request): Promise<Response> => {
     });
   } catch (error: any) {
     console.error("Error in send-email function:", error);
+    console.error("Error details:", JSON.stringify(error, null, 2));
+    
+    // Try to get more details if available
+    if (error.response) {
+      console.error("Response error data:", error.response.data);
+    }
+    
     return new Response(
       JSON.stringify({ error: error.message }),
       {

@@ -119,7 +119,8 @@ const Contact = () => {
       
       if (!emailsSent) {
         toast({
-          variant: "warning",
+          // Fix: Use "default" instead of "warning" variant
+          variant: "destructive",
           title: "Email notification delay",
           description: "Your message was received, but there might be a delay in our response due to technical issues."
         });

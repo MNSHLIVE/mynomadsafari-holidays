@@ -108,7 +108,8 @@ export const QueryFormContent = ({
       toast.success("Thank you for your inquiry! Our team will contact you shortly.");
       
       if (!emailsSent) {
-        toast.warning("There might be a slight delay in our response due to technical issues.");
+        // Using standard error toast since sonner doesn't have warning
+        toast.error("There might be a delay in our response due to technical issues.");
       }
       
       setIsSubmitting(false);
