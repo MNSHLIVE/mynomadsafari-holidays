@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -22,9 +21,10 @@ import DestinationQueryForm from "./destination-query-form";
 
 interface InternationalTourCalculatorProps {
   className?: string;
+  onRequestQuote?: (details: any) => void;
 }
 
-const InternationalTourCalculator = ({ className }: InternationalTourCalculatorProps) => {
+const InternationalTourCalculator = ({ className, onRequestQuote }: InternationalTourCalculatorProps) => {
   const [destination, setDestination] = useState("");
   const [nights, setNights] = useState(4);
   const [adults, setAdults] = useState(2);
@@ -97,6 +97,24 @@ const InternationalTourCalculator = ({ className }: InternationalTourCalculatorP
     e.preventDefault();
     calculateCost();
     window.scrollTo({ top: document.getElementById("results")?.offsetTop, behavior: 'smooth' });
+  };
+
+  const handleGetDetailedQuote = () => {
+    if (onRequestQuote) {
+      onRequestQuote({
+        destination,
+        adults,
+        children,
+        days: nights,
+        estimatedPrice: formatCurrency(totalCost),
+        nights,
+        infants,
+        hotelCategory,
+        perPersonCost: formatCurrency(perPersonCost)
+      });
+    } else {
+      setShowQuery(true);
+    }
   };
 
   return (
@@ -274,7 +292,7 @@ const InternationalTourCalculator = ({ className }: InternationalTourCalculatorP
                     <Button 
                       className="w-full" 
                       variant="default" 
-                      onClick={() => setShowQuery(true)}
+                      onClick={handleGetDetailedQuote}
                     >
                       Get Detailed Quote
                     </Button>
@@ -282,6 +300,7 @@ const InternationalTourCalculator = ({ className }: InternationalTourCalculatorP
                     <DestinationQueryForm 
                       destinationName={destination || "International Tour"} 
                       buttonText="Submit Query"
+                      className="w-full"
                     />
                   )}
                 </div>
