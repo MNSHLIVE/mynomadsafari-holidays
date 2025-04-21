@@ -11,6 +11,7 @@ interface DestinationQueryFormProps {
   buttonVariant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
   initialOpen?: boolean;
   onFormSubmitted?: () => void;
+  className?: string; // Added className prop
 }
 
 const DestinationQueryForm = ({ 
@@ -19,7 +20,8 @@ const DestinationQueryForm = ({
   buttonClassName,
   buttonVariant = "default", 
   initialOpen = false,
-  onFormSubmitted
+  onFormSubmitted,
+  className
 }: DestinationQueryFormProps) => {
   const [open, setOpen] = useState(initialOpen);
 
@@ -37,7 +39,7 @@ const DestinationQueryForm = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className={buttonClassName} variant={buttonVariant}>
+        <Button className={`${buttonClassName} ${className}`} variant={buttonVariant}>
           {buttonText}
         </Button>
       </DialogTrigger>

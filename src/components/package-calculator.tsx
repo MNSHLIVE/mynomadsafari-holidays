@@ -79,9 +79,10 @@ const calculateDistance = (days: number) => {
 
 interface PackageCalculatorProps {
   className?: string;
+  onRequestQuote?: (details: any) => void;
 }
 
-const PackageCalculator = ({ className }: PackageCalculatorProps) => {
+const PackageCalculator = ({ className, onRequestQuote }: PackageCalculatorProps) => {
   const [showQueryForm, setShowQueryForm] = useState(false);
   const [calculatorType, setCalculatorType] = useState<"domestic" | "international">("domestic");
   const [destination, setDestination] = useState("");
@@ -268,7 +269,23 @@ const PackageCalculator = ({ className }: PackageCalculatorProps) => {
       return;
     }
 
-    setShowQueryForm(true);
+    if (onRequestQuote) {
+      onRequestQuote({
+        destination,
+        days,
+        adults,
+        children,
+        hotelType,
+        roomType,
+        rooms,
+        transportType,
+        packageType,
+        travelDate,
+        estimatedPrice: formatCurrency(totalCost)
+      });
+    } else {
+      setShowQueryForm(true);
+    }
   };
 
   const formatCurrency = (amount: number) => {

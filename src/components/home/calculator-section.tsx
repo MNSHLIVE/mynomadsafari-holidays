@@ -16,10 +16,20 @@ import { QueryFormContent } from "@/components/query-form/query-form-content";
 import { CheckCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
+// Define the correct types for the calculator details
+interface CalculatedDetails {
+  destination: string;
+  adults: number;
+  children: number;
+  days: number;
+  estimatedPrice: string;
+  [key: string]: any; // Allow for additional properties
+}
+
 const CalculatorSection = () => {
   const [activeTab, setActiveTab] = useState("domestic");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [calculatedDetails, setCalculatedDetails] = useState({
+  const [calculatedDetails, setCalculatedDetails] = useState<CalculatedDetails>({
     destination: "",
     adults: 2,
     children: 0,
@@ -28,7 +38,7 @@ const CalculatorSection = () => {
   });
   const [isThankYouVisible, setIsThankYouVisible] = useState(false);
 
-  const handleQuoteRequest = (details) => {
+  const handleQuoteRequest = (details: CalculatedDetails) => {
     setCalculatedDetails(details);
     setIsDialogOpen(true);
   };
