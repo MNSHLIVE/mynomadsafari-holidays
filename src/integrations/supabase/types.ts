@@ -179,14 +179,169 @@ export type Database = {
         }
         Relationships: []
       }
+      ticket_requests: {
+        Row: {
+          arrival_city: string | null
+          created_at: string
+          departure_city: string | null
+          email: string
+          id: string
+          name: string
+          passengers: number | null
+          phone: string | null
+          special_requirements: string | null
+          ticket_type: string | null
+          travel_date: string | null
+        }
+        Insert: {
+          arrival_city?: string | null
+          created_at?: string
+          departure_city?: string | null
+          email: string
+          id?: string
+          name: string
+          passengers?: number | null
+          phone?: string | null
+          special_requirements?: string | null
+          ticket_type?: string | null
+          travel_date?: string | null
+        }
+        Update: {
+          arrival_city?: string | null
+          created_at?: string
+          departure_city?: string | null
+          email?: string
+          id?: string
+          name?: string
+          passengers?: number | null
+          phone?: string | null
+          special_requirements?: string | null
+          ticket_type?: string | null
+          travel_date?: string | null
+        }
+        Relationships: []
+      }
+      tour_package_requests: {
+        Row: {
+          adults: number | null
+          children: number | null
+          created_at: string
+          destination_name: string
+          email: string
+          estimated_price: string | null
+          id: string
+          name: string
+          package_type: string | null
+          phone: string | null
+          special_requirements: string | null
+          travel_date: string | null
+        }
+        Insert: {
+          adults?: number | null
+          children?: number | null
+          created_at?: string
+          destination_name: string
+          email: string
+          estimated_price?: string | null
+          id?: string
+          name: string
+          package_type?: string | null
+          phone?: string | null
+          special_requirements?: string | null
+          travel_date?: string | null
+        }
+        Update: {
+          adults?: number | null
+          children?: number | null
+          created_at?: string
+          destination_name?: string
+          email?: string
+          estimated_price?: string | null
+          id?: string
+          name?: string
+          package_type?: string | null
+          phone?: string | null
+          special_requirements?: string | null
+          travel_date?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      visa_requests: {
+        Row: {
+          created_at: string
+          destination_country: string | null
+          email: string
+          id: string
+          name: string
+          nationality: string | null
+          phone: string | null
+          special_requirements: string | null
+          travel_date: string | null
+          visa_type: string | null
+        }
+        Insert: {
+          created_at?: string
+          destination_country?: string | null
+          email: string
+          id?: string
+          name: string
+          nationality?: string | null
+          phone?: string | null
+          special_requirements?: string | null
+          travel_date?: string | null
+          visa_type?: string | null
+        }
+        Update: {
+          created_at?: string
+          destination_country?: string | null
+          email?: string
+          id?: string
+          name?: string
+          nationality?: string | null
+          phone?: string | null
+          special_requirements?: string | null
+          travel_date?: string | null
+          visa_type?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_first_admin: {
+        Args: { email: string }
+        Returns: undefined
+      }
+      get_user_role: {
+        Args: { user_id: string }
+        Returns: Database["public"]["Enums"]["app_role"]
+      }
     }
     Enums: {
+      app_role: "admin" | "staff"
       booking_status:
         | "new"
         | "contacted"
@@ -308,6 +463,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      app_role: ["admin", "staff"],
       booking_status: [
         "new",
         "contacted",

@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { CalendarIcon, Clock, Calendar, Route, Plane, Train, Bus, Users, User, UserRound, CheckCircle } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -82,19 +83,43 @@ const BookTickets = () => {
     defaultValues,
   });
 
-  const onSubmit = (values: FormValues, formType: string) => {
+  const onSubmit = async (values: FormValues, formType: string) => {
     console.log(values, formType);
     
-    toast.success("Ticket inquiry submitted successfully! We'll contact you soon.", {
-      description: `Your ${formType} booking request has been received.`,
-      duration: 5000,
-    });
-    
-    setSubmittedData({
-      email: values.email,
-      formType,
-      shown: true
-    });
+    try {
+      const { error } = await supabase.from('ticket_requests').insert({
+        name: values.name,
+        email: values.email,
+        phone: values.phone,
+        departure_city: values.boardingFrom,
+        arrival_city: values.destination,
+        travel_date: values.date ? format(values.date, "yyyy-MM-dd") : null,
+        passengers: parseInt(values.adults) + (values.children ? parseInt(values.children) : 0),
+        special_requirements: values.specialRequirements || null,
+        ticket_type: formType
+      });
+      
+      if (error) {
+        console.error('Error saving ticket request to Supabase:', error);
+        toast.error("There was an error saving your ticket request. Please try again later.", {
+          description: error.message,
+        });
+      } else {
+        toast.success("Ticket inquiry submitted successfully! We'll contact you soon.", {
+          description: `Your ${formType} booking request has been received.`,
+          duration: 5000,
+        });
+        
+        setSubmittedData({
+          email: values.email,
+          formType,
+          shown: true
+        });
+      }
+    } catch (error) {
+      console.error('Error in ticket request submission:', error);
+      toast.error("An unexpected error occurred. Please try again or contact us directly.");
+    }
   };
 
   const resetForm = (formType: string) => {

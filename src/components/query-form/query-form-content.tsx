@@ -13,6 +13,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CheckCircle } from "lucide-react";
 import { sendEmail } from "@/utils/email";
 import { createThankYouEmailHTML } from "@/utils/email-templates";
+import { supabase } from "@/integrations/supabase/client";
 
 interface QueryFormContentProps {
   destinationName: string;
@@ -66,8 +67,35 @@ export const QueryFormContent = ({
     }
 
     try {
-      // Track success of both email operations
+      // Track success of operations
+      let formSubmitted = true;
       let emailsSent = true;
+
+      // Save to Supabase tour_package_requests table
+      try {
+        const { error } = await supabase.from('tour_package_requests').insert({
+          name,
+          email,
+          phone,
+          destination_name: destinationName,
+          travel_date: travelDate ? format(travelDate, "yyyy-MM-dd") : null,
+          adults,
+          children,
+          package_type: packageType || null,
+          special_requirements: message || null,
+          estimated_price: prefillData?.estimatedPrice || null
+        });
+        
+        if (error) {
+          console.error('Error saving to Supabase:', error);
+          formSubmitted = false;
+        } else {
+          console.log('Successfully saved form data to Supabase');
+        }
+      } catch (error) {
+        console.error('Exception when saving to Supabase:', error);
+        formSubmitted = false;
+      }
 
       try {
         // Send thank you email to customer
@@ -104,12 +132,15 @@ export const QueryFormContent = ({
         console.error('Error sending admin email:', error);
       }
 
-      // Still consider form submission successful even if emails fail
-      toast.success("Thank you for your inquiry! Our team will contact you shortly.");
-      
-      if (!emailsSent) {
-        // Using standard error toast since sonner doesn't have warning
-        toast.error("There might be a delay in our response due to technical issues.");
+      // Show different toast messages depending on what succeeded
+      if (formSubmitted && emailsSent) {
+        toast.success("Thank you for your inquiry! Our team will contact you shortly.");
+      } else if (formSubmitted) {
+        toast.success("Your inquiry was received, but there might be a delay in our response.");
+      } else if (emailsSent) {
+        toast.success("Your inquiry email was sent, but we encountered an issue with data storage.");
+      } else {
+        toast.error("There was an error processing your request. Please try again or contact us directly.");
       }
       
       setIsSubmitting(false);
