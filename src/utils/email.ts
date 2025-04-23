@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -17,7 +16,7 @@ export const sendEmail = async (options: EmailOptions) => {
     // Ensure a consistent sender email
     const sender = options.from || "Nomadsafari Holidays <info@mynomadsafariholidays.in>";
     
-    console.log('Sending email with options:', {
+    console.log('[EMAIL] Sending email:', {
       to: options.to,
       subject: options.subject,
       from: sender,
@@ -31,14 +30,20 @@ export const sendEmail = async (options: EmailOptions) => {
     });
 
     if (error) {
-      console.error("Email sending error:", error);
+      console.error("[EMAIL] Error from edge function:", error);
       throw error;
     }
 
-    console.log('Email sent successfully:', data);
+    console.log('[EMAIL] Response from edge function:', data);
+    
+    if (!data.success) {
+      console.error("[EMAIL] Edge function reported failure:", data);
+      throw new Error(data.message || "Email sending failed");
+    }
+    
     return data;
   } catch (error) {
-    console.error("Failed to send email:", error);
+    console.error("[EMAIL] Failed to send email:", error);
     
     // Show a toast notification about the email issue
     toast.error(
@@ -47,20 +52,19 @@ export const sendEmail = async (options: EmailOptions) => {
     
     // Try to log the error for debugging
     try {
-      console.log("Email that failed to send:", JSON.stringify({
+      console.log("[EMAIL] Email that failed to send:", JSON.stringify({
         to: options.to,
         subject: options.subject,
         from: options.from || "Nomadsafari Holidays <info@mynomadsafariholidays.in>"
       }));
     } catch (logError) {
-      console.error("Failed to log email details:", logError);
+      console.error("[EMAIL] Failed to log email details:", logError);
     }
     
     throw error;
   }
 };
 
-// Helper functions for common email types
 export const sendBookingConfirmation = async (
   customerEmail: string, 
   customerName: string, 

@@ -29,23 +29,50 @@ serve(async (req) => {
       bcc 
     } = data;
     
-    console.log(`Received email request to: ${Array.isArray(to) ? to.join(', ') : to}`);
-    console.log(`Subject: ${subject}`);
+    console.log(`[SEND-EMAIL] Request received`);
+    console.log(`[SEND-EMAIL] To: ${Array.isArray(to) ? to.join(', ') : to}`);
+    console.log(`[SEND-EMAIL] Subject: ${subject}`);
     
+    const hostname = Deno.env.get("SMTP_HOSTNAME") || "smtp.hostinger.com";
+    const port = parseInt(Deno.env.get("SMTP_PORT") || "465");
+    const username = Deno.env.get("SMTP_USERNAME") || "info@mynomadsafariholidays.in";
+    const password = Deno.env.get("SMTP_PASSWORD") || "";
+    
+    console.log(`[SEND-EMAIL] SMTP Config: ${hostname}:${port}`);
+    console.log(`[SEND-EMAIL] SMTP Username: ${username}`);
+    
+    // Check if credentials are available
+    if (!password) {
+      console.error("[SEND-EMAIL] ERROR: SMTP Password is missing");
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          message: "SMTP credentials are incomplete. Please check Supabase Edge Function Secrets."
+        }),
+        { 
+          status: 500, 
+          headers: { 
+            'Content-Type': 'application/json',
+            ...corsHeaders
+          } 
+        }
+      );
+    }
+
     // Set up the SMTP client with environment variables
     const client = new SMTPClient({
       connection: {
-        hostname: Deno.env.get("SMTP_HOSTNAME") || "smtp.hostinger.com",
-        port: parseInt(Deno.env.get("SMTP_PORT") || "465"),
+        hostname,
+        port,
         tls: true,
         auth: {
-          username: Deno.env.get("SMTP_USERNAME") || "info@mynomadsafariholidays.in",
-          password: Deno.env.get("SMTP_PASSWORD") || "",
+          username,
+          password,
         },
       },
     });
 
-    console.log("SMTP client configured");
+    console.log("[SEND-EMAIL] SMTP client configured");
 
     // Send the email
     await client.send({
@@ -58,7 +85,7 @@ serve(async (req) => {
       ...(bcc && { bcc }),
     });
     
-    console.log("Email sent successfully");
+    console.log("[SEND-EMAIL] Email sent successfully");
     
     // Close the connection
     await client.close();
@@ -74,13 +101,25 @@ serve(async (req) => {
     );
     
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error("[SEND-EMAIL] Error:", error);
+    
+    // Get more details about the error
+    let errorMessage = error.message || "Unknown error";
+    let errorDetails;
+    
+    try {
+      errorDetails = JSON.stringify(error, Object.getOwnPropertyNames(error));
+    } catch (e) {
+      errorDetails = "Could not stringify error";
+    }
+    
+    console.error("[SEND-EMAIL] Error details:", errorDetails);
     
     return new Response(
       JSON.stringify({ 
         success: false, 
-        error: error.message,
-        details: typeof error === 'object' ? JSON.stringify(error) : 'Unknown error'
+        error: errorMessage,
+        details: errorDetails
       }),
       { 
         status: 500, 

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
@@ -12,7 +11,7 @@ import { SpecialRequirements } from "./special-requirements";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CheckCircle } from "lucide-react";
 import { sendEmail } from "@/utils/email";
-import { createThankYouEmailHTML } from "@/utils/email-templates";
+import { createThankYouEmailHTML, createAdminNotificationEmailHTML } from "@/utils/email-templates";
 import { supabase } from "@/integrations/supabase/client";
 
 interface QueryFormContentProps {
@@ -43,7 +42,6 @@ export const QueryFormContent = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // Apply prefilled data if provided
   useEffect(() => {
     if (prefillData) {
       if (prefillData.adults !== undefined) setAdults(prefillData.adults);
@@ -67,11 +65,9 @@ export const QueryFormContent = ({
     }
 
     try {
-      // Track success of operations
       let formSubmitted = true;
       let emailsSent = true;
 
-      // Create the request data object
       const requestData = {
         name,
         email,
@@ -85,59 +81,62 @@ export const QueryFormContent = ({
         estimated_price: prefillData?.estimatedPrice || null
       };
       
-      console.log('Submitting tour package request:', requestData);
+      console.log('[FORM] Submitting tour package request:', requestData);
 
-      // Save to Supabase tour_package_requests table
       try {
-        const { error } = await supabase.from('tour_package_requests').insert(requestData);
+        const { error, data } = await supabase.from('tour_package_requests').insert(requestData).select();
         
         if (error) {
-          console.error('Error saving to Supabase:', error);
+          console.error('[FORM] Error saving to Supabase:', error);
           formSubmitted = false;
         } else {
-          console.log('Successfully saved form data to Supabase');
+          console.log('[FORM] Successfully saved form data to Supabase:', data);
         }
       } catch (error) {
-        console.error('Exception when saving to Supabase:', error);
+        console.error('[FORM] Exception when saving to Supabase:', error);
         formSubmitted = false;
       }
 
+      const formattedDate = travelDate 
+        ? format(travelDate, "MMMM dd, yyyy") 
+        : "Not specified";
+
+      const emailDetails = {
+        name,
+        email,
+        phone,
+        destination: destinationName,
+        "travel date": formattedDate,
+        travelers: `${adults} adults, ${children} children`,
+        "package type": packageType || "Not specified",
+        "special requirements": message || "None",
+        ...(prefillData?.estimatedPrice ? { "estimated price": prefillData.estimatedPrice } : {})
+      };
+
       try {
-        // Send thank you email to customer
         await sendEmail({
           to: email,
           subject: "Thank you for your travel query - Nomadsafari Holidays",
           html: createThankYouEmailHTML(name, prefillData?.estimatedPrice ? 'quote' : 'query'),
         });
+        console.log('[FORM] Thank you email sent to customer');
       } catch (error) {
         emailsSent = false;
-        console.error('Error sending customer email:', error);
+        console.error('[FORM] Error sending customer email:', error);
       }
 
       try {
-        // Send notification to admin
         await sendEmail({
           to: "info@mynomadsafariholidays.in",
           subject: `New Travel Query - ${destinationName}`,
-          html: `
-            <h2>New Travel Query</h2>
-            <p><strong>Destination:</strong> ${destinationName}</p>
-            <p><strong>Name:</strong> ${name}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Phone:</strong> ${phone}</p>
-            <p><strong>Travel Date:</strong> ${travelDate ? format(travelDate, "MMMM dd, yyyy") : "Not specified"}</p>
-            <p><strong>Number of Travelers:</strong> ${adults} adults, ${children} children</p>
-            <p><strong>Package Type:</strong> ${packageType || "Not specified"}</p>
-            <p><strong>Special Requirements:</strong> ${message || "None"}</p>
-            ${prefillData?.estimatedPrice ? `<p><strong>Estimated Price:</strong> ${prefillData.estimatedPrice}</p>` : ''}
-          `
+          html: createAdminNotificationEmailHTML('Tour Package Request', emailDetails)
         });
+        console.log('[FORM] Notification email sent to admin');
       } catch (error) {
         emailsSent = false;
-        console.error('Error sending admin email:', error);
+        console.error('[FORM] Error sending admin email:', error);
       }
 
-      // Show different toast messages depending on what succeeded
       if (formSubmitted && emailsSent) {
         toast.success("Thank you for your inquiry! Our team will contact you shortly.");
       } else if (formSubmitted) {
@@ -151,12 +150,11 @@ export const QueryFormContent = ({
       setIsSubmitting(false);
       setIsSubmitted(true);
       
-      // Notify parent component if callback is provided
       if (onFormSubmitted) {
         onFormSubmitted();
       }
     } catch (error) {
-      console.error('Error in form submission:', error);
+      console.error('[FORM] Error in form submission:', error);
       setIsSubmitting(false);
       toast.error("There was an error sending your inquiry. Please try again or contact us directly by phone.");
     }
@@ -173,8 +171,6 @@ export const QueryFormContent = ({
     setMessage(prefillData?.estimatedPrice ? `Estimated price from calculator: ${prefillData.estimatedPrice}` : "");
     setIsSubmitted(false);
   };
-
-  const formattedTravelDate = travelDate ? format(travelDate, "MMMM dd, yyyy") : "Not specified";
 
   if (isSubmitted) {
     return (
