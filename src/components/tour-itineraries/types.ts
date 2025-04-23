@@ -24,3 +24,21 @@ export interface InternationalTourDetails extends BaseTourDetails {
   visaRequired: boolean;
   currencyCode?: string;
 }
+
+// Destination data interface
+export interface DestinationData {
+  name: string;
+  region: string;
+  imageSrc: string;
+  description: string;
+  bestTimeToVisit: string;
+  budgetRange: {
+    economy: string;
+    standard: string;
+    luxury: string;
+  };
+  highlights: string[];
+  isHoneymoon?: boolean;
+  isPilgrimage?: boolean;
+}
+
