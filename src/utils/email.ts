@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -43,7 +42,7 @@ export const sendEmail = async (options: EmailOptions) => {
 
       if (error) {
         console.error("[EMAIL DEBUG] Error from Supabase function:", error);
-        toast("Email Delivery Issue", {
+        toast.error("Email Delivery Issue", {
           description: "We've saved your information but couldn't send an email confirmation"
         });
         return { 
@@ -55,7 +54,7 @@ export const sendEmail = async (options: EmailOptions) => {
 
       if (!data || !data.success) {
         console.error("[EMAIL DEBUG] Function reported failure:", data);
-        toast("Email Service Notice", {
+        toast.warning("Email Service Notice", {
           description: "Your information is saved but the email service is temporarily unavailable"
         });
         return { 
@@ -74,7 +73,7 @@ export const sendEmail = async (options: EmailOptions) => {
       console.error("[EMAIL DEBUG] Error message:", error.message);
       console.error("[EMAIL DEBUG] Error stack:", error.stack);
       
-      toast("Action Completed", {
+      toast.success("Action Completed", {
         description: "Your information has been saved successfully"
       });
       
@@ -92,7 +91,7 @@ export const sendEmail = async (options: EmailOptions) => {
     console.error("[EMAIL DEBUG] Error message:", error.message);
     console.error("[EMAIL DEBUG] Error stack:", error.stack);
     
-    toast("Action Completed", {
+    toast.info("Action Completed", {
       description: "Your information has been saved but email confirmation is delayed"
     });
     
