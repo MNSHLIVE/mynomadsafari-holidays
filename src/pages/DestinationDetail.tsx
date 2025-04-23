@@ -1,4 +1,3 @@
-
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { Button } from "@/components/ui/button";
@@ -11,82 +10,107 @@ import CTASection from "@/components/cta-section";
 import { useState, useEffect } from "react";
 import { rajasthanTours } from "@/data/tour-types/rajasthan-tours";
 import { keralaTours } from "@/data/tour-types/kerala-tours";
+import { ErrorBoundary } from "@/components/error-boundary";
+import { useToast } from "@/hooks/use-toast";
 
 const DestinationDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const [destination, setDestination] = useState(null);
   const [loading, setLoading] = useState(true);
   const [relatedTours, setRelatedTours] = useState([]);
+  const { toast } = useToast();
   
   useEffect(() => {
-    if (slug) {
-      // Find destination by slug (normalized name)
-      const foundDestination = destinations.find(
-        (d) => d.name.toLowerCase().replace(/\s+/g, "-") === slug
-      );
-      
-      setDestination(foundDestination || null);
-      
-      // Set related tours based on the destination name
-      if (foundDestination) {
+    try {
+      if (slug) {
+        const foundDestination = destinations.find(
+          (d) => d.name.toLowerCase().replace(/\s+/g, "-") === slug
+        );
+        
+        if (!foundDestination) {
+          toast({
+            variant: "destructive",
+            title: "Destination not found",
+            description: "We couldn't find the destination you're looking for."
+          });
+          setLoading(false);
+          return;
+        }
+        
+        setDestination(foundDestination);
+        
         // Match tours based on destination name
         let tours = [];
         
-        // Use the correct tour data based on the destination
-        if (foundDestination.name === "Rajasthan") {
-          tours = rajasthanTours.map(tour => ({
-            imageSrc: tour.imageSrc,
-            title: tour.title,
-            location: tour.location,
-            duration: tour.duration,
-            price: tour.price,
-            bestTime: tour.bestTime,
-            packageType: tour.packageType,
-            description: tour.overview
-          }));
-        } else if (foundDestination.name === "Kerala") {
-          tours = keralaTours.map(tour => ({
-            imageSrc: tour.imageSrc,
-            title: tour.title,
-            location: tour.location,
-            duration: tour.duration,
-            price: tour.price,
-            bestTime: tour.bestTime,
-            packageType: tour.packageType,
-            description: tour.overview
-          }));
-        } else {
-          // Generic fallback for other destinations
-          tours = [
-            {
-              imageSrc: `/Destination/Domestic/main/${foundDestination.name.toLowerCase()}-main.jpg`,
-              title: `${foundDestination.name} Explorer`,
-              location: foundDestination.name,
-              duration: "5 Days / 4 Nights",
-              price: "₹15,999",
-              bestTime: foundDestination.bestTimeToVisit || "October - March",
-              packageType: "Budgeted",
-              description: `Experience the beauty of ${foundDestination.name} with our curated tour package.`
-            },
-            {
-              imageSrc: `/Destination/Domestic/main/${foundDestination.name.toLowerCase()}-3.jpg`,
-              title: `${foundDestination.name} Adventure`,
-              location: foundDestination.name,
-              duration: "7 Days / 6 Nights",
-              price: "₹24,999",
-              bestTime: foundDestination.bestTimeToVisit || "October - March",
-              packageType: "Luxury",
-              description: `Discover the hidden treasures of ${foundDestination.name} with our premium tour.`
-            }
-          ];
+        try {
+          if (foundDestination.name === "Rajasthan") {
+            tours = rajasthanTours.map(tour => ({
+              imageSrc: tour.imageSrc,
+              title: tour.title,
+              location: tour.location,
+              duration: tour.duration,
+              price: tour.price,
+              bestTime: tour.bestTime,
+              packageType: tour.packageType,
+              description: tour.overview
+            }));
+          } else if (foundDestination.name === "Kerala") {
+            tours = keralaTours.map(tour => ({
+              imageSrc: tour.imageSrc,
+              title: tour.title,
+              location: tour.location,
+              duration: tour.duration,
+              price: tour.price,
+              bestTime: tour.bestTime,
+              packageType: tour.packageType,
+              description: tour.overview
+            }));
+          } else {
+            tours = [
+              {
+                imageSrc: `/Destination/Domestic/main/${foundDestination.name.toLowerCase()}-main.jpg`,
+                title: `${foundDestination.name} Explorer`,
+                location: foundDestination.name,
+                duration: "5 Days / 4 Nights",
+                price: "₹15,999",
+                bestTime: foundDestination.bestTimeToVisit || "October - March",
+                packageType: "Budgeted",
+                description: `Experience the beauty of ${foundDestination.name} with our curated tour package.`
+              },
+              {
+                imageSrc: `/Destination/Domestic/main/${foundDestination.name.toLowerCase()}-3.jpg`,
+                title: `${foundDestination.name} Adventure`,
+                location: foundDestination.name,
+                duration: "7 Days / 6 Nights",
+                price: "₹24,999",
+                bestTime: foundDestination.bestTimeToVisit || "October - March",
+                packageType: "Luxury",
+                description: `Discover the hidden treasures of ${foundDestination.name} with our premium tour.`
+              }
+            ];
+          }
+          
+          setRelatedTours(tours);
+        } catch (error) {
+          console.error("Error loading tours:", error);
+          toast({
+            variant: "destructive",
+            title: "Error loading tours",
+            description: "There was an error loading the tour packages. Please try again."
+          });
         }
-        
-        setRelatedTours(tours);
       }
-      
+    } catch (error) {
+      console.error("Error in destination detail:", error);
+      toast({
+        variant: "destructive",
+        title: "Error loading destination",
+        description: "There was an error loading the destination details. Please try again."
+      });
+    } finally {
       setLoading(false);
     }
-  }, [slug]);
+  }, [slug, toast]);
   
   if (loading) {
     return (
@@ -114,12 +138,12 @@ const DestinationDetail = () => {
   }
   
   return (
-    <>
+    <ErrorBoundary>
       <Helmet>
-        <title>{destination.name} | My Nomadsafari Holidays</title>
+        <title>{destination?.name || "Destination"} | My Nomadsafari Holidays</title>
         <meta
           name="description"
-          content={`Explore ${destination.name} with My Nomadsafari Holidays. ${destination.description}`}
+          content={destination ? `Explore ${destination.name} with My Nomadsafari Holidays. ${destination.description}` : "Explore destinations with My Nomadsafari Holidays"}
         />
       </Helmet>
       
@@ -270,7 +294,7 @@ const DestinationDetail = () => {
         imageSrc={destination.imageSrc}
         align="center"
       />
-    </>
+    </ErrorBoundary>
   );
 };
 
