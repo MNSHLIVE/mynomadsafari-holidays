@@ -1,10 +1,9 @@
-
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin, Linkedin, CheckCircle } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { useState } from "react";
 import { sendEmail } from "@/utils/email";
 import { createThankYouEmailHTML } from "@/utils/email-templates";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -48,12 +47,7 @@ const Footer = () => {
         `
       });
 
-      toast({
-        title: "Subscribed successfully!",
-        description: "You'll now receive our latest travel updates.",
-      });
-      
-      // Show thank you message
+      // Immediately set subscribed state to true
       setIsSubscribed(true);
       
       // Reset form
@@ -63,8 +57,16 @@ const Footer = () => {
       setTimeout(() => {
         setIsSubscribed(false);
       }, 8000);
+
+      // Show toast notification
+      toast({
+        title: "Subscribed successfully!",
+        description: "You'll now receive our latest travel updates.",
+      });
     } catch (error) {
       console.error("Error subscribing to newsletter:", error);
+      
+      // Show error toast
       toast({
         title: "Subscription failed",
         description: "There was an error processing your subscription. Please try again.",
