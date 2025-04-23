@@ -10,11 +10,14 @@ import {
   filterInternationalTours, 
   getUniqueDestinations 
 } from "@/components/tour-itineraries/tour-filters";
+import DestinationQueryForm from "@/components/destination-query-form";
 
 const TourItineraries = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDestination, setSelectedDestination] = useState("all");
   const [selectedDuration, setSelectedDuration] = useState("all");
+  const [showEnquiryForm, setShowEnquiryForm] = useState(false);
+  const [selectedTourName, setSelectedTourName] = useState("");
 
   const uniqueDomesticDestinations = getUniqueDestinations(domesticItineraries);
   const uniqueInternationalDestinations = getUniqueDestinations(internationalItineraries);
@@ -35,14 +38,14 @@ const TourItineraries = () => {
     selectedDuration
   );
 
-  const handleFilterChange = () => {
-    // This function is kept as a placeholder for the FiltersSection props
-    // The actual filtering is being done by the filterDomesticTours and filterInternationalTours functions
-    console.log("Filter change detected");
-  };
-
   // Combine all unique destinations for the filters dropdown
   const allDestinations = [...new Set([...uniqueDomesticDestinations, ...uniqueInternationalDestinations])];
+
+  // Handle tour enquiry
+  const handleTourEnquiry = (tourName: string) => {
+    setSelectedTourName(tourName);
+    setShowEnquiryForm(true);
+  };
 
   return (
     <>
@@ -62,14 +65,29 @@ const TourItineraries = () => {
         />
 
         <FiltersSection
-          onFilterChange={handleFilterChange}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          selectedDestination={selectedDestination}
+          setSelectedDestination={setSelectedDestination}
+          selectedDuration={selectedDuration}
+          setSelectedDuration={setSelectedDuration}
           destinations={allDestinations}
+          onFilterChange={() => console.log("Filter change detected")}
         />
 
         <ToursTabs
           domesticTours={filteredDomesticTours}
           internationalTours={filteredInternationalTours}
+          onTourEnquiry={handleTourEnquiry}
         />
+
+        {showEnquiryForm && (
+          <DestinationQueryForm 
+            destinationName={selectedTourName} 
+            initialOpen={true}
+            onFormSubmitted={() => setShowEnquiryForm(false)}
+          />
+        )}
       </div>
     </>
   );

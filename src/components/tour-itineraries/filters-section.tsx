@@ -1,13 +1,14 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { Input } from "@/components/ui/input";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { formatDateRange } from "./tours-tabs";
@@ -36,14 +37,12 @@ interface FiltersSectionProps {
 const FiltersSection = ({ 
   onFilterChange, 
   destinations,
-  searchTerm,
-  setSearchTerm,
-  selectedDestination,
-  setSelectedDestination,
-  selectedDuration,
-  setSelectedDuration,
-  uniqueDomesticDestinations,
-  uniqueInternationalDestinations
+  searchTerm = "",
+  setSearchTerm = () => {},
+  selectedDestination = "all",
+  setSelectedDestination = () => {},
+  selectedDuration = "all",
+  setSelectedDuration = () => {}
 }: FiltersSectionProps) => {
   const [filters, setFilters] = useState<FilterParams>({});
   const [dateRange, setDateRange] = useState<{
@@ -51,36 +50,59 @@ const FiltersSection = ({
     to?: Date;
   } | undefined>();
 
-  const handleFilterChange = (
-    filterName: keyof FilterParams,
-    value: any
-  ) => {
-    const newFilters = {
+  // Update local filters when props change
+  useEffect(() => {
+    setFilters({
       ...filters,
-      [filterName]: value,
-    };
-    setFilters(newFilters);
-    onFilterChange(newFilters);
+      destination: selectedDestination === "all" ? undefined : selectedDestination,
+      duration: selectedDuration === "all" ? undefined : selectedDuration
+    });
+  }, [selectedDestination, selectedDuration]);
+
+  // Handle search input change
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  // Handle destination change
+  const handleDestinationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setSelectedDestination(value);
+  };
+
+  // Handle duration change
+  const handleDurationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setSelectedDuration(value);
   };
 
   return (
     <div className="bg-muted/30 p-4 rounded-lg mb-8">
       <h3 className="text-lg font-medium mb-4">Filter Tours</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      
+      {/* Search input */}
+      <div className="mb-4">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+          <Input
+            placeholder="Search tours..."
+            className="pl-10"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+        </div>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Destination filter */}
         <div>
           <label className="block text-sm font-medium mb-1">Destination</label>
           <select
             className="w-full p-2 bg-background border rounded"
-            onChange={(e) =>
-              handleFilterChange(
-                "destination",
-                e.target.value === "" ? undefined : e.target.value
-              )
-            }
-            value={filters.destination || ""}
+            onChange={handleDestinationChange}
+            value={selectedDestination}
           >
-            <option value="">All Destinations</option>
+            <option value="all">All Destinations</option>
             {destinations.map((destination) => (
               <option key={destination} value={destination}>
                 {destination}
@@ -117,7 +139,12 @@ const FiltersSection = ({
                 selected={dateRange}
                 onSelect={(range) => {
                   setDateRange(range);
-                  handleFilterChange("travelDates", range);
+                  const newFilters = {
+                    ...filters,
+                    travelDates: range
+                  };
+                  setFilters(newFilters);
+                  onFilterChange(newFilters);
                 }}
                 numberOfMonths={2}
                 disabled={(date) => date < new Date()}
@@ -127,40 +154,15 @@ const FiltersSection = ({
           </Popover>
         </div>
 
-        {/* Package type filter */}
-        <div>
-          <label className="block text-sm font-medium mb-1">Package Type</label>
-          <select
-            className="w-full p-2 bg-background border rounded"
-            onChange={(e) =>
-              handleFilterChange(
-                "packageType",
-                e.target.value === "" ? undefined : e.target.value
-              )
-            }
-            value={filters.packageType || ""}
-          >
-            <option value="">All Packages</option>
-            <option value="Budgeted">Budgeted</option>
-            <option value="Luxury">Luxury</option>
-            <option value="Premier">Premier</option>
-          </select>
-        </div>
-
         {/* Duration filter */}
         <div>
           <label className="block text-sm font-medium mb-1">Duration</label>
           <select
             className="w-full p-2 bg-background border rounded"
-            onChange={(e) =>
-              handleFilterChange(
-                "duration",
-                e.target.value === "" ? undefined : e.target.value
-              )
-            }
-            value={filters.duration || ""}
+            onChange={handleDurationChange}
+            value={selectedDuration}
           >
-            <option value="">Any Duration</option>
+            <option value="all">Any Duration</option>
             <option value="1-3 days">1-3 days</option>
             <option value="4-7 days">4-7 days</option>
             <option value="8-14 days">8-14 days</option>
