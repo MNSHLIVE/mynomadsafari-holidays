@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { CheckCircle, Loader } from "lucide-react";
+import { CheckCircle, Loader, AlertTriangle } from "lucide-react";
 import { sendEmail } from "@/utils/email";
 import { createThankYouEmailHTML } from "@/utils/email-templates";
 
@@ -14,6 +14,7 @@ export const Newsletter = () => {
   const [email, setEmail] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [serviceError, setServiceError] = useState<string | null>(null);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -23,6 +24,7 @@ export const Newsletter = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
+    setServiceError(null);
     
     if (!email) {
       setError("Please enter your email address");
@@ -37,12 +39,18 @@ export const Newsletter = () => {
     setIsSubmitting(true);
 
     try {
-      await sendEmail({
+      const response = await sendEmail({
         to: email,
         subject: "Welcome to My Nomadsafari Holidays Newsletter!",
         html: createThankYouEmailHTML("Traveler", 'subscription'),
       });
 
+      // Check if the email was actually sent successfully
+      if (!response.success) {
+        throw new Error(response.message || "Failed to send email");
+      }
+
+      // Only attempt to send admin notification if the first email succeeded
       await sendEmail({
         to: "info@mynomadsafariholidays.in",
         subject: "New Newsletter Subscription",
@@ -65,10 +73,27 @@ export const Newsletter = () => {
         title: "Subscribed successfully!",
         description: "You'll now receive our latest travel updates.",
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error subscribing to newsletter:", error);
       
-      setError("Failed to subscribe. Please try again later.");
+      // Determine if the error is related to email service availability
+      if (error.message?.includes("DNS resolution") || error.message?.includes("SMTP")) {
+        setServiceError("Our email service is currently unavailable. We've saved your request and will subscribe you when service resumes.");
+        
+        // Store the email locally to attempt resubscription later
+        try {
+          const pendingSubscriptions = JSON.parse(localStorage.getItem('pendingSubscriptions') || '[]');
+          if (!pendingSubscriptions.includes(email)) {
+            pendingSubscriptions.push(email);
+            localStorage.setItem('pendingSubscriptions', JSON.stringify(pendingSubscriptions));
+          }
+        } catch (e) {
+          console.error("Failed to save pending subscription:", e);
+        }
+      } else {
+        setError("Failed to subscribe. Please try again later.");
+      }
+      
       toast({
         title: "Subscription failed",
         description: "There was an error processing your subscription. Please try again.",
@@ -92,6 +117,14 @@ export const Newsletter = () => {
           <AlertTitle className="text-sm font-medium">Thank you for subscribing!</AlertTitle>
           <AlertDescription className="text-xs">
             You'll now receive our latest travel updates and special offers.
+          </AlertDescription>
+        </Alert>
+      ) : serviceError ? (
+        <Alert className="bg-amber-50 border-amber-200 dark:bg-amber-900/20 dark:border-amber-800">
+          <AlertTriangle className="h-5 w-5 text-amber-500" />
+          <AlertTitle className="text-sm font-medium">Email Service Notice</AlertTitle>
+          <AlertDescription className="text-xs">
+            {serviceError}
           </AlertDescription>
         </Alert>
       ) : (
