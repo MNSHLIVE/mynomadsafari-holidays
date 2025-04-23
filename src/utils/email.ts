@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -21,6 +22,11 @@ export const sendEmail = async (options: EmailOptions) => {
       subject: options.subject,
       from: sender,
     });
+    
+    // Add plain text version if not provided
+    if (!options.text && options.html) {
+      options.text = options.html.replace(/<[^>]*>?/gm, '').replace(/\s+/g, ' ').trim();
+    }
     
     const { data, error } = await supabase.functions.invoke("send-email", {
       body: {

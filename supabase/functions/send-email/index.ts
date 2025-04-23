@@ -47,7 +47,8 @@ serve(async (req) => {
       return new Response(
         JSON.stringify({ 
           success: false, 
-          message: "SMTP credentials are incomplete. Please check Supabase Edge Function Secrets."
+          message: "SMTP credentials are incomplete. Please check Supabase Edge Function Secrets.",
+          error_type: "missing_credentials"
         }),
         { 
           status: 500, 
@@ -59,46 +60,66 @@ serve(async (req) => {
       );
     }
 
-    // Set up the SMTP client with environment variables
-    const client = new SMTPClient({
-      connection: {
-        hostname,
-        port,
-        tls: true,
-        auth: {
-          username,
-          password,
+    try {
+      // Set up the SMTP client with environment variables
+      const client = new SMTPClient({
+        connection: {
+          hostname,
+          port,
+          tls: true,
+          auth: {
+            username,
+            password,
+          },
         },
-      },
-    });
+      });
 
-    console.log("[SEND-EMAIL] SMTP client configured");
+      console.log("[SEND-EMAIL] SMTP client configured");
 
-    // Send the email
-    await client.send({
-      from: from,
-      to: to,
-      subject: subject,
-      content: text || "",
-      html: html || "",
-      ...(cc && { cc }),
-      ...(bcc && { bcc }),
-    });
-    
-    console.log("[SEND-EMAIL] Email sent successfully");
-    
-    // Close the connection
-    await client.close();
-    
-    return new Response(
-      JSON.stringify({ success: true, message: 'Email sent successfully' }),
-      { 
-        headers: { 
-          'Content-Type': 'application/json',
-          ...corsHeaders
-        } 
-      }
-    );
+      // Send the email
+      await client.send({
+        from: from,
+        to: to,
+        subject: subject,
+        content: text || "",
+        html: html || "",
+        ...(cc && { cc }),
+        ...(bcc && { bcc }),
+      });
+      
+      console.log("[SEND-EMAIL] Email sent successfully");
+      
+      // Close the connection
+      await client.close();
+      
+      return new Response(
+        JSON.stringify({ success: true, message: 'Email sent successfully' }),
+        { 
+          headers: { 
+            'Content-Type': 'application/json',
+            ...corsHeaders
+          } 
+        }
+      );
+    } catch (smtpError) {
+      console.error("[SEND-EMAIL] SMTP Error:", smtpError);
+      
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          message: "Failed to send email through SMTP", 
+          error: smtpError.message,
+          error_type: "smtp_error"
+        }),
+        { 
+          status: 500, 
+          headers: { 
+            'Content-Type': 'application/json',
+            ...corsHeaders
+          } 
+        }
+      );
+    }
     
   } catch (error) {
     console.error("[SEND-EMAIL] Error:", error);
@@ -119,7 +140,8 @@ serve(async (req) => {
       JSON.stringify({ 
         success: false, 
         error: errorMessage,
-        details: errorDetails
+        details: errorDetails,
+        error_type: "general_error"
       }),
       { 
         status: 500, 

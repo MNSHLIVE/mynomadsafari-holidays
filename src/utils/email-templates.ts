@@ -81,3 +81,11 @@ export const createAdminNotificationEmailHTML = (formType: string, details: Reco
     </div>
   `;
 };
+
+// Plain text fallback for email clients that don't support HTML
+export const createPlainTextEmail = (content: string): string => {
+  // Simple conversion that removes HTML tags
+  return content.replace(/<[^>]*>?/gm, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+};
