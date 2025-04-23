@@ -17,6 +17,12 @@ export const sendEmail = async (options: EmailOptions) => {
     // Ensure a consistent sender email
     const sender = options.from || "Nomadsafari Holidays <info@mynomadsafariholidays.in>";
     
+    console.log('Sending email with options:', {
+      to: options.to,
+      subject: options.subject,
+      from: sender,
+    });
+    
     const { data, error } = await supabase.functions.invoke("send-email", {
       body: {
         ...options,
@@ -29,6 +35,7 @@ export const sendEmail = async (options: EmailOptions) => {
       throw error;
     }
 
+    console.log('Email sent successfully:', data);
     return data;
   } catch (error) {
     console.error("Failed to send email:", error);

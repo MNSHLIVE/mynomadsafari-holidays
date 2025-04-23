@@ -71,20 +71,25 @@ export const QueryFormContent = ({
       let formSubmitted = true;
       let emailsSent = true;
 
+      // Create the request data object
+      const requestData = {
+        name,
+        email,
+        phone,
+        destination_name: destinationName,
+        travel_date: travelDate ? format(travelDate, "yyyy-MM-dd") : null,
+        adults,
+        children,
+        package_type: packageType || null,
+        special_requirements: message || null,
+        estimated_price: prefillData?.estimatedPrice || null
+      };
+      
+      console.log('Submitting tour package request:', requestData);
+
       // Save to Supabase tour_package_requests table
       try {
-        const { error } = await supabase.from('tour_package_requests').insert({
-          name,
-          email,
-          phone,
-          destination_name: destinationName,
-          travel_date: travelDate ? format(travelDate, "yyyy-MM-dd") : null,
-          adults,
-          children,
-          package_type: packageType || null,
-          special_requirements: message || null,
-          estimated_price: prefillData?.estimatedPrice || null
-        });
+        const { error } = await supabase.from('tour_package_requests').insert(requestData);
         
         if (error) {
           console.error('Error saving to Supabase:', error);
@@ -182,7 +187,7 @@ export const QueryFormContent = ({
               We've received your request about {destinationName} and will contact you at {email} within 24 hours with a customized itinerary.
             </p>
             <p>
-              <span className="font-medium">Travel Date:</span> {formattedTravelDate}
+              <span className="font-medium">Travel Date:</span> {travelDate ? format(travelDate, "MMMM dd, yyyy") : "Not specified"}
             </p>
             <p className="text-sm text-muted-foreground">
               If you have any urgent questions, please feel free to contact us directly.
