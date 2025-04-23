@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { CheckCircle, Loader, AlertTriangle, Info } from "lucide-react";
+import { CheckCircle, Loader, AlertTriangle } from "lucide-react";
 import { sendEmail } from "@/utils/email";
 import { createThankYouEmailHTML } from "@/utils/email-templates";
 
@@ -15,14 +15,14 @@ export const Newsletter = () => {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [serviceError, setServiceError] = useState<string | null>(null);
-  const [debugInfo, setDebugInfo] = useState<string | null>(null);
+  const [pendingSubscriptions, setPendingSubscriptions] = useState<string[]>([]);
   
   // Check for pending subscriptions on component mount
   useEffect(() => {
     try {
-      const pendingSubscriptions = JSON.parse(localStorage.getItem('pendingSubscriptions') || '[]');
-      if (pendingSubscriptions.length > 0) {
-        setDebugInfo(`${pendingSubscriptions.length} pending subscription(s) saved locally`);
+      const storedSubscriptions = JSON.parse(localStorage.getItem('pendingSubscriptions') || '[]');
+      if (storedSubscriptions.length > 0) {
+        setPendingSubscriptions(storedSubscriptions);
       }
     } catch (e) {
       console.error("Failed to read pending subscriptions:", e);
@@ -38,7 +38,6 @@ export const Newsletter = () => {
     e.preventDefault();
     setError(null);
     setServiceError(null);
-    setDebugInfo(null);
     
     if (!email) {
       setError("Please enter your email address");
@@ -55,10 +54,11 @@ export const Newsletter = () => {
     try {
       // First, save to localStorage as a precaution
       try {
-        const pendingSubscriptions = JSON.parse(localStorage.getItem('pendingSubscriptions') || '[]');
-        if (!pendingSubscriptions.includes(email)) {
-          pendingSubscriptions.push(email);
-          localStorage.setItem('pendingSubscriptions', JSON.stringify(pendingSubscriptions));
+        const storedSubscriptions = JSON.parse(localStorage.getItem('pendingSubscriptions') || '[]');
+        if (!storedSubscriptions.includes(email)) {
+          storedSubscriptions.push(email);
+          localStorage.setItem('pendingSubscriptions', JSON.stringify(storedSubscriptions));
+          setPendingSubscriptions(storedSubscriptions);
         }
       } catch (e) {
         console.error("Failed to save to pending subscriptions:", e);
@@ -108,9 +108,10 @@ export const Newsletter = () => {
       
       // Remove from pending subscriptions if successful
       try {
-        const pendingSubscriptions = JSON.parse(localStorage.getItem('pendingSubscriptions') || '[]');
-        const updatedSubscriptions = pendingSubscriptions.filter((e: string) => e !== email);
+        const storedSubscriptions = JSON.parse(localStorage.getItem('pendingSubscriptions') || '[]');
+        const updatedSubscriptions = storedSubscriptions.filter((e: string) => e !== email);
         localStorage.setItem('pendingSubscriptions', JSON.stringify(updatedSubscriptions));
+        setPendingSubscriptions(updatedSubscriptions);
       } catch (e) {
         console.error("Failed to update pending subscriptions:", e);
       }
@@ -179,14 +180,6 @@ export const Newsletter = () => {
             />
             {error && (
               <p className="text-xs text-destructive">{error}</p>
-            )}
-            {debugInfo && (
-              <Alert className="mt-2 py-2 text-xs bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800">
-                <Info className="h-4 w-4 text-blue-500" />
-                <AlertDescription className="text-xs">
-                  {debugInfo}
-                </AlertDescription>
-              </Alert>
             )}
           </div>
           <Button 
