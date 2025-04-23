@@ -43,10 +43,8 @@ export const sendEmail = async (options: EmailOptions) => {
 
       if (error) {
         console.error("[EMAIL DEBUG] Error from Supabase function:", error);
-        toast({
-          title: "Email Delivery Issue",
-          description: "We've saved your information but couldn't send an email confirmation",
-          variant: "default"
+        toast("Email Delivery Issue", {
+          description: "We've saved your information but couldn't send an email confirmation"
         });
         return { 
           success: false, 
@@ -57,10 +55,8 @@ export const sendEmail = async (options: EmailOptions) => {
 
       if (!data || !data.success) {
         console.error("[EMAIL DEBUG] Function reported failure:", data);
-        toast({
-          title: "Email Service Notice",
-          description: "Your information is saved but the email service is temporarily unavailable",
-          variant: "default"
+        toast("Email Service Notice", {
+          description: "Your information is saved but the email service is temporarily unavailable"
         });
         return { 
           success: false, 
@@ -78,10 +74,8 @@ export const sendEmail = async (options: EmailOptions) => {
       console.error("[EMAIL DEBUG] Error message:", error.message);
       console.error("[EMAIL DEBUG] Error stack:", error.stack);
       
-      toast({
-        title: "Action Completed",
-        description: "Your information has been saved successfully",
-        variant: "default"
+      toast("Action Completed", {
+        description: "Your information has been saved successfully"
       });
       
       return { 
@@ -98,10 +92,8 @@ export const sendEmail = async (options: EmailOptions) => {
     console.error("[EMAIL DEBUG] Error message:", error.message);
     console.error("[EMAIL DEBUG] Error stack:", error.stack);
     
-    toast({
-      title: "Action Completed",
-      description: "Your information has been saved but email confirmation is delayed",
-      variant: "default"
+    toast("Action Completed", {
+      description: "Your information has been saved but email confirmation is delayed"
     });
     
     return { 
