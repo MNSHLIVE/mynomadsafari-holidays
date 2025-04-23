@@ -11,6 +11,7 @@ import {
   getUniqueDestinations 
 } from "@/components/tour-itineraries/tour-filters";
 import DestinationQueryForm from "@/components/destination-query-form";
+import { DomesticTourDetails, InternationalTourDetails } from "@/components/tour-itineraries/types";
 
 const TourItineraries = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,12 +20,16 @@ const TourItineraries = () => {
   const [showEnquiryForm, setShowEnquiryForm] = useState(false);
   const [selectedTourName, setSelectedTourName] = useState("");
 
-  const uniqueDomesticDestinations = getUniqueDestinations(domesticItineraries);
-  const uniqueInternationalDestinations = getUniqueDestinations(internationalItineraries);
+  // Cast the tour itineraries to the appropriate types
+  const typedDomesticItineraries = domesticItineraries as unknown as DomesticTourDetails[];
+  const typedInternationalItineraries = internationalItineraries as unknown as InternationalTourDetails[];
+
+  const uniqueDomesticDestinations = getUniqueDestinations(typedDomesticItineraries);
+  const uniqueInternationalDestinations = getUniqueDestinations(typedInternationalItineraries);
 
   // Filter domestic tours based on search, destination, and duration
   const filteredDomesticTours = filterDomesticTours(
-    domesticItineraries,
+    typedDomesticItineraries,
     searchTerm,
     selectedDestination,
     selectedDuration
@@ -32,7 +37,7 @@ const TourItineraries = () => {
 
   // Filter international tours based on search, destination, and duration
   const filteredInternationalTours = filterInternationalTours(
-    internationalItineraries,
+    typedInternationalItineraries,
     searchTerm,
     selectedDestination,
     selectedDuration
