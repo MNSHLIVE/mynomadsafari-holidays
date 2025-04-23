@@ -1,97 +1,153 @@
 
-import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { CalendarIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { formatDateRange } from "./tours-tabs";
 
-interface FiltersSectionProps {
-  searchTerm: string;
-  setSearchTerm: (term: string) => void;
-  selectedDestination: string;
-  setSelectedDestination: (destination: string) => void;
-  selectedDuration: string;
-  setSelectedDuration: (duration: string) => void;
-  uniqueDomesticDestinations: string[];
-  uniqueInternationalDestinations: string[];
+interface FilterParams {
+  destination?: string;
+  travelDates?: { from: Date; to?: Date };
+  packageType?: string;
+  duration?: string;
+  budgetRange?: { min: number; max: number };
 }
 
-const FiltersSection = ({
-  searchTerm,
-  setSearchTerm,
-  selectedDestination,
-  setSelectedDestination,
-  selectedDuration,
-  setSelectedDuration,
-  uniqueDomesticDestinations,
-  uniqueInternationalDestinations,
-}: FiltersSectionProps) => {
+interface FiltersSectionProps {
+  onFilterChange: (filters: FilterParams) => void;
+  destinations: string[];
+}
+
+const FiltersSection = ({ onFilterChange, destinations }: FiltersSectionProps) => {
+  const [filters, setFilters] = useState<FilterParams>({});
+  const [dateRange, setDateRange] = useState<{
+    from: Date;
+    to?: Date;
+  } | undefined>();
+
+  const handleFilterChange = (
+    filterName: keyof FilterParams,
+    value: any
+  ) => {
+    const newFilters = {
+      ...filters,
+      [filterName]: value,
+    };
+    setFilters(newFilters);
+    onFilterChange(newFilters);
+  };
+
   return (
-    <div className="mb-8 bg-muted/30 p-6 rounded-lg">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="relative">
-          <Input
-            placeholder="Search destinations, activities..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
-          <Search className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+    <div className="bg-muted/30 p-4 rounded-lg mb-8">
+      <h3 className="text-lg font-medium mb-4">Filter Tours</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Destination filter */}
+        <div>
+          <label className="block text-sm font-medium mb-1">Destination</label>
+          <select
+            className="w-full p-2 bg-background border rounded"
+            onChange={(e) =>
+              handleFilterChange(
+                "destination",
+                e.target.value === "" ? undefined : e.target.value
+              )
+            }
+            value={filters.destination || ""}
+          >
+            <option value="">All Destinations</option>
+            {destinations.map((destination) => (
+              <option key={destination} value={destination}>
+                {destination}
+              </option>
+            ))}
+          </select>
         </div>
-        
-        <Select
-          value={selectedDestination}
-          onValueChange={setSelectedDestination}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select Destination" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="all">All Destinations</SelectItem>
-              <Tabs defaultValue="domestic">
-                <TabsList className="mb-2">
-                  <TabsTrigger value="domestic">Domestic</TabsTrigger>
-                  <TabsTrigger value="international">International</TabsTrigger>
-                </TabsList>
-                <TabsContent value="domestic">
-                  {uniqueDomesticDestinations.map((dest) => (
-                    <SelectItem key={dest} value={dest}>
-                      {dest}
-                    </SelectItem>
-                  ))}
-                </TabsContent>
-                <TabsContent value="international">
-                  {uniqueInternationalDestinations.map((dest) => (
-                    <SelectItem key={dest} value={dest}>
-                      {dest}
-                    </SelectItem>
-                  ))}
-                </TabsContent>
-              </Tabs>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        
-        <Select
-          value={selectedDuration}
-          onValueChange={setSelectedDuration}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select Duration" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Durations</SelectItem>
-            <SelectItem value="short">Short Tours (3-4 Nights)</SelectItem>
-            <SelectItem value="long">Long Tours (6-8 Nights)</SelectItem>
-          </SelectContent>
-        </Select>
+
+        {/* Travel dates filter */}
+        <div>
+          <label className="block text-sm font-medium mb-1">Travel Dates</label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant={"outline"}
+                className={cn(
+                  "w-full justify-start text-left font-normal",
+                  !dateRange && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {dateRange ? (
+                  formatDateRange(dateRange)
+                ) : (
+                  <span>Select dates</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0">
+              <Calendar
+                initialFocus
+                mode="range"
+                defaultMonth={new Date()}
+                selected={dateRange}
+                onSelect={(range) => {
+                  setDateRange(range);
+                  handleFilterChange("travelDates", range);
+                }}
+                numberOfMonths={2}
+                disabled={(date) => date < new Date()}
+                className="pointer-events-auto"
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
+
+        {/* Package type filter */}
+        <div>
+          <label className="block text-sm font-medium mb-1">Package Type</label>
+          <select
+            className="w-full p-2 bg-background border rounded"
+            onChange={(e) =>
+              handleFilterChange(
+                "packageType",
+                e.target.value === "" ? undefined : e.target.value
+              )
+            }
+            value={filters.packageType || ""}
+          >
+            <option value="">All Packages</option>
+            <option value="Budgeted">Budgeted</option>
+            <option value="Luxury">Luxury</option>
+            <option value="Premier">Premier</option>
+          </select>
+        </div>
+
+        {/* Duration filter */}
+        <div>
+          <label className="block text-sm font-medium mb-1">Duration</label>
+          <select
+            className="w-full p-2 bg-background border rounded"
+            onChange={(e) =>
+              handleFilterChange(
+                "duration",
+                e.target.value === "" ? undefined : e.target.value
+              )
+            }
+            value={filters.duration || ""}
+          >
+            <option value="">Any Duration</option>
+            <option value="1-3 days">1-3 days</option>
+            <option value="4-7 days">4-7 days</option>
+            <option value="8-14 days">8-14 days</option>
+            <option value="15+ days">15+ days</option>
+          </select>
+        </div>
       </div>
     </div>
   );
