@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import CTASection from "@/components/cta-section";
 import HeroSlider from "@/components/hero-slider";
 import TravelCategories from "@/components/home/travel-categories";
@@ -56,7 +57,7 @@ const Index = () => {
         subtitle="Embark on a spiritual journey to these sacred destinations"
         tag="Religious Tourism"
         destinations={religiousDestinations}
-        viewAllLink="/destinations?category=pilgrimage"
+        viewAllLink="/religious-tours"
         viewAllText="Explore Religious Tours"
         bgColor="bg-muted/30 py-16"
       />
@@ -79,7 +80,7 @@ const Index = () => {
         subtitle="Discover our carefully curated religious tour packages for spiritual journeys"
         tag="Pilgrimages & Spiritual Tours"
         tours={religiousTours}
-        viewAllLink="/tours?category=religious"
+        viewAllLink="/religious-tours"
         viewAllText="View All Religious Tours"
         showTabs={false}
       />

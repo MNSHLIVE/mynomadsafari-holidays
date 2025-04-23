@@ -54,12 +54,12 @@ const DestinationsSection = ({
         </div>
 
         <div className="text-center mt-10">
-          <Link to={viewAllLink}>
-            <Button variant="outline" className="group">
+          <Button variant="outline" className="group" asChild>
+            <Link to={viewAllLink}>
               <span>{viewAllText}</span>
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
       </div>
     </section>

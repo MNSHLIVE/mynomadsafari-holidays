@@ -53,15 +53,16 @@ const CTASection = ({
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
             <p className="mb-8 text-lg opacity-90">{description}</p>
-            <Link to={buttonLink}>
-              <Button 
-                size="lg" 
-                className="group bg-primary hover:bg-primary/90"
-              >
+            <Button 
+              size="lg" 
+              className="group bg-primary hover:bg-primary/90"
+              asChild
+            >
+              <Link to={buttonLink}>
                 <span>{buttonText}</span>
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </div>
         </div>
       </div>

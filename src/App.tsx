@@ -47,6 +47,7 @@ const router = createBrowserRouter(
       <Route path="privacy" element={<Privacy />} />
       <Route path="refund" element={<Refund />} />
       <Route path="faq" element={<Faq />} />
+      <Route path="*" element={<NotFound />} />
     </Route>
   )
 );

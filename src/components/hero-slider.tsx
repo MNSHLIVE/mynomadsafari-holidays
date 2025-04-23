@@ -1,5 +1,6 @@
 
 import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -141,12 +142,12 @@ const HeroSlider = ({ slides, interval = 5000, className }: HeroSliderProps) => 
                 </p>
               )}
               <div className="flex flex-wrap justify-center gap-3 md:gap-4">
-                <a href="#package-calculator" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 rounded-md px-4 xs:px-6 sm:px-8 py-2">
+                <Link to="#package-calculator" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 rounded-md px-4 xs:px-6 sm:px-8 py-2">
                   Calculate Your Trip
-                </a>
-                <a href="/contact" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-white/10 text-white hover:bg-white/20 h-11 rounded-md px-4 xs:px-6 sm:px-8 py-2">
+                </Link>
+                <Link to="/contact" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-white/10 text-white hover:bg-white/20 h-11 rounded-md px-4 xs:px-6 sm:px-8 py-2">
                   Contact Us
-                </a>
+                </Link>
               </div>
             </div>
           </div>
