@@ -35,6 +35,15 @@ const TourItineraries = () => {
     selectedDuration
   );
 
+  const handleFilterChange = () => {
+    // This function is kept as a placeholder for the FiltersSection props
+    // The actual filtering is being done by the filterDomesticTours and filterInternationalTours functions
+    console.log("Filter change detected");
+  };
+
+  // Combine all unique destinations for the filters dropdown
+  const allDestinations = [...new Set([...uniqueDomesticDestinations, ...uniqueInternationalDestinations])];
+
   return (
     <>
       <Helmet>
@@ -53,14 +62,8 @@ const TourItineraries = () => {
         />
 
         <FiltersSection
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          selectedDestination={selectedDestination}
-          setSelectedDestination={setSelectedDestination}
-          selectedDuration={selectedDuration}
-          setSelectedDuration={setSelectedDuration}
-          uniqueDomesticDestinations={uniqueDomesticDestinations}
-          uniqueInternationalDestinations={uniqueInternationalDestinations}
+          onFilterChange={handleFilterChange}
+          destinations={allDestinations}
         />
 
         <ToursTabs

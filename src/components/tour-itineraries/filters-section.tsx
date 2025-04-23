@@ -23,9 +23,28 @@ interface FilterParams {
 interface FiltersSectionProps {
   onFilterChange: (filters: FilterParams) => void;
   destinations: string[];
+  searchTerm?: string;
+  setSearchTerm?: React.Dispatch<React.SetStateAction<string>>;
+  selectedDestination?: string;
+  setSelectedDestination?: React.Dispatch<React.SetStateAction<string>>;
+  selectedDuration?: string;
+  setSelectedDuration?: React.Dispatch<React.SetStateAction<string>>;
+  uniqueDomesticDestinations?: string[];
+  uniqueInternationalDestinations?: string[];
 }
 
-const FiltersSection = ({ onFilterChange, destinations }: FiltersSectionProps) => {
+const FiltersSection = ({ 
+  onFilterChange, 
+  destinations,
+  searchTerm,
+  setSearchTerm,
+  selectedDestination,
+  setSelectedDestination,
+  selectedDuration,
+  setSelectedDuration,
+  uniqueDomesticDestinations,
+  uniqueInternationalDestinations
+}: FiltersSectionProps) => {
   const [filters, setFilters] = useState<FilterParams>({});
   const [dateRange, setDateRange] = useState<{
     from: Date;
