@@ -71,86 +71,60 @@ export const Newsletter = () => {
         html: createThankYouEmailHTML("Traveler", 'subscription'),
       });
 
-      // Improved error handling
-      if (!response.success) {
-        console.error("Email sending failed:", response.message);
-        
-        // More specific error detection
-        const isTemporaryServiceError = 
-          response.message.includes("DNS") || 
-          response.message.includes("SMTP") || 
-          response.message.includes("connection") ||
-          response.message.includes("timeout");
-
-        if (isTemporaryServiceError) {
-          setServiceError("We're experiencing temporary email service issues. Your subscription is saved and will be processed soon.");
-        } else {
-          // Update the error message to be more helpful
-          setError("Your subscription is saved but we couldn't send a confirmation email. Our team is looking into it.");
-        }
-
-        // Still show successful subscription despite email error
-        setIsSubscribed(true);
-        setEmail("");
-        
-        toast({
-          title: "Subscription received",
-          description: "You've been added to our newsletter list, but we couldn't send a confirmation email.",
-          variant: "default"
-        });
-        
-        setTimeout(() => {
-          setIsSubscribed(false);
-        }, 8000);
-        
-        return;
-      }
-
-      // Only attempt to send admin notification if the first email succeeded
-      await sendEmail({
-        to: "info@mynomadsafariholidays.in",
-        subject: "New Newsletter Subscription",
-        html: `
-          <h2>New Newsletter Subscriber</h2>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
-        `
-      });
-
+      // Always show success to the user regardless of email sending status
+      // The email utility now handles error toasts internally
       setIsSubscribed(true);
       setEmail("");
-      setError(null);
       
-      // Remove from pending subscriptions if successful
-      try {
-        const storedSubscriptions = JSON.parse(localStorage.getItem('pendingSubscriptions') || '[]');
-        const updatedSubscriptions = storedSubscriptions.filter((e: string) => e !== email);
-        localStorage.setItem('pendingSubscriptions', JSON.stringify(updatedSubscriptions));
-        setPendingSubscriptions(updatedSubscriptions);
-      } catch (e) {
-        console.error("Failed to update pending subscriptions:", e);
+      // Only attempt to send admin notification if the first email succeeded
+      if (response.success) {
+        await sendEmail({
+          to: "info@mynomadsafariholidays.in",
+          subject: "New Newsletter Subscription",
+          html: `
+            <h2>New Newsletter Subscriber</h2>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+          `
+        });
+
+        // Remove from pending subscriptions if successful
+        try {
+          const storedSubscriptions = JSON.parse(localStorage.getItem('pendingSubscriptions') || '[]');
+          const updatedSubscriptions = storedSubscriptions.filter((e: string) => e !== email);
+          localStorage.setItem('pendingSubscriptions', JSON.stringify(updatedSubscriptions));
+          setPendingSubscriptions(updatedSubscriptions);
+        } catch (e) {
+          console.error("Failed to update pending subscriptions:", e);
+        }
+        
+        toast({
+          title: "Subscribed successfully!",
+          description: "You'll now receive our latest travel updates.",
+        });
       }
       
+      // Hide the success message after a timeout
       setTimeout(() => {
         setIsSubscribed(false);
       }, 8000);
 
-      toast({
-        title: "Subscribed successfully!",
-        description: "You'll now receive our latest travel updates.",
-      });
-
     } catch (error: any) {
       console.error("Error subscribing to newsletter:", error);
       
-      // Show more helpful error message
-      setError("We couldn't complete your subscription. Please try again later.");
+      // Show user-friendly success message anyway since we've saved their email locally
+      setIsSubscribed(true);
+      setEmail("");
       
       toast({
-        title: "Subscription issue",
-        description: "We couldn't complete your subscription, but we've saved it to retry later.",
-        variant: "destructive"
+        title: "Subscription received",
+        description: "Your subscription has been saved successfully.",
+        variant: "default"
       });
+      
+      setTimeout(() => {
+        setIsSubscribed(false);
+      }, 8000);
     } finally {
       setIsSubmitting(false);
     }

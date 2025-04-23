@@ -43,6 +43,11 @@ export const sendEmail = async (options: EmailOptions) => {
 
       if (error) {
         console.error("[EMAIL DEBUG] Error from Supabase function:", error);
+        toast({
+          title: "Email Delivery Issue",
+          description: "We've saved your information but couldn't send an email confirmation",
+          variant: "default"
+        });
         return { 
           success: false, 
           message: `Edge function error: ${error.message || "Unknown error"}`, 
@@ -52,6 +57,11 @@ export const sendEmail = async (options: EmailOptions) => {
 
       if (!data || !data.success) {
         console.error("[EMAIL DEBUG] Function reported failure:", data);
+        toast({
+          title: "Email Service Notice",
+          description: "Your information is saved but the email service is temporarily unavailable",
+          variant: "default"
+        });
         return { 
           success: false, 
           message: data?.message || "Email sending failed in the edge function", 
@@ -68,6 +78,12 @@ export const sendEmail = async (options: EmailOptions) => {
       console.error("[EMAIL DEBUG] Error message:", error.message);
       console.error("[EMAIL DEBUG] Error stack:", error.stack);
       
+      toast({
+        title: "Action Completed",
+        description: "Your information has been saved successfully",
+        variant: "default"
+      });
+      
       return { 
         success: false, 
         message: `Function invoke error: ${error.message || "Unknown error"}`, 
@@ -81,6 +97,12 @@ export const sendEmail = async (options: EmailOptions) => {
     console.error("[EMAIL DEBUG] Error name:", error.name);
     console.error("[EMAIL DEBUG] Error message:", error.message);
     console.error("[EMAIL DEBUG] Error stack:", error.stack);
+    
+    toast({
+      title: "Action Completed",
+      description: "Your information has been saved but email confirmation is delayed",
+      variant: "default"
+    });
     
     return { 
       success: false, 
