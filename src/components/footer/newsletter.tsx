@@ -71,10 +71,24 @@ export const Newsletter = () => {
         html: createThankYouEmailHTML("Traveler", 'subscription'),
       });
 
-      // Check if the email was actually sent successfully
+      // Improved error handling
       if (!response.success) {
-        setDebugInfo(`Error details: ${response.message}`);
-        throw new Error(response.message || "Failed to send email");
+        console.error("Email sending failed:", response.message);
+        
+        // More specific error detection
+        const isTemporaryServiceError = 
+          response.message.includes("DNS") || 
+          response.message.includes("SMTP") || 
+          response.message.includes("connection") ||
+          response.message.includes("timeout");
+
+        if (isTemporaryServiceError) {
+          setServiceError("We're experiencing temporary email service issues. Your subscription is saved and will be processed soon.");
+        } else {
+          setError("Failed to subscribe. Please check your email and try again.");
+        }
+
+        throw new Error(response.message);
       }
 
       // Only attempt to send admin notification if the first email succeeded
@@ -109,21 +123,16 @@ export const Newsletter = () => {
         title: "Subscribed successfully!",
         description: "You'll now receive our latest travel updates.",
       });
+
     } catch (error: any) {
       console.error("Error subscribing to newsletter:", error);
       
-      // Determine if the error is related to email service availability
-      if (error.message?.includes("DNS resolution") || 
-          error.message?.includes("SMTP") || 
-          error.message?.includes("Edge Function")) {
-        setServiceError("Our email service is currently unavailable. We've saved your request and will subscribe you when service resumes.");
-      } else {
-        setError("Failed to subscribe. Please try again later.");
-      }
+      // Use the existing service error or set a default message
+      const errorMessage = serviceError || "Failed to subscribe. Please try again later.";
       
       toast({
         title: "Subscription failed",
-        description: "There was an error processing your subscription. Please try again.",
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {
