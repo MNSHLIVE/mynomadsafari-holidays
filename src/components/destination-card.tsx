@@ -30,6 +30,10 @@ const DestinationCard = ({
   // Fallback image for when loading fails
   const fallbackImageSrc = "/placeholder.svg";
 
+  // Generate a URL-friendly slug from the title
+  const slug = title.toLowerCase().replace(/\s+/g, "-");
+  const destinationLink = link === "#" ? `/destinations/${slug}` : link;
+
   return (
     <div 
       className={cn(
@@ -73,7 +77,7 @@ const DestinationCard = ({
             <span className="font-medium">Best time to visit:</span> {bestTime}
           </p>
         )}
-        <Link to={link} className="mt-auto">
+        <Link to={destinationLink} className="mt-auto">
           <Button 
             variant="default" 
             className="w-full group bg-primary hover:bg-primary/90"

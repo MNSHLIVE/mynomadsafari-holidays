@@ -12,6 +12,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import Index from "./pages/Index";
 import AboutUs from "./pages/AboutUs";
 import Destinations from "./pages/Destinations";
+import DestinationDetail from "./pages/DestinationDetail";
 import Tours from "./pages/Tours";
 import TourItineraries from "./pages/TourItineraries";
 import ReligiousTours from "./pages/ReligiousTours";
@@ -33,6 +34,7 @@ const router = createBrowserRouter(
       <Route index element={<Index />} />
       <Route path="about" element={<AboutUs />} />
       <Route path="destinations" element={<Destinations />} />
+      <Route path="destinations/:slug" element={<DestinationDetail />} />
       <Route path="tours" element={<Tours />} />
       <Route path="packages" element={<Navigate to="/tours" replace />} />
       <Route path="religious-tours" element={<ReligiousTours />} />

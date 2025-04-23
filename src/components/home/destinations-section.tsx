@@ -48,7 +48,7 @@ const DestinationsSection = ({
               description={destination.description}
               bestTime={destination.bestTime}
               isPopular={destination.isPopular}
-              link={viewAllLink}
+              // We'll use the default slug generation in the DestinationCard component
             />
           ))}
         </div>
