@@ -29,39 +29,47 @@ export const sendEmail = async (options: EmailOptions) => {
       options.text = options.html.replace(/<[^>]*>?/gm, '').replace(/\s+/g, ' ').trim();
     }
     
-    const { data, error } = await supabase.functions.invoke("send-email", {
-      body: {
-        ...options,
-        from: sender
-      }
-    });
+    try {
+      const { data, error } = await supabase.functions.invoke("send-email", {
+        body: {
+          ...options,
+          from: sender
+        }
+      });
 
-    if (error) {
-      console.error("[EMAIL DEBUG] Error from edge function:", error);
-      throw error;
-    }
-
-    console.log('[EMAIL DEBUG] Full response from edge function:', JSON.stringify(data, null, 2));
-    
-    if (!data.success) {
-      console.error("[EMAIL DEBUG] Edge function reported failure:", data);
-      throw new Error(data.message || "Email sending failed");
-    }
-    
-    toast.success("Email sent successfully!", {
-      description: `Sent to: ${Array.isArray(options.to) ? options.to.join(', ') : options.to}`
-    });
-    
-    return data;
-  } catch (error) {
-    console.error("[EMAIL DEBUG] Comprehensive email sending error:", error);
-    
-    toast.error(
-      "Email delivery encountered an issue", {
-        description: "Our team has been notified and will investigate"
+      if (error) {
+        console.error("[EMAIL DEBUG] Error from Supabase function:", error);
+        return { 
+          success: false, 
+          message: `Edge function error: ${error.message || "Unknown error"}`, 
+          error 
+        };
       }
-    );
-    
-    throw error;
+
+      if (!data.success) {
+        console.error("[EMAIL DEBUG] Function reported failure:", data);
+        return { 
+          success: false, 
+          message: data.message || "Email sending failed in the edge function", 
+          error: data.error 
+        };
+      }
+      
+      return { success: true, data };
+    } catch (error: any) {
+      console.error("[EMAIL DEBUG] Function invoke error:", error);
+      return { 
+        success: false, 
+        message: `Function invoke error: ${error.message || "Unknown error"}`, 
+        error 
+      };
+    }
+  } catch (error: any) {
+    console.error("[EMAIL DEBUG] Top-level email sending error:", error);
+    return { 
+      success: false, 
+      message: `Email sending error: ${error.message || "Unknown error"}`, 
+      error 
+    };
   }
 };
