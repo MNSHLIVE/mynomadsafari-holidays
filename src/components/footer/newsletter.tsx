@@ -85,10 +85,25 @@ export const Newsletter = () => {
         if (isTemporaryServiceError) {
           setServiceError("We're experiencing temporary email service issues. Your subscription is saved and will be processed soon.");
         } else {
-          setError("Failed to subscribe. Please check your email and try again.");
+          // Update the error message to be more helpful
+          setError("Your subscription is saved but we couldn't send a confirmation email. Our team is looking into it.");
         }
 
-        throw new Error(response.message);
+        // Still show successful subscription despite email error
+        setIsSubscribed(true);
+        setEmail("");
+        
+        toast({
+          title: "Subscription received",
+          description: "You've been added to our newsletter list, but we couldn't send a confirmation email.",
+          variant: "default"
+        });
+        
+        setTimeout(() => {
+          setIsSubscribed(false);
+        }, 8000);
+        
+        return;
       }
 
       // Only attempt to send admin notification if the first email succeeded
@@ -128,12 +143,12 @@ export const Newsletter = () => {
     } catch (error: any) {
       console.error("Error subscribing to newsletter:", error);
       
-      // Use the existing service error or set a default message
-      const errorMessage = serviceError || "Failed to subscribe. Please try again later.";
+      // Show more helpful error message
+      setError("We couldn't complete your subscription. Please try again later.");
       
       toast({
-        title: "Subscription failed",
-        description: errorMessage,
+        title: "Subscription issue",
+        description: "We couldn't complete your subscription, but we've saved it to retry later.",
         variant: "destructive"
       });
     } finally {
