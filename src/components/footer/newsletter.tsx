@@ -2,9 +2,9 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Loader } from "lucide-react";
 import { sendEmail } from "@/utils/email";
 import { createThankYouEmailHTML } from "@/utils/email-templates";
 
@@ -13,16 +13,24 @@ export const Newsletter = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [email, setEmail] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError(null);
     
-    if (!email || !email.includes('@')) {
-      toast({
-        title: "Invalid email",
-        description: "Please enter a valid email address.",
-        variant: "destructive"
-      });
+    if (!email) {
+      setError("Please enter your email address");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setError("Please enter a valid email address");
       return;
     }
 
@@ -47,6 +55,7 @@ export const Newsletter = () => {
 
       setIsSubscribed(true);
       setEmail("");
+      setError(null);
       
       setTimeout(() => {
         setIsSubscribed(false);
@@ -59,6 +68,7 @@ export const Newsletter = () => {
     } catch (error) {
       console.error("Error subscribing to newsletter:", error);
       
+      setError("Failed to subscribe. Please try again later.");
       toast({
         title: "Subscription failed",
         description: "There was an error processing your subscription. Please try again.",
@@ -86,20 +96,35 @@ export const Newsletter = () => {
         </Alert>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-2">
-          <Input 
-            type="email" 
-            placeholder="Your email address" 
-            required 
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="bg-background"
-          />
+          <div className="space-y-1">
+            <Input 
+              type="email" 
+              placeholder="Your email address" 
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setError(null);
+              }}
+              className={`bg-background ${error ? 'border-destructive' : ''}`}
+              disabled={isSubmitting}
+            />
+            {error && (
+              <p className="text-xs text-destructive">{error}</p>
+            )}
+          </div>
           <Button 
             type="submit" 
             className="w-full bg-primary hover:bg-primary/90"
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Subscribing..." : "Subscribe"}
+            {isSubmitting ? (
+              <>
+                <Loader className="mr-2 h-4 w-4 animate-spin" />
+                Subscribing...
+              </>
+            ) : (
+              "Subscribe"
+            )}
           </Button>
         </form>
       )}
