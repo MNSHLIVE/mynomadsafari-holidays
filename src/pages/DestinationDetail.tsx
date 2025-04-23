@@ -9,6 +9,8 @@ import SectionHeading from "@/components/section-heading";
 import ToursSection from "@/components/home/tours-section";
 import CTASection from "@/components/cta-section";
 import { useState, useEffect } from "react";
+import { rajasthanTours } from "@/data/tour-types/rajasthan-tours";
+import { keralaTours } from "@/data/tour-types/kerala-tours";
 
 const DestinationDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -25,31 +27,61 @@ const DestinationDetail = () => {
       
       setDestination(foundDestination || null);
       
-      // Set some mock related tours if we found the destination
+      // Set related tours based on the destination name
       if (foundDestination) {
-        // In a real app, you would fetch related tours from your API/data
-        setRelatedTours([
-          {
-            imageSrc: "/Destination/Home/Featured-Tours/Rajasthan-Heritage.jpg",
-            title: `${foundDestination.name} Explorer`,
-            location: foundDestination.name,
-            duration: "5 Days / 4 Nights",
-            price: "₹15,999",
-            bestTime: foundDestination.bestTimeToVisit || "October - March",
-            packageType: "Budgeted",
-            description: `Experience the beauty of ${foundDestination.name} with our curated tour package.`
-          },
-          {
-            imageSrc: "/Destination/Home/Featured-Tours/Kerala-Backwaters.jpg",
-            title: `${foundDestination.name} Adventure`,
-            location: foundDestination.name,
-            duration: "7 Days / 6 Nights",
-            price: "₹24,999",
-            bestTime: foundDestination.bestTimeToVisit || "October - March",
-            packageType: "Luxury",
-            description: `Discover the hidden treasures of ${foundDestination.name} with our premium tour.`
-          }
-        ]);
+        // Match tours based on destination name
+        let tours = [];
+        
+        // Use the correct tour data based on the destination
+        if (foundDestination.name === "Rajasthan") {
+          tours = rajasthanTours.map(tour => ({
+            imageSrc: tour.imageSrc,
+            title: tour.title,
+            location: tour.location,
+            duration: tour.duration,
+            price: tour.price,
+            bestTime: tour.bestTime,
+            packageType: tour.packageType,
+            description: tour.overview
+          }));
+        } else if (foundDestination.name === "Kerala") {
+          tours = keralaTours.map(tour => ({
+            imageSrc: tour.imageSrc,
+            title: tour.title,
+            location: tour.location,
+            duration: tour.duration,
+            price: tour.price,
+            bestTime: tour.bestTime,
+            packageType: tour.packageType,
+            description: tour.overview
+          }));
+        } else {
+          // Generic fallback for other destinations
+          tours = [
+            {
+              imageSrc: `/Destination/Domestic/main/${foundDestination.name.toLowerCase()}-main.jpg`,
+              title: `${foundDestination.name} Explorer`,
+              location: foundDestination.name,
+              duration: "5 Days / 4 Nights",
+              price: "₹15,999",
+              bestTime: foundDestination.bestTimeToVisit || "October - March",
+              packageType: "Budgeted",
+              description: `Experience the beauty of ${foundDestination.name} with our curated tour package.`
+            },
+            {
+              imageSrc: `/Destination/Domestic/main/${foundDestination.name.toLowerCase()}-3.jpg`,
+              title: `${foundDestination.name} Adventure`,
+              location: foundDestination.name,
+              duration: "7 Days / 6 Nights",
+              price: "₹24,999",
+              bestTime: foundDestination.bestTimeToVisit || "October - March",
+              packageType: "Luxury",
+              description: `Discover the hidden treasures of ${foundDestination.name} with our premium tour.`
+            }
+          ];
+        }
+        
+        setRelatedTours(tours);
       }
       
       setLoading(false);
@@ -151,6 +183,20 @@ const DestinationDetail = () => {
                 <div dangerouslySetInnerHTML={{ __html: destination.longDescription }} />
               )}
             </div>
+            
+            {destination.highlights && destination.highlights.length > 0 && (
+              <div className="mb-8">
+                <h2 className="text-xl font-semibold mb-3">Top Highlights</h2>
+                <ul className="space-y-2">
+                  {destination.highlights.map((highlight, idx) => (
+                    <li key={idx} className="flex items-start">
+                      <span className="font-bold mr-2">•</span>
+                      <span>{highlight}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
             
             {destination.attractions && destination.attractions.length > 0 && (
               <div className="mb-8">
