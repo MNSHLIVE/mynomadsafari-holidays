@@ -30,6 +30,7 @@ serve(async (req) => {
     console.log(`[SEND-EMAIL] To: ${Array.isArray(to) ? to.join(', ') : to}`);
     console.log(`[SEND-EMAIL] Subject: ${subject}`);
     
+    // Get SMTP configuration from environment variables
     const hostname = Deno.env.get("SMTP_HOSTNAME") || "smtp.hostinger.com";
     const port = parseInt(Deno.env.get("SMTP_PORT") || "465");
     const username = Deno.env.get("SMTP_USERNAME") || "info@mynomadsafariholidays.in";
@@ -58,6 +59,9 @@ serve(async (req) => {
     }
 
     try {
+      // Log Hostinger-specific configuration
+      console.log("[SEND-EMAIL] Initializing SMTP client with Hostinger configuration");
+      
       // Set up the SMTP client with environment variables
       const client = new SMTPClient({
         connection: {
@@ -68,13 +72,15 @@ serve(async (req) => {
             username,
             password,
           },
+          // Add debug mode for more detailed logging
+          debug: true,
         },
       });
 
       console.log("[SEND-EMAIL] SMTP client configured");
 
-      // Send the email
-      await client.send({
+      // Build email object with detailed logging
+      const emailData = {
         from: from,
         to: to,
         subject: subject,
@@ -82,15 +88,33 @@ serve(async (req) => {
         html: html || "",
         ...(cc && { cc }),
         ...(bcc && { bcc }),
-      });
+      };
       
-      console.log("[SEND-EMAIL] Email sent successfully");
+      console.log("[SEND-EMAIL] Preparing to send email with data:", JSON.stringify({
+        from: emailData.from,
+        to: emailData.to,
+        subject: emailData.subject,
+        hasContent: !!emailData.content,
+        hasHtml: !!emailData.html,
+        hasCC: !!cc,
+        hasBCC: !!bcc
+      }));
+
+      // Send the email
+      const sendResult = await client.send(emailData);
+      
+      console.log("[SEND-EMAIL] Email sent successfully with result:", sendResult);
       
       // Close the connection
       await client.close();
+      console.log("[SEND-EMAIL] SMTP connection closed");
       
       return new Response(
-        JSON.stringify({ success: true, message: 'Email sent successfully' }),
+        JSON.stringify({ 
+          success: true, 
+          message: 'Email sent successfully',
+          details: sendResult
+        }),
         { 
           headers: { 
             'Content-Type': 'application/json',
@@ -99,13 +123,28 @@ serve(async (req) => {
         }
       );
     } catch (smtpError) {
+      // Detailed SMTP error logging
       console.error("[SEND-EMAIL] SMTP Error:", smtpError);
+      console.error("[SEND-EMAIL] SMTP Error stack:", smtpError.stack);
+      
+      // Log additional details that might be helpful for debugging
+      if (smtpError.code) {
+        console.error("[SEND-EMAIL] SMTP Error code:", smtpError.code);
+      }
+      
+      // Check for specific Hostinger-related errors
+      let errorDetails = smtpError.message;
+      if (smtpError.message.includes("authentication")) {
+        errorDetails = "Authentication failed: Please check your SMTP username and password";
+      } else if (smtpError.message.includes("connection")) {
+        errorDetails = "Connection error: Please check your SMTP hostname and port";
+      }
       
       return new Response(
         JSON.stringify({ 
           success: false, 
           message: "Failed to send email through SMTP", 
-          error: smtpError.message,
+          error: errorDetails,
           error_type: "smtp_error"
         }),
         { 
@@ -119,7 +158,7 @@ serve(async (req) => {
     }
     
   } catch (error) {
-    console.error("[SEND-EMAIL] Error:", error);
+    console.error("[SEND-EMAIL] General error:", error);
     
     // Get more details about the error
     let errorMessage = error.message || "Unknown error";
