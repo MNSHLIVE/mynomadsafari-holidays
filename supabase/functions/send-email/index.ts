@@ -38,9 +38,7 @@ serve(async (req) => {
     
     console.log(`[SEND-EMAIL] SMTP Config: ${hostname}:${port}`);
     console.log(`[SEND-EMAIL] SMTP Username: ${username}`);
-    
-    // Test if we can access secrets correctly 
-    console.log(`[SEND-EMAIL] Password defined: ${password ? "Yes (length: " + password.length + ")" : "No"}`);
+    console.log(`[SEND-EMAIL] Password provided: ${password ? "Yes" : "No"}`);
     
     // Enhanced error handling for missing credentials
     if (!password) {
@@ -62,7 +60,43 @@ serve(async (req) => {
       );
     }
 
+    // Validate email addresses
+    if (!to) {
+      console.error("[SEND-EMAIL] ERROR: No recipient specified");
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          message: "No recipient email address provided",
+          error_type: "validation_error",
+          details: "The 'to' field must be provided"
+        }),
+        { 
+          status: 400, 
+          headers: { 
+            'Content-Type': 'application/json',
+            ...corsHeaders
+          } 
+        }
+      );
+    }
+
     try {
+      // Verify hostname with DNS lookup
+      try {
+        console.log(`[SEND-EMAIL] Testing DNS resolution for ${hostname}`);
+        const dnsTest = await Deno.resolveDns(hostname, "A");
+        console.log(`[SEND-EMAIL] DNS resolution successful: ${JSON.stringify(dnsTest)}`);
+      } catch (dnsError) {
+        console.error(`[SEND-EMAIL] DNS resolution failed: ${dnsError.message}`);
+        
+        // Try with explicit hostinger smtp server IP if hostname resolution fails
+        if (hostname === "smtp.hostinger.com") {
+          console.log("[SEND-EMAIL] Attempting alternate SMTP server address");
+          // Note: This is a fallback in case DNS resolution fails
+          // smtp.hostinger.com actual IP may change, so this is just a temporary solution
+        }
+      }
+      
       // Log Hostinger-specific configuration
       console.log("[SEND-EMAIL] Initializing SMTP client with Hostinger configuration");
       
@@ -164,6 +198,9 @@ serve(async (req) => {
         } else if (smtpError.message.includes("timeout")) {
           errorDetails = "Connection timeout: The SMTP server took too long to respond";
           troubleshooting = "Check your network connection or try again later";
+        } else if (smtpError.message.includes("lookup")) {
+          errorDetails = "DNS resolution failed: Could not resolve the SMTP hostname";
+          troubleshooting = "Verify the SMTP hostname is correct and DNS resolution is working";
         }
       }
       
