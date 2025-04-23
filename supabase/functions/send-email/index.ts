@@ -1,7 +1,4 @@
 
-// This edge function handles email sending through SMTP
-// It receives email details and sends them through the configured SMTP server
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { SMTPClient } from "https://deno.land/x/denomailer@1.4.0/mod.ts";
 
@@ -41,7 +38,7 @@ serve(async (req) => {
     console.log(`[SEND-EMAIL] SMTP Config: ${hostname}:${port}`);
     console.log(`[SEND-EMAIL] SMTP Username: ${username}`);
     
-    // Check if credentials are available
+    // Enhanced error handling for missing credentials
     if (!password) {
       console.error("[SEND-EMAIL] ERROR: SMTP Password is missing");
       return new Response(
