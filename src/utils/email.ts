@@ -30,12 +30,16 @@ export const sendEmail = async (options: EmailOptions) => {
     }
     
     try {
+      console.log('[EMAIL DEBUG] Invoking Supabase send-email function');
+      
       const { data, error } = await supabase.functions.invoke("send-email", {
         body: {
           ...options,
           from: sender
         }
       });
+
+      console.log('[EMAIL DEBUG] Function invocation result:', { data, error });
 
       if (error) {
         console.error("[EMAIL DEBUG] Error from Supabase function:", error);
@@ -46,18 +50,24 @@ export const sendEmail = async (options: EmailOptions) => {
         };
       }
 
-      if (!data.success) {
+      if (!data || !data.success) {
         console.error("[EMAIL DEBUG] Function reported failure:", data);
         return { 
           success: false, 
-          message: data.message || "Email sending failed in the edge function", 
-          error: data.error 
+          message: data?.message || "Email sending failed in the edge function", 
+          error: data?.error 
         };
       }
       
       return { success: true, data };
     } catch (error: any) {
       console.error("[EMAIL DEBUG] Function invoke error:", error);
+      
+      // Log more detailed error information
+      console.error("[EMAIL DEBUG] Error name:", error.name);
+      console.error("[EMAIL DEBUG] Error message:", error.message);
+      console.error("[EMAIL DEBUG] Error stack:", error.stack);
+      
       return { 
         success: false, 
         message: `Function invoke error: ${error.message || "Unknown error"}`, 
@@ -66,6 +76,12 @@ export const sendEmail = async (options: EmailOptions) => {
     }
   } catch (error: any) {
     console.error("[EMAIL DEBUG] Top-level email sending error:", error);
+    
+    // Log more detailed error information
+    console.error("[EMAIL DEBUG] Error name:", error.name);
+    console.error("[EMAIL DEBUG] Error message:", error.message);
+    console.error("[EMAIL DEBUG] Error stack:", error.stack);
+    
     return { 
       success: false, 
       message: `Email sending error: ${error.message || "Unknown error"}`, 
