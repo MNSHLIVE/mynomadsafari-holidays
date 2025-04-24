@@ -1,12 +1,13 @@
 
 export interface DestinationData {
-  id: string;
+  id?: string;
   name: string;
-  slug: string;
+  slug?: string;
   region: string;
-  country: string;
+  country?: string;
   description: string;
-  mainImage: string;
+  mainImage?: string;
+  imageSrc?: string;  // Add this property to fix the type errors
   galleryImages?: string[];
   bestTimeToVisit?: string;
   climate?: string;
@@ -18,6 +19,12 @@ export interface DestinationData {
   isAdventure?: boolean;
   isHillStation?: boolean;
   isBeach?: boolean;
+  budgetRange?: {
+    economy: string;
+    standard: string;
+    luxury: string;
+  };
+  highlights?: string[];
 }
 
 export interface ItineraryDay {

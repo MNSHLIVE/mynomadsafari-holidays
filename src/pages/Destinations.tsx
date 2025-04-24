@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
@@ -61,11 +62,11 @@ const Destinations = () => {
           {filteredDestinations.map((destination, index) => (
             <DestinationCard
               key={index}
-              imageSrc={destination.imageSrc}
+              imageSrc={destination.imageSrc || destination.mainImage || ""}
               title={destination.name}
               description={destination.description}
               bestTime={destination.bestTimeToVisit}
-              link={`/destinations/${destination.name.toLowerCase().replace(/ /g, "-")}`}
+              link={`/destinations/${destination.slug || destination.name.toLowerCase().replace(/ /g, "-")}`}
             />
           ))}
         </div>
@@ -77,9 +78,9 @@ const Destinations = () => {
         )}
 
         <div className="text-center mt-10">
-          <Link to="/tour-itineraries">
+          <Link to="/tours">
             <Button variant="outline" className="group">
-              <span>View Tour Itineraries</span>
+              <span>View Tour Packages</span>
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
           </Link>
