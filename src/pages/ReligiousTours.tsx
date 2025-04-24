@@ -6,7 +6,7 @@ import { ErrorBoundary } from "@/components/error-boundary";
 import { religiousTours } from "@/components/tours/data";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import TourCard from "@/components/tour-card";
-import { PackageType } from "@/data/tour-types/itinerary-types";
+import { PackageType } from "@/components/tours/data/tour-core";
 
 const ReligiousTours = () => {
   const [isOpen, setIsOpen] = useState({});
@@ -21,7 +21,7 @@ const ReligiousTours = () => {
   const pilgrimageTypes = ["Hindu", "Buddhist", "Jain", "Sikh", "Muslim", "Christian"];
   const [activeTab, setActiveTab] = useState(pilgrimageTypes[0]);
   
-  const hinduPackages = religiousTours.hindu.map((tour, index) => ({
+  const hinduPackages = religiousTours.map((tour, index) => ({
     key: index,
     imageSrc: tour.imageSrc,
     title: tour.title,
