@@ -61,7 +61,7 @@ const ThemeTourSection = ({
             price={String(tour.price)}
             bestTime={tour.bestTime}
             packageType={tour.packageType}
-            link={`/tour-itineraries?category=${categorySlug}`}
+            link="/tours" // Set this to a valid path
             description={tour.description}
             itinerary={tour.itinerary}
             className="animate-fade-in"
@@ -70,7 +70,7 @@ const ThemeTourSection = ({
       </div>
       
       <div className="text-center mt-10">
-        <Link to={`/tour-itineraries?category=${categorySlug}`}>
+        <Link to="/tours">
           <Button variant="outline" className="group">
             <span>{actionText}</span>
             {getIcon()}

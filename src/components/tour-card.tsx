@@ -24,8 +24,8 @@ interface TourCardProps {
   packageType: "Budgeted" | "Luxury" | "Premier";
   description?: string;
   itinerary?: Array<{day: number, title: string, description: string}>;
-  link: string;
-  className?: string; // Added className prop
+  link?: string;
+  className?: string;
 }
 
 const TourCard = ({
@@ -38,8 +38,8 @@ const TourCard = ({
   packageType,
   description,
   itinerary,
-  link,
-  className = "", // Default to empty string
+  link = "/tours", // Default link if none provided
+  className = "",
 }: TourCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
