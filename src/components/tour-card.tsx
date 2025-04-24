@@ -12,6 +12,7 @@ import {
   DialogDescription,
   DialogClose,
 } from "@/components/ui/dialog";
+import DestinationQueryForm from "@/components/destination-query-form";
 
 interface TourCardProps {
   imageSrc: string;
@@ -124,9 +125,11 @@ const TourCard = ({
           )}
           
           <div className="flex items-center justify-between mt-4">
-            <Button asChild>
-              <Link to={link}>Enquire Now</Link>
-            </Button>
+            <DestinationQueryForm 
+              destinationName={title}
+              buttonText="Enquire Now"
+              buttonClassName="h-9"
+            />
             
             {itinerary && itinerary.length > 0 && (
               <Button 
@@ -159,9 +162,14 @@ const TourCard = ({
               ))}
             </div>
             
-            <div className="mt-4 flex justify-end">
+            <div className="mt-4 flex justify-between">
+              <DestinationQueryForm 
+                destinationName={title}
+                buttonText="Book This Itinerary"
+              />
+              
               <DialogClose asChild>
-                <Button>Close</Button>
+                <Button variant="outline">Close</Button>
               </DialogClose>
             </div>
           </DialogContent>

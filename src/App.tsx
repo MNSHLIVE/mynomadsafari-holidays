@@ -14,7 +14,6 @@ import AboutUs from "./pages/AboutUs";
 import Destinations from "./pages/Destinations";
 import DestinationDetail from "./pages/DestinationDetail";
 import Tours from "./pages/Tours";
-import TourItineraries from "./pages/TourItineraries";
 import ReligiousTours from "./pages/ReligiousTours";
 import GroupTours from "./pages/GroupTours";
 import Visa from "./pages/Visa";
@@ -39,7 +38,6 @@ const router = createBrowserRouter(
       <Route path="packages" element={<Navigate to="/tours" replace />} />
       <Route path="religious-tours" element={<ReligiousTours />} />
       <Route path="group-tours" element={<GroupTours />} />
-      <Route path="tour-itineraries" element={<TourItineraries />} />
       <Route path="visa" element={<Visa />} />
       <Route path="tickets" element={<BookTickets />} />
       <Route path="book-tickets" element={<Navigate to="/tickets" replace />} />

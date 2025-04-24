@@ -23,18 +23,102 @@ const ReligiousTours = () => {
   const pilgrimageTypes = ["Hindu", "Buddhist", "Jain", "Sikh", "Muslim", "Christian"];
   const [activeTab, setActiveTab] = useState(pilgrimageTypes[0]);
   
-  const hinduPackages = religiousTours.map((tour, index) => ({
-    key: index,
-    imageSrc: tour.imageSrc,
-    title: tour.title,
-    location: tour.location,
-    duration: tour.duration,
-    price: String(tour.price), // Convert price to string
-    bestTime: tour.bestTime,
-    packageType: tour.packageType as PackageType,
-    description: tour.description,
-    link: `/religious-tours/${tour.title.toLowerCase().replace(/\s+/g, '-')}` // Added link prop
-  }));
+  const formatTourPackages = (tours) => {
+    return tours.map((tour, index) => ({
+      key: index,
+      imageSrc: tour.imageSrc,
+      title: tour.title,
+      location: tour.location,
+      duration: tour.duration,
+      price: String(tour.price), // Convert price to string
+      bestTime: tour.bestTime,
+      packageType: tour.packageType as PackageType,
+      description: tour.description,
+      link: `/religious-tours/${tour.title.toLowerCase().replace(/\s+/g, '-')}` // Added link prop
+    }));
+  };
+  
+  const hinduPackages = formatTourPackages(religiousTours);
+  
+  // Define sections with their titles and filters
+  const hinduSections = [
+    {
+      id: 'charDham',
+      title: 'Char Dham Yatra',
+      filter: (tour) => tour.title.includes('Char Dham')
+    },
+    {
+      id: 'jyotirlinga',
+      title: 'Jyotirlinga Darshan',
+      filter: (tour) => tour.title.includes('Jyotirlinga')
+    },
+    {
+      id: 'vaishnoDevi',
+      title: 'Vaishno Devi',
+      filter: (tour) => tour.title.includes('Vaishno Devi')
+    },
+    {
+      id: 'badrinathKedarnath',
+      title: 'Badrinath-Kedarnath',
+      filter: (tour) => tour.title.includes('Badrinath')
+    },
+    {
+      id: 'southIndia',
+      title: 'South India Temple Tours',
+      filter: (tour) => tour.title.includes('South India')
+    },
+    {
+      id: 'otherHindu',
+      title: 'Other Hindu Pilgrimages',
+      filter: (tour) => !tour.title.includes('Char Dham') && 
+                        !tour.title.includes('Jyotirlinga') && 
+                        !tour.title.includes('Vaishno Devi') && 
+                        !tour.title.includes('Badrinath') && 
+                        !tour.title.includes('South India')
+    },
+  ];
+  
+  // Helper to render tours based on filter
+  const renderTours = (tours, filter) => {
+    const filteredTours = tours.filter(filter);
+    
+    if (filteredTours.length === 0) {
+      return (
+        <div className="text-center py-8">
+          <p className="text-muted-foreground">No tours available in this category yet.</p>
+        </div>
+      );
+    }
+    
+    return (
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredTours.map((tour) => (
+          <div key={tour.key} className="flex flex-col h-full">
+            <TourCard
+              key={tour.key}
+              imageSrc={tour.imageSrc}
+              title={tour.title}
+              location={tour.location}
+              duration={tour.duration}
+              price={tour.price}
+              bestTime={tour.bestTime}
+              packageType={tour.packageType}
+              description={tour.description}
+              link={tour.link}
+              className="flex-grow"
+            />
+            <div className="mt-3">
+              <DestinationQueryForm 
+                destinationName={tour.title}
+                buttonText="Book This Tour"
+                buttonClassName="w-full"
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
   
   return (
     <ErrorBoundary>
@@ -66,83 +150,18 @@ const ReligiousTours = () => {
           </TabsList>
           
           <TabsContent value="Hindu" className="space-y-10">
-            <section>
-              <div className="flex items-center justify-between cursor-pointer pb-2 border-b" onClick={() => toggleSection('charDham')}>
-                <h2 className="text-xl md:text-2xl font-semibold">Char Dham Yatra</h2>
-                <Button variant="ghost" size="icon">
-                  {isOpen['charDham'] ? <ChevronDown /> : <ChevronRight />}
-                </Button>
-              </div>
-              
-              {isOpen['charDham'] && (
-                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {hinduPackages.filter(tour => tour.title.includes('Char Dham')).map((tour) => (
-                    <div key={tour.key} className="flex flex-col h-full">
-                      <TourCard
-                        key={tour.key}
-                        imageSrc={tour.imageSrc}
-                        title={tour.title}
-                        location={tour.location}
-                        duration={tour.duration}
-                        price={tour.price}
-                        bestTime={tour.bestTime}
-                        packageType={tour.packageType}
-                        description={tour.description}
-                        link={tour.link}
-                        className="flex-grow"
-                      />
-                      <div className="mt-3">
-                        <DestinationQueryForm 
-                          destinationName={tour.title}
-                          buttonText="Book This Tour"
-                          buttonClassName="w-full"
-                        />
-                      </div>
-                    </div>
-                  ))}
+            {hinduSections.map((section) => (
+              <section key={section.id}>
+                <div className="flex items-center justify-between cursor-pointer pb-2 border-b" onClick={() => toggleSection(section.id)}>
+                  <h2 className="text-xl md:text-2xl font-semibold">{section.title}</h2>
+                  <Button variant="ghost" size="icon">
+                    {isOpen[section.id] ? <ChevronDown /> : <ChevronRight />}
+                  </Button>
                 </div>
-              )}
-            </section>
-            
-            <section>
-              <div className="flex items-center justify-between cursor-pointer pb-2 border-b" onClick={() => toggleSection('jyotirlinga')}>
-                <h2 className="text-xl md:text-2xl font-semibold">Jyotirlinga Darshan</h2>
-                <Button variant="ghost" size="icon">
-                  {isOpen['jyotirlinga'] ? <ChevronDown /> : <ChevronRight />}
-                </Button>
-              </div>
-              
-              {isOpen['jyotirlinga'] && (
-                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {hinduPackages.filter(tour => tour.title.includes('Jyotirlinga')).map((tour) => (
-                    <div key={tour.key} className="flex flex-col h-full">
-                      <TourCard
-                        key={tour.key}
-                        imageSrc={tour.imageSrc}
-                        title={tour.title}
-                        location={tour.location}
-                        duration={tour.duration}
-                        price={tour.price}
-                        bestTime={tour.bestTime}
-                        packageType={tour.packageType}
-                        description={tour.description}
-                        link={tour.link}
-                        className="flex-grow"
-                      />
-                      <div className="mt-3">
-                        <DestinationQueryForm 
-                          destinationName={tour.title}
-                          buttonText="Book This Tour"
-                          buttonClassName="w-full"
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </section>
-            
-            {/* Remaining sections can be added similarly */}
+                
+                {isOpen[section.id] && renderTours(hinduPackages, section.filter)}
+              </section>
+            ))}
           </TabsContent>
           
           {/* Other religion tabs can be added here */}
