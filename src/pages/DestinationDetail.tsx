@@ -14,8 +14,8 @@ import DestinationHeader from "@/components/destination/destination-header";
 import DestinationInfo from "@/components/destination/destination-info";
 import DestinationSidebar from "@/components/destination/destination-sidebar";
 import DestinationContent from "@/components/destination/destination-content";
-import { Button } from "@/components/ui/button"; // Add missing Button import
-import { Link } from "react-router-dom"; // Add missing Link import
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const DestinationDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -56,7 +56,8 @@ const DestinationDetail = () => {
               price: tour.price,
               bestTime: tour.bestTime,
               packageType: tour.packageType,
-              description: tour.overview
+              description: tour.overview,
+              itinerary: tour.dailyPlans // Include the itinerary data
             }));
           } else if (foundDestination.name === "Kerala") {
             tours = keralaTours.map(tour => ({
@@ -67,7 +68,8 @@ const DestinationDetail = () => {
               price: tour.price,
               bestTime: tour.bestTime,
               packageType: tour.packageType,
-              description: tour.overview
+              description: tour.overview,
+              itinerary: tour.dailyPlans // Include the itinerary data
             }));
           } else {
             tours = [
