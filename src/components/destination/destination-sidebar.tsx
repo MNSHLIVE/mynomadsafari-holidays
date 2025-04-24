@@ -1,43 +1,60 @@
 
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { Calendar, Clock, MapPin } from "lucide-react";
 
 interface DestinationSidebarProps {
-  destinationName: string;
+  name: string;
+  region: string;
+  bestTimeToVisit: string;
+  budgetRange: {
+    economy: string;
+    standard: string;
+    luxury: string;
+  };
 }
 
-const DestinationSidebar = ({ destinationName }: DestinationSidebarProps) => {
+const DestinationSidebar = ({ name, region, bestTimeToVisit, budgetRange }: DestinationSidebarProps) => {
   return (
     <div className="bg-card p-6 rounded-xl shadow-sm border border-border/50 sticky top-24">
-      <h3 className="text-lg font-semibold mb-4">Interested in {destinationName}?</h3>
+      <h3 className="text-lg font-semibold mb-4">Interested in {name}?</h3>
       <p className="text-sm text-muted-foreground mb-4">
-        Contact our travel experts to plan your perfect trip to {destinationName}.
+        Contact our travel experts to plan your perfect trip to {name}.
       </p>
+      
+      <div className="space-y-4 mb-6">
+        <div className="flex items-start">
+          <MapPin className="h-5 w-5 mr-2 text-primary mt-0.5" />
+          <div>
+            <h4 className="font-medium text-sm">Region</h4>
+            <p className="text-sm text-muted-foreground">{region}</p>
+          </div>
+        </div>
+        
+        <div className="flex items-start">
+          <Calendar className="h-5 w-5 mr-2 text-primary mt-0.5" />
+          <div>
+            <h4 className="font-medium text-sm">Best Time to Visit</h4>
+            <p className="text-sm text-muted-foreground">{bestTimeToVisit}</p>
+          </div>
+        </div>
+        
+        <div className="flex items-start">
+          <Clock className="h-5 w-5 mr-2 text-primary mt-0.5" />
+          <div>
+            <h4 className="font-medium text-sm">Budget Range</h4>
+            <ul className="text-sm text-muted-foreground">
+              <li>Economy: {budgetRange.economy}</li>
+              <li>Standard: {budgetRange.standard}</li>
+              <li>Luxury: {budgetRange.luxury}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
       <Button className="w-full" asChild>
         <Link to="/contact">Contact Us</Link>
       </Button>
-      
-      <div className="mt-8">
-        <h4 className="font-medium mb-2">Highlights</h4>
-        <ul className="space-y-2 text-sm">
-          <li className="flex items-center">
-            <span className="h-2 w-2 rounded-full bg-primary mr-2"></span>
-            Customized itineraries
-          </li>
-          <li className="flex items-center">
-            <span className="h-2 w-2 rounded-full bg-primary mr-2"></span>
-            Expert local guides
-          </li>
-          <li className="flex items-center">
-            <span className="h-2 w-2 rounded-full bg-primary mr-2"></span>
-            Comfortable accommodations
-          </li>
-          <li className="flex items-center">
-            <span className="h-2 w-2 rounded-full bg-primary mr-2"></span>
-            Convenient transportation
-          </li>
-        </ul>
-      </div>
     </div>
   );
 };

@@ -2,16 +2,16 @@
 import { indiaDestinations } from "./india";
 import { southeastAsiaDestinations } from "./southeast-asia";
 import { middleEastDestinations } from "./middle-east";
-import { europeDestinations } from "./europe";
-import { otherRegionsDestinations } from "./other-regions";
+import { europeanDestinations } from "./europe";
+import { otherDestinations } from "./other-regions";
 
 // Export all destination arrays
 export {
   indiaDestinations,
   southeastAsiaDestinations,
   middleEastDestinations,
-  europeDestinations,
-  otherRegionsDestinations
+  europeanDestinations,
+  otherDestinations
 };
 
 // Combine all destinations into one array
@@ -19,8 +19,8 @@ export const destinations = [
   ...indiaDestinations,
   ...southeastAsiaDestinations,
   ...middleEastDestinations,
-  ...europeDestinations,
-  ...otherRegionsDestinations
+  ...europeanDestinations,
+  ...otherDestinations
 ];
 
 // Helper function to get unique regions
