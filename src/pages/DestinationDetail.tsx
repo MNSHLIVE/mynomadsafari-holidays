@@ -14,6 +14,8 @@ import DestinationHeader from "@/components/destination/destination-header";
 import DestinationInfo from "@/components/destination/destination-info";
 import DestinationSidebar from "@/components/destination/destination-sidebar";
 import DestinationContent from "@/components/destination/destination-content";
+import { Button } from "@/components/ui/button"; // Add missing Button import
+import { Link } from "react-router-dom"; // Add missing Link import
 
 const DestinationDetail = () => {
   const { slug } = useParams<{ slug: string }>();
