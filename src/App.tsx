@@ -26,6 +26,7 @@ import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Refund from "./pages/Refund";
 import Faq from "./pages/Faq";
+import { ErrorBoundary } from "@/components/error-boundary";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -54,9 +55,11 @@ const router = createBrowserRouter(
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="system" storageKey="vite-react-theme">
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider defaultTheme="system" storageKey="vite-react-theme">
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </ErrorBoundary>
   )
 }
 
