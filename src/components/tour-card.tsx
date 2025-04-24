@@ -24,6 +24,7 @@ interface TourCardProps {
   description?: string;
   itinerary?: Array<{day: number, title: string, description: string}>;
   link: string;
+  className?: string; // Added className prop
 }
 
 const TourCard = ({
@@ -37,6 +38,7 @@ const TourCard = ({
   description,
   itinerary,
   link,
+  className = "", // Default to empty string
 }: TourCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -64,7 +66,7 @@ const TourCard = ({
   
   return (
     <>
-      <Card className="h-full overflow-hidden">
+      <Card className={`h-full overflow-hidden ${className}`}>
         <div className="aspect-video relative">
           <img 
             src={imageSrc} 

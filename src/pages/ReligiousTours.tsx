@@ -1,136 +1,126 @@
-
-import React from 'react';
+import { useState } from "react";
 import { Helmet } from "react-helmet";
-import SectionHeading from "@/components/section-heading";
-import { religiousTours, religiousTourNote, formatPrice } from "@/components/tours/data";
+import { Button } from "@/components/ui/button";
+import { ChevronDown, ChevronRight } from "lucide-react";
+import { ErrorBoundary } from "@/components/error-boundary";
+import { religiousTours } from "@/components/tours/data";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import TourCard from "@/components/tour-card";
-import CTASection from "@/components/cta-section";
+import { PackageType } from "@/data/tour-types/itinerary-types";
 
 const ReligiousTours = () => {
+  const [isOpen, setIsOpen] = useState({});
+  
+  const toggleSection = (section) => {
+    setIsOpen({
+      ...isOpen,
+      [section]: !isOpen[section],
+    });
+  };
+  
+  const pilgrimageTypes = ["Hindu", "Buddhist", "Jain", "Sikh", "Muslim", "Christian"];
+  const [activeTab, setActiveTab] = useState(pilgrimageTypes[0]);
+  
+  const hinduPackages = religiousTours.hindu.map((tour, index) => ({
+    key: index,
+    imageSrc: tour.imageSrc,
+    title: tour.title,
+    location: tour.location,
+    duration: tour.duration,
+    price: tour.price, 
+    bestTime: tour.bestTime,
+    packageType: tour.packageType as PackageType,
+    description: tour.description,
+    link: `/religious-tours/${tour.title.toLowerCase().replace(/\s+/g, '-')}` // Added link prop
+  }));
+  
   return (
-    <>
+    <ErrorBoundary>
       <Helmet>
-        <title>Religious Tours | My Nomadsafari Holidays</title>
-        <meta
-          name="description"
-          content="Embark on a spiritual journey with our carefully curated religious and pilgrimage tour packages across India."
+        <title>Religious & Pilgrimage Tours | My Nomadsafari Holidays</title>
+        <meta 
+          name="description" 
+          content="Embark on a spiritual journey with our curated selection of religious and pilgrimage tours across India and beyond."
         />
       </Helmet>
       
-      <div className="container mx-auto px-4 pt-24 pb-16">
-        <SectionHeading
-          title="Religious & Pilgrimage Tours"
-          subtitle="Embark on a spiritual journey to the most sacred destinations across India"
-          tag="Spiritual Journeys"
-          align="center"
-        />
-        
-        <div className="max-w-3xl mx-auto text-center mb-12">
-          <p className="text-muted-foreground">
-            Our religious tours are designed to provide a meaningful and spiritual experience, 
-            with careful attention to accommodations, transportation, and special arrangements 
-            for religious ceremonies and rituals.
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {religiousTours.map((tour, index) => (
-            <TourCard
-              key={index}
-              imageSrc={tour.imageSrc}
-              title={tour.title}
-              location={tour.location}
-              duration={tour.duration}
-              price={formatPrice(tour.price)}
-              bestTime={tour.bestTime}
-              packageType={tour.packageType}
-              description={tour.description}
-            />
-          ))}
-        </div>
-        
-        <div className="bg-muted/30 p-6 rounded-lg mb-12">
-          <h2 className="text-xl font-semibold mb-4">Our Religious Tour Services Include:</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex items-start">
-              <span className="flex items-center justify-center bg-primary/20 text-primary rounded-full w-6 h-6 mr-3 shrink-0">✓</span>
-              <span>Comfortable accommodation near temples/shrines</span>
-            </div>
-            <div className="flex items-start">
-              <span className="flex items-center justify-center bg-primary/20 text-primary rounded-full w-6 h-6 mr-3 shrink-0">✓</span>
-              <span>Experienced guides knowledgeable in religious customs</span>
-            </div>
-            <div className="flex items-start">
-              <span className="flex items-center justify-center bg-primary/20 text-primary rounded-full w-6 h-6 mr-3 shrink-0">✓</span>
-              <span>Arrangement for special pujas and rituals</span>
-            </div>
-            <div className="flex items-start">
-              <span className="flex items-center justify-center bg-primary/20 text-primary rounded-full w-6 h-6 mr-3 shrink-0">✓</span>
-              <span>Assistance with temple protocols and customs</span>
-            </div>
-            <div className="flex items-start">
-              <span className="flex items-center justify-center bg-primary/20 text-primary rounded-full w-6 h-6 mr-3 shrink-0">✓</span>
-              <span>Priority darshan arrangements where possible</span>
-            </div>
-            <div className="flex items-start">
-              <span className="flex items-center justify-center bg-primary/20 text-primary rounded-full w-6 h-6 mr-3 shrink-0">✓</span>
-              <span>Vegetarian meal options throughout the journey</span>
-            </div>
-            <div className="flex items-start">
-              <span className="flex items-center justify-center bg-primary/20 text-primary rounded-full w-6 h-6 mr-3 shrink-0">✓</span>
-              <span>Safe and comfortable transportation</span>
-            </div>
-            <div className="flex items-start">
-              <span className="flex items-center justify-center bg-primary/20 text-primary rounded-full w-6 h-6 mr-3 shrink-0">✓</span>
-              <span>Assistance with prasad and offerings</span>
-            </div>
-          </div>
-          
-          <div className="mt-6 text-sm text-muted-foreground">
-            <p>{religiousTourNote}</p>
+      <div className="bg-primary/5 py-16 md:py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-3xl mx-auto">
+            <h1 className="text-3xl md:text-4xl font-bold mb-4">Religious & Pilgrimage Tours</h1>
+            <p className="text-muted-foreground">Embark on a spiritual journey to the most sacred destinations. Our carefully curated pilgrimage packages combine spiritual experiences with comfortable travel.</p>
           </div>
         </div>
-        
-        <div className="mb-16">
-          <h2 className="text-2xl font-semibold mb-6 text-center">Popular Pilgrimage Destinations</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            <div className="text-center p-4 border rounded-lg">
-              <h3 className="font-medium">Varanasi</h3>
-              <p className="text-xs text-muted-foreground">Uttar Pradesh</p>
-            </div>
-            <div className="text-center p-4 border rounded-lg">
-              <h3 className="font-medium">Amritsar</h3>
-              <p className="text-xs text-muted-foreground">Punjab</p>
-            </div>
-            <div className="text-center p-4 border rounded-lg">
-              <h3 className="font-medium">Rishikesh</h3>
-              <p className="text-xs text-muted-foreground">Uttarakhand</p>
-            </div>
-            <div className="text-center p-4 border rounded-lg">
-              <h3 className="font-medium">Tirupati</h3>
-              <p className="text-xs text-muted-foreground">Andhra Pradesh</p>
-            </div>
-            <div className="text-center p-4 border rounded-lg">
-              <h3 className="font-medium">Shirdi</h3>
-              <p className="text-xs text-muted-foreground">Maharashtra</p>
-            </div>
-            <div className="text-center p-4 border rounded-lg">
-              <h3 className="font-medium">Haridwar</h3>
-              <p className="text-xs text-muted-foreground">Uttarakhand</p>
-            </div>
-          </div>
-        </div>
-        
-        <CTASection
-          title="Ready to Begin Your Spiritual Journey?"
-          description="Contact us today to customize your religious tour package according to your preferences and requirements."
-          buttonText="Enquire Now"
-          buttonLink="/contact"
-          imageSrc="/Destination/Domestic/Tours/Pilgrimage/Hindu/CharDham/CharDham-Main.jpg.jpg"
-          align="center"
-        />
       </div>
-    </>
+      
+      <div className="container mx-auto px-4 py-12">
+        <Tabs defaultValue={activeTab} value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="mb-8 flex flex-wrap justify-center gap-2">
+            {pilgrimageTypes.map((type) => (
+              <TabsTrigger key={type} value={type} className="min-w-[100px]">
+                {type}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          
+          <TabsContent value="Hindu" className="space-y-10">
+            <section>
+              <div className="flex items-center justify-between cursor-pointer pb-2 border-b" onClick={() => toggleSection('charDham')}>
+                <h2 className="text-xl md:text-2xl font-semibold">Char Dham Yatra</h2>
+                <Button variant="ghost" size="icon">
+                  {isOpen['charDham'] ? <ChevronDown /> : <ChevronRight />}
+                </Button>
+              </div>
+              
+              {isOpen['charDham'] && (
+                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {hinduPackages.filter(tour => tour.title.includes('Char Dham')).map((tour) => (
+                    <TourCard
+                      key={tour.key}
+                      {...tour}
+                    />
+                  ))}
+                </div>
+              )}
+            </section>
+            
+            <section>
+              <div className="flex items-center justify-between cursor-pointer pb-2 border-b" onClick={() => toggleSection('jyotirlinga')}>
+                <h2 className="text-xl md:text-2xl font-semibold">Jyotirlinga Darshan</h2>
+                <Button variant="ghost" size="icon">
+                  {isOpen['jyotirlinga'] ? <ChevronDown /> : <ChevronRight />}
+                </Button>
+              </div>
+              
+              {isOpen['jyotirlinga'] && (
+                <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {hinduPackages.filter(tour => tour.title.includes('Jyotirlinga')).map((tour) => (
+                    <TourCard
+                      key={tour.key}
+                      {...tour}
+                    />
+                  ))}
+                </div>
+              )}
+            </section>
+            
+            {/* Remaining sections can be added similarly */}
+          </TabsContent>
+          
+          {/* Other religion tabs can be added here */}
+          
+          {["Buddhist", "Jain", "Sikh", "Muslim", "Christian"].map((religion) => (
+            <TabsContent key={religion} value={religion}>
+              <div className="text-center py-10">
+                <h2 className="text-xl font-medium mb-4">{religion} Pilgrimage Packages</h2>
+                <p className="text-muted-foreground mb-6">Coming soon! We're currently curating special {religion} pilgrimage packages.</p>
+                <Button>Notify Me</Button>
+              </div>
+            </TabsContent>
+          ))}
+        </Tabs>
+      </div>
+    </ErrorBoundary>
   );
 };
 

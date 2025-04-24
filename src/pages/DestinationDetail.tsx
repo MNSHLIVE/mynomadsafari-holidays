@@ -16,6 +16,7 @@ import DestinationSidebar from "@/components/destination/destination-sidebar";
 import DestinationContent from "@/components/destination/destination-content";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import DestinationQueryForm from "@/components/destination-query-form";
 
 const DestinationDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -172,6 +173,15 @@ const DestinationDetail = () => {
               highlights={destination.highlights}
               attractions={destination.attractions}
             />
+
+            <div className="mt-8">
+              <DestinationQueryForm 
+                destinationName={destination.name} 
+                buttonText="Book This Destination" 
+                buttonVariant="default"
+                buttonClassName="w-full md:w-auto"
+              />
+            </div>
           </div>
           
           <div>
@@ -185,7 +195,10 @@ const DestinationDetail = () => {
           title={`Popular ${destination.name} Tours`}
           subtitle={`Explore our curated selection of ${destination.name} tour packages`}
           tag="Featured Tours"
-          tours={relatedTours}
+          tours={relatedTours.map(tour => ({
+            ...tour,
+            link: `/destinations/${destination.name.toLowerCase().replace(/\s+/g, "-")}/tour`
+          }))}
           viewAllLink="/tours"
           viewAllText="View All Tours"
           bgColor="bg-muted/30"
