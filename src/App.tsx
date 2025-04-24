@@ -55,11 +55,9 @@ const router = createBrowserRouter(
 
 function App() {
   return (
-    <ErrorBoundary>
-      <ThemeProvider defaultTheme="system" storageKey="vite-react-theme">
-        <RouterProvider router={router} />
-      </ThemeProvider>
-    </ErrorBoundary>
+    <ThemeProvider defaultTheme="system" storageKey="vite-react-theme">
+      <RouterProvider router={router} />
+    </ThemeProvider>
   )
 }
 
