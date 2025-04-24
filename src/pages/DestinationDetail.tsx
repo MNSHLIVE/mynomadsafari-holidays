@@ -28,11 +28,17 @@ const DestinationDetail = () => {
   useEffect(() => {
     try {
       if (slug) {
+        // Update the logic to find destinations by slug or name
         const foundDestination = destinations.find(
-          (d) => d.name.toLowerCase().replace(/\s+/g, "-") === slug
+          (d) => {
+            // Try to match by slug if available, otherwise fall back to name-based slug
+            const destinationSlug = d.slug || d.name.toLowerCase().replace(/\s+/g, "-");
+            return destinationSlug === slug;
+          }
         );
         
         if (!foundDestination) {
+          console.error(`Destination not found for slug: ${slug}`);
           toast({
             variant: "destructive",
             title: "Destination not found",

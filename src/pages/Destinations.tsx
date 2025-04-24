@@ -59,16 +59,21 @@ const Destinations = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredDestinations.map((destination, index) => (
-            <DestinationCard
-              key={index}
-              imageSrc={destination.imageSrc || destination.mainImage || ""}
-              title={destination.name}
-              description={destination.description}
-              bestTime={destination.bestTimeToVisit}
-              link={`/destinations/${destination.slug || destination.name.toLowerCase().replace(/ /g, "-")}`}
-            />
-          ))}
+          {filteredDestinations.map((destination, index) => {
+            // Generate slug from destination name if it's not already defined
+            const slug = destination.slug || destination.name.toLowerCase().replace(/ /g, "-");
+            
+            return (
+              <DestinationCard
+                key={index}
+                imageSrc={destination.imageSrc || destination.mainImage || ""}
+                title={destination.name}
+                description={destination.description}
+                bestTime={destination.bestTimeToVisit}
+                slug={slug}
+              />
+            );
+          })}
         </div>
 
         {filteredDestinations.length === 0 && (

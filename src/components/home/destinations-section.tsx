@@ -15,6 +15,7 @@ interface DestinationsProps {
     description: string;
     bestTime?: string;
     isPopular?: boolean;
+    slug?: string; // Add slug support
   }>;
   viewAllLink: string;
   viewAllText: string;
@@ -48,7 +49,7 @@ const DestinationsSection = ({
               description={destination.description}
               bestTime={destination.bestTime}
               isPopular={destination.isPopular}
-              // We'll use the default slug generation in the DestinationCard component
+              slug={destination.slug} // Pass slug if available
             />
           ))}
         </div>

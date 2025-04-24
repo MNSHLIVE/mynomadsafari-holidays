@@ -19,6 +19,7 @@ export const eastIndiaDestinations: DestinationData[] = [
       "Park Street",
       "College Street",
       "Sundarbans"
-    ]
+    ],
+    slug: "kolkata" // Add explicit slug
   }
 ];

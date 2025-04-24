@@ -13,6 +13,7 @@ interface DestinationCardProps {
   link?: string;
   className?: string;
   isPopular?: boolean;
+  slug?: string; // Add explicit slug prop
 }
 
 const DestinationCard = ({
@@ -20,9 +21,10 @@ const DestinationCard = ({
   title,
   description,
   bestTime,
-  link = "#",
+  link,
   className,
   isPopular = false,
+  slug,
 }: DestinationCardProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
@@ -30,9 +32,10 @@ const DestinationCard = ({
   // Fallback image for when loading fails
   const fallbackImageSrc = "/placeholder.svg";
 
-  // Generate a URL-friendly slug from the title
-  const slug = title.toLowerCase().replace(/\s+/g, "-");
-  const destinationLink = link === "#" ? `/destinations/${slug}` : link;
+  // Generate a URL-friendly slug from the title if not explicitly provided
+  const destinationSlug = slug || title.toLowerCase().replace(/\s+/g, "-");
+  // Use provided link or generate one using the slug
+  const destinationLink = link || `/destinations/${destinationSlug}`;
 
   return (
     <div 
