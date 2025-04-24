@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { Button } from "@/components/ui/button";
@@ -27,7 +28,7 @@ const ReligiousTours = () => {
     title: tour.title,
     location: tour.location,
     duration: tour.duration,
-    price: tour.price, 
+    price: String(tour.price), // Convert price to string
     bestTime: tour.bestTime,
     packageType: tour.packageType as PackageType,
     description: tour.description,
