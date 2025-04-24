@@ -4,12 +4,14 @@ import { indiaDestinations } from "./india";
 import { southeastAsiaDestinations } from "./southeast-asia";
 import { middleEastDestinations } from "./middle-east";
 import { europeanDestinations } from "./europe";
+import { otherDestinations } from "./other-regions";
 
 export const destinations: DestinationData[] = [
   ...indiaDestinations,
   ...southeastAsiaDestinations,
   ...middleEastDestinations,
-  ...europeanDestinations
+  ...europeanDestinations,
+  ...otherDestinations
 ];
 
 export const getRegions = (): string[] => {
@@ -33,3 +35,4 @@ export * from "./india";
 export * from "./southeast-asia";
 export * from "./middle-east";
 export * from "./europe";
+export * from "./other-regions";
