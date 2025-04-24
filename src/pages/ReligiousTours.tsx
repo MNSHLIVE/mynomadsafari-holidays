@@ -8,6 +8,7 @@ import { religiousTours } from "@/components/tours/data";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import TourCard from "@/components/tour-card";
 import { PackageType } from "@/components/tours/data/tour-core";
+import DestinationQueryForm from "@/components/destination-query-form";
 
 const ReligiousTours = () => {
   const [isOpen, setIsOpen] = useState({});
@@ -76,10 +77,28 @@ const ReligiousTours = () => {
               {isOpen['charDham'] && (
                 <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {hinduPackages.filter(tour => tour.title.includes('Char Dham')).map((tour) => (
-                    <TourCard
-                      key={tour.key}
-                      {...tour}
-                    />
+                    <div key={tour.key} className="flex flex-col h-full">
+                      <TourCard
+                        key={tour.key}
+                        imageSrc={tour.imageSrc}
+                        title={tour.title}
+                        location={tour.location}
+                        duration={tour.duration}
+                        price={tour.price}
+                        bestTime={tour.bestTime}
+                        packageType={tour.packageType}
+                        description={tour.description}
+                        link={tour.link}
+                        className="flex-grow"
+                      />
+                      <div className="mt-3">
+                        <DestinationQueryForm 
+                          destinationName={tour.title}
+                          buttonText="Book This Tour"
+                          buttonClassName="w-full"
+                        />
+                      </div>
+                    </div>
                   ))}
                 </div>
               )}
@@ -96,10 +115,28 @@ const ReligiousTours = () => {
               {isOpen['jyotirlinga'] && (
                 <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {hinduPackages.filter(tour => tour.title.includes('Jyotirlinga')).map((tour) => (
-                    <TourCard
-                      key={tour.key}
-                      {...tour}
-                    />
+                    <div key={tour.key} className="flex flex-col h-full">
+                      <TourCard
+                        key={tour.key}
+                        imageSrc={tour.imageSrc}
+                        title={tour.title}
+                        location={tour.location}
+                        duration={tour.duration}
+                        price={tour.price}
+                        bestTime={tour.bestTime}
+                        packageType={tour.packageType}
+                        description={tour.description}
+                        link={tour.link}
+                        className="flex-grow"
+                      />
+                      <div className="mt-3">
+                        <DestinationQueryForm 
+                          destinationName={tour.title}
+                          buttonText="Book This Tour"
+                          buttonClassName="w-full"
+                        />
+                      </div>
+                    </div>
                   ))}
                 </div>
               )}
