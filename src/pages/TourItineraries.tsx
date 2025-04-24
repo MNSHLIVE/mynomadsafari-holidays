@@ -10,15 +10,12 @@ import {
   filterInternationalTours, 
   getUniqueDestinations 
 } from "@/components/tour-itineraries/tour-filters";
-import DestinationQueryForm from "@/components/destination-query-form";
 import { DomesticTourDetails, InternationalTourDetails } from "@/components/tour-itineraries/types";
 
 const TourItineraries = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDestination, setSelectedDestination] = useState("all");
   const [selectedDuration, setSelectedDuration] = useState("all");
-  const [showEnquiryForm, setShowEnquiryForm] = useState(false);
-  const [selectedTourName, setSelectedTourName] = useState("");
 
   // Cast the tour itineraries to the appropriate types
   const typedDomesticItineraries = domesticItineraries as unknown as DomesticTourDetails[];
@@ -45,12 +42,6 @@ const TourItineraries = () => {
 
   // Combine all unique destinations for the filters dropdown
   const allDestinations = [...new Set([...uniqueDomesticDestinations, ...uniqueInternationalDestinations])];
-
-  // Handle tour enquiry
-  const handleTourEnquiry = (tourName: string) => {
-    setSelectedTourName(tourName);
-    setShowEnquiryForm(true);
-  };
 
   return (
     <>
@@ -83,16 +74,7 @@ const TourItineraries = () => {
         <ToursTabs
           domesticTours={filteredDomesticTours}
           internationalTours={filteredInternationalTours}
-          onTourEnquiry={handleTourEnquiry}
         />
-
-        {showEnquiryForm && (
-          <DestinationQueryForm 
-            destinationName={selectedTourName} 
-            initialOpen={true}
-            onFormSubmitted={() => setShowEnquiryForm(false)}
-          />
-        )}
       </div>
     </>
   );

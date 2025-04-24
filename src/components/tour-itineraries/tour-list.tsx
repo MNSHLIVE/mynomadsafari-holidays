@@ -11,6 +11,7 @@ import {
 import { Calendar, MapPin, Clock, Users, Tag } from "lucide-react";
 import { DomesticTourDetails, InternationalTourDetails } from "./types";
 import { formatDateRange } from "./tours-tabs";
+import DestinationQueryForm from "@/components/destination-query-form";
 
 interface TourListProps {
   tours: (DomesticTourDetails | InternationalTourDetails)[];
@@ -83,7 +84,7 @@ const TourList = ({ tours, type, onTourEnquiry }: TourListProps) => {
                 </div>
                 <div className="flex items-center text-sm">
                   <Tag className="h-4 w-4 mr-2" />
-                  <span>Starting from ₹{tour.pricePerPerson.toLocaleString()}/person</span>
+                  <span>Starting from ₹{tour.pricePerPerson?.toLocaleString() || "N/A"}/person</span>
                 </div>
                 <div className="mt-3">
                   <p className="text-sm text-muted-foreground line-clamp-3">
@@ -93,12 +94,11 @@ const TourList = ({ tours, type, onTourEnquiry }: TourListProps) => {
               </div>
             </CardContent>
             <CardFooter className="pt-2">
-              <Button 
-                className="w-full" 
-                onClick={() => onTourEnquiry && onTourEnquiry(tour.name)}
-              >
-                Enquire Now
-              </Button>
+              <DestinationQueryForm
+                destinationName={tour.name}
+                buttonText="Enquire Now"
+                buttonClassName="w-full"
+              />
             </CardFooter>
           </Card>
         );
