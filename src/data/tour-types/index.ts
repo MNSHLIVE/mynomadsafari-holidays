@@ -10,7 +10,7 @@ export * from './jaisalmer-tours';
 export * from './kashmir-tours';
 export * from './northeast-tours';
 
-// For backward compatibility
+// For backward compatibility with existing components
 import { rajasthanTours } from './rajasthan-tours';
 import { keralaTours } from './kerala-tours';
 import { goaTours } from './goa-tours';
@@ -21,6 +21,7 @@ import { kashmirTours } from './kashmir-tours';
 import { northeastTours } from './northeast-tours';
 import { dubaiTours, singaporeTours, baliTours } from './international-tours';
 
+// These exports are still used by the main Tours page and other components
 export const domesticItineraries = [
   ...rajasthanTours,
   ...keralaTours,
