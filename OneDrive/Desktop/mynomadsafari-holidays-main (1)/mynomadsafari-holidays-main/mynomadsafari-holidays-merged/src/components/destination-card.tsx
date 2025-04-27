@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BookingDialog } from "@/components/booking-dialog";
-import Image from "next/image";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 
 interface DestinationCardProps {
   imageSrc: string;
@@ -38,24 +38,38 @@ const DestinationCard = ({
   return (
     <Card className={`overflow-hidden ${className}`}>
       <div className="relative aspect-[4/3]">
-        <Image
+        <img
           src={imageError ? fallbackImageSrc : imageSrc}
           alt={title}
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className={cn(
+            "w-full h-full object-cover transition-opacity duration-300",
+            isLoaded ? "opacity-100" : "opacity-0"
+          )}
           onLoad={() => setIsLoaded(true)}
           onError={() => {
             setImageError(true);
             setIsLoaded(true);
           }}
+          loading="lazy"
         />
+        {!isLoaded && (
+          <div className="absolute inset-0 bg-gray-100 animate-pulse" />
+        )}
       </div>
       <CardContent className="p-4">
         <h3 className="text-lg font-semibold mb-2">{title}</h3>
         <p className="text-sm text-gray-600 mb-2">{duration}</p>
         <p className="text-sm text-gray-600 mb-4 line-clamp-2">{description}</p>
-        <p className="text-lg font-bold">Starting from {price}</p>
+        <p className="text-lg font-bold mb-4">Starting from {price}</p>
+        <Link 
+          to={`/destinations/${slug}`} 
+          className="inline-block w-full mb-3"
+        >
+          <Button variant="outline" className="w-full">
+            View Details
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+        </Link>
       </CardContent>
       <CardFooter className="p-4 pt-0">
         <BookingDialog 

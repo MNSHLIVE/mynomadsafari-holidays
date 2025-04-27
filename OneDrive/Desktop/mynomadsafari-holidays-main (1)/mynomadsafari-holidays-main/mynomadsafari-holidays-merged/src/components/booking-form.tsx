@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon, Plus, Minus } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -80,8 +81,30 @@ export function BookingForm({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     try {
-      // Here you would typically send the form data to your backend
-      console.log(values);
+      // Save to Supabase
+      const { data, error } = await supabase
+        .from('bookings')
+        .insert([
+          {
+            name: values.name,
+            email: values.email,
+            phone: values.phone,
+            traveling_from: values.travelingFrom,
+            destination: values.destination,
+            travel_date: format(values.travelDate, 'yyyy-MM-dd'),
+            duration: values.duration,
+            adults: parseInt(values.adults),
+            children: values.children ? parseInt(values.children) : 0,
+            budget: values.budget,
+            message: values.message || '',
+            status: 'pending',
+            created_at: new Date().toISOString(),
+          }
+        ]);
+
+      if (error) {
+        throw error;
+      }
       
       // Show success message
       toast.success("Booking inquiry submitted successfully! We'll contact you soon.");
@@ -94,6 +117,7 @@ export function BookingForm({
         onSuccess();
       }
     } catch (error) {
+      console.error('Error submitting booking:', error);
       toast.error("Failed to submit booking inquiry. Please try again.");
     } finally {
       setIsSubmitting(false);
