@@ -1,7 +1,7 @@
 
-import { TourCardProps } from "./tour-core";
+import { BaseTourType } from "./tour-core";
 
-export const jungleSafariTours: TourCardProps[] = [
+export const jungleSafariTours: BaseTourType[] = [
   {
     imageSrc: "/Destination/Domestic/gallery/Jim-corbett.jpg",
     title: "Jim Corbett Wildlife Safari",
