@@ -44,7 +44,7 @@ export const jungleSafariTours: BaseTourType[] = [
     }
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1544985361-b420d7a77f51?q=80&w=800",
+    imageSrc: "/public/Destination/Domestic/gallery/Jim-corbett.jpg",
     title: "Tadoba Tiger Trail",
     location: "Chandrapur District, Maharashtra",
     duration: "3 Days",

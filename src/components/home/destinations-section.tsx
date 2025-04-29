@@ -49,7 +49,7 @@ const DestinationsSection = ({
               description={destination.description}
               bestTime={destination.bestTime}
               isPopular={destination.isPopular}
-              slug={destination.slug} // Pass slug if available
+              slug={destination.slug || destination.title.toLowerCase().replace(/\s+/g, "-")}
             />
           ))}
         </div>
