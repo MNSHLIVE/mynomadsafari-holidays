@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 import { Calendar, Clock, MapPin } from "lucide-react";
+import DestinationQueryForm from "@/components/destination-query-form";
 
 interface DestinationSidebarProps {
   name: string;
@@ -52,9 +52,11 @@ const DestinationSidebar = ({ name, region, bestTimeToVisit, budgetRange }: Dest
         </div>
       </div>
       
-      <Button className="w-full" asChild>
-        <Link to="/contact">Contact Us</Link>
-      </Button>
+      <DestinationQueryForm 
+        destinationName={name}
+        buttonText="Book Now"
+        buttonClassName="w-full"
+      />
     </div>
   );
 };
