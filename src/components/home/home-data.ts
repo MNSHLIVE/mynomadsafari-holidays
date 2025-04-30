@@ -26,26 +26,26 @@ export const heroSlides = [
 export const popularDestinations = [
   {
     imageSrc: "/Destination/Domestic/main/Rajasthan-main.jpg",
-    title: "Rajasthan, India",
+    title: "Rajasthan",
     description: "Experience the vibrant culture and majestic forts of the royal state.",
     bestTime: "October - March",
     isPopular: true,
   },
   {
-    imageSrc: "/public/Destination/Domestic/main/Kerala-main.jpg",
-    title: "Kerala, India",
+    imageSrc: "/Destination/Domestic/main/Kerala-main.jpg",
+    title: "Kerala",
     description: "Discover the serene backwaters and lush greenery of God's own country.",
     bestTime: "September - March",
   },
   {
-    imageSrc: "/public/Destination/Domestic/main/Goa-main.jpg",
-    title: "Goa, India",
+    imageSrc: "/Destination/Domestic/main/Goa-main.jpg",
+    title: "Goa",
     description: "Relax on sandy beaches and enjoy the vibrant nightlife of this coastal paradise.",
     bestTime: "November - February",
   },
   {
-    imageSrc: "/public/Destination/International/Main/Bali-main.jpg",
-    title: "Bali, Indonesia",
+    imageSrc: "/Destination/International/Main/Bali-main.jpg",
+    title: "Bali",
     description: "Experience the perfect blend of beaches, culture, and adventure in this island paradise.",
     bestTime: "April - October",
   },
@@ -59,19 +59,19 @@ export const religiousDestinations = [
     bestTime: "October - March",
   },
   {
-    imageSrc: "/public/Destination/Domestic/main/Uttrakhand-main.jpg",
+    imageSrc: "/Destination/Domestic/main/Uttrakhand-main.jpg",
     title: "Haridwar & Rishikesh",
     description: "Visit the holy gateway to the Himalayas and the yoga capital of the world.",
     bestTime: "September - April",
   },
   {
-    imageSrc: "/public/Destination/Domestic/Tours/Pilgrimage/Hindu/VaishnoDevi/VaishnoDevi-Main.jpg.jpg",
+    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/VaishnoDevi/VaishnoDevi-Main.jpg",
     title: "Amritsar",
     description: "Visit the Golden Temple, the holiest shrine in Sikhism.",
     bestTime: "October - March",
   },
   {
-    imageSrc: "/public/Destination/Domestic/Tours/Pilgrimage/Hindu/SouthIndia/SouthIndia-Main.jpg.jpg",
+    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/SouthIndia/SouthIndia-Main.jpg",
     title: "Tirupati",
     description: "Visit one of the world's richest and most visited temples in South India.",
     bestTime: "September - February",
@@ -80,26 +80,26 @@ export const religiousDestinations = [
 
 export const internationalDestinations = [
   {
-    imageSrc: "/public/Destination/International/Main/Dubai-main.jpg",
-    title: "Dubai, UAE",
+    imageSrc: "/Destination/International/Main/Dubai-main.jpg",
+    title: "Dubai",
     description: "Experience the luxurious desert metropolis with futuristic architecture.",
     bestTime: "November - March",
   },
   {
-    imageSrc: "/public/Destination/International/Main/Singapore-main.jpg",
+    imageSrc: "/Destination/International/Main/Singapore-main.jpg",
     title: "Singapore",
     description: "Explore the vibrant city-state with its perfect blend of culture and modernity.",
     bestTime: "February - April",
   },
   {
     imageSrc: "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?q=80&w=800",
-    title: "Paris, France",
+    title: "Paris",
     description: "Discover the romantic capital of the world with its iconic landmarks.",
     bestTime: "April - June, September - October",
   },
   {
     imageSrc: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?q=80&w=800",
-    title: "Tokyo, Japan",
+    title: "Tokyo",
     description: "Experience the ultra-modern metropolis with traditional Japanese culture.",
     bestTime: "March - May, September - November",
   },
@@ -134,7 +134,7 @@ export const hillStations = [
 
 export const popularTours = [
   {
-    imageSrc: "/public/Destination/Domestic/Tours/Himachal/Himachal-Adventure.jpg",
+    imageSrc: "/Destination/Domestic/Tours/Himachal/Himachal-Adventure.jpg",
     title: "Golden Triangle Tour",
     location: "Delhi, Agra, Jaipur",
     duration: "6 Days",
@@ -143,7 +143,7 @@ export const popularTours = [
     packageType: "Budgeted" as const,
   },
   {
-    imageSrc: "/public/Destination/Domestic/Tours/Kerala/Kerala-Backwaters-Luxury.jpg",
+    imageSrc: "/Destination/Domestic/Tours/Kerala/Kerala-Backwaters-Luxury.jpg",
     title: "Kerala Backwaters Luxury",
     location: "Kochi, Munnar, Alleppey",
     duration: "7 Days",
@@ -152,7 +152,7 @@ export const popularTours = [
     packageType: "Luxury" as const,
   },
   {
-    imageSrc: "/public/Destination/Domestic/main/Rajasthan-3.jpg",
+    imageSrc: "/Destination/Domestic/main/Rajasthan-3.jpg",
     title: "Premier Rajasthan Heritage",
     location: "Jaipur, Udaipur, Jodhpur",
     duration: "10 Days",
@@ -164,7 +164,7 @@ export const popularTours = [
 
 export const religiousTours = [
   {
-    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/CharDham/CharDham-Main.jpg.jpg",
+    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/CharDham/CharDham-Main.jpg",
     title: "Char Dham Yatra",
     location: "Uttarakhand, India",
     duration: "12 Days",
@@ -323,7 +323,7 @@ export const honeymoonTours = [
 
 export const adventureTours = [
   {
-    imageSrc: "/public/Destination/Domestic/gallery/Rishikesh-Rafting.jpg",
+    imageSrc: "/Destination/Domestic/gallery/Rishikesh-Rafting.jpg",
     title: "Rishikesh Adventure",
     location: "Uttarakhand, India",
     duration: "5 Days",
@@ -333,7 +333,7 @@ export const adventureTours = [
     description: "Experience white water rafting, bungee jumping, cliff jumping, and trekking in the adventure capital of India.",
   },
   {
-    imageSrc: "/public/Destination/Domestic/main/Ladhak-main.jpg",
+    imageSrc: "/Destination/Domestic/main/Ladhak-main.jpg",
     title: "Ladakh Bike Expedition",
     location: "Ladakh, India",
     duration: "10 Days",
@@ -356,7 +356,7 @@ export const adventureTours = [
 
 export const jungleSafariTours = [
   {
-    imageSrc: "/public/Destination/Domestic/gallery/Jim-corbett.jpg",
+    imageSrc: "/Destination/Domestic/gallery/Jim-corbett.jpg",
     title: "Jim Corbett Tiger Safari",
     location: "Uttarakhand, India",
     duration: "3 Days",
@@ -390,37 +390,37 @@ export const jungleSafariTours = [
 export const europeanDestinations = [
   {
     imageSrc: "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?q=80&w=800",
-    title: "Paris, France",
+    title: "Paris",
     description: "Experience the romance, history, and culture of the City of Light with its iconic landmarks.",
     bestTime: "April - June, September - October"
   },
   {
     imageSrc: "https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=800",
-    title: "Rome, Italy",
+    title: "Rome",
     description: "Discover ancient history, remarkable art, and world-class cuisine in the Eternal City.",
     bestTime: "April - May, September - October"
   },
   {
     imageSrc: "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?q=80&w=800",
-    title: "Santorini, Greece",
+    title: "Santorini",
     description: "Visit the stunning white-washed buildings, blue-domed churches, and breathtaking views of this Greek island paradise.",
     bestTime: "April - October"
   },
   {
     imageSrc: "https://images.unsplash.com/photo-1565622832101-358788927c53?q=80&w=800",
-    title: "Swiss Alps, Switzerland",
+    title: "Swiss Alps",
     description: "Experience scenic mountain views, charming villages, and world-class skiing in this Alpine wonderland.",
     bestTime: "December - April (for skiing), June - September (for hiking)"
   },
   {
     imageSrc: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=800",
-    title: "London, United Kingdom",
+    title: "London",
     description: "Explore the historic landmarks, cultural attractions, and vibrant neighborhoods of this global metropolis.",
     bestTime: "May - September"
   },
   {
     imageSrc: "https://images.unsplash.com/photo-1561704061-7b246d29c9a9?q=80&w=800",
-    title: "Barcelona, Spain",
+    title: "Barcelona",
     description: "Enjoy the unique architecture, beautiful beaches, and lively atmosphere of this Mediterranean gem.",
     bestTime: "April - June, September - October"
   }

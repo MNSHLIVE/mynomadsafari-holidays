@@ -33,7 +33,7 @@ const DestinationCard = ({
   const fallbackImageSrc = "/placeholder.svg";
 
   // Generate a URL-friendly slug from the title if not explicitly provided
-  const destinationSlug = slug || title.toLowerCase().replace(/\s+/g, "-");
+  const destinationSlug = slug || title.toLowerCase().replace(/\s+/g, "-").replace(/,/g, "");
   // Use provided link or generate one using the slug
   const destinationLink = link || `/destinations/${destinationSlug}`;
 

@@ -3,7 +3,7 @@ import { BaseTourType } from "./tour-core";
 
 export const religiousTours: BaseTourType[] = [
   {
-    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/CharDham/CharDham-Main.jpg.jpg",
+    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/CharDham/CharDham-Main.jpg",
     title: "Char Dham Yatra",
     location: "Uttarakhand, India",
     duration: "12 Days",
@@ -13,7 +13,7 @@ export const religiousTours: BaseTourType[] = [
     description: "Visit the four sacred Hindu temples: Yamunotri, Gangotri, Kedarnath, and Badrinath."
   },
   {
-    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/VaishnoDevi/VaishnoDevi-Main.jpg.jpg",
+    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/VaishnoDevi/VaishnoDevi-Main.jpg",
     title: "Vaishno Devi Darshan",
     location: "Jammu & Kashmir, India",
     duration: "4 Days",
@@ -23,7 +23,7 @@ export const religiousTours: BaseTourType[] = [
     description: "Undertake the divine journey to the holy shrine of Mata Vaishno Devi."
   },
   {
-    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/BadrinathKedarnath/BK-Main.jpg.jpg",
+    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/BadrinathKedarnath/BK-Main.jpg",
     title: "Badrinath-Kedarnath Yatra",
     location: "Uttarakhand, India",
     duration: "7 Days",
@@ -43,7 +43,7 @@ export const religiousTours: BaseTourType[] = [
     description: "Visit the eight sacred temples of Lord Ganesha across Maharashtra."
   },
   {
-    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/Jyotirlinga/Jyotirlinga-Main.jpg.jpg",
+    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/Jyotirlinga/Jyotirlinga-Main.jpg",
     title: "Dwadash Jyotirlinga Yatra",
     location: "Pan India",
     duration: "16 Days",
@@ -53,7 +53,7 @@ export const religiousTours: BaseTourType[] = [
     description: "Visit the twelve sacred Jyotirlinga temples scattered across India."
   },
   {
-    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/SouthIndia/SouthIndia-Main.jpg.jpg",
+    imageSrc: "/Destination/Domestic/Tours/Pilgrimage/Hindu/SouthIndia/SouthIndia-Main.jpg",
     title: "South India Temple Tour",
     location: "South India",
     duration: "10 Days",

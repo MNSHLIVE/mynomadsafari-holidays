@@ -23,13 +23,13 @@ const DestinationDetail = () => {
     try {
       if (slug) {
         console.log("Looking for destination with slug:", slug);
-        console.log("Available destinations:", destinations.map(d => ({ name: d.name, slug: d.slug || d.name.toLowerCase().replace(/\s+/g, "-") })));
+        console.log("Available destinations:", destinations.map(d => ({ name: d.name, slug: d.slug || d.name.toLowerCase().replace(/\s+/g, "-").replace(/,/g, "") })));
         
         // Update the logic to find destinations by slug or name
         const foundDestination = destinations.find(
           (d) => {
             // Try to match by slug if available, otherwise fall back to name-based slug
-            const destinationSlug = d.slug || d.name.toLowerCase().replace(/\s+/g, "-");
+            const destinationSlug = d.slug || d.name.toLowerCase().replace(/\s+/g, "-").replace(/,/g, "");
             return destinationSlug === slug;
           }
         );

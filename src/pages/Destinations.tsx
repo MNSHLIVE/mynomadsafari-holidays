@@ -61,7 +61,7 @@ const Destinations = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredDestinations.map((destination, index) => {
             // Generate slug from destination name if it's not already defined
-            const slug = destination.slug || destination.name.toLowerCase().replace(/ /g, "-");
+            const slug = destination.slug || destination.name.toLowerCase().replace(/\s+/g, "-").replace(/,/g, "");
             
             return (
               <DestinationCard
