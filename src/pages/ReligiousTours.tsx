@@ -106,6 +106,7 @@ const ReligiousTours = () => {
               description={tour.description}
               link={tour.link}
               className="flex-grow"
+              eager={true} // Add eager prop to load images quickly
             />
             <div className="mt-3">
               <DestinationQueryForm 

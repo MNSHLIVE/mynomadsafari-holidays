@@ -58,7 +58,7 @@ const CalculatorSection = () => {
   };
 
   return (
-    <section className="section-padding bg-muted/30 py-16">
+    <section className="section-padding bg-muted/30 py-16" id="calculator-section">
       <div className="container mx-auto px-4">
         <SectionHeading
           title="Plan Your Perfect Trip"
