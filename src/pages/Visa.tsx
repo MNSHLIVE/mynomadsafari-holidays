@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import SectionHeading from "@/components/section-heading";
 import CTASection from "@/components/cta-section";
@@ -34,6 +35,7 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { useToast } from "@/components/ui/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { supabase } from "@/integrations/supabase/client";
 
 const visaServices = [
   {
@@ -72,6 +74,9 @@ const formSchema = z.object({
   phone: z.string().min(10, {
     message: "Please enter a valid phone number."
   }),
+  nationality: z.string({
+    required_error: "Please enter your nationality."
+  }),
   destination: z.string({
     required_error: "Please select a destination."
   }),
@@ -95,18 +100,44 @@ const Visa = () => {
       name: "",
       email: "",
       phone: "",
+      nationality: "",
       message: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
-    setSubmittedEmail(values.email);
-    setIsSubmitted(true);
-    toast({
-      title: "Visa inquiry submitted",
-      description: "We'll get back to you within 24 hours.",
-    });
+    try {
+      // Insert form data into Supabase table
+      const { data, error } = await supabase
+        .from("Visa_Inquiry_Form")
+        .insert({
+          name: values.name,
+          email: values.email,
+          phone: values.phone,
+          nationality: values.nationality,
+          destination_country: values.destination,
+          travel_date: values.travelDate.toISOString(),
+          visa_type: values.visaType,
+          special_requirements: values.message,
+        });
+
+      if (error) throw error;
+      
+      setSubmittedEmail(values.email);
+      setIsSubmitted(true);
+      toast({
+        title: "Visa inquiry submitted",
+        description: "We'll get back to you within 24 hours.",
+      });
+    } catch (error) {
+      console.error("Error submitting visa inquiry:", error);
+      toast({
+        title: "Submission failed",
+        description: "There was a problem submitting your inquiry. Please try again.",
+        variant: "destructive"
+      });
+    }
   }
 
   const resetForm = () => {
@@ -260,6 +291,20 @@ const Visa = () => {
                             <FormLabel>Phone Number</FormLabel>
                             <FormControl>
                               <Input placeholder="+1 (555) 123-4567" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="nationality"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Nationality</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Enter your nationality" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>

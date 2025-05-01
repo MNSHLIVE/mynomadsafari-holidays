@@ -287,7 +287,7 @@ export type Database = {
         }
         Relationships: []
       }
-      visa_requests: {
+      Visa_Inquiry_Form: {
         Row: {
           created_at: string
           destination_country: string | null
