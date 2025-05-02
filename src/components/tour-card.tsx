@@ -13,8 +13,10 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import DestinationQueryForm from "@/components/destination-query-form";
-import { AspectRatio, cn, Badge } from "@/components/ui";
-import { getPackageVariant } from "@/utils";
+import { Badge } from "@/components/ui/badge";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { cn } from "@/lib/utils";
+import { PackageType } from "@/components/tours/data/tour-core";
 
 interface TourCardProps {
   imageSrc: string;
@@ -48,25 +50,16 @@ const TourCard = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const renderPackageTypeLabel = () => {
-    let bgColor = "bg-green-500";
-    
+  // Function to determine badge variant based on package type
+  const getPackageVariant = (packageType: PackageType) => {
     switch(packageType) {
       case "Luxury":
-        bgColor = "bg-amber-500";
-        break;
+        return "default"; // Using default variant with amber styling
       case "Premier":
-        bgColor = "bg-purple-500";
-        break;
+        return "secondary"; // Using secondary variant for purple
       default:
-        bgColor = "bg-green-500";
+        return "outline"; // Default style for Budgeted
     }
-    
-    return (
-      <span className={`${bgColor} text-white px-2 py-1 rounded text-xs font-medium`}>
-        {packageType}
-      </span>
-    );
   };
   
   return (
