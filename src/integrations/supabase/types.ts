@@ -62,6 +62,36 @@ export type Database = {
           },
         ]
       }
+      contact_submissions: {
+        Row: {
+          created_at: string | null
+          email: string
+          full_name: string
+          id: string
+          message: string
+          phone: string | null
+          subject: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          full_name: string
+          id?: string
+          message: string
+          phone?: string | null
+          subject?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          message?: string
+          phone?: string | null
+          subject?: string | null
+        }
+        Relationships: []
+      }
       customer_tags: {
         Row: {
           created_at: string | null
@@ -158,6 +188,66 @@ export type Database = {
           name?: string
           subject?: string
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      future_travel_plans: {
+        Row: {
+          adults: number | null
+          approximate_date: string | null
+          boarding_from: string | null
+          children: number | null
+          created_at: string | null
+          destination_city: string | null
+          email: string
+          id: string
+          phone: string | null
+          tour_destination: string | null
+          traveler_name: string | null
+        }
+        Insert: {
+          adults?: number | null
+          approximate_date?: string | null
+          boarding_from?: string | null
+          children?: number | null
+          created_at?: string | null
+          destination_city?: string | null
+          email: string
+          id?: string
+          phone?: string | null
+          tour_destination?: string | null
+          traveler_name?: string | null
+        }
+        Update: {
+          adults?: number | null
+          approximate_date?: string | null
+          boarding_from?: string | null
+          children?: number | null
+          created_at?: string | null
+          destination_city?: string | null
+          email?: string
+          id?: string
+          phone?: string | null
+          tour_destination?: string | null
+          traveler_name?: string | null
+        }
+        Relationships: []
+      }
+      newsletter_subscribers: {
+        Row: {
+          email: string
+          id: string
+          subscribed_at: string | null
+        }
+        Insert: {
+          email: string
+          id?: string
+          subscribed_at?: string | null
+        }
+        Update: {
+          email?: string
+          id?: string
+          subscribed_at?: string | null
         }
         Relationships: []
       }
@@ -262,6 +352,51 @@ export type Database = {
           package_type?: string | null
           phone?: string | null
           special_requirements?: string | null
+          travel_date?: string | null
+        }
+        Relationships: []
+      }
+      tour_with_tickets: {
+        Row: {
+          adults: number | null
+          boarding_from: string | null
+          children: number | null
+          created_at: string | null
+          destination_city: string | null
+          email: string
+          id: string
+          is_armed_forces: boolean | null
+          is_medical_professional: boolean | null
+          is_senior_citizen: boolean | null
+          phone: string | null
+          travel_date: string | null
+        }
+        Insert: {
+          adults?: number | null
+          boarding_from?: string | null
+          children?: number | null
+          created_at?: string | null
+          destination_city?: string | null
+          email: string
+          id?: string
+          is_armed_forces?: boolean | null
+          is_medical_professional?: boolean | null
+          is_senior_citizen?: boolean | null
+          phone?: string | null
+          travel_date?: string | null
+        }
+        Update: {
+          adults?: number | null
+          boarding_from?: string | null
+          children?: number | null
+          created_at?: string | null
+          destination_city?: string | null
+          email?: string
+          id?: string
+          is_armed_forces?: boolean | null
+          is_medical_professional?: boolean | null
+          is_senior_citizen?: boolean | null
+          phone?: string | null
           travel_date?: string | null
         }
         Relationships: []
