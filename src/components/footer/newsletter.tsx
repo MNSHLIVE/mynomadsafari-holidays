@@ -33,16 +33,26 @@ export const Newsletter = () => {
         .from('newsletter_subscribers')
         .insert({ email });
 
-      if (dbError) throw new Error("Failed to subscribe: " + dbError.message);
+      if (dbError) {
+        console.error('[Newsletter] Database error:', dbError);
+        throw new Error("Failed to subscribe: " + dbError.message);
+      }
+      
+      console.log('[Newsletter] Successfully added to database');
       
       // Send email notification to admin
       try {
-        await sendEmail({
+        const emailResult = await sendEmail({
           to: "info@mynomadsafariholidays.in",
           subject: "New Newsletter Subscription",
           html: createAdminNotificationEmailHTML('Newsletter Subscription', { email }),
         });
-        console.log('[Newsletter] Admin notification email sent');
+        
+        if (emailResult.success) {
+          console.log('[Newsletter] Admin notification email sent successfully');
+        } else {
+          console.error('[Newsletter] Admin notification email failed:', emailResult.message);
+        }
       } catch (emailError) {
         console.error('[Newsletter] Error sending admin notification:', emailError);
       }
@@ -57,7 +67,7 @@ export const Newsletter = () => {
 
     } catch (err) {
       console.error('[Newsletter] Error:', err);
-      setError("Subscription failed. Try again later.");
+      setError("Subscription failed. Please try again later.");
     } finally {
       setIsSubmitting(false);
     }

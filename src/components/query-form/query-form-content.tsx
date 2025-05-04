@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
@@ -9,7 +10,7 @@ import { TravelerSelector } from "./traveler-selector";
 import { PackageSelector } from "./package-selector";
 import { SpecialRequirements } from "./special-requirements";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Loader } from "lucide-react";
 import { sendEmail } from "@/utils/email";
 import { createThankYouEmailHTML, createAdminNotificationEmailHTML } from "@/utils/email-templates";
 import { supabase } from "@/integrations/supabase/client";
@@ -41,6 +42,7 @@ export const QueryFormContent = ({
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
   useEffect(() => {
     if (prefillData) {
@@ -57,9 +59,10 @@ export const QueryFormContent = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setFormError(null);
 
     if (!name || !email || !phone) {
-      toast.error("Please fill all required fields");
+      setFormError("Please fill all required fields");
       setIsSubmitting(false);
       return;
     }
@@ -88,12 +91,14 @@ export const QueryFormContent = ({
         if (error) {
           console.error('[FORM] Error saving to Supabase:', error);
           formSubmitted = false;
+          throw new Error(`Database error: ${error.message}`);
         } else {
           console.log('[FORM] Successfully saved form data to Supabase:', data);
         }
-      } catch (error) {
-        console.error('[FORM] Exception when saving to Supabase:', error);
+      } catch (dbError: any) {
+        console.error('[FORM] Exception when saving to Supabase:', dbError);
         formSubmitted = false;
+        throw new Error(`Failed to save your request: ${dbError.message}`);
       }
 
       const formattedDate = travelDate 
@@ -119,7 +124,12 @@ export const QueryFormContent = ({
           subject: `New Travel Query - ${destinationName}`,
           html: createAdminNotificationEmailHTML('Tour Package Request', emailDetails)
         });
-        console.log('[FORM] Notification email sent to admin:', adminEmailResult);
+        
+        if (adminEmailResult.success) {
+          console.log('[FORM] Notification email sent to admin successfully');
+        } else {
+          console.error('[FORM] Admin email sending failed:', adminEmailResult.message);
+        }
       } catch (error) {
         console.error('[FORM] Error sending admin email:', error);
       }
@@ -131,7 +141,12 @@ export const QueryFormContent = ({
           subject: "Thank you for your travel query - Nomadsafari Holidays",
           html: createThankYouEmailHTML(name, prefillData?.estimatedPrice ? 'quote' : 'query'),
         });
-        console.log('[FORM] Thank you email sent to customer:', customerEmailResult);
+        
+        if (customerEmailResult.success) {
+          console.log('[FORM] Thank you email sent to customer successfully');
+        } else {
+          console.error('[FORM] Customer email sending failed:', customerEmailResult.message);
+        }
       } catch (error) {
         console.error('[FORM] Error sending customer email:', error);
       }
@@ -144,10 +159,13 @@ export const QueryFormContent = ({
       if (onFormSubmitted) {
         onFormSubmitted();
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('[FORM] Error in form submission:', error);
       setIsSubmitting(false);
-      toast.error("There was an error sending your inquiry. Please try again or contact us directly by phone.");
+      setFormError(error.message || "There was an error sending your inquiry. Please try again.");
+      toast.error("Submission Error", {
+        description: error.message || "Please try again or contact us directly by phone."
+      });
     }
   };
 
@@ -161,6 +179,7 @@ export const QueryFormContent = ({
     setPackageType("");
     setMessage(prefillData?.estimatedPrice ? `Estimated price from calculator: ${prefillData.estimatedPrice}` : "");
     setIsSubmitted(false);
+    setFormError(null);
   };
 
   if (isSubmitted) {
@@ -191,6 +210,13 @@ export const QueryFormContent = ({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 py-4">
+      {formError && (
+        <Alert variant="destructive" className="mb-4">
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{formError}</AlertDescription>
+        </Alert>
+      )}
+      
       <div className="grid grid-cols-1 gap-4">
         <ContactFields 
           name={name}
@@ -229,6 +255,7 @@ export const QueryFormContent = ({
       
       <DialogFooter>
         <Button type="submit" disabled={isSubmitting} className="w-full">
+          {isSubmitting ? <Loader className="animate-spin mr-2 h-4 w-4" /> : null}
           {isSubmitting ? "Submitting..." : "Submit Enquiry"}
         </Button>
       </DialogFooter>

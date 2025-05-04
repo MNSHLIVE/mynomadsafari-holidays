@@ -34,11 +34,10 @@ serve(async (req) => {
     const hostname = Deno.env.get("SMTP_HOSTNAME") || "smtp.hostinger.com";
     const port = parseInt(Deno.env.get("SMTP_PORT") || "465");
     const username = Deno.env.get("SMTP_USERNAME") || "info@mynomadsafariholidays.in";
-    const password = Deno.env.get("SMTP_PASSWORD") || "";
+    const password = Deno.env.get("SMTP_PASSWORD");
     
     console.log(`[SEND-EMAIL] SMTP Config: ${hostname}:${port}`);
     console.log(`[SEND-EMAIL] SMTP Username: ${username}`);
-    console.log(`[SEND-EMAIL] Password length: ${password ? password.length : 0}`);
     
     if (!password) {
       console.error("[SEND-EMAIL] No SMTP password provided");
@@ -56,6 +55,8 @@ serve(async (req) => {
           } 
         }
       );
+    } else {
+      console.log(`[SEND-EMAIL] Password found with length: ${password.length}`);
     }
 
     // Connect to SMTP server
@@ -72,6 +73,7 @@ serve(async (req) => {
             password,
           },
         },
+        debug: true, // Add debug mode to get more verbose logs
       });
 
       // Build email object
@@ -87,28 +89,43 @@ serve(async (req) => {
       
       console.log("[SEND-EMAIL] Preparing to send email");
 
-      // Send email
-      console.log("[SEND-EMAIL] Attempting to send email...");
-      const sendResult = await client.send(emailData);
-      console.log("[SEND-EMAIL] Email sent successfully:", sendResult);
-      
-      // Close the connection
-      await client.close();
-      console.log("[SEND-EMAIL] SMTP connection closed");
-      
-      return new Response(
-        JSON.stringify({ 
-          success: true, 
-          message: 'Email sent successfully',
-          details: sendResult
-        }),
-        { 
-          headers: { 
-            'Content-Type': 'application/json',
-            ...corsHeaders
-          } 
+      try {
+        // Send email
+        console.log("[SEND-EMAIL] Attempting to send email...");
+        const sendResult = await client.send(emailData);
+        console.log("[SEND-EMAIL] Email sent successfully:", sendResult);
+        
+        // Close the connection
+        await client.close();
+        console.log("[SEND-EMAIL] SMTP connection closed");
+        
+        return new Response(
+          JSON.stringify({ 
+            success: true, 
+            message: 'Email sent successfully',
+            details: sendResult
+          }),
+          { 
+            headers: { 
+              'Content-Type': 'application/json',
+              ...corsHeaders
+            } 
+          }
+        );
+      } catch (emailError: any) {
+        console.error("[SEND-EMAIL] Error during email sending:", emailError.message);
+        console.error("[SEND-EMAIL] Error details:", JSON.stringify(emailError));
+        
+        // Try to close the connection regardless of error
+        try {
+          await client.close();
+          console.log("[SEND-EMAIL] SMTP connection closed after error");
+        } catch (closeError) {
+          console.error("[SEND-EMAIL] Error closing SMTP connection:", closeError);
         }
-      );
+        
+        throw emailError; // Rethrow to be caught by outer try/catch
+      }
     } catch (sendError: any) {
       console.error("[SEND-EMAIL] Error during send operation:", sendError.message);
       console.error("[SEND-EMAIL] Error details:", sendError);

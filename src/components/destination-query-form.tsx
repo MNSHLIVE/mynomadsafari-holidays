@@ -24,20 +24,28 @@ const DestinationQueryForm = ({
   className
 }: DestinationQueryFormProps) => {
   const [open, setOpen] = useState(initialOpen);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleClose = () => {
     setOpen(false);
   };
 
   const handleFormSubmitted = () => {
+    setIsLoading(false);
     if (onFormSubmitted) {
       onFormSubmitted();
     }
     // We don't close the dialog here as the QueryFormContent will handle showing the submitted state
   };
 
+  const handleOpenChange = (isOpen: boolean) => {
+    // Only allow closing if not currently loading
+    if (isLoading && !isOpen) return;
+    setOpen(isOpen);
+  };
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button className={`${buttonClassName} ${className}`} variant={buttonVariant}>
           {buttonText}

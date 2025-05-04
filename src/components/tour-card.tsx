@@ -1,6 +1,6 @@
 
-import { Link } from "react-router-dom";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, MapPin, Calendar, Clock, BadgeIndianRupee } from "lucide-react";
@@ -16,7 +16,9 @@ import DestinationQueryForm from "@/components/destination-query-form";
 import { Badge } from "@/components/ui/badge";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { cn } from "@/lib/utils";
-import { PackageType } from "@/components/tours/data/tour-core";
+
+// Define the PackageType type
+export type PackageType = "Budgeted" | "Luxury" | "Premier";
 
 interface TourCardProps {
   imageSrc: string;

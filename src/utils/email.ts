@@ -12,7 +12,14 @@ interface EmailOptions {
   bcc?: string | string[];
 }
 
-export const sendEmail = async (options: EmailOptions) => {
+interface EmailResult {
+  success: boolean;
+  message?: string;
+  data?: any;
+  error?: any;
+}
+
+export const sendEmail = async (options: EmailOptions): Promise<EmailResult> => {
   try {
     // Ensure a consistent sender email
     const sender = options.from || "Nomadsafari Holidays <info@mynomadsafariholidays.in>";
@@ -48,9 +55,14 @@ export const sendEmail = async (options: EmailOptions) => {
         if (error.message) console.error("[EMAIL DEBUG] Error message:", error.message);
         if (error.context) console.error("[EMAIL DEBUG] Error context:", error.context);
         
-        toast.error("Email Delivery Issue", {
-          description: "We've saved your information but couldn't send an email confirmation"
-        });
+        // Don't show error toast for background operations
+        if (options.to === "info@mynomadsafariholidays.in") {
+          console.log('[EMAIL DEBUG] Suppressing admin notification error toast');
+        } else {
+          toast.error("Email Delivery Issue", {
+            description: "We've saved your information but couldn't send an email confirmation"
+          });
+        }
         
         return { 
           success: false, 
@@ -61,9 +73,16 @@ export const sendEmail = async (options: EmailOptions) => {
 
       if (!data || !data.success) {
         console.error("[EMAIL DEBUG] Function reported failure:", data);
-        toast.warning("Email Service Notice", {
-          description: "Your information is saved but the email service is temporarily unavailable"
-        });
+        
+        // Don't show warning toast for background operations
+        if (options.to === "info@mynomadsafariholidays.in") {
+          console.log('[EMAIL DEBUG] Suppressing admin notification warning toast');
+        } else {
+          toast.warning("Email Service Notice", {
+            description: "Your information is saved but the email service is temporarily unavailable"
+          });
+        }
+        
         return { 
           success: false, 
           message: data?.message || "Email sending failed in the edge function", 
@@ -80,9 +99,14 @@ export const sendEmail = async (options: EmailOptions) => {
       console.error("[EMAIL DEBUG] Error message:", error.message);
       console.error("[EMAIL DEBUG] Error stack:", error.stack);
       
-      toast.success("Action Completed", {
-        description: "Your information has been saved successfully"
-      });
+      // Don't show success toast for background operations
+      if (options.to === "info@mynomadsafariholidays.in") {
+        console.log('[EMAIL DEBUG] Suppressing admin notification success toast');
+      } else {
+        toast.success("Action Completed", {
+          description: "Your information has been saved successfully"
+        });
+      }
       
       return { 
         success: false, 
@@ -98,9 +122,14 @@ export const sendEmail = async (options: EmailOptions) => {
     console.error("[EMAIL DEBUG] Error message:", error.message);
     console.error("[EMAIL DEBUG] Error stack:", error.stack);
     
-    toast.info("Action Completed", {
-      description: "Your information has been saved but email confirmation is delayed"
-    });
+    // Don't show info toast for background operations
+    if (options.to === "info@mynomadsafariholidays.in") {
+      console.log('[EMAIL DEBUG] Suppressing admin notification info toast');
+    } else {
+      toast.info("Action Completed", {
+        description: "Your information has been saved but email confirmation is delayed"
+      });
+    }
     
     return { 
       success: false, 
