@@ -31,16 +31,16 @@ serve(async (req) => {
     console.log(`[SEND-EMAIL] Subject: ${subject}`);
     
     // Get SMTP configuration from environment variables
-    const hostname = Deno.env.get("SMTP_HOSTNAME") || "smtp.hostinger.com";
-    const port = parseInt(Deno.env.get("SMTP_PORT") || "465");
-    const username = Deno.env.get("SMTP_USERNAME") || "info@mynomadsafariholidays.in";
+    const hostname = "smtp.hostinger.com";
+    const port = 465;
+    const username = "info@mynomadsafariholidays.in";
     const password = Deno.env.get("SMTP_PASSWORD");
     
     console.log(`[SEND-EMAIL] SMTP Config: ${hostname}:${port}`);
     console.log(`[SEND-EMAIL] SMTP Username: ${username}`);
     
     if (!password) {
-      console.error("[SEND-EMAIL] No SMTP password provided");
+      console.error("[SEND-EMAIL] SMTP password not found in environment variables");
       return new Response(
         JSON.stringify({ 
           success: false, 
@@ -56,7 +56,7 @@ serve(async (req) => {
         }
       );
     } else {
-      console.log(`[SEND-EMAIL] Password found with length: ${password.length}`);
+      console.log(`[SEND-EMAIL] SMTP Password found with length: ${password.length}`);
     }
 
     // Connect to SMTP server
@@ -112,7 +112,7 @@ serve(async (req) => {
             } 
           }
         );
-      } catch (emailError: any) {
+      } catch (emailError) {
         console.error("[SEND-EMAIL] Error during email sending:", emailError.message);
         console.error("[SEND-EMAIL] Error details:", JSON.stringify(emailError));
         
@@ -126,7 +126,7 @@ serve(async (req) => {
         
         throw emailError; // Rethrow to be caught by outer try/catch
       }
-    } catch (sendError: any) {
+    } catch (sendError) {
       console.error("[SEND-EMAIL] Error during send operation:", sendError.message);
       console.error("[SEND-EMAIL] Error details:", sendError);
       
@@ -147,7 +147,7 @@ serve(async (req) => {
       );
     }
     
-  } catch (error: any) {
+  } catch (error) {
     console.error("[SEND-EMAIL] General error:", error);
     
     // Get more details about the error
