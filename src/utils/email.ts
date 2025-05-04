@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -42,9 +43,15 @@ export const sendEmail = async (options: EmailOptions) => {
 
       if (error) {
         console.error("[EMAIL DEBUG] Error from Supabase function:", error);
+        
+        // Log more detailed error for debugging
+        if (error.message) console.error("[EMAIL DEBUG] Error message:", error.message);
+        if (error.context) console.error("[EMAIL DEBUG] Error context:", error.context);
+        
         toast.error("Email Delivery Issue", {
           description: "We've saved your information but couldn't send an email confirmation"
         });
+        
         return { 
           success: false, 
           message: `Edge function error: ${error.message || "Unknown error"}`, 

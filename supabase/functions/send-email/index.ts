@@ -26,7 +26,7 @@ serve(async (req) => {
       bcc 
     } = data;
     
-    console.log(`[SEND-EMAIL] Request received with DKIM enabled`);
+    console.log(`[SEND-EMAIL] Request received`);
     console.log(`[SEND-EMAIL] To: ${Array.isArray(to) ? to.join(', ') : to}`);
     console.log(`[SEND-EMAIL] Subject: ${subject}`);
     
@@ -38,55 +38,56 @@ serve(async (req) => {
     
     console.log(`[SEND-EMAIL] SMTP Config: ${hostname}:${port}`);
     console.log(`[SEND-EMAIL] SMTP Username: ${username}`);
-    console.log(`[SEND-EMAIL] Password provided: ${password ? "Yes" : "No"}`);
+    console.log(`[SEND-EMAIL] Password length: ${password ? password.length : 0}`);
     
-    // Verify hostname with DNS lookup for debugging
-    try {
-      console.log(`[SEND-EMAIL] Testing DNS resolution for ${hostname}`);
-      const dnsTest = await Deno.resolveDns(hostname, "A");
-      console.log(`[SEND-EMAIL] DNS resolution successful: ${JSON.stringify(dnsTest)}`);
-    } catch (dnsError) {
-      console.error(`[SEND-EMAIL] DNS resolution failed: ${dnsError.message}`);
+    if (!password) {
+      console.error("[SEND-EMAIL] No SMTP password provided");
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: "SMTP password not configured",
+          error_type: "config_error" 
+        }),
+        { 
+          status: 500, 
+          headers: { 
+            'Content-Type': 'application/json',
+            ...corsHeaders
+          } 
+        }
+      );
     }
-    
-    // Set up the SMTP client with DKIM enabled configuration
-    console.log("[SEND-EMAIL] Initializing SMTP client with DKIM configuration");
-    
-    const client = new SMTPClient({
-      connection: {
-        hostname,
-        port,
-        tls: true,
-        auth: {
-          username,
-          password,
-        },
-        debug: true, // Enable debug mode for more detailed logging
-      },
-    });
 
-    // Build email object with detailed logging
-    const emailData = {
-      from: from,
-      to: to,
-      subject: subject,
-      content: text || "",
-      html: html || "",
-      ...(cc && { cc }),
-      ...(bcc && { bcc }),
-    };
-    
-    console.log("[SEND-EMAIL] Preparing to send email with data:", JSON.stringify({
-      from: emailData.from,
-      to: emailData.to,
-      subject: emailData.subject,
-      contentLength: emailData.content?.length || 0,
-      htmlLength: emailData.html?.length || 0,
-      hasCC: !!cc,
-      hasBCC: !!bcc
-    }));
-
+    // Connect to SMTP server
     try {
+      console.log("[SEND-EMAIL] Initializing SMTP client");
+      
+      const client = new SMTPClient({
+        connection: {
+          hostname,
+          port,
+          tls: true,
+          auth: {
+            username,
+            password,
+          },
+        },
+      });
+
+      // Build email object
+      const emailData = {
+        from: from,
+        to: to,
+        subject: subject,
+        content: text || "",
+        html: html || "",
+        ...(cc && { cc }),
+        ...(bcc && { bcc }),
+      };
+      
+      console.log("[SEND-EMAIL] Preparing to send email");
+
+      // Send email
       console.log("[SEND-EMAIL] Attempting to send email...");
       const sendResult = await client.send(emailData);
       console.log("[SEND-EMAIL] Email sent successfully:", sendResult);
@@ -108,9 +109,25 @@ serve(async (req) => {
           } 
         }
       );
-    } catch (sendError) {
-      console.error("[SEND-EMAIL] Error during send operation:", sendError);
-      throw sendError;
+    } catch (sendError: any) {
+      console.error("[SEND-EMAIL] Error during send operation:", sendError.message);
+      console.error("[SEND-EMAIL] Error details:", sendError);
+      
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: sendError.message,
+          details: JSON.stringify(sendError),
+          error_type: "smtp_error"
+        }),
+        { 
+          status: 500, 
+          headers: { 
+            'Content-Type': 'application/json',
+            ...corsHeaders
+          } 
+        }
+      );
     }
     
   } catch (error: any) {

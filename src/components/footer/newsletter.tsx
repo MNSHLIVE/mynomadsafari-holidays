@@ -1,9 +1,13 @@
+
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CheckCircle, Loader } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { sendEmail } from "@/utils/email";
+import { createAdminNotificationEmailHTML } from "@/utils/email-templates";
 
 export const Newsletter = () => {
   const { toast } = useToast();
@@ -24,17 +28,24 @@ export const Newsletter = () => {
     setIsSubmitting(true);
 
     try {
-      // Connect to Supabase
-      const response = await fetch('https://yxymecevbjlvshobmqjl.supabase.co/rest/v1/newsletter_subscribers', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl4eW1lY2V2YmpsdnNob2JtcWpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwNzkxODksImV4cCI6MjA2MDY1NTE4OX0.xVKWe5KWyJ5K7-4rVbrvRKmVcsxtsz56Rf962SOJxPM'
-        },
-        body: JSON.stringify({ email })
-      });
+      // Save to Supabase database
+      const { error: dbError } = await supabase
+        .from('newsletter_subscribers')
+        .insert({ email });
 
-      if (!response.ok) throw new Error("Failed to subscribe");
+      if (dbError) throw new Error("Failed to subscribe: " + dbError.message);
+      
+      // Send email notification to admin
+      try {
+        await sendEmail({
+          to: "info@mynomadsafariholidays.in",
+          subject: "New Newsletter Subscription",
+          html: createAdminNotificationEmailHTML('Newsletter Subscription', { email }),
+        });
+        console.log('[Newsletter] Admin notification email sent');
+      } catch (emailError) {
+        console.error('[Newsletter] Error sending admin notification:', emailError);
+      }
 
       setIsSubscribed(true);
       setEmail("");
@@ -45,6 +56,7 @@ export const Newsletter = () => {
       });
 
     } catch (err) {
+      console.error('[Newsletter] Error:', err);
       setError("Subscription failed. Try again later.");
     } finally {
       setIsSubmitting(false);

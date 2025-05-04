@@ -66,7 +66,6 @@ export const QueryFormContent = ({
 
     try {
       let formSubmitted = true;
-      let emailsSent = true;
 
       const requestData = {
         name,
@@ -113,39 +112,31 @@ export const QueryFormContent = ({
         ...(prefillData?.estimatedPrice ? { "estimated price": prefillData.estimatedPrice } : {})
       };
 
+      // First send notification to admin
       try {
-        await sendEmail({
-          to: email,
-          subject: "Thank you for your travel query - Nomadsafari Holidays",
-          html: createThankYouEmailHTML(name, prefillData?.estimatedPrice ? 'quote' : 'query'),
-        });
-        console.log('[FORM] Thank you email sent to customer');
-      } catch (error) {
-        emailsSent = false;
-        console.error('[FORM] Error sending customer email:', error);
-      }
-
-      try {
-        await sendEmail({
+        const adminEmailResult = await sendEmail({
           to: "info@mynomadsafariholidays.in",
           subject: `New Travel Query - ${destinationName}`,
           html: createAdminNotificationEmailHTML('Tour Package Request', emailDetails)
         });
-        console.log('[FORM] Notification email sent to admin');
+        console.log('[FORM] Notification email sent to admin:', adminEmailResult);
       } catch (error) {
-        emailsSent = false;
         console.error('[FORM] Error sending admin email:', error);
       }
 
-      if (formSubmitted && emailsSent) {
-        toast.success("Thank you for your inquiry! Our team will contact you shortly.");
-      } else if (formSubmitted) {
-        toast.success("Your inquiry was received, but there might be a delay in our response.");
-      } else if (emailsSent) {
-        toast.success("Your inquiry email was sent, but we encountered an issue with data storage.");
-      } else {
-        toast.error("There was an error processing your request. Please try again or contact us directly.");
+      // Then send confirmation to customer
+      try {
+        const customerEmailResult = await sendEmail({
+          to: email,
+          subject: "Thank you for your travel query - Nomadsafari Holidays",
+          html: createThankYouEmailHTML(name, prefillData?.estimatedPrice ? 'quote' : 'query'),
+        });
+        console.log('[FORM] Thank you email sent to customer:', customerEmailResult);
+      } catch (error) {
+        console.error('[FORM] Error sending customer email:', error);
       }
+
+      toast.success("Thank you for your inquiry! Our team will contact you shortly.");
       
       setIsSubmitting(false);
       setIsSubmitted(true);

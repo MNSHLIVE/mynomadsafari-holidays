@@ -11,7 +11,7 @@ interface DestinationQueryFormProps {
   buttonVariant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
   initialOpen?: boolean;
   onFormSubmitted?: () => void;
-  className?: string; // Added className prop
+  className?: string;
 }
 
 const DestinationQueryForm = ({ 
