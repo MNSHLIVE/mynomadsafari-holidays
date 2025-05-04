@@ -30,7 +30,7 @@ serve(async (req) => {
     console.log(`[SEND-EMAIL] To: ${Array.isArray(to) ? to.join(', ') : to}`);
     console.log(`[SEND-EMAIL] Subject: ${subject}`);
     
-    // Get SMTP configuration from environment variables
+    // Get SMTP configuration - using fixed values for reliability
     const hostname = "smtp.hostinger.com";
     const port = 465;
     const username = "info@mynomadsafariholidays.in";
@@ -59,7 +59,7 @@ serve(async (req) => {
       console.log(`[SEND-EMAIL] SMTP Password found with length: ${password.length}`);
     }
 
-    // Connect to SMTP server
+    // Connect to SMTP server with security options explicitly set
     try {
       console.log("[SEND-EMAIL] Initializing SMTP client");
       
@@ -73,7 +73,7 @@ serve(async (req) => {
             password,
           },
         },
-        debug: true, // Add debug mode to get more verbose logs
+        debug: true, // Keep debug mode for verbose logs
       });
 
       // Build email object
@@ -92,6 +92,8 @@ serve(async (req) => {
       try {
         // Send email
         console.log("[SEND-EMAIL] Attempting to send email...");
+        console.log("[SEND-EMAIL] Using credentials:", { username, passwordLength: password.length });
+        
         const sendResult = await client.send(emailData);
         console.log("[SEND-EMAIL] Email sent successfully:", sendResult);
         
