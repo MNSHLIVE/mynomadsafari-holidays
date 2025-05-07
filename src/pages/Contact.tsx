@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import SectionHeading from "@/components/section-heading";
 import { Button } from "@/components/ui/button";
@@ -37,6 +36,7 @@ import { z } from "zod";
 import { useToast } from "@/components/ui/use-toast";
 import { sendEmail } from "@/utils/email";
 import { createThankYouEmailHTML } from "@/utils/email-templates";
+import { supabase } from "@/integrations/supabase/client";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -74,6 +74,22 @@ const Contact = () => {
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       setIsSubmitting(true);
+      
+      // Save to Supabase "Send_Us_a_message" table
+      const { error: dbError } = await supabase
+        .from('Send_Us_a_message')
+        .insert({
+          full_name: values.name,
+          email: values.email,
+          phone: values.phone,
+          subject: values.subject,
+          message: values.message
+        });
+        
+      if (dbError) {
+        console.error('Error saving contact form to database:', dbError);
+        throw new Error(`Database error: ${dbError.message}`);
+      }
       
       // Track success of both email operations
       let emailsSent = true;
@@ -119,7 +135,6 @@ const Contact = () => {
       
       if (!emailsSent) {
         toast({
-          // Fix: Use "default" instead of "warning" variant
           variant: "destructive",
           title: "Email notification delay",
           description: "Your message was received, but there might be a delay in our response due to technical issues."
@@ -274,7 +289,9 @@ const Contact = () => {
                       )}
                     />
                     
-                    <Button type="submit" className="w-full md:w-auto">Send Message</Button>
+                    <Button type="submit" className="w-full md:w-auto" disabled={isSubmitting}>
+                      {isSubmitting ? "Sending..." : "Send Message"}
+                    </Button>
                   </form>
                 </Form>
               </>

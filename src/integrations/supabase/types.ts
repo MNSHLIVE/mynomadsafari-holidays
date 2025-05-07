@@ -62,36 +62,6 @@ export type Database = {
           },
         ]
       }
-      contact_submissions: {
-        Row: {
-          created_at: string | null
-          email: string
-          full_name: string
-          id: string
-          message: string
-          phone: string | null
-          subject: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          email: string
-          full_name: string
-          id?: string
-          message: string
-          phone?: string | null
-          subject?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          email?: string
-          full_name?: string
-          id?: string
-          message?: string
-          phone?: string | null
-          subject?: string | null
-        }
-        Relationships: []
-      }
       customer_tags: {
         Row: {
           created_at: string | null
@@ -248,6 +218,36 @@ export type Database = {
           email?: string
           id?: string
           subscribed_at?: string | null
+        }
+        Relationships: []
+      }
+      Send_Us_a_message: {
+        Row: {
+          created_at: string | null
+          email: string
+          full_name: string
+          id: string
+          message: string
+          phone: string | null
+          subject: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          full_name: string
+          id?: string
+          message: string
+          phone?: string | null
+          subject?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          message?: string
+          phone?: string | null
+          subject?: string | null
         }
         Relationships: []
       }
@@ -430,7 +430,7 @@ export type Database = {
           id: string
           name: string
           nationality: string | null
-          phone: string | null
+          phone: string
           special_requirements: string | null
           travel_date: string | null
           visa_type: string | null
@@ -442,7 +442,7 @@ export type Database = {
           id?: string
           name: string
           nationality?: string | null
-          phone?: string | null
+          phone: string
           special_requirements?: string | null
           travel_date?: string | null
           visa_type?: string | null
@@ -454,7 +454,7 @@ export type Database = {
           id?: string
           name?: string
           nationality?: string | null
-          phone?: string | null
+          phone?: string
           special_requirements?: string | null
           travel_date?: string | null
           visa_type?: string | null
