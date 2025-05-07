@@ -59,6 +59,7 @@ const BookTickets = () => {
     formType: string;
     shown: boolean;
   } | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const defaultValues: Partial<FormValues> = {
     adults: "1",
@@ -84,9 +85,9 @@ const BookTickets = () => {
   });
 
   const onSubmit = async (values: FormValues, formType: string) => {
-    console.log(values, formType);
-    
     try {
+      setIsSubmitting(true);
+      
       const { error } = await supabase.from('ticket_requests').insert({
         name: values.name,
         email: values.email,
@@ -119,6 +120,8 @@ const BookTickets = () => {
     } catch (error) {
       console.error('Error in ticket request submission:', error);
       toast.error("An unexpected error occurred. Please try again or contact us directly.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -505,7 +508,9 @@ const BookTickets = () => {
                         )}
                       />
 
-                      <Button type="submit" className="w-full md:w-auto">Submit Urgent Booking Request</Button>
+                      <Button type="submit" className="w-full md:w-auto" disabled={isSubmitting}>
+                        {isSubmitting ? "Submitting..." : "Submit Urgent Booking Request"}
+                      </Button>
                     </form>
                   </Form>
                 )}
@@ -767,7 +772,9 @@ const BookTickets = () => {
                         )}
                       />
 
-                      <Button type="submit" className="w-full md:w-auto">Submit Tour & Ticket Request</Button>
+                      <Button type="submit" className="w-full md:w-auto" disabled={isSubmitting}>
+                        {isSubmitting ? "Submitting..." : "Submit Tour & Ticket Request"}
+                      </Button>
                     </form>
                   </Form>
                 )}
@@ -963,7 +970,9 @@ const BookTickets = () => {
                         )}
                       />
 
-                      <Button type="submit" className="w-full md:w-auto">Request Quote for Future Travel</Button>
+                      <Button type="submit" className="w-full md:w-auto" disabled={isSubmitting}>
+                        {isSubmitting ? "Submitting..." : "Request Quote for Future Travel"}
+                      </Button>
                     </form>
                   </Form>
                 )}
