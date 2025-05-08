@@ -71,6 +71,9 @@ const InternationalTourResults = ({
               destinationName={destination || "International Tour"}
               buttonText="Submit Query"
               className="w-full"
+              prefillData={{
+                estimatedPrice: formatCurrency(totalCost)
+              }}
             />
           )}
         </div>

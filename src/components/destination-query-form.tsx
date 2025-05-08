@@ -12,6 +12,11 @@ interface DestinationQueryFormProps {
   initialOpen?: boolean;
   onFormSubmitted?: () => void;
   className?: string;
+  prefillData?: {
+    adults?: number;
+    children?: number;
+    estimatedPrice?: string;
+  };
 }
 
 const DestinationQueryForm = ({ 
@@ -21,7 +26,8 @@ const DestinationQueryForm = ({
   buttonVariant = "default", 
   initialOpen = false,
   onFormSubmitted,
-  className
+  className,
+  prefillData
 }: DestinationQueryFormProps) => {
   const [open, setOpen] = useState(initialOpen);
   const [isLoading, setIsLoading] = useState(false);
@@ -61,6 +67,7 @@ const DestinationQueryForm = ({
         <QueryFormContent 
           destinationName={destinationName} 
           onClose={handleClose}
+          prefillData={prefillData}
           onFormSubmitted={handleFormSubmitted}
         />
       </DialogContent>

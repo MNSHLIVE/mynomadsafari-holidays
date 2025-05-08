@@ -43,12 +43,14 @@ export const QueryFormContent = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+  const [estimatedPrice, setEstimatedPrice] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     if (prefillData) {
       if (prefillData.adults !== undefined) setAdults(prefillData.adults);
       if (prefillData.children !== undefined) setChildren(prefillData.children);
       if (prefillData.estimatedPrice) {
+        setEstimatedPrice(prefillData.estimatedPrice);
         setMessage(message => 
           `Estimated price from calculator: ${prefillData.estimatedPrice}\n${message || ""}`.trim()
         );
@@ -80,7 +82,7 @@ export const QueryFormContent = ({
         children,
         package_type: packageType || null,
         special_requirements: message || null,
-        estimated_price: prefillData?.estimatedPrice || null
+        estimated_price: estimatedPrice || null // Add estimated price to the request
       };
       
       console.log('[FORM] Submitting tour package request:', requestData);
@@ -114,7 +116,7 @@ export const QueryFormContent = ({
         travelers: `${adults} adults, ${children} children`,
         "package type": packageType || "Not specified",
         "special requirements": message || "None",
-        ...(prefillData?.estimatedPrice ? { "estimated price": prefillData.estimatedPrice } : {})
+        ...(estimatedPrice ? { "estimated price": estimatedPrice } : {})
       };
 
       // First send notification to admin
@@ -139,7 +141,7 @@ export const QueryFormContent = ({
         const customerEmailResult = await sendEmail({
           to: email,
           subject: "Thank you for your travel query - Nomadsafari Holidays",
-          html: createThankYouEmailHTML(name, prefillData?.estimatedPrice ? 'quote' : 'query'),
+          html: createThankYouEmailHTML(name, estimatedPrice ? 'quote' : 'query'),
         });
         
         if (customerEmailResult.success) {
@@ -178,6 +180,7 @@ export const QueryFormContent = ({
     setChildren(prefillData?.children || 0);
     setPackageType("");
     setMessage(prefillData?.estimatedPrice ? `Estimated price from calculator: ${prefillData.estimatedPrice}` : "");
+    setEstimatedPrice(prefillData?.estimatedPrice || undefined);
     setIsSubmitted(false);
     setFormError(null);
   };
