@@ -3,6 +3,9 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import InternationalTourForm from "./international-tour-form";
 import InternationalTourResults from "./international-tour-results";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { format } from "date-fns";
 
 interface InternationalTourCalculatorProps {
   className?: string;
@@ -22,7 +25,13 @@ const InternationalTourCalculator = ({
   const [totalCost, setTotalCost] = useState(0);
   const [perPersonCost, setPerPersonCost] = useState(0);
   const [showResults, setShowResults] = useState(false);
-  const [showQuery, setShowQuery] = useState(false);
+  
+  // Contact information states
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   // Calculation logic
   const calculateCost = () => {
@@ -71,21 +80,55 @@ const InternationalTourCalculator = ({
     });
   };
 
-  const handleGetDetailedQuote = () => {
-    if (onRequestQuote) {
-      onRequestQuote({
-        destination,
+  const handleQuoteSubmit = async () => {
+    if (!name || !email || !phone) {
+      toast.error("Please fill in all contact details");
+      return;
+    }
+    
+    setIsSubmitting(true);
+
+    try {
+      const requestData = {
+        name,
+        email,
+        phone,
+        destination_name: destination || "International Tour",
         adults,
         children,
-        days: nights,
-        estimatedPrice: formatCurrency(totalCost),
-        nights,
-        infants,
-        hotelCategory,
-        perPersonCost: formatCurrency(perPersonCost),
+        package_type: hotelCategory,
+        estimated_price: formatCurrency(totalCost),
+        special_requirements: `International Tour Package: ${nights} nights, ${adults} adults, ${children} children, ${infants} infants, ${hotelCategory} hotels. Per person cost: ${formatCurrency(perPersonCost)}`
+      };
+      
+      const { error } = await supabase.from('tour_package_requests').insert(requestData);
+      
+      if (error) {
+        console.error("[FORM] Error saving to Supabase:", error);
+        throw new Error(`Database error: ${error.message}`);
+      }
+      
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+      
+      toast.success("Thank you for your inquiry! Our team will contact you shortly.");
+      
+      if (onRequestQuote) {
+        onRequestQuote({
+          ...requestData,
+          days: nights,
+          nights,
+          infants,
+          hotelCategory,
+          perPersonCost: formatCurrency(perPersonCost),
+        });
+      }
+    } catch (error: any) {
+      console.error('[FORM] Error in form submission:', error);
+      setIsSubmitting(false);
+      toast.error("Submission Error", {
+        description: error.message || "Please try again or contact us directly by phone."
       });
-    } else {
-      setShowQuery(true);
     }
   };
 
@@ -113,14 +156,20 @@ const InternationalTourCalculator = ({
           />
           <InternationalTourResults
             showResults={showResults}
-            showQuery={showQuery}
             hotelCategory={hotelCategory}
             totalCost={totalCost}
             perPersonCost={perPersonCost}
             formatCurrency={formatCurrency}
-            onGetDetailedQuote={handleGetDetailedQuote}
-            setShowQuery={setShowQuery}
             destination={destination}
+            name={name}
+            email={email}
+            phone={phone}
+            setName={setName}
+            setEmail={setEmail}
+            setPhone={setPhone}
+            isSubmitting={isSubmitting}
+            isSubmitted={isSubmitted}
+            onSubmitQuote={handleQuoteSubmit}
           />
         </CardContent>
       </Card>
@@ -129,4 +178,3 @@ const InternationalTourCalculator = ({
 };
 
 export default InternationalTourCalculator;
-

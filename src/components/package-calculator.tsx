@@ -23,12 +23,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { MapPin, Hotel, Car, Calendar, Users, IndianRupee } from "lucide-react";
+import { MapPin, Hotel, Car, Calendar, Users, IndianRupee, Check, Loader } from "lucide-react";
 import { toast } from "sonner";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { format } from "date-fns";
-import DestinationQueryForm from "./destination-query-form";
+import { supabase } from "@/integrations/supabase/client";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const HOTEL_RATES = {
   "3-star": {
@@ -83,7 +84,8 @@ interface PackageCalculatorProps {
 }
 
 const PackageCalculator = ({ className, onRequestQuote }: PackageCalculatorProps) => {
-  const [showQueryForm, setShowQueryForm] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [calculatorType, setCalculatorType] = useState<"domestic" | "international">("domestic");
   const [destination, setDestination] = useState("");
   const [days, setDays] = useState(3);
@@ -96,11 +98,17 @@ const PackageCalculator = ({ className, onRequestQuote }: PackageCalculatorProps
   const [distance, setDistance] = useState(750);
   const [packageType, setPackageType] = useState<"Budgeted" | "Luxury" | "Premier">("Budgeted");
   const [travelDate, setTravelDate] = useState<Date | undefined>(undefined);
+  
+  // Contact information states
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
 
   const [hotelCost, setHotelCost] = useState(0);
   const [transportCost, setTransportCost] = useState(0);
   const [additionalCost, setAdditionalCost] = useState(0);
   const [totalCost, setTotalCost] = useState(0);
+  const [showResults, setShowResults] = useState(false);
 
   const domesticDestinations = [
     "Delhi",
@@ -268,24 +276,13 @@ const PackageCalculator = ({ className, onRequestQuote }: PackageCalculatorProps
       toast.error("Please select a travel date");
       return;
     }
-
-    if (onRequestQuote) {
-      onRequestQuote({
-        destination,
-        days,
-        adults,
-        children,
-        hotelType,
-        roomType,
-        rooms,
-        transportType,
-        packageType,
-        travelDate,
-        estimatedPrice: formatCurrency(totalCost)
-      });
-    } else {
-      setShowQueryForm(true);
-    }
+    
+    setShowResults(true);
+    
+    window.scrollTo({
+      top: document.getElementById("results")?.offsetTop,
+      behavior: "smooth",
+    });
   };
 
   const formatCurrency = (amount: number) => {
@@ -323,6 +320,59 @@ const PackageCalculator = ({ className, onRequestQuote }: PackageCalculatorProps
       return Math.max(1, Math.min(10, newValue));
     });
   };
+  
+  const handleQuoteSubmit = async () => {
+    if (!name || !email || !phone) {
+      toast.error("Please fill in all contact details");
+      return;
+    }
+    
+    setIsSubmitting(true);
+
+    try {
+      const requestData = {
+        name,
+        email,
+        phone,
+        destination_name: destination || (calculatorType === "domestic" ? "Domestic Tour" : "International Tour"),
+        adults,
+        children,
+        package_type: packageType,
+        estimated_price: formatCurrency(totalCost),
+        special_requirements: `${calculatorType === "domestic" ? "Domestic" : "International"} Tour Package: ${days} days, ${adults} adults, ${children} children, ${hotelType} hotel, ${roomType} room(s), ${calculatorType === "domestic" ? transportType : ""} transport. Travel date: ${travelDate ? format(travelDate, "PPP") : "Not specified"}`
+      };
+      
+      const { error } = await supabase.from('tour_package_requests').insert(requestData);
+      
+      if (error) {
+        console.error("[FORM] Error saving to Supabase:", error);
+        throw new Error(`Database error: ${error.message}`);
+      }
+      
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+      
+      toast.success("Thank you for your inquiry! Our team will contact you shortly.");
+      
+      if (onRequestQuote) {
+        onRequestQuote({
+          ...requestData,
+          days,
+          hotelType,
+          roomType,
+          rooms,
+          transportType: calculatorType === "domestic" ? transportType : undefined,
+          travelDate
+        });
+      }
+    } catch (error: any) {
+      console.error('[FORM] Error in form submission:', error);
+      setIsSubmitting(false);
+      toast.error("Submission Error", {
+        description: error.message || "Please try again or contact us directly by phone."
+      });
+    }
+  };
 
   return (
     <div id="package-calculator" className={className}>
@@ -357,6 +407,7 @@ const PackageCalculator = ({ className, onRequestQuote }: PackageCalculatorProps
                       value={destination}
                       onChange={(e) => setDestination(e.target.value)}
                       placeholder="Enter destination name"
+                      className="mt-1"
                     />
                   </div>
 
@@ -630,79 +681,153 @@ const PackageCalculator = ({ className, onRequestQuote }: PackageCalculatorProps
                 </div>
               </div>
 
-              <div className="mt-6 p-4 bg-muted/50 rounded-lg">
-                <h3 className="font-semibold mb-3 text-lg">Estimated Package Cost</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span>Hotel Cost:</span>
-                      <span className="font-medium">{formatCurrency(hotelCost)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Transportation Cost:</span>
-                      <span className="font-medium">{formatCurrency(transportCost)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Additional Costs:</span>
-                      <span className="font-medium">{formatCurrency(additionalCost)}</span>
-                    </div>
-                    <div className="flex justify-between text-lg font-bold pt-2 border-t">
-                      <span>Total Estimated Cost:</span>
-                      <span className="text-primary">{formatCurrency(totalCost)}</span>
-                    </div>
-                    {calculatorType === "domestic" && adults >= 5 && (
-                      <div className="text-sm mt-2 bg-primary/5 p-2 rounded">
-                        <p className="font-medium">Recommended Vehicle: {transportType === "tempo9" ? "9-seater Tempo Traveller" : 
+              <Button type="submit" className="w-full mt-6">
+                Calculate Estimate
+              </Button>
+            </form>
+          </Tabs>
+          
+          {showResults && (
+            <div id="results" className="mt-8">
+              {isSubmitted ? (
+                <Alert className="bg-primary/5 border-primary/20">
+                  <Check className="h-5 w-5 text-primary" />
+                  <AlertTitle className="text-lg font-medium mb-2">Thank you for your inquiry!</AlertTitle>
+                  <AlertDescription className="space-y-2">
+                    <p>
+                      We've received your request about {destination || (calculatorType === "domestic" ? "Domestic Tour" : "International Tour")} and will contact you at {email} within 24 hours with a customized itinerary.
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      If you have any urgent questions, please feel free to contact us directly.
+                    </p>
+                  </AlertDescription>
+                </Alert>
+              ) : (
+                <div className="p-6 border rounded-lg bg-muted/30">
+                  <h3 className="font-semibold mb-3 text-lg">Estimated Package Cost</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span>Hotel Cost:</span>
+                        <span className="font-medium">{formatCurrency(hotelCost)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Transportation Cost:</span>
+                        <span className="font-medium">{formatCurrency(transportCost)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Additional Costs:</span>
+                        <span className="font-medium">{formatCurrency(additionalCost)}</span>
+                      </div>
+                      <div className="flex justify-between text-lg font-bold pt-2 border-t">
+                        <span>Total Estimated Cost:</span>
+                        <span className="text-primary">{formatCurrency(totalCost)}</span>
+                      </div>
+                      {calculatorType === "domestic" && adults >= 5 && (
+                        <div className="text-sm mt-2 bg-primary/5 p-2 rounded">
+                          <p className="font-medium">Recommended Vehicle: {transportType === "tempo9" ? "9-seater Tempo Traveller" : 
                                                    transportType === "tempo16" ? "16-seater Tempo Traveller" : 
                                                    transportType === "minibus" ? "Mini Bus" : 
                                                    transportType === "suv" ? "SUV" : "Sedan"}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {adults >= 16 ? "For large groups (16+ people)" : 
-                           adults >= 9 ? "For medium groups (9-15 people)" : 
-                           adults >= 7 ? "For groups of 7-8 people" : 
-                           "Based on your group size"}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                  <div className="bg-primary/5 p-4 rounded-lg">
-                    <h4 className="font-medium mb-2">Package Type: <span className="font-bold">{packageType}</span></h4>
-                    <p className="text-sm text-muted-foreground">
-                      This is an estimate based on your selections. Actual prices may vary based on availability, season, and specific requirements.
-                    </p>
-                    <div className="mt-3 text-xs">
-                      {calculatorType === "domestic" ? (
-                        <>
-                          <p>• Toll, parking, and driver allowance included</p>
-                          <p>• Pick-up and drop-off from your home</p>
-                          <p>• Customized itinerary</p>
-                        </>
-                      ) : (
-                        <>
-                          <p>• All flights and transfers included</p>
-                          <p>• Local sightseeing with guide</p>
-                          <p>• All taxes and visa assistance</p>
-                        </>
+                          <p className="text-xs text-muted-foreground">
+                            {adults >= 16 ? "For large groups (16+ people)" : 
+                             adults >= 9 ? "For medium groups (9-15 people)" : 
+                             adults >= 7 ? "For groups of 7-8 people" : 
+                             "Based on your group size"}
+                          </p>
+                        </div>
                       )}
                     </div>
+                    <div className="bg-primary/5 p-4 rounded-lg">
+                      <h4 className="font-medium mb-2">Package Type: <span className="font-bold">{packageType}</span></h4>
+                      <p className="text-sm text-muted-foreground">
+                        This is an estimate based on your selections. Actual prices may vary based on availability, season, and specific requirements.
+                      </p>
+                      <div className="mt-3 text-xs">
+                        {calculatorType === "domestic" ? (
+                          <>
+                            <p>• Toll, parking, and driver allowance included</p>
+                            <p>• Pick-up and drop-off from your home</p>
+                            <p>• Customized itinerary</p>
+                          </>
+                        ) : (
+                          <>
+                            <p>• All flights and transfers included</p>
+                            <p>• Local sightseeing with guide</p>
+                            <p>• All taxes and visa assistance</p>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-6 bg-background p-4 rounded-lg border">
+                    <h5 className="font-medium mb-3">Complete your inquiry</h5>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Enter your contact details to receive a detailed itinerary
+                    </p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <Label htmlFor="name" className="mb-1.5">
+                          Full Name <span className="text-destructive">*</span>
+                        </Label>
+                        <Input
+                          id="name"
+                          placeholder="Your full name"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          required
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="email" className="mb-1.5">
+                          Email <span className="text-destructive">*</span>
+                        </Label>
+                        <Input
+                          id="email"
+                          type="email"
+                          placeholder="your.email@example.com"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="phone" className="mb-1.5">
+                          Phone <span className="text-destructive">*</span>
+                        </Label>
+                        <Input
+                          id="phone"
+                          placeholder="Your contact number"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          required
+                        />
+                      </div>
+                    </div>
+                    
+                    <Button 
+                      className="w-full mt-4" 
+                      disabled={isSubmitting}
+                      onClick={handleQuoteSubmit}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Loader className="animate-spin mr-2 h-4 w-4" />
+                          Submitting...
+                        </>
+                      ) : (
+                        "Get Detailed Quote"
+                      )}
+                    </Button>
                   </div>
                 </div>
-              </div>
-
-              {showQueryForm ? (
-                <DestinationQueryForm 
-                  destinationName={destination || "Custom Tour Package"} 
-                  buttonText="Get Detailed Quote"
-                  buttonVariant="default"
-                  className="w-full mt-6"
-                />
-              ) : (
-                <Button type="submit" className="w-full mt-6">
-                  Get Detailed Quote
-                </Button>
               )}
-            </form>
-          </Tabs>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

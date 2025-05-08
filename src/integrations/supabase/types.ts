@@ -318,6 +318,7 @@ export type Database = {
           created_at: string
           destination_name: string
           email: string
+          estimated_price: string | null
           id: string
           name: string
           package_type: string | null
@@ -331,6 +332,7 @@ export type Database = {
           created_at?: string
           destination_name: string
           email: string
+          estimated_price?: string | null
           id?: string
           name: string
           package_type?: string | null
@@ -344,6 +346,7 @@ export type Database = {
           created_at?: string
           destination_name?: string
           email?: string
+          estimated_price?: string | null
           id?: string
           name?: string
           package_type?: string | null
