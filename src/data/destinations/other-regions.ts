@@ -45,7 +45,7 @@ export const otherDestinations: DestinationData[] = [
   {
     name: "Bhutan",
     region: "South Asia",
-    imageSrc: "https://images.unsplash.com/photo-1557268038-29a7e3fd7483?w=800&auto=format&fit=crop&q=80",
+    imageSrc: "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?w=800&auto=format&fit=crop&q=80",
     description: "Discover the Land of the Thunder Dragon with its pristine landscapes and ancient monasteries.",
     bestTimeToVisit: "March - May, September - November",
     budgetRange: {
@@ -64,7 +64,7 @@ export const otherDestinations: DestinationData[] = [
   {
     name: "Kazakhstan",
     region: "Central Asia",
-    imageSrc: "https://images.unsplash.com/photo-1604897984704-ae346b746686?w=800&auto=format&fit=crop&q=80",
+    imageSrc: "https://images.unsplash.com/photo-1469041797191-50ace28483c3?w=800&auto=format&fit=crop&q=80",
     description: "Explore vast steppes, modern cities, and the rich nomadic heritage of Central Asia.",
     bestTimeToVisit: "May - September",
     budgetRange: {

@@ -318,13 +318,12 @@ export type Database = {
           created_at: string
           destination_name: string
           email: string
-          estimated_price: string | null
           id: string
           name: string
           package_type: string | null
           phone: string | null
           special_requirements: string | null
-          travel_date: string | null
+          travel_date: string
         }
         Insert: {
           adults?: number | null
@@ -332,13 +331,12 @@ export type Database = {
           created_at?: string
           destination_name: string
           email: string
-          estimated_price?: string | null
           id?: string
           name: string
           package_type?: string | null
           phone?: string | null
           special_requirements?: string | null
-          travel_date?: string | null
+          travel_date: string
         }
         Update: {
           adults?: number | null
@@ -346,13 +344,12 @@ export type Database = {
           created_at?: string
           destination_name?: string
           email?: string
-          estimated_price?: string | null
           id?: string
           name?: string
           package_type?: string | null
           phone?: string | null
           special_requirements?: string | null
-          travel_date?: string | null
+          travel_date?: string
         }
         Relationships: []
       }
