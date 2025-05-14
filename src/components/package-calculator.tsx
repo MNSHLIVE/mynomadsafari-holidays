@@ -327,9 +327,16 @@ const PackageCalculator = ({ className, onRequestQuote }: PackageCalculatorProps
       return;
     }
     
+    if (!travelDate) {
+      toast.error("Please select a travel date");
+      return;
+    }
+    
     setIsSubmitting(true);
 
     try {
+      const formattedTravelDate = format(travelDate, "yyyy-MM-dd");
+      
       const requestData = {
         name,
         email,
@@ -339,7 +346,8 @@ const PackageCalculator = ({ className, onRequestQuote }: PackageCalculatorProps
         children,
         package_type: packageType,
         estimated_price: formatCurrency(totalCost),
-        special_requirements: `${calculatorType === "domestic" ? "Domestic" : "International"} Tour Package: ${days} days, ${adults} adults, ${children} children, ${hotelType} hotel, ${roomType} room(s), ${calculatorType === "domestic" ? transportType : ""} transport. Travel date: ${travelDate ? format(travelDate, "PPP") : "Not specified"}`
+        special_requirements: `${calculatorType === "domestic" ? "Domestic" : "International"} Tour Package: ${days} days, ${adults} adults, ${children} children, ${hotelType} hotel, ${roomType} room(s), ${calculatorType === "domestic" ? transportType : ""} transport. Travel date: ${travelDate ? format(travelDate, "PPP") : "Not specified"}`,
+        travel_date: formattedTravelDate
       };
       
       const { error } = await supabase.from('tour_package_requests').insert(requestData);

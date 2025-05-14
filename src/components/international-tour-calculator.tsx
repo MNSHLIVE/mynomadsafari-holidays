@@ -89,6 +89,10 @@ const InternationalTourCalculator = ({
     setIsSubmitting(true);
 
     try {
+      // Get the current date for travel_date
+      const currentDate = new Date();
+      const formattedDate = format(currentDate, 'yyyy-MM-dd');
+      
       const requestData = {
         name,
         email,
@@ -98,7 +102,8 @@ const InternationalTourCalculator = ({
         children,
         package_type: hotelCategory,
         estimated_price: formatCurrency(totalCost),
-        special_requirements: `International Tour Package: ${nights} nights, ${adults} adults, ${children} children, ${infants} infants, ${hotelCategory} hotels. Per person cost: ${formatCurrency(perPersonCost)}`
+        special_requirements: `International Tour Package: ${nights} nights, ${adults} adults, ${children} children, ${infants} infants, ${hotelCategory} hotels. Per person cost: ${formatCurrency(perPersonCost)}`,
+        travel_date: formattedDate // Adding the required travel_date field
       };
       
       const { error } = await supabase.from('tour_package_requests').insert(requestData);
