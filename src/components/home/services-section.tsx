@@ -1,6 +1,6 @@
 
 import SectionHeading from "@/components/section-heading";
-import { Globe, Compass, MapPin, Shield, Headphones } from "lucide-react";
+import { Globe, Compass, FileCheck, CreditCard, Headphones, Plane, Train, Map } from "lucide-react";
 
 interface ServiceItemProps {
   icon: React.ReactNode;
@@ -11,28 +11,33 @@ interface ServiceItemProps {
 const services: ServiceItemProps[] = [
   {
     icon: <Globe className="h-8 w-8 text-primary" />,
-    title: "Destination Planning",
-    description: "Customized itineraries tailored to your preferences, time constraints, and budget."
+    title: "Complete Travel Solutions",
+    description: "Comprehensive travel services for both domestic and international destinations, covering all your travel needs."
   },
   {
-    icon: <Compass className="h-8 w-8 text-primary" />,
-    title: "Tour Packages",
-    description: "All-inclusive tour packages for popular destinations, with various budget options."
+    icon: <Map className="h-8 w-8 text-primary" />,
+    title: "Customized Tour Packages",
+    description: "Personalized itineraries tailored to your preferences, time constraints, and budget for any destination worldwide."
   },
   {
-    icon: <MapPin className="h-8 w-8 text-primary" />,
+    icon: <Plane className="h-8 w-8 text-primary" />,
+    title: "Travel Ticket Booking",
+    description: "Hassle-free booking for flights, trains, and buses with the best rates and confirmed seats."
+  },
+  {
+    icon: <FileCheck className="h-8 w-8 text-primary" />,
     title: "Visa Assistance",
-    description: "Expert guidance on visa requirements and application process for different countries."
+    description: "Expert guidance on visa requirements and application process for different countries around the globe."
   },
   {
-    icon: <Shield className="h-8 w-8 text-primary" />,
+    icon: <CreditCard className="h-8 w-8 text-primary" />,
     title: "Travel Insurance",
-    description: "Comprehensive travel insurance options to ensure a safe and secure journey."
+    description: "Comprehensive travel insurance options to ensure a safe and secure journey anywhere in the world."
   },
   {
     icon: <Headphones className="h-8 w-8 text-primary" />,
     title: "24/7 Support",
-    description: "Round-the-clock customer support during your trip for any assistance you need."
+    description: "Round-the-clock customer support during your trip for any assistance you need, wherever you are."
   }
 ];
 
@@ -40,8 +45,8 @@ const ServicesSection = () => {
   return (
     <section className="section-padding container mx-auto px-4">
       <SectionHeading
-        title="Services We Offer"
-        subtitle="We provide comprehensive travel services to make your journey memorable and hassle-free"
+        title="Comprehensive Travel Services"
+        subtitle="We provide complete travel solutions for both domestic and international destinations"
         tag="Our Services"
       />
 
@@ -58,6 +63,13 @@ const ServicesSection = () => {
             <p className="text-muted-foreground">{service.description}</p>
           </div>
         ))}
+      </div>
+
+      <div className="mt-12 text-center">
+        <p className="text-lg max-w-3xl mx-auto text-muted-foreground">
+          My Nomadsafari Holidays is a full-service travel agency offering everything from luxury tours to budget-friendly packages, 
+          adventure trips to relaxing getaways, and business travel to family vacations across India and worldwide.
+        </p>
       </div>
     </section>
   );

@@ -1,7 +1,7 @@
 
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { Plane, Train, Bus, Heart, Mountain, TreePalm } from "lucide-react";
+import { Plane, Train, Bus, Heart, Mountain, TreePalm, Globe, FileCheck, MapPin, Calculator } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -18,93 +18,92 @@ export function MainNavMenu() {
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left">Tours</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left">Travel Packages</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
               <li className="row-span-3">
                 <NavigationMenuLink asChild>
                   <Link
                     className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                    to="/tour-itineraries"
+                    to="/tours"
                   >
                     <div className="mb-2 mt-4 text-lg font-medium">
-                      Tour Itineraries
+                      Complete Tour Packages
                     </div>
                     <p className="text-sm leading-tight text-muted-foreground">
-                      Browse our collection of carefully crafted tour packages for domestic and international destinations.
+                      Browse our collection of carefully crafted tour packages for domestic and international destinations. From budget-friendly options to luxury experiences.
                     </p>
                   </Link>
                 </NavigationMenuLink>
               </li>
-              <ListItem to="/religious-tours" title="Religious Tours">
+              <ListItem to="/tours" title="Domestic Tours" icon={<MapPin className="h-4 w-4 mr-2 text-primary" />}>
+                Explore the diverse beauty of India with our comprehensive tour packages.
+              </ListItem>
+              <ListItem to="/destinations?category=international" title="International Tours" icon={<Globe className="h-4 w-4 mr-2 text-primary" />}>
+                Discover exciting destinations around the world with our expertly crafted packages.
+              </ListItem>
+              <ListItem to="/religious-tours" title="Religious Tours" icon={<Mountain className="h-4 w-4 mr-2 text-primary" />}>
                 Spiritual journeys to sacred sites across India and around the world.
               </ListItem>
-              <ListItem to="/group-tours" title="Group Tours">
+              <ListItem to="/group-tours" title="Group Tours" icon={<Mountain className="h-4 w-4 mr-2 text-primary" />}>
                 Special packages for families, friends, and corporate groups.
               </ListItem>
               <ListItem 
-                to="/tour-itineraries?category=honeymoon" 
-                title="Honeymoon Tours" 
-                icon={<Heart className="h-4 w-4 mr-2 text-primary" />}
+                to="/#calculator-section" 
+                title="Cost Calculator" 
+                icon={<Calculator className="h-4 w-4 mr-2 text-primary" />}
               >
-                Romantic getaways for newlyweds to celebrate their special bond.
-              </ListItem>
-              <ListItem 
-                to="/tour-itineraries?category=adventure" 
-                title="Adventure Tours" 
-                icon={<Mountain className="h-4 w-4 mr-2 text-primary" />}
-              >
-                Thrilling experiences for adventure seekers and adrenaline junkies.
-              </ListItem>
-              <ListItem 
-                to="/tour-itineraries?category=jungle" 
-                title="Jungle Safari" 
-                icon={<TreePalm className="h-4 w-4 mr-2 text-primary" />}
-              >
-                Explore wildlife in their natural habitat with our guided safari tours.
+                Estimate your tour cost with our easy-to-use calculator tool.
               </ListItem>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left">Book Tickets</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left">Travel Services</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[1fr_1fr]">
               <li className="row-span-3">
                 <NavigationMenuLink asChild>
                   <Link
                     className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                    to="/book-tickets"
+                    to="/services"
                   >
                     <div className="mb-2 mt-4 text-lg font-medium">
-                      Ticket Booking
+                      Comprehensive Travel Services
                     </div>
                     <p className="text-sm leading-tight text-muted-foreground">
-                      Book air, train, and bus tickets with our expert assistance for the best rates and confirmed seats.
+                      Beyond just tours, we offer complete travel solutions including ticket booking, visa services, and customized travel planning.
                     </p>
                   </Link>
                 </NavigationMenuLink>
               </li>
               <ListItem 
-                to="/book-tickets" 
-                title="Air Tickets" 
+                to="/tickets" 
+                title="Flight Tickets" 
                 icon={<Plane className="h-4 w-4 mr-2 text-primary" />}
               >
                 Domestic and international flight bookings at competitive rates.
               </ListItem>
               <ListItem 
-                to="/book-tickets" 
+                to="/tickets" 
                 title="Train Tickets" 
                 icon={<Train className="h-4 w-4 mr-2 text-primary" />}
               >
                 Regular and Tatkal bookings across Indian Railways.
               </ListItem>
               <ListItem 
-                to="/book-tickets" 
+                to="/tickets" 
                 title="Bus Tickets" 
                 icon={<Bus className="h-4 w-4 mr-2 text-primary" />}
               >
                 AC, sleeper, and luxury bus bookings nationwide.
+              </ListItem>
+              <ListItem 
+                to="/visa" 
+                title="Visa Services" 
+                icon={<FileCheck className="h-4 w-4 mr-2 text-primary" />}
+              >
+                Complete visa assistance for countries worldwide.
               </ListItem>
             </ul>
           </NavigationMenuContent>
