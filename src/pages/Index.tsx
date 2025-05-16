@@ -11,7 +11,6 @@ import ToursSection from "@/components/home/tours-section";
 import TestimonialsSection from "@/components/home/testimonials-section";
 import BlogSection from "@/components/home/blog-section";
 import WhatsAppButton from "@/components/whatsapp-button";
-import SiteMap from "@/components/site-map";
 
 import {
   heroSlides,
@@ -41,9 +40,6 @@ const Index = () => {
 
       {/* Package Calculator Section */}
       <CalculatorSection />
-
-      {/* Site Map - Our Comprehensive Travel Services */}
-      <SiteMap />
 
       {/* Popular Destinations */}
       <DestinationsSection
