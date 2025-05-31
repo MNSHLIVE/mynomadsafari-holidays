@@ -11,33 +11,33 @@ interface ServiceItemProps {
 const services: ServiceItemProps[] = [
   {
     icon: <Globe className="h-8 w-8 text-primary" />,
-    title: "Complete Travel Solutions",
-    description: "Comprehensive travel services for both domestic and international destinations, covering all your travel needs."
+    title: "End-to-End Travel Solutions",
+    description: "Comprehensive luxury travel services for both domestic and international destinations, covering all your safari holidays and adventure travel needs across India."
   },
   {
     icon: <Map className="h-8 w-8 text-primary" />,
-    title: "Customized Tour Packages",
-    description: "Personalized itineraries tailored to your preferences, time constraints, and budget for any destination worldwide."
+    title: "Customized Safari Tour Packages",
+    description: "Personalized wildlife safari itineraries and heritage tours tailored to your preferences, covering Golden Triangle tours, Kerala backwaters, and Rajasthan cultural experiences."
   },
   {
     icon: <Plane className="h-8 w-8 text-primary" />,
-    title: "Travel Ticket Booking",
-    description: "Hassle-free booking for flights, trains, and buses with the best rates and confirmed seats."
+    title: "All-Inclusive Travel Booking",
+    description: "Hassle-free booking for flights, trains, and luxury accommodations with the best rates for your India tour packages and international vacations."
   },
   {
     icon: <FileCheck className="h-8 w-8 text-primary" />,
-    title: "Visa Assistance",
-    description: "Expert guidance on visa requirements and application process for different countries around the globe."
+    title: "Complete Visa Assistance",
+    description: "Expert guidance on visa requirements and application process for international destinations, ensuring seamless travel planning for your luxury holidays."
   },
   {
     icon: <CreditCard className="h-8 w-8 text-primary" />,
-    title: "Travel Insurance",
-    description: "Comprehensive travel insurance options to ensure a safe and secure journey anywhere in the world."
+    title: "Comprehensive Travel Insurance",
+    description: "Complete travel insurance options for adventure travel India, wildlife safari packages, and international tours to ensure safe and secure journeys."
   },
   {
     icon: <Headphones className="h-8 w-8 text-primary" />,
-    title: "24/7 Support",
-    description: "Round-the-clock customer support during your trip for any assistance you need, wherever you are."
+    title: "24/7 Luxury Support",
+    description: "Round-the-clock premium customer support during your safari holidays and cultural heritage tours for any assistance you need, wherever you are in India or abroad."
   }
 ];
 
@@ -45,9 +45,9 @@ const ServicesSection = () => {
   return (
     <section className="section-padding container mx-auto px-4">
       <SectionHeading
-        title="Comprehensive Travel Services"
-        subtitle="We provide complete travel solutions for both domestic and international destinations"
-        tag="Our Services"
+        title="Best Tour Operators in India - End-to-End Travel Services"
+        subtitle="We provide complete luxury travel solutions for domestic safari holidays and international destinations with customized tour packages"
+        tag="Our Premium Services"
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -66,9 +66,11 @@ const ServicesSection = () => {
       </div>
 
       <div className="mt-12 text-center">
-        <p className="text-lg max-w-3xl mx-auto text-muted-foreground">
-          My Nomadsafari Holidays is a full-service travel agency offering everything from luxury tours to budget-friendly packages, 
-          adventure trips to relaxing getaways, and business travel to family vacations across India and worldwide.
+        <p className="text-lg max-w-4xl mx-auto text-muted-foreground">
+          My Nomadsafari Holidays is India's premier full-service travel agency offering everything from luxury safari holidays 
+          to budget-friendly adventure travel packages. We specialize in Golden Triangle tours, Kerala backwater experiences, 
+          Rajasthan heritage tours, wildlife safari packages, and customized vacation planning across India and worldwide destinations. 
+          Experience stress-free travel with our end-to-end tour operator services.
         </p>
       </div>
     </section>

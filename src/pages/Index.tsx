@@ -11,6 +11,8 @@ import ToursSection from "@/components/home/tours-section";
 import TestimonialsSection from "@/components/home/testimonials-section";
 import BlogSection from "@/components/home/blog-section";
 import WhatsAppButton from "@/components/whatsapp-button";
+import SEOHead from "@/components/seo/seo-head";
+import { createBreadcrumbSchema } from "@/components/seo/schema-data";
 
 import {
   heroSlides,
@@ -27,8 +29,20 @@ import {
 const Index = () => {
   const [searchValue, setSearchValue] = useState("");
 
+  const seoData = {
+    title: "Best India Tour Packages 2024 | Luxury Travel & Safari Holidays | MyNomadSafariHolidays",
+    description: "Book end-to-end luxury India tour packages with customized safari holidays, adventure travel, cultural heritage tours & wildlife experiences. Best deals for Kerala, Rajasthan, Himachal & more destinations.",
+    keywords: "India tour packages, luxury safari holidays, best tour packages India, customized safari vacations, adventure travel India, Kerala tour packages, Rajasthan heritage tours, Golden Triangle tours, wildlife safari packages, end-to-end tour operators India",
+    canonicalUrl: "https://www.mynomadsafariholidays.in/",
+    structuredData: createBreadcrumbSchema([
+      { name: "Home", url: "https://www.mynomadsafariholidays.in/" }
+    ])
+  };
+
   return (
     <>
+      <SEOHead {...seoData} />
+      
       {/* Hero Section */}
       <HeroSlider slides={heroSlides} />
 
