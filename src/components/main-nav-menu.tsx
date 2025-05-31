@@ -1,148 +1,187 @@
 
-import * as React from "react";
-import { Link } from "react-router-dom";
-import { Plane, Train, Bus, Heart, Mountain, TreePalm, Globe, FileCheck, MapPin, Calculator } from "lucide-react";
+import * as React from "react"
+import { Link } from "react-router-dom"
 import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
-import { cn } from "@/lib/utils";
+} from "@/components/ui/navigation-menu"
+import { cn } from "@/lib/utils"
 
-export function MainNavMenu() {
+const destinations = [
+  {
+    title: "Golden Triangle Tours",
+    href: "/destinations/golden-triangle-tours",
+    description: "Luxury heritage tours covering Delhi, Agra & Jaipur with cultural experiences"
+  },
+  {
+    title: "Kerala Backwater Packages", 
+    href: "/destinations/kerala-tour-packages",
+    description: "Premium houseboat stays and Ayurveda retreats in God's Own Country"
+  },
+  {
+    title: "Rajasthan Heritage Tours",
+    href: "/destinations/rajasthan-heritage-tours", 
+    description: "Royal palace stays and desert safari experiences in Land of Kings"
+  },
+  {
+    title: "Himachal Adventure Tours",
+    href: "/destinations/himachal-adventure-tours",
+    description: "Mountain trekking, adventure sports and luxury hill station stays"
+  },
+  {
+    title: "Kashmir Luxury Packages",
+    href: "/destinations?region=kashmir",
+    description: "Premium Dal Lake houseboats and Gulmarg ski resort packages"
+  },
+  {
+    title: "Goa Beach & Wildlife Tours", 
+    href: "/destinations?region=goa",
+    description: "Beach resorts combined with wildlife sanctuary experiences"
+  }
+]
+
+const tourPackages = [
+  {
+    title: "Wildlife Safari Packages",
+    href: "/tours?category=wildlife",
+    description: "Luxury tiger safari tours with premium jungle lodges and expert guides"
+  },
+  {
+    title: "Cultural Heritage Tours", 
+    href: "/tours?category=cultural",
+    description: "Immersive cultural experiences with local traditions and heritage sites"
+  },
+  {
+    title: "Adventure Travel India",
+    href: "/tours?category=adventure", 
+    description: "Trekking, rafting, and mountain biking with luxury accommodations"
+  },
+  {
+    title: "Honeymoon Tour Packages",
+    href: "/tours?category=honeymoon",
+    description: "Romantic getaways with private dining and luxury spa experiences"
+  },
+  {
+    title: "Family Holiday Packages",
+    href: "/tours?category=family",
+    description: "Kid-friendly adventures with educational experiences across India"
+  },
+  {
+    title: "Luxury Train Journeys",
+    href: "/tours?category=luxury-trains",
+    description: "Palace on Wheels and other premium train experiences"
+  }
+]
+
+const services = [
+  {
+    title: "End-to-End Travel Solutions",
+    href: "/tickets",
+    description: "Complete flight & train booking with luxury accommodations"
+  },
+  {
+    title: "International Visa Assistance", 
+    href: "/visa",
+    description: "Expert guidance for global destinations with hassle-free processing"
+  },
+  {
+    title: "Customized Safari Vacations",
+    href: "/contact",
+    description: "Personalized itineraries with wildlife experiences and luxury stays"
+  },
+  {
+    title: "Group Tour Packages",
+    href: "/group-tours", 
+    description: "Special rates for corporate groups and family reunions"
+  }
+]
+
+const MainNavMenu = () => {
   return (
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left">India Tour Packages</NavigationMenuTrigger>
+          <NavigationMenuTrigger>Destinations</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
-              <li className="row-span-3">
-                <NavigationMenuLink asChild>
-                  <Link
-                    className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                    to="/tours"
-                  >
-                    <div className="mb-2 mt-4 text-lg font-medium">
-                      Best India Tour Packages 2024
-                    </div>
-                    <p className="text-sm leading-tight text-muted-foreground">
-                      Browse our collection of carefully crafted luxury safari holidays and adventure travel packages for domestic and international destinations. From budget-friendly options to premium experiences.
-                    </p>
-                  </Link>
-                </NavigationMenuLink>
-              </li>
-              <ListItem to="/tours" title="Luxury Safari Holidays" icon={<MapPin className="h-4 w-4 mr-2 text-primary" />}>
-                Explore diverse wildlife and cultural beauty of India with our comprehensive luxury tour packages.
-              </ListItem>
-              <ListItem to="/destinations?category=international" title="International Adventure Tours" icon={<Globe className="h-4 w-4 mr-2 text-primary" />}>
-                Discover exciting global destinations with our expertly crafted international travel packages.
-              </ListItem>
-              <ListItem to="/religious-tours" title="Heritage & Religious Tours" icon={<Mountain className="h-4 w-4 mr-2 text-primary" />}>
-                Spiritual journeys and cultural heritage tours to sacred sites across India and around the world.
-              </ListItem>
-              <ListItem to="/group-tours" title="Customized Group Tours" icon={<Mountain className="h-4 w-4 mr-2 text-primary" />}>
-                Special luxury packages for families, friends, and corporate groups with personalized itineraries.
-              </ListItem>
-              <ListItem 
-                to="/#calculator-section" 
-                title="Tour Package Calculator" 
-                icon={<Calculator className="h-4 w-4 mr-2 text-primary" />}
-              >
-                Estimate your India tour package cost with our easy-to-use calculator tool for budget planning.
-              </ListItem>
-            </ul>
+            <div className="grid gap-3 p-6 md:w-[500px] lg:w-[600px] lg:grid-cols-2">
+              {destinations.map((destination) => (
+                <Link
+                  key={destination.href}
+                  to={destination.href}
+                  className={cn(
+                    "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                  )}
+                >
+                  <div className="text-sm font-medium leading-none">{destination.title}</div>
+                  <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    {destination.description}
+                  </p>
+                </Link>
+              ))}
+            </div>
           </NavigationMenuContent>
         </NavigationMenuItem>
+
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-brand-green after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left">End-to-End Travel Services</NavigationMenuTrigger>
+          <NavigationMenuTrigger>Tour Packages</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[1fr_1fr]">
-              <li className="row-span-3">
-                <NavigationMenuLink asChild>
-                  <Link
-                    className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                    to="/services"
-                  >
-                    <div className="mb-2 mt-4 text-lg font-medium">
-                      Comprehensive Luxury Travel Services
-                    </div>
-                    <p className="text-sm leading-tight text-muted-foreground">
-                      Beyond just safari holidays, we offer complete travel solutions including ticket booking, visa services, and customized adventure travel planning for stress-free journeys.
-                    </p>
-                  </Link>
-                </NavigationMenuLink>
-              </li>
-              <ListItem 
-                to="/tickets" 
-                title="Flight Ticket Booking" 
-                icon={<Plane className="h-4 w-4 mr-2 text-primary" />}
-              >
-                Domestic and international flight bookings at competitive rates for your India tour packages.
-              </ListItem>
-              <ListItem 
-                to="/tickets" 
-                title="Train Ticket Booking" 
-                icon={<Train className="h-4 w-4 mr-2 text-primary" />}
-              >
-                Regular and Tatkal bookings across Indian Railways for convenient adventure travel.
-              </ListItem>
-              <ListItem 
-                to="/tickets" 
-                title="Luxury Bus Services" 
-                icon={<Bus className="h-4 w-4 mr-2 text-primary" />}
-              >
-                AC, sleeper, and luxury bus bookings nationwide for comfortable safari holiday journeys.
-              </ListItem>
-              <ListItem 
-                to="/visa" 
-                title="Complete Visa Services" 
-                icon={<FileCheck className="h-4 w-4 mr-2 text-primary" />}
-              >
-                Complete visa assistance for international destinations and luxury travel planning.
-              </ListItem>
-            </ul>
+            <div className="grid gap-3 p-6 md:w-[500px] lg:w-[600px] lg:grid-cols-2">
+              {tourPackages.map((tour) => (
+                <Link
+                  key={tour.href}
+                  to={tour.href}
+                  className={cn(
+                    "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                  )}
+                >
+                  <div className="text-sm font-medium leading-none">{tour.title}</div>
+                  <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    {tour.description}
+                  </p>
+                </Link>
+              ))}
+            </div>
           </NavigationMenuContent>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Services</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <div className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-1">
+              {services.map((service) => (
+                <Link
+                  key={service.href}
+                  to={service.href}
+                  className={cn(
+                    "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                  )}
+                >
+                  <div className="text-sm font-medium leading-none">{service.title}</div>
+                  <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    {service.description}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <Link
+            to="/religious-tours"
+            className={cn(
+              "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
+            )}
+          >
+            Religious Tours
+          </Link>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
-  );
+  )
 }
 
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a"> & {
-    to: string;
-    title: string;
-    icon?: React.ReactNode;
-  }
->(({ className, title, children, to, icon, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <Link
-          ref={ref}
-          to={to}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          {...props}
-        >
-          <div className="flex items-center text-sm font-medium leading-none">
-            {icon && icon}
-            {title}
-          </div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </Link>
-      </NavigationMenuLink>
-    </li>
-  );
-});
-ListItem.displayName = "ListItem";
+export default MainNavMenu
