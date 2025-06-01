@@ -101,18 +101,21 @@ const InternationalTourCalculator = ({
         adults,
         children,
         package_type: hotelCategory,
-        estimated_price: formatCurrency(totalCost),
-        special_requirements: `International Tour Package: ${nights} nights, ${adults} adults, ${children} children, ${infants} infants, ${hotelCategory} hotels. Per person cost: ${formatCurrency(perPersonCost)}`,
-        travel_date: formattedDate // Adding the required travel_date field
+        estimated_price: `₹${totalCost.toLocaleString('en-IN')}`,
+        special_requirements: `International Tour Package: ${nights} nights, ${adults} adults, ${children} children, ${infants} infants, ${hotelCategory} hotels. Per person cost: ₹${perPersonCost.toLocaleString('en-IN')}`,
+        travel_date: formattedDate
       };
+      
+      console.log('[INTERNATIONAL_TOUR] Submitting data:', requestData);
       
       const { error } = await supabase.from('tour_package_requests').insert(requestData);
       
       if (error) {
-        console.error("[FORM] Error saving to Supabase:", error);
+        console.error("[INTERNATIONAL_TOUR] Error saving to Supabase:", error);
         throw new Error(`Database error: ${error.message}`);
       }
       
+      console.log('[INTERNATIONAL_TOUR] Successfully saved to database');
       setIsSubmitting(false);
       setIsSubmitted(true);
       
@@ -129,7 +132,7 @@ const InternationalTourCalculator = ({
         });
       }
     } catch (error: any) {
-      console.error('[FORM] Error in form submission:', error);
+      console.error('[INTERNATIONAL_TOUR] Error in form submission:', error);
       setIsSubmitting(false);
       toast.error("Submission Error", {
         description: error.message || "Please try again or contact us directly by phone."

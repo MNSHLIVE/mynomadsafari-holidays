@@ -1,6 +1,7 @@
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -111,9 +112,9 @@ const InternationalTourForm = ({
           </Select>
         </div>
       </div>
-      <button type="submit" className="w-full mt-6 btn btn-primary">
+      <Button type="submit" className="w-full mt-6">
         Calculate Estimate
-      </button>
+      </Button>
     </form>
   );
 };
