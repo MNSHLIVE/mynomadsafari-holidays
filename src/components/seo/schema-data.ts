@@ -46,3 +46,36 @@ export const createBreadcrumbSchema = (items: Array<{name: string, url: string}>
     "item": item.url
   }))
 });
+
+export const createOrganizationSchema = () => ({
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "My Nomadsafari Holidays",
+  "url": "https://www.mynomadsafariholidays.in",
+  "logo": "https://www.mynomadsafariholidays.in/lovable-uploads/3e515213-741f-498e-add3-8b8f70b7fe4c.png",
+  "image": "https://www.mynomadsafariholidays.in/lovable-uploads/3e515213-741f-498e-add3-8b8f70b7fe4c.png",
+  "description": "India's best tour operators for luxury safari holidays, adventure travel, and customized tour packages with end-to-end travel services",
+  "email": "info@mynomadsafariholidays.in",
+  "telephone": ["+91-9968682200", "+91-7042910449"],
+  "address": [
+    {
+      "@type": "PostalAddress",
+      "streetAddress": "102 T.V Tower, Badlapur East",
+      "addressLocality": "Thane",
+      "addressRegion": "Mumbai",
+      "postalCode": "421503",
+      "addressCountry": "India"
+    },
+    {
+      "@type": "PostalAddress",
+      "streetAddress": "Dwarka Sec 3",
+      "addressLocality": "New Delhi",
+      "postalCode": "110078",
+      "addressCountry": "India"
+    }
+  ],
+  "sameAs": [
+    "https://www.facebook.com/mynomadsafari",
+    "https://www.instagram.com/mynomadsafari"
+  ]
+});
