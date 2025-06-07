@@ -20,6 +20,7 @@ import Visa from "./pages/Visa";
 import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
 import BookTickets from "./pages/BookTickets";
+import TripCalculator from "./pages/TripCalculator";
 import NotFound from "./pages/NotFound";
 import Layout from "@/components/layout";
 import Terms from "./pages/Terms";
@@ -44,6 +45,8 @@ const router = createBrowserRouter(
       <Route path="book-tickets" element={<Navigate to="/tickets" replace />} />
       <Route path="blog" element={<Blog />} />
       <Route path="contact" element={<Contact />} />
+      <Route path="trip-calculator" element={<TripCalculator />} />
+      <Route path="calculate-trip" element={<Navigate to="/trip-calculator" replace />} />
       <Route path="terms" element={<Terms />} />
       <Route path="privacy" element={<Privacy />} />
       <Route path="refund" element={<Refund />} />

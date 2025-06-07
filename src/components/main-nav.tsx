@@ -4,10 +4,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./theme-toggle"; 
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
-
-// NOTE: If "Kazakisthan" appears as a navigation link, we correct it here.
-// If not, change is a no-op.
+import { Menu, X, Calculator } from "lucide-react";
 
 export function MainNav() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -22,9 +19,6 @@ export function MainNav() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Update logo size for heading match (make it h-12 to match footer h-10 but a touch larger for prominence)
-  // Bring mobile hamburger and theme toggle closer
-
   return (
     <header className={cn(
       "sticky top-0 z-50 w-full transition-all duration-200",
@@ -36,7 +30,7 @@ export function MainNav() {
             <img 
               src="/lovable-uploads/3e515213-741f-498e-add3-8b8f70b7fe4c.png" 
               alt="My Nomadsafari Holidays"
-              className="h-12 w-auto sm:h-14 md:h-16 lg:h-16" // Increased logo size (was h-10...) to match footer/make more prominent
+              className="h-12 w-auto sm:h-14 md:h-16 lg:h-16"
             />
             <span className="font-bold font-montserrat text-base xs:text-xl sm:text-2xl md:text-3xl lg:text-3xl ml-2 text-brand-green">
               My Nomadsafari Holidays
@@ -46,7 +40,6 @@ export function MainNav() {
 
         <div className="hidden md:flex items-center gap-6">
           <nav className="flex gap-1 md:gap-2 lg:gap-6">
-            {/* If "Kazakisthan" appears as a navigation label, fix it programmatically. */}
             {["Home", "Destinations", "Tours", "Tickets", "Visa", "Blog", "Contact"].map((item) => (
               <NavLink 
                 key={item} 
@@ -62,10 +55,18 @@ export function MainNav() {
               </NavLink>
             ))}
           </nav>
+          
+          {/* Calculate Trip Button */}
+          <NavLink to="/trip-calculator">
+            <Button variant="default" size="sm" className="bg-brand-green hover:bg-brand-green/90">
+              <Calculator className="h-4 w-4 mr-2" />
+              Calculate Trip
+            </Button>
+          </NavLink>
+          
           <ThemeToggle />
         </div>
 
-        {/* Make hamburger and theme toggle closer together on mobile */}
         <div className="flex items-center gap-1 md:hidden">
           <ThemeToggle />
           <Button
@@ -100,6 +101,18 @@ export function MainNav() {
                   {item === "Kazakisthan" ? "Kazakhstan" : item}
                 </NavLink>
               ))}
+              
+              {/* Mobile Calculate Trip Button */}
+              <NavLink 
+                to="/trip-calculator"
+                className="mx-4 mt-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Button variant="default" size="sm" className="bg-brand-green hover:bg-brand-green/90 w-full">
+                  <Calculator className="h-4 w-4 mr-2" />
+                  Calculate Trip
+                </Button>
+              </NavLink>
             </nav>
           </div>
         </div>
