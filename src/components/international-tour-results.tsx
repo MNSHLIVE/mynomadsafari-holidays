@@ -13,7 +13,7 @@ interface InternationalTourResultsProps {
   perPersonCost: number;
   formatCurrency: (amount: number) => string;
   destination: string;
-  
+
   // Contact information props
   name: string;
   email: string;
@@ -24,6 +24,13 @@ interface InternationalTourResultsProps {
   isSubmitting: boolean;
   isSubmitted: boolean;
   onSubmitQuote: () => void;
+
+  // Added missing props to fix type error
+  departureCity: string;
+  arrivalCity: string;
+  departureDate: Date | null;
+  returnDate: Date | null;
+  tripType: string;
 }
 
 const InternationalTourResults = ({
