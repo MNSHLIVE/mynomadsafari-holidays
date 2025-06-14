@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import InternationalTourForm from "./international-tour-form";
@@ -15,13 +16,25 @@ const InternationalTourCalculator = ({
   className,
   onRequestQuote,
 }: InternationalTourCalculatorProps) => {
-  // New fields for enhanced form
+  // Enhanced form state (flight-centric)
   const [destination, setDestination] = useState("");
   const [departureCity, setDepartureCity] = useState("");
   const [arrivalCity, setArrivalCity] = useState("");
   const [tripType, setTripType] = useState("Round Trip");
   const [departureDate, setDepartureDate] = useState<Date | null>(null);
   const [returnDate, setReturnDate] = useState<Date | null>(null);
+
+  // Package calculator specific state
+  const [nights, setNights] = useState(3);
+  const [adults, setAdults] = useState(2);
+  const [children, setChildren] = useState(0);
+  const [infants, setInfants] = useState(0);
+  const [hotelCategory, setHotelCategory] = useState("3-Star");
+
+  // Cost calculation state
+  const [totalCost, setTotalCost] = useState(0);
+  const [perPersonCost, setPerPersonCost] = useState(0);
+  const [showResults, setShowResults] = useState(false);
 
   // Contact information states
   const [name, setName] = useState("");
@@ -116,22 +129,22 @@ const InternationalTourCalculator = ({
         return_date: tripType === "Round Trip" ? formattedReturnDate : null,
         trip_type: tripType,
       };
-      
+
       console.log('[INTERNATIONAL_TOUR] Submitting data:', requestData);
-      
+
       const { error } = await supabase.from('tour_package_requests').insert(requestData);
-      
+
       if (error) {
         console.error("[INTERNATIONAL_TOUR] Error saving to Supabase:", error);
         throw new Error(`Database error: ${error.message}`);
       }
-      
+
       console.log('[INTERNATIONAL_TOUR] Successfully saved to database');
       setIsSubmitting(false);
       setIsSubmitted(true);
-      
+
       toast.success("Thank you for your inquiry! Our team will contact you shortly.");
-      
+
       if (onRequestQuote) {
         onRequestQuote({
           ...requestData,
@@ -199,6 +212,7 @@ const InternationalTourCalculator = ({
             isSubmitting={isSubmitting}
             isSubmitted={isSubmitted}
             onSubmitQuote={handleQuoteSubmit}
+            // Provide the new required props for result display
             departureCity={departureCity}
             arrivalCity={arrivalCity}
             departureDate={departureDate}
