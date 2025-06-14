@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import InternationalTourForm from "./international-tour-form";
@@ -16,16 +15,14 @@ const InternationalTourCalculator = ({
   className,
   onRequestQuote,
 }: InternationalTourCalculatorProps) => {
+  // New fields for enhanced form
   const [destination, setDestination] = useState("");
-  const [nights, setNights] = useState(4);
-  const [adults, setAdults] = useState(2);
-  const [children, setChildren] = useState(0);
-  const [infants, setInfants] = useState(0);
-  const [hotelCategory, setHotelCategory] = useState("3-Star");
-  const [totalCost, setTotalCost] = useState(0);
-  const [perPersonCost, setPerPersonCost] = useState(0);
-  const [showResults, setShowResults] = useState(false);
-  
+  const [departureCity, setDepartureCity] = useState("");
+  const [arrivalCity, setArrivalCity] = useState("");
+  const [tripType, setTripType] = useState("Round Trip");
+  const [departureDate, setDepartureDate] = useState<Date | null>(null);
+  const [returnDate, setReturnDate] = useState<Date | null>(null);
+
   // Contact information states
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -73,6 +70,11 @@ const InternationalTourCalculator = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // Validate required new fields
+    if (!departureCity || !arrivalCity || !departureDate) {
+      toast.error("Please fill Boarding, Destination, and Departure Date.");
+      return;
+    }
     calculateCost();
     window.scrollTo({
       top: document.getElementById("results")?.offsetTop,
@@ -89,21 +91,30 @@ const InternationalTourCalculator = ({
     setIsSubmitting(true);
 
     try {
-      // Get the current date for travel_date
-      const currentDate = new Date();
-      const formattedDate = format(currentDate, 'yyyy-MM-dd');
-      
+      // Use actual travel dates if provided
+      const formattedDepartureDate = departureDate
+        ? format(departureDate, 'yyyy-MM-dd')
+        : null;
+      const formattedReturnDate = returnDate
+        ? format(returnDate, 'yyyy-MM-dd')
+        : null;
+
       const requestData = {
         name,
         email,
         phone,
-        destination_name: destination || "International Tour",
+        destination_name: destination || arrivalCity || "International Tour",
         adults,
         children,
         package_type: hotelCategory,
         estimated_price: `₹${totalCost.toLocaleString('en-IN')}`,
         special_requirements: `International Tour Package: ${nights} nights, ${adults} adults, ${children} children, ${infants} infants, ${hotelCategory} hotels. Per person cost: ₹${perPersonCost.toLocaleString('en-IN')}`,
-        travel_date: formattedDate
+        travel_date: formattedDepartureDate || format(new Date(), 'yyyy-MM-dd'),
+        departure_city: departureCity,
+        arrival_city: arrivalCity,
+        departure_date: formattedDepartureDate,
+        return_date: tripType === "Round Trip" ? formattedReturnDate : null,
+        trip_type: tripType,
       };
       
       console.log('[INTERNATIONAL_TOUR] Submitting data:', requestData);
@@ -149,12 +160,22 @@ const InternationalTourCalculator = ({
           </h3>
           <InternationalTourForm
             destination={destination}
+            departureCity={departureCity}
+            arrivalCity={arrivalCity}
+            tripType={tripType}
+            departureDate={departureDate}
+            returnDate={returnDate}
             nights={nights}
             adults={adults}
             children={children}
             infants={infants}
             hotelCategory={hotelCategory}
             setDestination={setDestination}
+            setDepartureCity={setDepartureCity}
+            setArrivalCity={setArrivalCity}
+            setTripType={setTripType}
+            setDepartureDate={setDepartureDate}
+            setReturnDate={setReturnDate}
             setNights={setNights}
             setAdults={setAdults}
             setChildren={setChildren}
@@ -178,6 +199,11 @@ const InternationalTourCalculator = ({
             isSubmitting={isSubmitting}
             isSubmitted={isSubmitted}
             onSubmitQuote={handleQuoteSubmit}
+            departureCity={departureCity}
+            arrivalCity={arrivalCity}
+            departureDate={departureDate}
+            returnDate={returnDate}
+            tripType={tripType}
           />
         </CardContent>
       </Card>

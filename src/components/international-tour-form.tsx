@@ -9,15 +9,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import * as React from "react";
 
 interface InternationalTourFormProps {
   destination: string;
+  departureCity: string;
+  arrivalCity: string;
+  tripType: string;
+  departureDate: Date | null;
+  returnDate: Date | null;
   nights: number;
   adults: number;
   children: number;
   infants: number;
   hotelCategory: string;
   setDestination: (val: string) => void;
+  setDepartureCity: (val: string) => void;
+  setArrivalCity: (val: string) => void;
+  setTripType: (val: string) => void;
+  setDepartureDate: (date: Date | null) => void;
+  setReturnDate: (date: Date | null) => void;
   setNights: (val: number) => void;
   setAdults: (val: number) => void;
   setChildren: (val: number) => void;
@@ -26,26 +40,98 @@ interface InternationalTourFormProps {
   onSubmit: (e: React.FormEvent) => void;
 }
 
+const cityList = [
+  "Mumbai",
+  "Delhi",
+  "Bengaluru",
+  "Hyderabad",
+  "Chennai",
+  "Kolkata",
+  "Kochi",
+  "Ahmedabad",
+  "Goa",
+  "Jaipur",
+  "Pune",
+  "Indore",
+  "Lucknow",
+  "Varanasi",
+  "Dubai",
+  "Singapore",
+  "Bali",
+  "London",
+  "Bangkok",
+  "Kuala Lumpur",
+  "Male",
+];
+
 const InternationalTourForm = ({
   destination,
+  departureCity,
+  arrivalCity,
+  tripType,
+  departureDate,
+  returnDate,
   nights,
   adults,
   children,
   infants,
   hotelCategory,
   setDestination,
+  setDepartureCity,
+  setArrivalCity,
+  setTripType,
+  setDepartureDate,
+  setReturnDate,
   setNights,
   setAdults,
   setChildren,
   setInfants,
   setHotelCategory,
-  onSubmit,
+  onSubmit
 }: InternationalTourFormProps) => {
   return (
     <form onSubmit={onSubmit}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <Label htmlFor="destination">Destination</Label>
+          <Label htmlFor="trip-type">Trip Type</Label>
+          <Select value={tripType} onValueChange={setTripType}>
+            <SelectTrigger className="mt-1" id="trip-type">
+              <SelectValue placeholder="One Way / Round Trip" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Round Trip">Round Trip</SelectItem>
+              <SelectItem value="One Way">One Way</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div>
+          <Label htmlFor="departureCity">Boarding From</Label>
+          <Select value={departureCity} onValueChange={setDepartureCity}>
+            <SelectTrigger className="mt-1" id="departureCity">
+              <SelectValue placeholder="Select Departure City" />
+            </SelectTrigger>
+            <SelectContent>
+              {cityList.map(city => (
+                <SelectItem key={city} value={city}>{city}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div>
+          <Label htmlFor="arrivalCity">Destination City</Label>
+          <Select value={arrivalCity} onValueChange={setArrivalCity}>
+            <SelectTrigger className="mt-1" id="arrivalCity">
+              <SelectValue placeholder="Select Destination City" />
+            </SelectTrigger>
+            <SelectContent>
+              {cityList.map(city => (
+                <SelectItem key={city} value={city}>{city}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div>
+          <Label htmlFor="destination">Destination Country</Label>
           <Input
             id="destination"
             placeholder="e.g., Dubai, Singapore, Bali"
@@ -53,6 +139,53 @@ const InternationalTourForm = ({
             onChange={(e) => setDestination(e.target.value)}
             className="mt-1"
           />
+        </div>
+        <div>
+          <Label htmlFor="departure-date">Departure Date</Label>
+          <div className="relative mt-1">
+            <Calendar
+              mode="single"
+              selected={departureDate || undefined}
+              onSelect={setDepartureDate}
+              fromDate={new Date()}
+              className={cn(
+                "w-full border rounded-md bg-background"
+              )}
+              id="departure-date"
+            />
+            {departureDate && (
+              <span className="absolute bottom-2 right-4 text-xs text-muted-foreground">
+                {format(departureDate, "dd MMM yyyy")}
+              </span>
+            )}
+          </div>
+        </div>
+        <div>
+          <Label htmlFor="return-date">Return Date</Label>
+          <div className="relative mt-1">
+            <Calendar
+              mode="single"
+              selected={returnDate || undefined}
+              onSelect={setReturnDate}
+              fromDate={departureDate || new Date()}
+              disabled={tripType === "One Way"}
+              className={cn(
+                "w-full border rounded-md bg-background",
+                tripType === "One Way" ? "opacity-50 pointer-events-none" : ""
+              )}
+              id="return-date"
+            />
+            {returnDate && tripType !== "One Way" && (
+              <span className="absolute bottom-2 right-4 text-xs text-muted-foreground">
+                {format(returnDate, "dd MMM yyyy")}
+              </span>
+            )}
+            {tripType === "One Way" && (
+              <span className="absolute bottom-2 right-4 text-xs text-muted-foreground">
+                Not applicable
+              </span>
+            )}
+          </div>
         </div>
         <div>
           <Label htmlFor="nights">Number of Nights</Label>

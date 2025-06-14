@@ -314,8 +314,11 @@ export type Database = {
       tour_package_requests: {
         Row: {
           adults: number | null
+          arrival_city: string | null
           children: number | null
           created_at: string
+          departure_city: string | null
+          departure_date: string | null
           destination_name: string
           email: string
           estimated_price: string | null
@@ -323,13 +326,18 @@ export type Database = {
           name: string
           package_type: string | null
           phone: string | null
+          return_date: string | null
           special_requirements: string | null
           travel_date: string
+          trip_type: string | null
         }
         Insert: {
           adults?: number | null
+          arrival_city?: string | null
           children?: number | null
           created_at?: string
+          departure_city?: string | null
+          departure_date?: string | null
           destination_name: string
           email: string
           estimated_price?: string | null
@@ -337,13 +345,18 @@ export type Database = {
           name: string
           package_type?: string | null
           phone?: string | null
+          return_date?: string | null
           special_requirements?: string | null
           travel_date: string
+          trip_type?: string | null
         }
         Update: {
           adults?: number | null
+          arrival_city?: string | null
           children?: number | null
           created_at?: string
+          departure_city?: string | null
+          departure_date?: string | null
           destination_name?: string
           email?: string
           estimated_price?: string | null
@@ -351,8 +364,10 @@ export type Database = {
           name?: string
           package_type?: string | null
           phone?: string | null
+          return_date?: string | null
           special_requirements?: string | null
           travel_date?: string
+          trip_type?: string | null
         }
         Relationships: []
       }
