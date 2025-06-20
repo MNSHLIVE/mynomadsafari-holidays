@@ -3,6 +3,7 @@ import { ReactNode, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { MainNav } from "./main-nav";
 import Footer from "./footer";
+import FloatingChatButton from "./ai-chat/floating-chat-button";
 
 interface LayoutProps {
   children?: ReactNode;
@@ -63,6 +64,9 @@ const Layout = ({ children }: LayoutProps) => {
         {children || <Outlet />}
       </main>
       <Footer />
+      
+      {/* AI Chat Widget */}
+      <FloatingChatButton />
     </div>
   );
 };
