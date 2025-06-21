@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -218,7 +217,7 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <Card className="fixed bottom-20 right-4 w-80 h-96 shadow-lg z-50 flex flex-col">
+    <Card className="fixed bottom-20 left-4 w-80 h-96 shadow-lg z-50 flex flex-col">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">AI Travel Assistant</CardTitle>
         <div className="flex items-center gap-2">

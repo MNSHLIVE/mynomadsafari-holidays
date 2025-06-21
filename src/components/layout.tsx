@@ -39,7 +39,7 @@ const Layout = ({ children }: LayoutProps) => {
     // Create the WhatsApp widget container if it doesn't exist
     if (!document.getElementById("whatsapp-widget")) {
       const widgetContainer = document.createElement("div");
-      widgetContainer.className = "elfsight-app-a66932d0-6134-4f31-a0eb-1464fb2300a4"; // Updated correct widget class
+      widgetContainer.className = "elfsight-app-a66932d0-6134-4f31-a0eb-1464fb2300a4";
       widgetContainer.id = "whatsapp-widget";
       widgetContainer.setAttribute("data-elfsight-app-lazy", "");
       document.body.appendChild(widgetContainer);
@@ -56,7 +56,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/95 backdrop-blur">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-2 sm:px-4">
           <MainNav />
         </div>
       </header>
@@ -65,7 +65,7 @@ const Layout = ({ children }: LayoutProps) => {
       </main>
       <Footer />
       
-      {/* AI Chat Widget */}
+      {/* AI Chat Widget - positioned on left to avoid WhatsApp */}
       <FloatingChatButton />
     </div>
   );
