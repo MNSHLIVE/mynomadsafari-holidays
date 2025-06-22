@@ -30,12 +30,15 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
   const [leadInfo, setLeadInfo] = useState<any>(null);
   
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom when new messages arrive
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   useEffect(() => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
-    }
+    scrollToBottom();
   }, [messages]);
 
   // Initialize with welcome message
@@ -44,7 +47,7 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
       setMessages([{
         id: '1',
         type: 'assistant',
-        content: 'Hello! I\'m your personal travel assistant at MyNomadSafariHolidays. I\'m here to help you plan your perfect trip! 🌟\n\nWhether you\'re dreaming of Kerala\'s backwaters, Rajasthan\'s palaces, or international destinations like Bali and Dubai, I can help you find the perfect package.\n\nTo get started, could you tell me your name and where you\'d like to travel?',
+        content: 'Hello! I\'m your personal travel assistant at MyNomadSafariHolidays. I\'m here to help you plan your perfect trip within your budget! 🌟\n\nWhether you\'re dreaming of Kerala\'s backwaters, Rajasthan\'s palaces, or international destinations like Bali and Dubai, I can help you find the perfect package that suits your needs.\n\nTo get started, could you tell me your name and where you\'d like to travel?',
         timestamp: new Date()
       }]);
     }
@@ -101,19 +104,35 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
         }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase function error:', error);
+        throw error;
+      }
 
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        type: 'assistant',
-        content: data.response,
-        timestamp: new Date()
-      };
+      if (data && data.response) {
+        const assistantMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          type: 'assistant',
+          content: data.response,
+          timestamp: new Date()
+        };
 
-      setMessages(prev => [...prev, assistantMessage]);
+        setMessages(prev => [...prev, assistantMessage]);
+      } else {
+        throw new Error('No response received from AI');
+      }
     } catch (error) {
       console.error('Error sending message:', error);
-      toast.error('Failed to send message. Please try again.');
+      toast.error('Sorry, I\'m having trouble connecting right now. Please try again in a moment.');
+      
+      // Add error message to chat
+      const errorMessage: Message = {
+        id: (Date.now() + 2).toString(),
+        type: 'assistant',
+        content: 'I apologize, but I\'m experiencing technical difficulties right now. Please try again in a few moments, or feel free to contact us directly via WhatsApp for immediate assistance.',
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
     }
@@ -146,24 +165,26 @@ Please help me with a personalized travel package!`;
       });
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendTextMessage();
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
-    <Card className="fixed bottom-20 left-4 w-80 h-96 shadow-lg z-50 flex flex-col">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">AI Travel Assistant</CardTitle>
-        <div className="flex items-center gap-2">
-          <Badge variant="default" className="text-xs">
-            Lead Generation
-          </Badge>
-          <Button variant="ghost" size="sm" onClick={onClose}>
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
+    <Card className="fixed bottom-20 left-4 w-80 h-96 shadow-xl z-50 flex flex-col bg-white">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-t-lg">
+        <CardTitle className="text-sm font-semibold">Travel Assistant</CardTitle>
+        <Button variant="ghost" size="sm" onClick={onClose} className="text-white hover:bg-blue-800">
+          <X className="h-4 w-4" />
+        </Button>
       </CardHeader>
       
-      <CardContent className="flex-1 flex flex-col p-3">
-        <ScrollArea className="flex-1 pr-4" ref={scrollAreaRef}>
+      <CardContent className="flex-1 flex flex-col p-0">
+        <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
           <div className="space-y-3">
             {messages.map((message) => (
               <div
@@ -171,31 +192,31 @@ Please help me with a personalized travel package!`;
                 className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[80%] p-2 rounded-lg text-sm ${
+                  className={`max-w-[85%] p-3 rounded-lg text-sm shadow-sm ${
                     message.type === 'user'
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-muted'
+                      ? 'bg-blue-600 text-white rounded-br-sm'
+                      : 'bg-gray-100 text-gray-800 rounded-bl-sm'
                   }`}
                 >
-                  {message.content}
+                  <div className="whitespace-pre-wrap">{message.content}</div>
                 </div>
               </div>
             ))}
             
             {isLoading && (
               <div className="flex justify-start">
-                <div className="bg-muted p-2 rounded-lg text-sm">
+                <div className="bg-gray-100 p-3 rounded-lg text-sm rounded-bl-sm shadow-sm">
                   <div className="flex space-x-1">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                   </div>
                 </div>
               </div>
             )}
 
             {showWhatsAppOption && (
-              <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-center">
+              <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-center shadow-sm">
                 <p className="text-sm text-green-800 mb-2">
                   Ready for personalized assistance?
                 </p>
@@ -209,15 +230,16 @@ Please help me with a personalized travel package!`;
                 </Button>
               </div>
             )}
+            <div ref={messagesEndRef} />
           </div>
         </ScrollArea>
 
-        <div className="mt-3">
+        <div className="border-t bg-gray-50 p-3">
           {leadInfo && (
-            <div className="mb-2 p-2 bg-blue-50 rounded text-xs">
+            <div className="mb-2 p-2 bg-blue-50 rounded text-xs border border-blue-200">
               <div className="flex items-center gap-1 text-blue-700">
                 <User className="h-3 w-3" />
-                <span>Lead Info: {leadInfo.visitor_name || 'Name pending'}</span>
+                <span>Info collected: {leadInfo.visitor_name || 'Name pending'}</span>
               </div>
             </div>
           )}
@@ -227,11 +249,15 @@ Please help me with a personalized travel package!`;
               placeholder="Ask about destinations, packages, dates..."
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && sendTextMessage()}
+              onKeyPress={handleKeyPress}
               disabled={isLoading}
-              className="text-sm"
+              className="text-sm flex-1"
             />
-            <Button onClick={sendTextMessage} disabled={isLoading || !inputMessage.trim()}>
+            <Button 
+              onClick={sendTextMessage} 
+              disabled={isLoading || !inputMessage.trim()}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
               <Send className="h-4 w-4" />
             </Button>
           </div>

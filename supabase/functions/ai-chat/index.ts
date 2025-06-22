@@ -27,8 +27,11 @@ serve(async (req) => {
 
     const deepseekApiKey = Deno.env.get('DEEPSEEK_API_KEY');
     if (!deepseekApiKey) {
+      console.error('DEEPSEEK_API_KEY not found in environment');
       throw new Error('DeepSeek API key not configured');
     }
+
+    console.log('Using DeepSeek API key:', deepseekApiKey.substring(0, 10) + '...');
 
     // Get or create conversation record
     let { data: conversation, error: fetchError } = await supabase
@@ -87,15 +90,16 @@ If you notice the user has provided any of the above information in their messag
 
 Keep responses concise and engaging. Always end with a question to keep the conversation flowing.`;
 
-    // Call DeepSeek API
-    const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
+    // Call DeepSeek API with the correct endpoint and model
+    console.log('Calling DeepSeek API...');
+    const response = await fetch('https://api.deepseek.com/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${deepseekApiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'deepseek-chat',
+        model: 'deepseek-r1',
         messages: [
           { role: 'system', content: systemPrompt },
           ...messages.slice(-10) // Keep last 10 messages for context
@@ -105,12 +109,21 @@ Keep responses concise and engaging. Always end with a question to keep the conv
       }),
     });
 
+    console.log('DeepSeek API response status:', response.status);
+
     if (!response.ok) {
-      const error = await response.text();
-      throw new Error(`DeepSeek API error: ${error}`);
+      const errorText = await response.text();
+      console.error('DeepSeek API error response:', errorText);
+      throw new Error(`DeepSeek API error: ${errorText}`);
     }
 
     const data = await response.json();
+    console.log('DeepSeek API response:', data);
+
+    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+      throw new Error('Invalid response format from DeepSeek API');
+    }
+
     const aiResponse = data.choices[0].message.content;
 
     // Add AI response to messages
