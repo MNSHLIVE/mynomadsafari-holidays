@@ -28,6 +28,7 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId] = useState(() => `session_${Date.now()}_${Math.random()}`);
   const [showWhatsAppOption, setShowWhatsAppOption] = useState(false);
+  const [showItineraryForm, setShowItineraryForm] = useState(false);
   const [leadInfo, setLeadInfo] = useState<any>(null);
   const isMobile = useIsMobile();
   
@@ -49,13 +50,13 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
       setMessages([{
         id: '1',
         type: 'assistant',
-        content: 'Hello! I\'m your personal travel assistant at MyNomadSafariHolidays. I\'m here to help you plan your perfect trip within your budget! 🌟\n\nWhether you\'re dreaming of Kerala\'s backwaters, Rajasthan\'s palaces, or international destinations like Bali and Dubai, I can help you find the perfect package that suits your needs.\n\nTo get started, could you tell me your name and where you\'d like to travel?',
+        content: 'Hello! I\'m your personal travel assistant at MyNomadSafariHolidays. I\'m here to help you plan your perfect trip within your budget! 🌟\n\nWhether you\'re dreaming of Kerala\'s backwaters, Rajasthan\'s palaces, or international destinations like Bali and Dubai, I can help you find the perfect package that suits your needs and budget.\n\nTo get started, could you tell me your name and where you\'d like to travel?',
         timestamp: new Date()
       }]);
     }
   }, []);
 
-  // Check for lead completion and show WhatsApp option
+  // Check for lead completion and show options
   useEffect(() => {
     const checkLeadCompletion = async () => {
       try {
@@ -68,9 +69,10 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
         if (data && !error) {
           setLeadInfo(data);
           
-          // Show WhatsApp option if we have key information
+          // Show options if we have key information
           if (data.visitor_name && (data.visitor_email || data.visitor_phone) && data.destination) {
             setShowWhatsAppOption(true);
+            setShowItineraryForm(true);
           }
         }
       } catch (error) {
@@ -127,14 +129,14 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
       console.error('Error sending message:', error);
       toast.error('Sorry, I\'m having trouble connecting right now. Please try again in a moment.');
       
-      // Add error message to chat
-      const errorMessage: Message = {
+      // Add helpful fallback message
+      const fallbackMessage: Message = {
         id: (Date.now() + 2).toString(),
         type: 'assistant',
-        content: 'I apologize, but I\'m experiencing technical difficulties right now. Please try again in a few moments, or feel free to contact us directly via WhatsApp for immediate assistance.',
+        content: 'I\'m here to help you plan your perfect trip! I can assist you with destinations like Kerala, Rajasthan, Goa, Bali, Dubai, and many more. What destination interests you, and what\'s your budget range?',
         timestamp: new Date()
       };
-      setMessages(prev => [...prev, errorMessage]);
+      setMessages(prev => [...prev, fallbackMessage]);
     } finally {
       setIsLoading(false);
     }
@@ -167,6 +169,46 @@ Please help me with a personalized travel package!`;
       });
   };
 
+  const handleItineraryRequest = () => {
+    if (!leadInfo) return;
+    
+    // Generate sample itinerary data
+    const itineraryData = {
+      customerName: leadInfo.visitor_name || 'Guest',
+      email: leadInfo.visitor_email || '',
+      phone: leadInfo.visitor_phone || '',
+      destination: leadInfo.destination || 'India',
+      departureDate: leadInfo.travel_date || new Date().toISOString().split('T')[0],
+      returnDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      adults: leadInfo.adults || 2,
+      children: leadInfo.children || 0,
+      totalCost: 45000,
+      perPersonCost: 22500,
+      hotelCategory: '3-Star',
+      packageType: leadInfo.package_type || 'Standard',
+      specialRequests: leadInfo.special_requests || '',
+      sessionId: sessionId
+    };
+
+    // Call the PDF generation function
+    supabase.functions.invoke('generate-itinerary-pdf', {
+      body: itineraryData
+    }).then(({ data, error }) => {
+      if (error) {
+        console.error('Error generating itinerary:', error);
+        toast.error('Failed to generate itinerary. Please try again.');
+      } else {
+        toast.success('Itinerary sent to your email! Check your inbox.');
+        
+        // Update lead status
+        supabase
+          .from('ai_chat_conversations')
+          .update({ lead_status: 'itinerary_sent' })
+          .eq('session_id', sessionId);
+      }
+    });
+  };
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -178,12 +220,12 @@ Please help me with a personalized travel package!`;
 
   // Mobile responsive styling
   const widgetClasses = isMobile 
-    ? "fixed inset-x-2 bottom-20 top-20 shadow-xl z-50 flex flex-col bg-white rounded-lg"
+    ? "fixed inset-x-2 bottom-20 top-20 shadow-xl z-50 flex flex-col bg-white rounded-lg max-h-[80vh]"
     : "fixed bottom-20 left-4 w-80 h-96 shadow-xl z-50 flex flex-col bg-white rounded-lg";
 
   return (
     <Card className={widgetClasses}>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-t-lg px-3 py-2">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-t-lg px-3 py-2 flex-shrink-0">
         <CardTitle className={`font-semibold ${isMobile ? 'text-base' : 'text-sm'}`}>
           Travel Assistant
         </CardTitle>
@@ -192,16 +234,16 @@ Please help me with a personalized travel package!`;
         </Button>
       </CardHeader>
       
-      <CardContent className="flex-1 flex flex-col p-0 min-h-0">
+      <CardContent className="flex-1 flex flex-col p-0 min-h-0 overflow-hidden">
         <ScrollArea className="flex-1 p-3 overflow-y-auto" ref={scrollAreaRef}>
-          <div className="space-y-3">
+          <div className="space-y-3 pb-4">
             {messages.map((message) => (
               <div
                 key={message.id}
                 className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`${isMobile ? 'max-w-[90%]' : 'max-w-[85%]'} p-2.5 rounded-lg shadow-sm ${
+                  className={`${isMobile ? 'max-w-[85%]' : 'max-w-[80%]'} p-2.5 rounded-lg shadow-sm ${
                     message.type === 'user'
                       ? 'bg-blue-600 text-white rounded-br-sm text-sm'
                       : 'bg-gray-100 text-gray-800 rounded-bl-sm text-sm'
@@ -226,26 +268,47 @@ Please help me with a personalized travel package!`;
               </div>
             )}
 
-            {showWhatsAppOption && (
-              <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-center shadow-sm">
-                <p className="text-sm text-green-800 mb-2">
-                  Ready for personalized assistance?
-                </p>
-                <Button 
-                  onClick={handleWhatsAppConnect}
-                  className="bg-green-600 hover:bg-green-700 text-white text-xs"
-                  size="sm"
-                >
-                  <Phone className="h-3 w-3 mr-1" />
-                  Connect via WhatsApp
-                </Button>
+            {/* Action buttons */}
+            {(showWhatsAppOption || showItineraryForm) && (
+              <div className="space-y-2">
+                {showItineraryForm && (
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-center shadow-sm">
+                    <p className="text-sm text-green-800 mb-2">
+                      Get your detailed itinerary with pricing!
+                    </p>
+                    <Button 
+                      onClick={handleItineraryRequest}
+                      className="bg-green-600 hover:bg-green-700 text-white text-xs mr-2"
+                      size="sm"
+                    >
+                      📧 Send Itinerary
+                    </Button>
+                  </div>
+                )}
+                
+                {showWhatsAppOption && (
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-center shadow-sm">
+                    <p className="text-sm text-blue-800 mb-2">
+                      Ready for personalized assistance?
+                    </p>
+                    <Button 
+                      onClick={handleWhatsAppConnect}
+                      className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+                      size="sm"
+                    >
+                      <Phone className="h-3 w-3 mr-1" />
+                      Connect via WhatsApp
+                    </Button>
+                  </div>
+                )}
               </div>
             )}
+            
             <div ref={messagesEndRef} />
           </div>
         </ScrollArea>
 
-        <div className="border-t bg-gray-50 p-3 mt-auto">
+        <div className="border-t bg-gray-50 p-3 flex-shrink-0">
           {leadInfo && (
             <div className="mb-2 p-2 bg-blue-50 rounded text-xs border border-blue-200">
               <div className="flex items-center gap-1 text-blue-700">

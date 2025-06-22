@@ -25,13 +25,13 @@ serve(async (req) => {
       throw new Error('Message and sessionId are required');
     }
 
-    const deepseekApiKey = Deno.env.get('DEEPSEEK_API_KEY');
-    if (!deepseekApiKey) {
-      console.error('DEEPSEEK_API_KEY not found in environment');
-      throw new Error('DeepSeek API key not configured');
+    const openaiApiKey = Deno.env.get('OPENAI_API_KEY');
+    if (!openaiApiKey) {
+      console.error('OPENAI_API_KEY not found in environment');
+      throw new Error('OpenAI API key not configured');
     }
 
-    console.log('Using DeepSeek API key:', deepseekApiKey.substring(0, 10) + '...');
+    console.log('Using OpenAI API for chat completion');
 
     // Get or create conversation record
     let { data: conversation, error: fetchError } = await supabase
@@ -53,28 +53,26 @@ serve(async (req) => {
     // Add user message
     messages.push({ role: 'user', content: message, timestamp: new Date().toISOString() });
 
-    // Enhanced system prompt for lead generation
-    const systemPrompt = `You are an AI travel assistant for MyNomadSafariHolidays, specialized in lead generation through natural conversation. Your primary goal is to gather customer information while providing helpful travel advice.
+    // Enhanced system prompt for travel assistance and lead generation
+    const systemPrompt = `You are an AI travel assistant for MyNomadSafariHolidays, specialized in helping customers plan their perfect trip within their budget.
 
-LEAD INFORMATION TO COLLECT (naturally during conversation):
-1. Customer Name
-2. Email Address  
-3. Phone Number
-4. Travel Date (when they want to travel)
-5. Destination (where they want to go)
-6. Number of Adults
-7. Number of Children (and their ages up to 12 years)
-8. Special Requests (Honeymoon, Adventure, Religious tours, specific activities)
-9. Budget Range
+YOUR EXPERTISE:
+- Domestic destinations: Kerala, Rajasthan, Himachal, Goa, Kashmir, Ladakh, Uttarakhand, etc.
+- International destinations: Bali, Dubai, Thailand, Singapore, Maldives, etc.
+- Package types: Honeymoon, Adventure, Family, Religious tours, Luxury, Budget-friendly
+- Travel planning: Itineraries, accommodation, transportation, activities
 
-CONVERSATION STYLE:
-- Be warm, friendly, and genuinely helpful
-- Ask questions naturally, not like a form
-- Show expertise in Indian destinations (Kerala, Rajasthan, Himachal, Goa, etc.)
-- Also cover international destinations (Bali, Dubai, Thailand, Singapore)
-- When you have gathered key information, offer to connect them with a travel expert via WhatsApp
+CONVERSATION GOALS:
+1. Help customers plan their ideal trip within budget
+2. Naturally collect key information during conversation:
+   - Customer name and contact details
+   - Preferred destination and travel dates
+   - Number of travelers (adults/children)
+   - Budget range and special requirements
+3. Provide helpful travel advice and recommendations
+4. When you have sufficient information, offer to connect them with our travel experts
 
-CURRENT LEAD STATUS:
+CURRENT CUSTOMER INFO:
 ${conversation ? `
 Name: ${conversation.visitor_name || 'Not provided'}
 Email: ${conversation.visitor_email || 'Not provided'}
@@ -84,22 +82,28 @@ Destination: ${conversation.destination || 'Not provided'}
 Adults: ${conversation.adults || 'Not specified'}
 Children: ${conversation.children || 'Not specified'}
 Special Requests: ${conversation.special_requests || 'None mentioned'}
-` : 'New conversation - no details collected yet'}
+` : 'New conversation - gathering customer details'}
 
-If you notice the user has provided any of the above information in their message, acknowledge it and ask follow-up questions to complete the profile. When you have enough information, offer WhatsApp connection for personalized assistance.
+RESPONSE STYLE:
+- Be warm, friendly, and genuinely helpful
+- Ask natural questions (not like a form)
+- Show your travel expertise
+- Keep responses concise but informative
+- Always end with a relevant question to keep the conversation flowing
+- When you have enough information, offer WhatsApp connection for personalized service
 
-Keep responses concise and engaging. Always end with a question to keep the conversation flowing.`;
+Remember: You're here to help plan amazing trips within budget, not just collect information!`;
 
-    // Call DeepSeek API with the correct endpoint and model
-    console.log('Calling DeepSeek API...');
-    const response = await fetch('https://api.deepseek.com/chat/completions', {
+    // Call OpenAI API
+    console.log('Calling OpenAI API...');
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${deepseekApiKey}`,
+        'Authorization': `Bearer ${openaiApiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'deepseek-r1',
+        model: 'gpt-4o-mini',
         messages: [
           { role: 'system', content: systemPrompt },
           ...messages.slice(-10) // Keep last 10 messages for context
@@ -109,19 +113,19 @@ Keep responses concise and engaging. Always end with a question to keep the conv
       }),
     });
 
-    console.log('DeepSeek API response status:', response.status);
+    console.log('OpenAI API response status:', response.status);
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('DeepSeek API error response:', errorText);
-      throw new Error(`DeepSeek API error: ${errorText}`);
+      console.error('OpenAI API error response:', errorText);
+      throw new Error(`OpenAI API error: ${errorText}`);
     }
 
     const data = await response.json();
-    console.log('DeepSeek API response:', data);
+    console.log('OpenAI API response received successfully');
 
     if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-      throw new Error('Invalid response format from DeepSeek API');
+      throw new Error('Invalid response format from OpenAI API');
     }
 
     const aiResponse = data.choices[0].message.content;
@@ -136,11 +140,19 @@ Keep responses concise and engaging. Always end with a question to keep the conv
       updated_at: new Date().toISOString()
     };
 
-    // Extract name
-    if (messageText.includes('my name is') || messageText.includes('i am') || messageText.includes('call me')) {
-      const nameMatch = message.match(/(?:my name is|i am|call me)\s+([a-zA-Z\s]+)/i);
-      if (nameMatch) {
-        updateData.visitor_name = nameMatch[1].trim();
+    // Extract name (improved patterns)
+    if (messageText.includes('my name is') || messageText.includes('i am') || messageText.includes('call me') || messageText.includes('i\'m')) {
+      const namePatterns = [
+        /(?:my name is|i am|call me|i'm)\s+([a-zA-Z\s]+)/i,
+        /(?:myself|hi,?\s+i'm|hello,?\s+i'm)\s+([a-zA-Z\s]+)/i
+      ];
+      
+      for (const pattern of namePatterns) {
+        const nameMatch = message.match(pattern);
+        if (nameMatch) {
+          updateData.visitor_name = nameMatch[1].trim();
+          break;
+        }
       }
     }
 
@@ -150,14 +162,29 @@ Keep responses concise and engaging. Always end with a question to keep the conv
       updateData.visitor_email = emailMatch[0];
     }
 
-    // Extract phone
-    const phoneMatch = message.match(/\b(\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/);
-    if (phoneMatch) {
-      updateData.visitor_phone = phoneMatch[0];
+    // Extract phone (improved patterns)
+    const phonePatterns = [
+      /\+?\d{1,3}[-.\s]?\(?\d{3,4}\)?[-.\s]?\d{3,4}[-.\s]?\d{3,4}/,
+      /\b\d{10}\b/,
+      /\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b/
+    ];
+    
+    for (const pattern of phonePatterns) {
+      const phoneMatch = message.match(pattern);
+      if (phoneMatch) {
+        updateData.visitor_phone = phoneMatch[0];
+        break;
+      }
     }
 
-    // Extract destination
-    const destinations = ['kerala', 'rajasthan', 'himachal', 'goa', 'bali', 'dubai', 'thailand', 'singapore', 'kashmir', 'ladakh', 'manali', 'shimla', 'udaipur', 'jaipur'];
+    // Extract destination (expanded list)
+    const destinations = [
+      'kerala', 'rajasthan', 'himachal', 'goa', 'bali', 'dubai', 'thailand', 'singapore', 
+      'kashmir', 'ladakh', 'manali', 'shimla', 'udaipur', 'jaipur', 'cochin', 'munnar',
+      'maldives', 'sri lanka', 'nepal', 'bhutan', 'vietnam', 'malaysia', 'indonesia',
+      'uttarakhand', 'rishikesh', 'haridwar', 'darjeeling', 'ooty', 'kodaikanal'
+    ];
+    
     for (const dest of destinations) {
       if (messageText.includes(dest)) {
         updateData.destination = dest.charAt(0).toUpperCase() + dest.slice(1);
@@ -165,19 +192,33 @@ Keep responses concise and engaging. Always end with a question to keep the conv
       }
     }
 
+    // Extract travel dates
+    const datePatterns = [
+      /(?:in|on)\s+(january|february|march|april|may|june|july|august|september|october|november|december)/i,
+      /\b(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})\b/,
+      /(?:next|this)\s+(week|month|year)/i
+    ];
+    
+    for (const pattern of datePatterns) {
+      if (message.match(pattern)) {
+        updateData.travel_date = new Date().toISOString().split('T')[0]; // Placeholder
+        break;
+      }
+    }
+
     // Extract adults/children count
-    const adultsMatch = message.match(/(\d+)\s*adult/i);
+    const adultsMatch = message.match(/(\d+)\s*(?:adult|person|people)/i);
     if (adultsMatch) {
       updateData.adults = parseInt(adultsMatch[1]);
     }
 
-    const childrenMatch = message.match(/(\d+)\s*child/i);
+    const childrenMatch = message.match(/(\d+)\s*(?:child|kid|children)/i);
     if (childrenMatch) {
       updateData.children = parseInt(childrenMatch[1]);
     }
 
-    // Extract special requests
-    const specialRequests = ['honeymoon', 'adventure', 'religious', 'family', 'luxury', 'budget'];
+    // Extract special requests and package types
+    const specialRequests = ['honeymoon', 'adventure', 'religious', 'family', 'luxury', 'budget', 'pilgrimage', 'wildlife', 'beach', 'mountain'];
     for (const request of specialRequests) {
       if (messageText.includes(request)) {
         updateData.package_type = request.charAt(0).toUpperCase() + request.slice(1);
@@ -216,12 +257,13 @@ Keep responses concise and engaging. Always end with a question to keep the conv
 
   } catch (error) {
     console.error('Error in ai-chat function:', error);
+    
+    // Return a helpful fallback response instead of an error
+    const fallbackResponse = "I'm here to help you plan your perfect trip! I can assist you with destinations like Kerala, Rajasthan, Goa, Bali, Dubai, and many more. What destination are you interested in exploring, and what's your travel budget?";
+    
     return new Response(
-      JSON.stringify({ error: error.message }),
-      { 
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      }
+      JSON.stringify({ response: fallbackResponse }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
 });
