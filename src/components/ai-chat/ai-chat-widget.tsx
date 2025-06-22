@@ -1,10 +1,11 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
-import { MessageCircle, Mic, MicOff, Send, X, Volume2, VolumeX } from 'lucide-react';
+import { MessageCircle, Mic, MicOff, Send, X, Volume2, VolumeX, User, Phone } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -24,12 +25,10 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [chatMode, setChatMode] = useState<'text' | 'voice'>('text');
-  const [isRecording, setIsRecording] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [sessionId] = useState(() => `session_${Date.now()}_${Math.random()}`);
+  const [showWhatsAppOption, setShowWhatsAppOption] = useState(false);
+  const [leadInfo, setLeadInfo] = useState<any>(null);
   
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const audioChunksRef = useRef<Blob[]>([]);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom when new messages arrive
@@ -45,11 +44,39 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
       setMessages([{
         id: '1',
         type: 'assistant',
-        content: 'Hello! I\'m your AI travel assistant. I can help you with tour packages, destinations, and travel planning. You can either type your questions or use voice chat. How can I assist you today?',
+        content: 'Hello! I\'m your personal travel assistant at MyNomadSafariHolidays. I\'m here to help you plan your perfect trip! 🌟\n\nWhether you\'re dreaming of Kerala\'s backwaters, Rajasthan\'s palaces, or international destinations like Bali and Dubai, I can help you find the perfect package.\n\nTo get started, could you tell me your name and where you\'d like to travel?',
         timestamp: new Date()
       }]);
     }
   }, []);
+
+  // Check for lead completion and show WhatsApp option
+  useEffect(() => {
+    const checkLeadCompletion = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('ai_chat_conversations')
+          .select('*')
+          .eq('session_id', sessionId)
+          .single();
+
+        if (data && !error) {
+          setLeadInfo(data);
+          
+          // Show WhatsApp option if we have key information
+          if (data.visitor_name && (data.visitor_email || data.visitor_phone) && data.destination) {
+            setShowWhatsAppOption(true);
+          }
+        }
+      } catch (error) {
+        console.error('Error checking lead completion:', error);
+      }
+    };
+
+    if (messages.length > 4) { // Check after a few exchanges
+      checkLeadCompletion();
+    }
+  }, [messages, sessionId]);
 
   const sendTextMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
@@ -67,7 +94,11 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
 
     try {
       const { data, error } = await supabase.functions.invoke('ai-chat', {
-        body: { message: inputMessage }
+        body: { 
+          message: inputMessage,
+          sessionId: sessionId,
+          conversationData: messages
+        }
       });
 
       if (error) throw error;
@@ -80,11 +111,6 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
       };
 
       setMessages(prev => [...prev, assistantMessage]);
-
-      // If in voice mode, speak the response
-      if (chatMode === 'voice') {
-        await speakText(data.response);
-      }
     } catch (error) {
       console.error('Error sending message:', error);
       toast.error('Failed to send message. Please try again.');
@@ -93,125 +119,31 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
     }
   };
 
-  const startVoiceRecording = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream);
-      mediaRecorderRef.current = mediaRecorder;
-      audioChunksRef.current = [];
+  const handleWhatsAppConnect = () => {
+    const message = `Hi! I was chatting with your AI assistant about travel plans. Here are my details:
+    
+Name: ${leadInfo?.visitor_name || 'Not provided'}
+Email: ${leadInfo?.visitor_email || 'Not provided'}
+Phone: ${leadInfo?.visitor_phone || 'Not provided'}
+Destination: ${leadInfo?.destination || 'Not specified'}
+Travel Date: ${leadInfo?.travel_date || 'Not specified'}
+Adults: ${leadInfo?.adults || 1}
+Children: ${leadInfo?.children || 0}
+Special Requests: ${leadInfo?.special_requests || 'None'}
 
-      mediaRecorder.ondataavailable = (event) => {
-        audioChunksRef.current.push(event.data);
-      };
+Please help me with a personalized travel package!`;
 
-      mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-        await processVoiceInput(audioBlob);
-        stream.getTracks().forEach(track => track.stop());
-      };
-
-      mediaRecorder.start();
-      setIsRecording(true);
-      toast.success('Recording started. Speak now...');
-    } catch (error) {
-      console.error('Error starting recording:', error);
-      toast.error('Could not access microphone. Please check permissions.');
-    }
-  };
-
-  const stopVoiceRecording = () => {
-    if (mediaRecorderRef.current && isRecording) {
-      mediaRecorderRef.current.stop();
-      setIsRecording(false);
-    }
-  };
-
-  const processVoiceInput = async (audioBlob: Blob) => {
-    setIsLoading(true);
-    try {
-      // Convert audio to base64
-      const reader = new FileReader();
-      reader.readAsDataURL(audioBlob);
-      reader.onloadend = async () => {
-        const base64Audio = reader.result?.toString().split(',')[1];
-        
-        if (!base64Audio) throw new Error('Failed to process audio');
-
-        // Send to voice-to-text edge function
-        const { data: transcriptData, error: transcriptError } = await supabase.functions.invoke('voice-to-text', {
-          body: { audio: base64Audio }
-        });
-
-        if (transcriptError) throw transcriptError;
-
-        const transcribedText = transcriptData.text;
-        
-        if (!transcribedText.trim()) {
-          toast.error('No speech detected. Please try again.');
-          setIsLoading(false);
-          return;
-        }
-
-        // Add user message
-        const userMessage: Message = {
-          id: Date.now().toString(),
-          type: 'user',
-          content: transcribedText,
-          timestamp: new Date()
-        };
-        setMessages(prev => [...prev, userMessage]);
-
-        // Get AI response
-        const { data: chatData, error: chatError } = await supabase.functions.invoke('ai-chat', {
-          body: { message: transcribedText }
-        });
-
-        if (chatError) throw chatError;
-
-        const assistantMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          type: 'assistant',
-          content: chatData.response,
-          timestamp: new Date()
-        };
-        setMessages(prev => [...prev, assistantMessage]);
-
-        // Speak the response
-        await speakText(chatData.response);
-      };
-    } catch (error) {
-      console.error('Error processing voice input:', error);
-      toast.error('Failed to process voice input. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const speakText = async (text: string) => {
-    try {
-      setIsSpeaking(true);
-      const { data, error } = await supabase.functions.invoke('text-to-voice', {
-        body: { text, voice: 'alloy' }
+    const whatsappUrl = `https://wa.me/+919876543210?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+    
+    // Update handoff status
+    supabase
+      .from('ai_chat_conversations')
+      .update({ whatsapp_handoff: true, lead_status: 'whatsapp_connected' })
+      .eq('session_id', sessionId)
+      .then(() => {
+        toast.success('Connected to WhatsApp! Our team will assist you shortly.');
       });
-
-      if (error) throw error;
-
-      // Play the audio
-      const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
-      audio.onended = () => setIsSpeaking(false);
-      await audio.play();
-    } catch (error) {
-      console.error('Error speaking text:', error);
-      setIsSpeaking(false);
-      toast.error('Failed to generate voice response.');
-    }
-  };
-
-  const toggleChatMode = () => {
-    setChatMode(prev => prev === 'text' ? 'voice' : 'text');
-    if (isRecording) {
-      stopVoiceRecording();
-    }
   };
 
   if (!isOpen) return null;
@@ -221,8 +153,8 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">AI Travel Assistant</CardTitle>
         <div className="flex items-center gap-2">
-          <Badge variant={chatMode === 'voice' ? 'default' : 'secondary'} className="text-xs">
-            {chatMode === 'voice' ? 'Voice' : 'Text'}
+          <Badge variant="default" className="text-xs">
+            Lead Generation
           </Badge>
           <Button variant="ghost" size="sm" onClick={onClose}>
             <X className="h-4 w-4" />
@@ -249,6 +181,7 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
                 </div>
               </div>
             ))}
+            
             {isLoading && (
               <div className="flex justify-start">
                 <div className="bg-muted p-2 rounded-lg text-sm">
@@ -260,52 +193,48 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
                 </div>
               </div>
             )}
+
+            {showWhatsAppOption && (
+              <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-center">
+                <p className="text-sm text-green-800 mb-2">
+                  Ready for personalized assistance?
+                </p>
+                <Button 
+                  onClick={handleWhatsAppConnect}
+                  className="bg-green-600 hover:bg-green-700 text-white text-xs"
+                  size="sm"
+                >
+                  <Phone className="h-3 w-3 mr-1" />
+                  Connect via WhatsApp
+                </Button>
+              </div>
+            )}
           </div>
         </ScrollArea>
 
-        <div className="mt-3 space-y-2">
-          <div className="flex items-center gap-2">
-            <Button
-              variant={chatMode === 'voice' ? 'default' : 'outline'}
-              size="sm"
-              onClick={toggleChatMode}
-              className="flex-1"
-            >
-              {chatMode === 'voice' ? <Mic className="h-4 w-4 mr-1" /> : <MessageCircle className="h-4 w-4 mr-1" />}
-              {chatMode === 'voice' ? 'Voice Mode' : 'Text Mode'}
-            </Button>
-            {isSpeaking && (
-              <Volume2 className="h-4 w-4 text-primary animate-pulse" />
-            )}
-          </div>
-
-          {chatMode === 'text' ? (
-            <div className="flex gap-2">
-              <Input
-                placeholder="Type your message..."
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && sendTextMessage()}
-                disabled={isLoading}
-                className="text-sm"
-              />
-              <Button onClick={sendTextMessage} disabled={isLoading || !inputMessage.trim()}>
-                <Send className="h-4 w-4" />
-              </Button>
-            </div>
-          ) : (
-            <div className="flex justify-center">
-              <Button
-                onClick={isRecording ? stopVoiceRecording : startVoiceRecording}
-                disabled={isLoading}
-                variant={isRecording ? 'destructive' : 'default'}
-                className="w-full"
-              >
-                {isRecording ? <MicOff className="h-4 w-4 mr-2" /> : <Mic className="h-4 w-4 mr-2" />}
-                {isRecording ? 'Stop Recording' : 'Start Recording'}
-              </Button>
+        <div className="mt-3">
+          {leadInfo && (
+            <div className="mb-2 p-2 bg-blue-50 rounded text-xs">
+              <div className="flex items-center gap-1 text-blue-700">
+                <User className="h-3 w-3" />
+                <span>Lead Info: {leadInfo.visitor_name || 'Name pending'}</span>
+              </div>
             </div>
           )}
+          
+          <div className="flex gap-2">
+            <Input
+              placeholder="Ask about destinations, packages, dates..."
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && sendTextMessage()}
+              disabled={isLoading}
+              className="text-sm"
+            />
+            <Button onClick={sendTextMessage} disabled={isLoading || !inputMessage.trim()}>
+              <Send className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>

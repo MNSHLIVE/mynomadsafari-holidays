@@ -9,6 +9,99 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      ai_chat_conversations: {
+        Row: {
+          adults: number | null
+          budget_range: string | null
+          children: number | null
+          children_ages: number[] | null
+          conversation_data: Json | null
+          created_at: string
+          destination: string | null
+          id: string
+          lead_status: string | null
+          package_type: string | null
+          session_id: string
+          special_requests: string | null
+          travel_date: string | null
+          updated_at: string
+          visitor_email: string | null
+          visitor_name: string | null
+          visitor_phone: string | null
+          whatsapp_handoff: boolean | null
+        }
+        Insert: {
+          adults?: number | null
+          budget_range?: string | null
+          children?: number | null
+          children_ages?: number[] | null
+          conversation_data?: Json | null
+          created_at?: string
+          destination?: string | null
+          id?: string
+          lead_status?: string | null
+          package_type?: string | null
+          session_id: string
+          special_requests?: string | null
+          travel_date?: string | null
+          updated_at?: string
+          visitor_email?: string | null
+          visitor_name?: string | null
+          visitor_phone?: string | null
+          whatsapp_handoff?: boolean | null
+        }
+        Update: {
+          adults?: number | null
+          budget_range?: string | null
+          children?: number | null
+          children_ages?: number[] | null
+          conversation_data?: Json | null
+          created_at?: string
+          destination?: string | null
+          id?: string
+          lead_status?: string | null
+          package_type?: string | null
+          session_id?: string
+          special_requests?: string | null
+          travel_date?: string | null
+          updated_at?: string
+          visitor_email?: string | null
+          visitor_name?: string | null
+          visitor_phone?: string | null
+          whatsapp_handoff?: boolean | null
+        }
+        Relationships: []
+      }
+      blog_generation_requests: {
+        Row: {
+          content: string | null
+          created_at: string
+          id: string
+          keywords: string[] | null
+          published_at: string | null
+          status: string | null
+          topic: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          id?: string
+          keywords?: string[] | null
+          published_at?: string | null
+          status?: string | null
+          topic: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          id?: string
+          keywords?: string[] | null
+          published_at?: string | null
+          status?: string | null
+          topic?: string
+        }
+        Relationships: []
+      }
       bookings: {
         Row: {
           created_at: string | null
