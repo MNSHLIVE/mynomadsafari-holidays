@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { MessageCircle, Mic, MicOff, Send, X, Volume2, VolumeX, User, Phone } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Message {
   id: string;
@@ -28,6 +29,7 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
   const [sessionId] = useState(() => `session_${Date.now()}_${Math.random()}`);
   const [showWhatsAppOption, setShowWhatsAppOption] = useState(false);
   const [leadInfo, setLeadInfo] = useState<any>(null);
+  const isMobile = useIsMobile();
   
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -174,17 +176,24 @@ Please help me with a personalized travel package!`;
 
   if (!isOpen) return null;
 
+  // Mobile responsive styling
+  const widgetClasses = isMobile 
+    ? "fixed inset-x-2 bottom-20 top-20 shadow-xl z-50 flex flex-col bg-white rounded-lg"
+    : "fixed bottom-20 left-4 w-80 h-96 shadow-xl z-50 flex flex-col bg-white rounded-lg";
+
   return (
-    <Card className="fixed bottom-20 left-4 w-80 h-96 shadow-xl z-50 flex flex-col bg-white">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-t-lg">
-        <CardTitle className="text-sm font-semibold">Travel Assistant</CardTitle>
-        <Button variant="ghost" size="sm" onClick={onClose} className="text-white hover:bg-blue-800">
+    <Card className={widgetClasses}>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-t-lg px-3 py-2">
+        <CardTitle className={`font-semibold ${isMobile ? 'text-base' : 'text-sm'}`}>
+          Travel Assistant
+        </CardTitle>
+        <Button variant="ghost" size="sm" onClick={onClose} className="text-white hover:bg-blue-800 p-1">
           <X className="h-4 w-4" />
         </Button>
       </CardHeader>
       
-      <CardContent className="flex-1 flex flex-col p-0">
-        <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
+      <CardContent className="flex-1 flex flex-col p-0 min-h-0">
+        <ScrollArea className="flex-1 p-3 overflow-y-auto" ref={scrollAreaRef}>
           <div className="space-y-3">
             {messages.map((message) => (
               <div
@@ -192,13 +201,15 @@ Please help me with a personalized travel package!`;
                 className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[85%] p-3 rounded-lg text-sm shadow-sm ${
+                  className={`${isMobile ? 'max-w-[90%]' : 'max-w-[85%]'} p-2.5 rounded-lg shadow-sm ${
                     message.type === 'user'
-                      ? 'bg-blue-600 text-white rounded-br-sm'
-                      : 'bg-gray-100 text-gray-800 rounded-bl-sm'
+                      ? 'bg-blue-600 text-white rounded-br-sm text-sm'
+                      : 'bg-gray-100 text-gray-800 rounded-bl-sm text-sm'
                   }`}
                 >
-                  <div className="whitespace-pre-wrap">{message.content}</div>
+                  <div className="whitespace-pre-wrap break-words leading-relaxed">
+                    {message.content}
+                  </div>
                 </div>
               </div>
             ))}
@@ -234,29 +245,30 @@ Please help me with a personalized travel package!`;
           </div>
         </ScrollArea>
 
-        <div className="border-t bg-gray-50 p-3">
+        <div className="border-t bg-gray-50 p-3 mt-auto">
           {leadInfo && (
             <div className="mb-2 p-2 bg-blue-50 rounded text-xs border border-blue-200">
               <div className="flex items-center gap-1 text-blue-700">
-                <User className="h-3 w-3" />
-                <span>Info collected: {leadInfo.visitor_name || 'Name pending'}</span>
+                <User className="h-3 w-3 flex-shrink-0" />
+                <span className="truncate">Info: {leadInfo.visitor_name || 'Name pending'}</span>
               </div>
             </div>
           )}
           
           <div className="flex gap-2">
             <Input
-              placeholder="Ask about destinations, packages, dates..."
+              placeholder={isMobile ? "Ask about travel..." : "Ask about destinations, packages, dates..."}
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
               disabled={isLoading}
-              className="text-sm flex-1"
+              className={`flex-1 ${isMobile ? 'text-base' : 'text-sm'}`}
             />
             <Button 
               onClick={sendTextMessage} 
               disabled={isLoading || !inputMessage.trim()}
-              className="bg-blue-600 hover:bg-blue-700"
+              className="bg-blue-600 hover:bg-blue-700 flex-shrink-0"
+              size={isMobile ? "default" : "sm"}
             >
               <Send className="h-4 w-4" />
             </Button>
