@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
-import { MessageCircle, Mic, MicOff, Send, X, Volume2, VolumeX, User, Phone } from 'lucide-react';
+import { MessageCircle, Send, X, User, Phone, FileText, MapPin } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -30,10 +30,21 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
   const [showWhatsAppOption, setShowWhatsAppOption] = useState(false);
   const [showItineraryForm, setShowItineraryForm] = useState(false);
   const [leadInfo, setLeadInfo] = useState<any>(null);
+  const [showQuickReplies, setShowQuickReplies] = useState(true);
   const isMobile = useIsMobile();
   
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Quick reply suggestions
+  const quickReplies = [
+    "Plan a Kerala trip",
+    "Rajasthan heritage tour", 
+    "International packages",
+    "Honeymoon destinations",
+    "Adventure tours",
+    "Budget travel options"
+  ];
 
   // Auto-scroll to bottom when new messages arrive
   const scrollToBottom = () => {
@@ -50,7 +61,7 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
       setMessages([{
         id: '1',
         type: 'assistant',
-        content: 'Hello! I\'m your personal travel assistant at MyNomadSafariHolidays. I\'m here to help you plan your perfect trip within your budget! 🌟\n\nWhether you\'re dreaming of Kerala\'s backwaters, Rajasthan\'s palaces, or international destinations like Bali and Dubai, I can help you find the perfect package that suits your needs and budget.\n\nTo get started, could you tell me your name and where you\'d like to travel?',
+        content: 'Hello! I\'m your personal travel assistant at MyNomadSafariHolidays. I\'m here to help you plan your perfect trip within your budget! 🌟\n\nWhether you\'re dreaming of Kerala\'s backwaters, Rajasthan\'s palaces, or international destinations like Bali and Dubai, I can help you find the perfect package.\n\nTo get started, could you tell me your name and where you\'d like to travel?',
         timestamp: new Date()
       }]);
     }
@@ -80,29 +91,30 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
       }
     };
 
-    if (messages.length > 4) { // Check after a few exchanges
+    if (messages.length > 4) {
       checkLeadCompletion();
     }
   }, [messages, sessionId]);
 
-  const sendTextMessage = async () => {
-    if (!inputMessage.trim() || isLoading) return;
+  const sendMessage = async (messageText: string) => {
+    if (!messageText.trim() || isLoading) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
       type: 'user',
-      content: inputMessage,
+      content: messageText,
       timestamp: new Date()
     };
 
     setMessages(prev => [...prev, userMessage]);
     setInputMessage('');
     setIsLoading(true);
+    setShowQuickReplies(false);
 
     try {
       const { data, error } = await supabase.functions.invoke('ai-chat', {
         body: { 
-          message: inputMessage,
+          message: messageText,
           sessionId: sessionId,
           conversationData: messages
         }
@@ -127,13 +139,13 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
       }
     } catch (error) {
       console.error('Error sending message:', error);
-      toast.error('Sorry, I\'m having trouble connecting right now. Please try again in a moment.');
+      toast.error('Having trouble connecting. Please try again or contact us via WhatsApp.');
       
       // Add helpful fallback message
       const fallbackMessage: Message = {
         id: (Date.now() + 2).toString(),
         type: 'assistant',
-        content: 'I\'m here to help you plan your perfect trip! I can assist you with destinations like Kerala, Rajasthan, Goa, Bali, Dubai, and many more. What destination interests you, and what\'s your budget range?',
+        content: 'I\'m here to help plan your perfect trip! I can assist with destinations like Kerala, Rajasthan, Goa, Bali, Dubai, and many more. What destination interests you, and what\'s your budget range?',
         timestamp: new Date()
       };
       setMessages(prev => [...prev, fallbackMessage]);
@@ -141,6 +153,9 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
       setIsLoading(false);
     }
   };
+
+  const sendTextMessage = () => sendMessage(inputMessage);
+  const sendQuickReply = (reply: string) => sendMessage(reply);
 
   const handleWhatsAppConnect = () => {
     const message = `Hi! I was chatting with your AI assistant about travel plans. Here are my details:
@@ -159,7 +174,6 @@ Please help me with a personalized travel package!`;
     const whatsappUrl = `https://wa.me/+919876543210?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
     
-    // Update handoff status
     supabase
       .from('ai_chat_conversations')
       .update({ whatsapp_handoff: true, lead_status: 'whatsapp_connected' })
@@ -172,7 +186,6 @@ Please help me with a personalized travel package!`;
   const handleItineraryRequest = () => {
     if (!leadInfo) return;
     
-    // Generate sample itinerary data
     const itineraryData = {
       customerName: leadInfo.visitor_name || 'Guest',
       email: leadInfo.visitor_email || '',
@@ -190,7 +203,6 @@ Please help me with a personalized travel package!`;
       sessionId: sessionId
     };
 
-    // Call the PDF generation function
     supabase.functions.invoke('generate-itinerary-pdf', {
       body: itineraryData
     }).then(({ data, error }) => {
@@ -200,7 +212,6 @@ Please help me with a personalized travel package!`;
       } else {
         toast.success('Itinerary sent to your email! Check your inbox.');
         
-        // Update lead status
         supabase
           .from('ai_chat_conversations')
           .update({ lead_status: 'itinerary_sent' })
@@ -218,19 +229,19 @@ Please help me with a personalized travel package!`;
 
   if (!isOpen) return null;
 
-  // Mobile responsive styling
   const widgetClasses = isMobile 
-    ? "fixed inset-x-2 bottom-20 top-20 shadow-xl z-50 flex flex-col bg-white rounded-lg max-h-[80vh]"
-    : "fixed bottom-20 left-4 w-80 h-96 shadow-xl z-50 flex flex-col bg-white rounded-lg";
+    ? "fixed inset-x-2 bottom-2 top-20 shadow-2xl z-50 flex flex-col bg-white rounded-lg overflow-hidden"
+    : "fixed bottom-20 left-4 w-80 h-[500px] shadow-2xl z-50 flex flex-col bg-white rounded-lg overflow-hidden";
 
   return (
     <Card className={widgetClasses}>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-t-lg px-3 py-2 flex-shrink-0">
-        <CardTitle className={`font-semibold ${isMobile ? 'text-base' : 'text-sm'}`}>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white flex-shrink-0 px-3 py-2">
+        <CardTitle className={`font-semibold flex items-center gap-2 ${isMobile ? 'text-sm' : 'text-sm'}`}>
+          <MessageCircle className="h-4 w-4" />
           Travel Assistant
         </CardTitle>
-        <Button variant="ghost" size="sm" onClick={onClose} className="text-white hover:bg-blue-800 p-1">
-          <X className="h-4 w-4" />
+        <Button variant="ghost" size="sm" onClick={onClose} className="text-white hover:bg-blue-800 p-1 h-6 w-6">
+          <X className="h-3 w-3" />
         </Button>
       </CardHeader>
       
@@ -243,7 +254,7 @@ Please help me with a personalized travel package!`;
                 className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`${isMobile ? 'max-w-[85%]' : 'max-w-[80%]'} p-2.5 rounded-lg shadow-sm ${
+                  className={`${isMobile ? 'max-w-[90%]' : 'max-w-[85%]'} p-3 rounded-lg shadow-sm ${
                     message.type === 'user'
                       ? 'bg-blue-600 text-white rounded-br-sm text-sm'
                       : 'bg-gray-100 text-gray-800 rounded-bl-sm text-sm'
@@ -268,12 +279,33 @@ Please help me with a personalized travel package!`;
               </div>
             )}
 
+            {/* Quick Replies */}
+            {showQuickReplies && messages.length <= 2 && (
+              <div className="space-y-2">
+                <p className="text-xs text-gray-600 px-1">Quick suggestions:</p>
+                <div className="flex flex-wrap gap-2">
+                  {quickReplies.map((reply) => (
+                    <Button
+                      key={reply}
+                      variant="outline"
+                      size="sm"
+                      onClick={() => sendQuickReply(reply)}
+                      className="text-xs px-2 py-1 h-auto rounded-full"
+                    >
+                      {reply}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Action buttons */}
             {(showWhatsAppOption || showItineraryForm) && (
               <div className="space-y-2">
                 {showItineraryForm && (
                   <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-center shadow-sm">
-                    <p className="text-sm text-green-800 mb-2">
+                    <p className="text-sm text-green-800 mb-2 flex items-center justify-center gap-2">
+                      <FileText className="h-4 w-4" />
                       Get your detailed itinerary with pricing!
                     </p>
                     <Button 
@@ -288,7 +320,8 @@ Please help me with a personalized travel package!`;
                 
                 {showWhatsAppOption && (
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-center shadow-sm">
-                    <p className="text-sm text-blue-800 mb-2">
+                    <p className="text-sm text-blue-800 mb-2 flex items-center justify-center gap-2">
+                      <Phone className="h-4 w-4" />
                       Ready for personalized assistance?
                     </p>
                     <Button 
@@ -313,14 +346,17 @@ Please help me with a personalized travel package!`;
             <div className="mb-2 p-2 bg-blue-50 rounded text-xs border border-blue-200">
               <div className="flex items-center gap-1 text-blue-700">
                 <User className="h-3 w-3 flex-shrink-0" />
-                <span className="truncate">Info: {leadInfo.visitor_name || 'Name pending'}</span>
+                <span className="truncate">
+                  {leadInfo.visitor_name || 'Name pending'} 
+                  {leadInfo.destination && ` • ${leadInfo.destination}`}
+                </span>
               </div>
             </div>
           )}
           
           <div className="flex gap-2">
             <Input
-              placeholder={isMobile ? "Ask about travel..." : "Ask about destinations, packages, dates..."}
+              placeholder={isMobile ? "Type your message..." : "Ask about destinations, packages, dates..."}
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}

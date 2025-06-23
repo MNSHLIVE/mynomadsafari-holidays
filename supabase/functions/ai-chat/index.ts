@@ -25,13 +25,13 @@ serve(async (req) => {
       throw new Error('Message and sessionId are required');
     }
 
-    const openaiApiKey = Deno.env.get('OPENAI_API_KEY');
-    if (!openaiApiKey) {
-      console.error('OPENAI_API_KEY not found in environment');
-      throw new Error('OpenAI API key not configured');
+    const deepseekApiKey = Deno.env.get('DEEPSEEK_API_KEY');
+    if (!deepseekApiKey) {
+      console.error('DEEPSEEK_API_KEY not found in environment');
+      throw new Error('DeepSeek API key not configured');
     }
 
-    console.log('Using OpenAI API for chat completion');
+    console.log('Using DeepSeek API via OpenRouter for chat completion');
 
     // Get or create conversation record
     let { data: conversation, error: fetchError } = await supabase
@@ -88,44 +88,60 @@ RESPONSE STYLE:
 - Be warm, friendly, and genuinely helpful
 - Ask natural questions (not like a form)
 - Show your travel expertise
-- Keep responses concise but informative
+- Keep responses concise but informative (max 150 words)
 - Always end with a relevant question to keep the conversation flowing
 - When you have enough information, offer WhatsApp connection for personalized service
+- Suggest getting a detailed itinerary PDF when appropriate
 
 Remember: You're here to help plan amazing trips within budget, not just collect information!`;
 
-    // Call OpenAI API
-    console.log('Calling OpenAI API...');
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    // Call DeepSeek API via OpenRouter
+    console.log('Calling DeepSeek API via OpenRouter...');
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${openaiApiKey}`,
+        'Authorization': `Bearer ${deepseekApiKey}`,
         'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://mynomadsafariholidays.in',
+        'X-Title': 'MyNomadSafariHolidays Travel Assistant',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'deepseek/deepseek-r1',
         messages: [
           { role: 'system', content: systemPrompt },
           ...messages.slice(-10) // Keep last 10 messages for context
         ],
         temperature: 0.7,
-        max_tokens: 500,
+        max_tokens: 300,
       }),
     });
 
-    console.log('OpenAI API response status:', response.status);
+    console.log('DeepSeek API response status:', response.status);
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('OpenAI API error response:', errorText);
-      throw new Error(`OpenAI API error: ${errorText}`);
+      console.error('DeepSeek API error response:', errorText);
+      console.error('Response status:', response.status);
+      console.error('Response headers:', Object.fromEntries(response.headers.entries()));
+      
+      // Provide more specific error messages
+      if (response.status === 401) {
+        throw new Error('DeepSeek API authentication failed - please check API key');
+      } else if (response.status === 429) {
+        throw new Error('DeepSeek API rate limit exceeded - please try again in a moment');
+      } else if (response.status === 403) {
+        throw new Error('DeepSeek API access forbidden - please check your account permissions');
+      }
+      
+      throw new Error(`DeepSeek API error (${response.status}): ${errorText}`);
     }
 
     const data = await response.json();
-    console.log('OpenAI API response received successfully');
+    console.log('DeepSeek API response received successfully');
 
     if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-      throw new Error('Invalid response format from OpenAI API');
+      console.error('Invalid DeepSeek API response format:', data);
+      throw new Error('Invalid response format from DeepSeek API');
     }
 
     const aiResponse = data.choices[0].message.content;
@@ -133,7 +149,7 @@ Remember: You're here to help plan amazing trips within budget, not just collect
     // Add AI response to messages
     messages.push({ role: 'assistant', content: aiResponse, timestamp: new Date().toISOString() });
 
-    // Extract lead information from the conversation using simple keyword matching
+    // Enhanced lead information extraction
     const messageText = message.toLowerCase();
     const updateData: any = {
       conversation_data: messages,
@@ -217,6 +233,12 @@ Remember: You're here to help plan amazing trips within budget, not just collect
       updateData.children = parseInt(childrenMatch[1]);
     }
 
+    // Extract budget information
+    const budgetMatch = message.match(/budget.*?(\d+(?:,\d+)*(?:\.\d+)?)\s*(?:k|thousand|lakh|lakhs|rupees?|rs\.?|\₹)/i);
+    if (budgetMatch) {
+      updateData.budget_range = budgetMatch[0];
+    }
+
     // Extract special requests and package types
     const specialRequests = ['honeymoon', 'adventure', 'religious', 'family', 'luxury', 'budget', 'pilgrimage', 'wildlife', 'beach', 'mountain'];
     for (const request of specialRequests) {
@@ -257,9 +279,21 @@ Remember: You're here to help plan amazing trips within budget, not just collect
 
   } catch (error) {
     console.error('Error in ai-chat function:', error);
+    console.error('Error details:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
     
-    // Return a helpful fallback response instead of an error
-    const fallbackResponse = "I'm here to help you plan your perfect trip! I can assist you with destinations like Kerala, Rajasthan, Goa, Bali, Dubai, and many more. What destination are you interested in exploring, and what's your travel budget?";
+    // Return a helpful fallback response with error context
+    let fallbackResponse = "I'm here to help you plan your perfect trip! I can assist you with destinations like Kerala, Rajasthan, Goa, Bali, Dubai, and many more. What destination are you interested in exploring, and what's your travel budget?";
+    
+    // Add specific guidance based on error type
+    if (error.message.includes('rate limit')) {
+      fallbackResponse = "I'm experiencing high demand right now. Please try again in a moment, or feel free to contact us directly via WhatsApp for immediate assistance with your travel planning!";
+    } else if (error.message.includes('authentication') || error.message.includes('API key')) {
+      fallbackResponse = "I'm having technical difficulties right now. Please try again in a few moments, or contact us directly via WhatsApp for immediate assistance with your travel planning!";
+    }
     
     return new Response(
       JSON.stringify({ response: fallbackResponse }),
