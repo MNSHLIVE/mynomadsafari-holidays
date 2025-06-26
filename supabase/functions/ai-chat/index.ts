@@ -25,36 +25,50 @@ serve(async (req) => {
       throw new Error('Message and sessionId are required');
     }
 
-    const deepseekApiKey = Deno.env.get('DEEPSEEK_API_KEY');
-    if (!deepseekApiKey) {
-      console.error('DEEPSEEK_API_KEY not found in environment');
-      throw new Error('DeepSeek API key not configured');
+    const geminiApiKey = Deno.env.get('GEMINI_API_KEY');
+    if (!geminiApiKey) {
+      console.error('GEMINI_API_KEY not found in environment');
+      throw new Error('Gemini API key not configured');
     }
 
-    console.log('Using DeepSeek API via OpenRouter for chat completion');
+    console.log('Using Google Gemini 1.5 Flash API for chat completion');
 
-    // Get or create conversation record
-    let { data: conversation, error: fetchError } = await supabase
-      .from('ai_chat_conversations')
-      .select('*')
-      .eq('session_id', sessionId)
+    // Check cache first
+    const cacheKey = `${message.toLowerCase().trim()}`;
+    const { data: cachedResponse } = await supabase
+      .from('cached_responses')
+      .select('response_text')
+      .eq('query_hash', cacheKey)
       .single();
 
-    if (fetchError && fetchError.code !== 'PGRST116') {
-      console.error('Error fetching conversation:', fetchError);
-    }
+    let aiResponse = '';
 
-    // Build conversation history
-    let messages = [];
-    if (conversation?.conversation_data) {
-      messages = conversation.conversation_data as any[];
-    }
+    if (cachedResponse) {
+      console.log('Using cached response');
+      aiResponse = cachedResponse.response_text;
+    } else {
+      // Get or create conversation record
+      let { data: conversation, error: fetchError } = await supabase
+        .from('ai_chat_conversations')
+        .select('*')
+        .eq('session_id', sessionId)
+        .single();
 
-    // Add user message
-    messages.push({ role: 'user', content: message, timestamp: new Date().toISOString() });
+      if (fetchError && fetchError.code !== 'PGRST116') {
+        console.error('Error fetching conversation:', fetchError);
+      }
 
-    // Enhanced system prompt for travel assistance and lead generation
-    const systemPrompt = `You are an AI travel assistant for MyNomadSafariHolidays, specialized in helping customers plan their perfect trip within their budget.
+      // Build conversation history
+      let messages = [];
+      if (conversation?.conversation_data) {
+        messages = conversation.conversation_data as any[];
+      }
+
+      // Add user message
+      messages.push({ role: 'user', content: message, timestamp: new Date().toISOString() });
+
+      // Enhanced system prompt for travel assistance and lead generation
+      const systemPrompt = `You are an AI travel assistant for MyNomadSafariHolidays, specialized in helping customers plan their perfect trip within their budget.
 
 YOUR EXPERTISE:
 - Domestic destinations: Kerala, Rajasthan, Himachal, Goa, Kashmir, Ladakh, Uttarakhand, etc.
@@ -93,60 +107,67 @@ RESPONSE STYLE:
 - When you have enough information, offer WhatsApp connection for personalized service
 - Suggest getting a detailed itinerary PDF when appropriate
 
-Remember: You're here to help plan amazing trips within budget, not just collect information!`;
+Remember: You're here to help plan amazing trips within budget, not just collect information!
 
-    // Call DeepSeek API via OpenRouter
-    console.log('Calling DeepSeek API via OpenRouter...');
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${deepseekApiKey}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://mynomadsafariholidays.in',
-        'X-Title': 'MyNomadSafariHolidays Travel Assistant',
-      },
-      body: JSON.stringify({
-        model: 'deepseek/deepseek-r1',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          ...messages.slice(-10) // Keep last 10 messages for context
-        ],
-        temperature: 0.7,
-        max_tokens: 300,
-      }),
-    });
+User message: ${message}`;
 
-    console.log('DeepSeek API response status:', response.status);
+      // Call Google Gemini 1.5 Flash API
+      console.log('Calling Google Gemini 1.5 Flash API...');
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{ text: systemPrompt }]
+          }]
+        }),
+      });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('DeepSeek API error response:', errorText);
-      console.error('Response status:', response.status);
-      console.error('Response headers:', Object.fromEntries(response.headers.entries()));
-      
-      // Provide more specific error messages
-      if (response.status === 401) {
-        throw new Error('DeepSeek API authentication failed - please check API key');
-      } else if (response.status === 429) {
-        throw new Error('DeepSeek API rate limit exceeded - please try again in a moment');
-      } else if (response.status === 403) {
-        throw new Error('DeepSeek API access forbidden - please check your account permissions');
+      console.log('Gemini API response status:', response.status);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Gemini API error response:', errorText);
+        console.error('Response status:', response.status);
+        
+        // Provide more specific error messages
+        if (response.status === 401) {
+          throw new Error('Gemini API authentication failed - please check API key');
+        } else if (response.status === 429) {
+          throw new Error('Gemini API rate limit exceeded - please try again in a moment');
+        } else if (response.status === 403) {
+          throw new Error('Gemini API access forbidden - please check your account permissions');
+        }
+        
+        throw new Error(`Gemini API error (${response.status}): ${errorText}`);
       }
-      
-      throw new Error(`DeepSeek API error (${response.status}): ${errorText}`);
+
+      const data = await response.json();
+      console.log('Gemini API response received successfully');
+
+      // Parse JSON response using the specified path: $.candidates[0].content.parts[0].text
+      if (!data.candidates || !data.candidates[0] || !data.candidates[0].content || !data.candidates[0].content.parts || !data.candidates[0].content.parts[0]) {
+        console.error('Invalid Gemini API response format:', data);
+        throw new Error('Invalid response format from Gemini API');
+      }
+
+      aiResponse = data.candidates[0].content.parts[0].text;
+
+      // Cache the response
+      await supabase
+        .from('cached_responses')
+        .insert({
+          query_hash: cacheKey,
+          response_text: aiResponse,
+          api_source: 'gemini'
+        });
     }
-
-    const data = await response.json();
-    console.log('DeepSeek API response received successfully');
-
-    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-      console.error('Invalid DeepSeek API response format:', data);
-      throw new Error('Invalid response format from DeepSeek API');
-    }
-
-    const aiResponse = data.choices[0].message.content;
 
     // Add AI response to messages
+    const messages = conversation?.conversation_data as any[] || [];
+    messages.push({ role: 'user', content: message, timestamp: new Date().toISOString() });
     messages.push({ role: 'assistant', content: aiResponse, timestamp: new Date().toISOString() });
 
     // Enhanced lead information extraction
@@ -198,7 +219,7 @@ Remember: You're here to help plan amazing trips within budget, not just collect
       'kerala', 'rajasthan', 'himachal', 'goa', 'bali', 'dubai', 'thailand', 'singapore', 
       'kashmir', 'ladakh', 'manali', 'shimla', 'udaipur', 'jaipur', 'cochin', 'munnar',
       'maldives', 'sri lanka', 'nepal', 'bhutan', 'vietnam', 'malaysia', 'indonesia',
-      'uttarakhand', 'rishikesh', 'haridwar', 'darjeeling', 'ooty', 'kodaikanal'
+      'uttarakhand', 'rishikesh', 'haridwar', 'darjeeling', 'ooty', 'kodaikanal', 'bangalore'
     ];
     
     for (const dest of destinations) {
@@ -208,7 +229,7 @@ Remember: You're here to help plan amazing trips within budget, not just collect
       }
     }
 
-    // Extract travel dates
+    // Extract travel dates, adults/children count, budget, and special requests
     const datePatterns = [
       /(?:in|on)\s+(january|february|march|april|may|june|july|august|september|october|november|december)/i,
       /\b(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})\b/,
@@ -217,12 +238,11 @@ Remember: You're here to help plan amazing trips within budget, not just collect
     
     for (const pattern of datePatterns) {
       if (message.match(pattern)) {
-        updateData.travel_date = new Date().toISOString().split('T')[0]; // Placeholder
+        updateData.travel_date = new Date().toISOString().split('T')[0];
         break;
       }
     }
 
-    // Extract adults/children count
     const adultsMatch = message.match(/(\d+)\s*(?:adult|person|people)/i);
     if (adultsMatch) {
       updateData.adults = parseInt(adultsMatch[1]);
@@ -233,13 +253,11 @@ Remember: You're here to help plan amazing trips within budget, not just collect
       updateData.children = parseInt(childrenMatch[1]);
     }
 
-    // Extract budget information
     const budgetMatch = message.match(/budget.*?(\d+(?:,\d+)*(?:\.\d+)?)\s*(?:k|thousand|lakh|lakhs|rupees?|rs\.?|\₹)/i);
     if (budgetMatch) {
       updateData.budget_range = budgetMatch[0];
     }
 
-    // Extract special requests and package types
     const specialRequests = ['honeymoon', 'adventure', 'religious', 'family', 'luxury', 'budget', 'pilgrimage', 'wildlife', 'beach', 'mountain'];
     for (const request of specialRequests) {
       if (messageText.includes(request)) {
