@@ -128,35 +128,42 @@ function generateItineraryHTML(data: ItineraryRequest): string {
     <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 20px; }
         .header { text-align: center; border-bottom: 3px solid #2563eb; padding-bottom: 20px; margin-bottom: 30px; }
-        .logo { font-size: 28px; font-weight: bold; color: #2563eb; margin-bottom: 10px; }
+        .logo { font-size: 32px; font-weight: bold; color: #2563eb; margin-bottom: 10px; }
+        .company-tagline { font-size: 16px; color: #666; font-style: italic; margin-bottom: 15px; }
         .company-info { font-size: 14px; color: #666; }
         .customer-info { background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 30px; }
         .itinerary-section { margin-bottom: 30px; }
         .section-title { font-size: 20px; font-weight: bold; color: #2563eb; border-bottom: 2px solid #93c5fd; padding-bottom: 5px; margin-bottom: 15px; }
         .day-item { background: white; border: 1px solid #e2e8f0; border-radius: 6px; padding: 15px; margin-bottom: 15px; }
         .day-title { font-weight: bold; color: #1e40af; margin-bottom: 8px; }
-        .cost-breakdown { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 20px; }
+        .cost-breakdown { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 20px; margin-bottom: 30px; }
         .cost-item { display: flex; justify-content: space-between; margin-bottom: 8px; }
         .total-cost { font-size: 18px; font-weight: bold; color: #2563eb; border-top: 2px solid #2563eb; padding-top: 10px; margin-top: 15px; }
         .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e2e8f0; font-size: 12px; color: #666; }
         .contact-info { background: #fef3c7; border: 1px solid #fbbf24; border-radius: 6px; padding: 15px; margin: 20px 0; }
+        .confirmation-section { background: #dcfce7; border: 1px solid #16a34a; border-radius: 8px; padding: 20px; margin: 20px 0; text-align: center; }
+        .confirmation-title { font-size: 18px; font-weight: bold; color: #15803d; margin-bottom: 10px; }
         table { width: 100%; border-collapse: collapse; margin: 15px 0; }
         th, td { padding: 10px; text-align: left; border-bottom: 1px solid #e2e8f0; }
         th { background-color: #f1f5f9; font-weight: bold; }
+        .company-contacts { background: #f1f5f9; border-radius: 8px; padding: 20px; margin: 20px 0; }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px; }
+        .contact-item { text-align: center; }
+        .contact-label { font-weight: bold; color: #2563eb; margin-bottom: 5px; }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="logo">🌍 MyNomadSafariHolidays</div>
+        <div class="company-tagline">Creating Unforgettable Travel Experiences Within Your Budget</div>
         <div class="company-info">
-            Your Trusted Travel Partner<br>
-            📧 info@mynomadsafariholidays.in | 📞 +91-XXXXXXXXXX<br>
-            🌐 www.mynomadsafariholidays.in
+            Your Trusted Travel Partner Since Years<br>
+            Domestic & International Tour Specialists
         </div>
     </div>
 
     <div class="customer-info">
-        <h2>Travel Itinerary</h2>
+        <h2>Travel Itinerary & Cost Estimate</h2>
         <table>
             <tr><td><strong>Customer Name:</strong></td><td>${data.customerName}</td></tr>
             <tr><td><strong>Email:</strong></td><td>${data.email}</td></tr>
@@ -170,43 +177,10 @@ function generateItineraryHTML(data: ItineraryRequest): string {
         </table>
     </div>
 
-    <div class="itinerary-section">
-        <div class="section-title">📋 Detailed Itinerary</div>
-        ${generateDayWiseItinerary(data.destination, travelDays)}
-    </div>
-
-    <div class="itinerary-section">
-        <div class="section-title">🏨 Inclusions</div>
-        <div class="day-item">
-            <ul>
-                <li>Accommodation in ${data.hotelCategory} hotels</li>
-                <li>Daily breakfast</li>
-                <li>All transfers and sightseeing by private vehicle</li>
-                <li>Professional tour guide</li>
-                <li>All entrance fees to monuments/attractions</li>
-                <li>24/7 customer support</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="itinerary-section">
-        <div class="section-title">❌ Exclusions</div>
-        <div class="day-item">
-            <ul>
-                <li>Flight tickets (can be arranged separately)</li>
-                <li>Lunch and dinner (unless specified)</li>
-                <li>Personal expenses and shopping</li>
-                <li>Travel insurance</li>
-                <li>Camera fees at monuments</li>
-                <li>Any services not mentioned in inclusions</li>
-            </ul>
-        </div>
-    </div>
-
     <div class="cost-breakdown">
-        <div class="section-title">💰 Cost Breakdown</div>
+        <div class="section-title">💰 Package Cost Breakdown</div>
         <div class="cost-item">
-            <span>Package Cost (${data.adults} Adults${data.children > 0 ? ' + ' + data.children + ' Children' : ''}):</span>
+            <span>Base Package Cost (${data.adults} Adults${data.children > 0 ? ' + ' + data.children + ' Children' : ''}):</span>
             <span><strong>₹${data.totalCost.toLocaleString()}</strong></span>
         </div>
         <div class="cost-item">
@@ -215,9 +189,47 @@ function generateItineraryHTML(data: ItineraryRequest): string {
         </div>
         <div class="total-cost">
             <div class="cost-item">
-                <span>Total Package Cost:</span>
+                <span>Total Package Investment:</span>
                 <span>₹${data.totalCost.toLocaleString()}</span>
             </div>
+        </div>
+        <p style="margin-top: 15px; font-size: 14px; color: #666;">
+            * This is an estimated cost based on your selected preferences. Final pricing may vary based on availability and seasonal factors.
+        </p>
+    </div>
+
+    <div class="itinerary-section">
+        <div class="section-title">📋 Detailed Day-wise Itinerary</div>
+        ${generateDayWiseItinerary(data.destination, travelDays)}
+    </div>
+
+    <div class="itinerary-section">
+        <div class="section-title">🏨 Package Inclusions</div>
+        <div class="day-item">
+            <ul>
+                <li>Accommodation in ${data.hotelCategory} hotels with daily breakfast</li>
+                <li>All transfers and sightseeing by private air-conditioned vehicle</li>
+                <li>Professional English-speaking tour guide</li>
+                <li>All entrance fees to monuments and attractions as per itinerary</li>
+                <li>Complimentary airport transfers</li>
+                <li>24/7 customer support throughout your journey</li>
+                <li>All applicable taxes and service charges</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="itinerary-section">
+        <div class="section-title">❌ Package Exclusions</div>
+        <div class="day-item">
+            <ul>
+                <li>Domestic/International flight tickets (can be arranged separately)</li>
+                <li>Lunch and dinner (unless specifically mentioned)</li>
+                <li>Personal expenses, laundry, telephone calls, and tips</li>
+                <li>Travel insurance (highly recommended)</li>
+                <li>Camera fees at monuments (where applicable)</li>
+                <li>Any activities not mentioned in the itinerary</li>
+                <li>GST (as applicable)</li>
+            </ul>
         </div>
     </div>
 
@@ -230,22 +242,51 @@ function generateItineraryHTML(data: ItineraryRequest): string {
     </div>
     ` : ''}
 
+    <div class="confirmation-section">
+        <div class="confirmation-title">Ready to Confirm Your Dream Trip?</div>
+        <p>If you are satisfied with this itinerary and costing, please send us your confirmation email at:</p>
+        <h3 style="color: #2563eb; margin: 10px 0;">info@mynomadsafariholidays.in</h3>
+        <p>Our travel experts will contact you within 2 hours to finalize all arrangements and process your booking.</p>
+    </div>
+
+    <div class="company-contacts">
+        <div class="section-title">📞 Contact Our Travel Experts</div>
+        <div class="contact-grid">
+            <div class="contact-item">
+                <div class="contact-label">Delhi Office</div>
+                <div>📱 WhatsApp: +91-9968682200</div>
+                <div>📧 Email: info@mynomadsafariholidays.in</div>
+            </div>
+            <div class="contact-item">
+                <div class="contact-label">Mumbai Office</div>
+                <div>📱 WhatsApp: +91-7042910449</div>
+                <div>📧 Email: info@mynomadsafariholidays.in</div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 15px;">
+            <strong>Website:</strong> www.mynomadsafariholidays.in
+        </div>
+    </div>
+
     <div class="contact-info">
-        <strong>🤝 Next Steps:</strong><br>
-        Our travel expert will contact you within 24 hours to discuss customizations and finalize your booking.
-        For immediate assistance, reach us at <strong>info@mynomadsafariholidays.in</strong> or WhatsApp us!
+        <strong>🤝 What Happens Next?</strong><br>
+        1. Send confirmation email to info@mynomadsafariholidays.in<br>
+        2. Our expert will call you within 2 hours<br>
+        3. Finalize dates, customize itinerary if needed<br>
+        4. Make advance payment to secure your booking<br>
+        5. Receive complete travel documents before departure
     </div>
 
     <div class="footer">
-        <p><strong>MyNomadSafariHolidays</strong> - Creating Unforgettable Travel Experiences</p>
-        <p>This is a preliminary itinerary. Final details may vary based on availability and customizations.</p>
+        <p><strong>MyNomadSafariHolidays</strong> - Your Dreams, Our Expertise, Perfect Journeys</p>
+        <p>This is a preliminary itinerary and cost estimate. Final details and pricing will be confirmed upon booking.</p>
         <p>Generated on: ${new Date().toLocaleDateString('en-IN', { 
             year: 'numeric', 
             month: 'long', 
             day: 'numeric', 
             hour: '2-digit', 
             minute: '2-digit' 
-        })}</p>
+        })} | Document ID: ${data.sessionId || 'PDF-' + Date.now()}</p>
     </div>
 </body>
 </html>`;

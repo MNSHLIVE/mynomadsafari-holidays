@@ -5,11 +5,12 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
-import { MessageCircle, Send, X, Calculator, FileText, Phone } from 'lucide-react';
+import { MessageCircle, Send, X, Calculator, FileText, Phone, User } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useIsMobile } from '@/hooks/use-mobile';
 import EmbeddedCalculator from './embedded-calculator';
+import ContactForm from './contact-form';
 
 interface Message {
   id: string;
@@ -29,6 +30,8 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId] = useState(() => `session_${Date.now()}_${Math.random()}`);
   const [showCalculator, setShowCalculator] = useState(false);
+  const [showContactForm, setShowContactForm] = useState(false);
+  const [userDetails, setUserDetails] = useState<{ name: string; email: string; phone: string } | null>(null);
   const [calculatedData, setCalculatedData] = useState<any>(null);
   const [showQuickReplies, setShowQuickReplies] = useState(true);
   const isMobile = useIsMobile();
@@ -126,6 +129,19 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
   const sendTextMessage = () => sendMessage(inputMessage);
   const sendQuickReply = (reply: string) => sendMessage(reply);
 
+  const handleContactSubmit = (contactData: { name: string; email: string; phone: string }) => {
+    setUserDetails(contactData);
+    setShowContactForm(false);
+    
+    const contactMessage: Message = {
+      id: (Date.now() + 1).toString(),
+      type: 'assistant',
+      content: `Thank you ${contactData.name}! I have your contact details. Now you can use the Trip Calculator to get instant cost estimates for your dream destination!`,
+      timestamp: new Date()
+    };
+    setMessages(prev => [...prev, contactMessage]);
+  };
+
   const handleCalculatorResult = (data: any) => {
     setCalculatedData(data);
     setShowCalculator(false);
@@ -150,13 +166,20 @@ This includes accommodation, meals, transfers, and sightseeing. Would you like m
   };
 
   const generateItineraryPDF = async () => {
-    if (!calculatedData) return;
+    if (!calculatedData || !userDetails) {
+      if (!userDetails) {
+        setShowContactForm(true);
+        return;
+      }
+      toast.error('Please calculate trip cost first');
+      return;
+    }
     
     try {
       const itineraryData = {
-        customerName: 'Guest Traveler',
-        email: 'guest@example.com',
-        phone: '',
+        customerName: userDetails.name,
+        email: userDetails.email,
+        phone: userDetails.phone,
         destination: calculatedData.destination,
         departureDate: calculatedData.departureDate,
         returnDate: calculatedData.returnDate,
@@ -197,6 +220,15 @@ Is there anything else you'd like to customize in your trip?`,
     }
   };
 
+  const openWhatsApp = (office: 'delhi' | 'mumbai') => {
+    const phoneNumber = office === 'delhi' ? "+919968682200" : "+917042910449";
+    const message = userDetails ? 
+      `Hi! I'm ${userDetails.name}. I'd like to discuss my ${calculatedData?.destination || 'travel'} trip. My email: ${userDetails.email}, Phone: ${userDetails.phone}` :
+      "Hi! I'd like to discuss travel packages with your executive.";
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank");
+  };
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -223,7 +255,14 @@ Is there anything else you'd like to customize in your trip?`,
       </CardHeader>
       
       <CardContent className="flex-1 flex flex-col p-0 min-h-0 overflow-hidden">
-        {showCalculator ? (
+        {showContactForm ? (
+          <div className="p-3">
+            <ContactForm 
+              onSubmit={handleContactSubmit}
+              onClose={() => setShowContactForm(false)}
+            />
+          </div>
+        ) : showCalculator ? (
           <div className="p-3">
             <EmbeddedCalculator 
               onCalculate={handleCalculatorResult}
@@ -268,8 +307,19 @@ Is there anything else you'd like to customize in your trip?`,
                 {/* Action buttons */}
                 <div className="space-y-2">
                   <div className="flex gap-2 flex-wrap">
+                    {!userDetails && (
+                      <Button 
+                        onClick={() => setShowContactForm(true)}
+                        size="sm"
+                        className="bg-blue-600 hover:bg-blue-700 text-xs"
+                      >
+                        <User className="h-3 w-3 mr-1" />
+                        Your Details
+                      </Button>
+                    )}
+                    
                     <Button 
-                      onClick={() => setShowCalculator(true)}
+                      onClick={() => userDetails ? setShowCalculator(true) : setShowContactForm(true)}
                       size="sm"
                       variant="outline"
                       className="text-xs"
@@ -278,7 +328,7 @@ Is there anything else you'd like to customize in your trip?`,
                       Trip Calculator
                     </Button>
                     
-                    {calculatedData && (
+                    {calculatedData && userDetails && (
                       <Button 
                         onClick={generateItineraryPDF}
                         size="sm"
@@ -288,6 +338,26 @@ Is there anything else you'd like to customize in your trip?`,
                         Generate PDF
                       </Button>
                     )}
+                  </div>
+                  
+                  {/* WhatsApp buttons */}
+                  <div className="flex gap-2 flex-wrap">
+                    <Button 
+                      onClick={() => openWhatsApp('delhi')}
+                      size="sm"
+                      className="bg-green-500 hover:bg-green-600 text-xs"
+                    >
+                      <Phone className="h-3 w-3 mr-1" />
+                      Delhi Executive
+                    </Button>
+                    <Button 
+                      onClick={() => openWhatsApp('mumbai')}
+                      size="sm"
+                      className="bg-green-500 hover:bg-green-600 text-xs"
+                    >
+                      <Phone className="h-3 w-3 mr-1" />
+                      Mumbai Executive
+                    </Button>
                   </div>
                 </div>
 
