@@ -5,10 +5,11 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
-import { MessageCircle, Send, X, User, Phone, FileText, MapPin } from 'lucide-react';
+import { MessageCircle, Send, X, Calculator, FileText, Phone } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useIsMobile } from '@/hooks/use-mobile';
+import EmbeddedCalculator from './embedded-calculator';
 
 interface Message {
   id: string;
@@ -27,9 +28,8 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId] = useState(() => `session_${Date.now()}_${Math.random()}`);
-  const [showWhatsAppOption, setShowWhatsAppOption] = useState(false);
-  const [showItineraryForm, setShowItineraryForm] = useState(false);
-  const [leadInfo, setLeadInfo] = useState<any>(null);
+  const [showCalculator, setShowCalculator] = useState(false);
+  const [calculatedData, setCalculatedData] = useState<any>(null);
   const [showQuickReplies, setShowQuickReplies] = useState(true);
   const isMobile = useIsMobile();
   
@@ -46,7 +46,6 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
     "Budget travel options"
   ];
 
-  // Auto-scroll to bottom when new messages arrive
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -61,40 +60,11 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
       setMessages([{
         id: '1',
         type: 'assistant',
-        content: 'Hello! I\'m your personal travel assistant at MyNomadSafariHolidays. I\'m here to help you plan your perfect trip within your budget! 🌟\n\nWhether you\'re dreaming of Kerala\'s backwaters, Rajasthan\'s palaces, or international destinations like Bali and Dubai, I can help you find the perfect package.\n\nTo get started, could you tell me your name and where you\'d like to travel?',
+        content: 'Hello! I\'m your personal travel assistant at MyNomadSafariHolidays. I\'m here to help you plan your perfect trip within your budget! 🌟\n\nWhether you\'re dreaming of Kerala\'s backwaters, Rajasthan\'s palaces, or international destinations like Bali and Dubai, I can help you find the perfect package.\n\nTo get started, tell me where you\'d like to travel and I can help you with instant cost calculations!',
         timestamp: new Date()
       }]);
     }
   }, []);
-
-  // Check for lead completion and show options
-  useEffect(() => {
-    const checkLeadCompletion = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('ai_chat_conversations')
-          .select('*')
-          .eq('session_id', sessionId)
-          .single();
-
-        if (data && !error) {
-          setLeadInfo(data);
-          
-          // Show options if we have key information
-          if (data.visitor_name && (data.visitor_email || data.visitor_phone) && data.destination) {
-            setShowWhatsAppOption(true);
-            setShowItineraryForm(true);
-          }
-        }
-      } catch (error) {
-        console.error('Error checking lead completion:', error);
-      }
-    };
-
-    if (messages.length > 4) {
-      checkLeadCompletion();
-    }
-  }, [messages, sessionId]);
 
   const sendMessage = async (messageText: string) => {
     if (!messageText.trim() || isLoading) return;
@@ -139,13 +109,12 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
       }
     } catch (error) {
       console.error('Error sending message:', error);
-      toast.error('Having trouble connecting. Please try again or contact us via WhatsApp.');
+      toast.error('Having trouble connecting. Please try again.');
       
-      // Add helpful fallback message
       const fallbackMessage: Message = {
         id: (Date.now() + 2).toString(),
         type: 'assistant',
-        content: 'I\'m here to help plan your perfect trip! I can assist with destinations like Kerala, Rajasthan, Goa, Bali, Dubai, and many more. What destination interests you, and what\'s your budget range?',
+        content: 'I\'m here to help plan your perfect trip! I can assist with destinations like Kerala, Rajasthan, Goa, Bali, Dubai, and many more. Try our Trip Calculator for instant cost estimates!',
         timestamp: new Date()
       };
       setMessages(prev => [...prev, fallbackMessage]);
@@ -157,67 +126,75 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
   const sendTextMessage = () => sendMessage(inputMessage);
   const sendQuickReply = (reply: string) => sendMessage(reply);
 
-  const handleWhatsAppConnect = () => {
-    const message = `Hi! I was chatting with your AI assistant about travel plans. Here are my details:
+  const handleCalculatorResult = (data: any) => {
+    setCalculatedData(data);
+    setShowCalculator(false);
     
-Name: ${leadInfo?.visitor_name || 'Not provided'}
-Email: ${leadInfo?.visitor_email || 'Not provided'}
-Phone: ${leadInfo?.visitor_phone || 'Not provided'}
-Destination: ${leadInfo?.destination || 'Not specified'}
-Travel Date: ${leadInfo?.travel_date || 'Not specified'}
-Adults: ${leadInfo?.adults || 1}
-Children: ${leadInfo?.children || 0}
-Special Requests: ${leadInfo?.special_requests || 'None'}
+    const costMessage = `Based on your ${data.destination} trip for ${data.adults} adults${data.children > 0 ? ` and ${data.children} children` : ''} from ${data.departureDate} to ${data.returnDate}:
 
-Please help me with a personalized travel package!`;
+💰 **Total Cost**: ₹${data.totalCost.toLocaleString()}
+👤 **Per Person**: ₹${data.perPersonCost.toLocaleString()}
+🏨 **Hotel Category**: ${data.hotelCategory}
+📦 **Package Type**: ${data.packageType}
 
-    const whatsappUrl = `https://wa.me/+919876543210?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+This includes accommodation, meals, transfers, and sightseeing. Would you like me to generate a detailed itinerary PDF with this costing?`;
+
+    const calculatorMessage: Message = {
+      id: (Date.now() + 3).toString(),
+      type: 'assistant',
+      content: costMessage,
+      timestamp: new Date()
+    };
     
-    supabase
-      .from('ai_chat_conversations')
-      .update({ whatsapp_handoff: true, lead_status: 'whatsapp_connected' })
-      .eq('session_id', sessionId)
-      .then(() => {
-        toast.success('Connected to WhatsApp! Our team will assist you shortly.');
-      });
+    setMessages(prev => [...prev, calculatorMessage]);
   };
 
-  const handleItineraryRequest = () => {
-    if (!leadInfo) return;
+  const generateItineraryPDF = async () => {
+    if (!calculatedData) return;
     
-    const itineraryData = {
-      customerName: leadInfo.visitor_name || 'Guest',
-      email: leadInfo.visitor_email || '',
-      phone: leadInfo.visitor_phone || '',
-      destination: leadInfo.destination || 'India',
-      departureDate: leadInfo.travel_date || new Date().toISOString().split('T')[0],
-      returnDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-      adults: leadInfo.adults || 2,
-      children: leadInfo.children || 0,
-      totalCost: 45000,
-      perPersonCost: 22500,
-      hotelCategory: '3-Star',
-      packageType: leadInfo.package_type || 'Standard',
-      specialRequests: leadInfo.special_requests || '',
-      sessionId: sessionId
-    };
+    try {
+      const itineraryData = {
+        customerName: 'Guest Traveler',
+        email: 'guest@example.com',
+        phone: '',
+        destination: calculatedData.destination,
+        departureDate: calculatedData.departureDate,
+        returnDate: calculatedData.returnDate,
+        adults: calculatedData.adults,
+        children: calculatedData.children,
+        totalCost: calculatedData.totalCost,
+        perPersonCost: calculatedData.perPersonCost,
+        hotelCategory: calculatedData.hotelCategory,
+        packageType: calculatedData.packageType,
+        specialRequests: '',
+        sessionId: sessionId
+      };
 
-    supabase.functions.invoke('generate-itinerary-pdf', {
-      body: itineraryData
-    }).then(({ data, error }) => {
+      const { data, error } = await supabase.functions.invoke('generate-itinerary-pdf', {
+        body: itineraryData
+      });
+
       if (error) {
         console.error('Error generating itinerary:', error);
         toast.error('Failed to generate itinerary. Please try again.');
       } else {
-        toast.success('Itinerary sent to your email! Check your inbox.');
+        toast.success('Itinerary generated! Check your email for the PDF.');
         
-        supabase
-          .from('ai_chat_conversations')
-          .update({ lead_status: 'itinerary_sent' })
-          .eq('session_id', sessionId);
+        const pdfMessage: Message = {
+          id: (Date.now() + 4).toString(),
+          type: 'assistant',
+          content: `Perfect! I've generated your detailed ${calculatedData.destination} itinerary with the calculated costing. The PDF includes day-wise activities, inclusions, exclusions, and the total cost breakdown of ₹${calculatedData.totalCost.toLocaleString()}.
+
+Is there anything else you'd like to customize in your trip?`,
+          timestamp: new Date()
+        };
+        
+        setMessages(prev => [...prev, pdfMessage]);
       }
-    });
+    } catch (error) {
+      console.error('PDF generation error:', error);
+      toast.error('Failed to generate PDF. Please try again.');
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -246,133 +223,120 @@ Please help me with a personalized travel package!`;
       </CardHeader>
       
       <CardContent className="flex-1 flex flex-col p-0 min-h-0 overflow-hidden">
-        <ScrollArea className="flex-1 p-3 overflow-y-auto" ref={scrollAreaRef}>
-          <div className="space-y-3 pb-4">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div
-                  className={`${isMobile ? 'max-w-[90%]' : 'max-w-[85%]'} p-3 rounded-lg shadow-sm ${
-                    message.type === 'user'
-                      ? 'bg-blue-600 text-white rounded-br-sm text-sm'
-                      : 'bg-gray-100 text-gray-800 rounded-bl-sm text-sm'
-                  }`}
-                >
-                  <div className="whitespace-pre-wrap break-words leading-relaxed">
-                    {message.content}
-                  </div>
-                </div>
-              </div>
-            ))}
-            
-            {isLoading && (
-              <div className="flex justify-start">
-                <div className="bg-gray-100 p-3 rounded-lg text-sm rounded-bl-sm shadow-sm">
-                  <div className="flex space-x-1">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Quick Replies */}
-            {showQuickReplies && messages.length <= 2 && (
-              <div className="space-y-2">
-                <p className="text-xs text-gray-600 px-1">Quick suggestions:</p>
-                <div className="flex flex-wrap gap-2">
-                  {quickReplies.map((reply) => (
-                    <Button
-                      key={reply}
-                      variant="outline"
-                      size="sm"
-                      onClick={() => sendQuickReply(reply)}
-                      className="text-xs px-2 py-1 h-auto rounded-full"
+        {showCalculator ? (
+          <div className="p-3">
+            <EmbeddedCalculator 
+              onCalculate={handleCalculatorResult}
+              onClose={() => setShowCalculator(false)}
+            />
+          </div>
+        ) : (
+          <>
+            <ScrollArea className="flex-1 p-3 overflow-y-auto" ref={scrollAreaRef}>
+              <div className="space-y-3 pb-4">
+                {messages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div
+                      className={`${isMobile ? 'max-w-[90%]' : 'max-w-[85%]'} p-3 rounded-lg shadow-sm ${
+                        message.type === 'user'
+                          ? 'bg-blue-600 text-white rounded-br-sm text-sm'
+                          : 'bg-gray-100 text-gray-800 rounded-bl-sm text-sm'
+                      }`}
                     >
-                      {reply}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            )}
+                      <div className="whitespace-pre-wrap break-words leading-relaxed">
+                        {message.content}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                
+                {isLoading && (
+                  <div className="flex justify-start">
+                    <div className="bg-gray-100 p-3 rounded-lg text-sm rounded-bl-sm shadow-sm">
+                      <div className="flex space-x-1">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                        <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
-            {/* Action buttons */}
-            {(showWhatsAppOption || showItineraryForm) && (
-              <div className="space-y-2">
-                {showItineraryForm && (
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-center shadow-sm">
-                    <p className="text-sm text-green-800 mb-2 flex items-center justify-center gap-2">
-                      <FileText className="h-4 w-4" />
-                      Get your detailed itinerary with pricing!
-                    </p>
+                {/* Action buttons */}
+                <div className="space-y-2">
+                  <div className="flex gap-2 flex-wrap">
                     <Button 
-                      onClick={handleItineraryRequest}
-                      className="bg-green-600 hover:bg-green-700 text-white text-xs mr-2"
+                      onClick={() => setShowCalculator(true)}
                       size="sm"
+                      variant="outline"
+                      className="text-xs"
                     >
-                      📧 Send Itinerary
+                      <Calculator className="h-3 w-3 mr-1" />
+                      Trip Calculator
                     </Button>
+                    
+                    {calculatedData && (
+                      <Button 
+                        onClick={generateItineraryPDF}
+                        size="sm"
+                        className="bg-green-600 hover:bg-green-700 text-xs"
+                      >
+                        <FileText className="h-3 w-3 mr-1" />
+                        Generate PDF
+                      </Button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Quick Replies */}
+                {showQuickReplies && messages.length <= 2 && (
+                  <div className="space-y-2">
+                    <p className="text-xs text-gray-600 px-1">Quick suggestions:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {quickReplies.map((reply) => (
+                        <Button
+                          key={reply}
+                          variant="outline"
+                          size="sm"
+                          onClick={() => sendQuickReply(reply)}
+                          className="text-xs px-2 py-1 h-auto rounded-full"
+                        >
+                          {reply}
+                        </Button>
+                      ))}
+                    </div>
                   </div>
                 )}
                 
-                {showWhatsAppOption && (
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-center shadow-sm">
-                    <p className="text-sm text-blue-800 mb-2 flex items-center justify-center gap-2">
-                      <Phone className="h-4 w-4" />
-                      Ready for personalized assistance?
-                    </p>
-                    <Button 
-                      onClick={handleWhatsAppConnect}
-                      className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
-                      size="sm"
-                    >
-                      <Phone className="h-3 w-3 mr-1" />
-                      Connect via WhatsApp
-                    </Button>
-                  </div>
-                )}
+                <div ref={messagesEndRef} />
               </div>
-            )}
-            
-            <div ref={messagesEndRef} />
-          </div>
-        </ScrollArea>
+            </ScrollArea>
 
-        <div className="border-t bg-gray-50 p-3 flex-shrink-0">
-          {leadInfo && (
-            <div className="mb-2 p-2 bg-blue-50 rounded text-xs border border-blue-200">
-              <div className="flex items-center gap-1 text-blue-700">
-                <User className="h-3 w-3 flex-shrink-0" />
-                <span className="truncate">
-                  {leadInfo.visitor_name || 'Name pending'} 
-                  {leadInfo.destination && ` • ${leadInfo.destination}`}
-                </span>
+            <div className="border-t bg-gray-50 p-3 flex-shrink-0">
+              <div className="flex gap-2">
+                <Input
+                  placeholder={isMobile ? "Type your message..." : "Ask about destinations, get quotes..."}
+                  value={inputMessage}
+                  onChange={(e) => setInputMessage(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  disabled={isLoading}
+                  className={`flex-1 ${isMobile ? 'text-base' : 'text-sm'}`}
+                />
+                <Button 
+                  onClick={sendTextMessage} 
+                  disabled={isLoading || !inputMessage.trim()}
+                  className="bg-blue-600 hover:bg-blue-700 flex-shrink-0"
+                  size={isMobile ? "default" : "sm"}
+                >
+                  <Send className="h-4 w-4" />
+                </Button>
               </div>
             </div>
-          )}
-          
-          <div className="flex gap-2">
-            <Input
-              placeholder={isMobile ? "Type your message..." : "Ask about destinations, packages, dates..."}
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              onKeyPress={handleKeyPress}
-              disabled={isLoading}
-              className={`flex-1 ${isMobile ? 'text-base' : 'text-sm'}`}
-            />
-            <Button 
-              onClick={sendTextMessage} 
-              disabled={isLoading || !inputMessage.trim()}
-              className="bg-blue-600 hover:bg-blue-700 flex-shrink-0"
-              size={isMobile ? "default" : "sm"}
-            >
-              <Send className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
+          </>
+        )}
       </CardContent>
     </Card>
   );

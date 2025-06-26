@@ -67,8 +67,8 @@ serve(async (req) => {
       // Add user message
       messages.push({ role: 'user', content: message, timestamp: new Date().toISOString() });
 
-      // Enhanced system prompt for travel assistance and lead generation
-      const systemPrompt = `You are an AI travel assistant for MyNomadSafariHolidays, specialized in helping customers plan their perfect trip within their budget.
+      // Enhanced system prompt for travel assistance
+      const systemPrompt = `You are an AI travel assistant for MyNomadSafariHolidays, specialized in creating perfect travel experiences within budget.
 
 YOUR EXPERTISE:
 - Domestic destinations: Kerala, Rajasthan, Himachal, Goa, Kashmir, Ladakh, Uttarakhand, etc.
@@ -78,36 +78,38 @@ YOUR EXPERTISE:
 
 CONVERSATION GOALS:
 1. Help customers plan their ideal trip within budget
-2. Naturally collect key information during conversation:
-   - Customer name and contact details
+2. Guide them to use our Trip Calculator for accurate costing
+3. Collect trip details naturally during conversation:
    - Preferred destination and travel dates
    - Number of travelers (adults/children)
    - Budget range and special requirements
-3. Provide helpful travel advice and recommendations
-4. When you have sufficient information, offer to connect them with our travel experts
+4. Provide helpful travel advice and recommendations
+5. Offer to generate detailed itinerary with costing when ready
 
 CURRENT CUSTOMER INFO:
 ${conversation ? `
-Name: ${conversation.visitor_name || 'Not provided'}
-Email: ${conversation.visitor_email || 'Not provided'}
-Phone: ${conversation.visitor_phone || 'Not provided'}
 Travel Date: ${conversation.travel_date || 'Not provided'}
 Destination: ${conversation.destination || 'Not provided'}
 Adults: ${conversation.adults || 'Not specified'}
 Children: ${conversation.children || 'Not specified'}
 Special Requests: ${conversation.special_requests || 'None mentioned'}
-` : 'New conversation - gathering customer details'}
+` : 'New conversation - gathering trip details'}
 
 RESPONSE STYLE:
 - Be warm, friendly, and genuinely helpful
-- Ask natural questions (not like a form)
-- Show your travel expertise
+- Ask natural questions about their travel preferences
+- Show your travel expertise with specific recommendations
 - Keep responses concise but informative (max 150 words)
-- Always end with a relevant question to keep the conversation flowing
-- When you have enough information, offer WhatsApp connection for personalized service
-- Suggest getting a detailed itinerary PDF when appropriate
+- Guide users to our Trip Calculator for accurate pricing
+- Always end with a relevant question to keep conversation flowing
+- When you have trip details, offer to create detailed itinerary PDF
+- Mention that our Trip Calculator gives instant cost estimates
 
-Remember: You're here to help plan amazing trips within budget, not just collect information!
+TRIP CALCULATOR GUIDANCE:
+When users ask about costs, guide them to use our Trip Calculator:
+"I recommend using our Trip Calculator for accurate cost estimates. You can find it on our website - it gives instant pricing for domestic and international tours based on your specific requirements like destination, dates, number of travelers, and hotel category. Would you like me to help you gather the details needed for the calculator?"
+
+Remember: You're here to help plan amazing trips within budget and guide users to our tools for accurate pricing!
 
 User message: ${message}`;
 
@@ -132,7 +134,6 @@ User message: ${message}`;
         console.error('Gemini API error response:', errorText);
         console.error('Response status:', response.status);
         
-        // Provide more specific error messages
         if (response.status === 401) {
           throw new Error('Gemini API authentication failed - please check API key');
         } else if (response.status === 429) {
@@ -147,7 +148,6 @@ User message: ${message}`;
       const data = await response.json();
       console.log('Gemini API response received successfully');
 
-      // Parse JSON response using the specified path: $.candidates[0].content.parts[0].text
       if (!data.candidates || !data.candidates[0] || !data.candidates[0].content || !data.candidates[0].content.parts || !data.candidates[0].content.parts[0]) {
         console.error('Invalid Gemini API response format:', data);
         throw new Error('Invalid response format from Gemini API');
@@ -170,51 +170,14 @@ User message: ${message}`;
     messages.push({ role: 'user', content: message, timestamp: new Date().toISOString() });
     messages.push({ role: 'assistant', content: aiResponse, timestamp: new Date().toISOString() });
 
-    // Enhanced lead information extraction
+    // Extract trip information
     const messageText = message.toLowerCase();
     const updateData: any = {
       conversation_data: messages,
       updated_at: new Date().toISOString()
     };
 
-    // Extract name (improved patterns)
-    if (messageText.includes('my name is') || messageText.includes('i am') || messageText.includes('call me') || messageText.includes('i\'m')) {
-      const namePatterns = [
-        /(?:my name is|i am|call me|i'm)\s+([a-zA-Z\s]+)/i,
-        /(?:myself|hi,?\s+i'm|hello,?\s+i'm)\s+([a-zA-Z\s]+)/i
-      ];
-      
-      for (const pattern of namePatterns) {
-        const nameMatch = message.match(pattern);
-        if (nameMatch) {
-          updateData.visitor_name = nameMatch[1].trim();
-          break;
-        }
-      }
-    }
-
-    // Extract email
-    const emailMatch = message.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/);
-    if (emailMatch) {
-      updateData.visitor_email = emailMatch[0];
-    }
-
-    // Extract phone (improved patterns)
-    const phonePatterns = [
-      /\+?\d{1,3}[-.\s]?\(?\d{3,4}\)?[-.\s]?\d{3,4}[-.\s]?\d{3,4}/,
-      /\b\d{10}\b/,
-      /\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b/
-    ];
-    
-    for (const pattern of phonePatterns) {
-      const phoneMatch = message.match(pattern);
-      if (phoneMatch) {
-        updateData.visitor_phone = phoneMatch[0];
-        break;
-      }
-    }
-
-    // Extract destination (expanded list)
+    // Extract destination
     const destinations = [
       'kerala', 'rajasthan', 'himachal', 'goa', 'bali', 'dubai', 'thailand', 'singapore', 
       'kashmir', 'ladakh', 'manali', 'shimla', 'udaipur', 'jaipur', 'cochin', 'munnar',
@@ -229,7 +192,7 @@ User message: ${message}`;
       }
     }
 
-    // Extract travel dates, adults/children count, budget, and special requests
+    // Extract travel dates, adults/children count, budget
     const datePatterns = [
       /(?:in|on)\s+(january|february|march|april|may|june|july|august|september|october|november|december)/i,
       /\b(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})\b/,
@@ -297,20 +260,13 @@ User message: ${message}`;
 
   } catch (error) {
     console.error('Error in ai-chat function:', error);
-    console.error('Error details:', {
-      message: error.message,
-      stack: error.stack,
-      name: error.name
-    });
     
-    // Return a helpful fallback response with error context
-    let fallbackResponse = "I'm here to help you plan your perfect trip! I can assist you with destinations like Kerala, Rajasthan, Goa, Bali, Dubai, and many more. What destination are you interested in exploring, and what's your travel budget?";
+    let fallbackResponse = "I'm here to help you plan your perfect trip! I can assist you with destinations like Kerala, Rajasthan, Goa, Bali, Dubai, and many more. For accurate pricing, I recommend using our Trip Calculator. What destination interests you?";
     
-    // Add specific guidance based on error type
     if (error.message.includes('rate limit')) {
-      fallbackResponse = "I'm experiencing high demand right now. Please try again in a moment, or feel free to contact us directly via WhatsApp for immediate assistance with your travel planning!";
+      fallbackResponse = "I'm experiencing high demand right now. Please try again in a moment, or use our Trip Calculator for instant cost estimates while I recover!";
     } else if (error.message.includes('authentication') || error.message.includes('API key')) {
-      fallbackResponse = "I'm having technical difficulties right now. Please try again in a few moments, or contact us directly via WhatsApp for immediate assistance with your travel planning!";
+      fallbackResponse = "I'm having technical difficulties. Please try our Trip Calculator for instant cost estimates while I get back online!";
     }
     
     return new Response(
