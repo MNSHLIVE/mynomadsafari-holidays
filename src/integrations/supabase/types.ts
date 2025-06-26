@@ -155,6 +155,33 @@ export type Database = {
           },
         ]
       }
+      cached_responses: {
+        Row: {
+          api_source: string | null
+          created_at: string
+          expires_at: string | null
+          id: string
+          query_hash: string
+          response_text: string
+        }
+        Insert: {
+          api_source?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          query_hash: string
+          response_text: string
+        }
+        Update: {
+          api_source?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          query_hash?: string
+          response_text?: string
+        }
+        Relationships: []
+      }
       customer_tags: {
         Row: {
           created_at: string | null
@@ -574,6 +601,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      cleanup_expired_cache: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       create_first_admin: {
         Args: { email: string }
         Returns: undefined
