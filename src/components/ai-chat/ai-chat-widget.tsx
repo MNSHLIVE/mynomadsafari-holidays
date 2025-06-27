@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -63,7 +62,7 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
       setMessages([{
         id: '1',
         type: 'assistant',
-        content: 'Hello! I\'m your personal travel assistant at MyNomadSafariHolidays. I\'m here to help you plan your perfect trip within your budget! 🌟\n\nWhether you\'re dreaming of Kerala\'s backwaters, Rajasthan\'s palaces, or international destinations like Bali and Dubai, I can help you find the perfect package.\n\nTo get started, tell me where you\'d like to travel and I can help you with instant cost calculations!',
+        content: 'Hello! I\'m your personal travel assistant at MyNomadSafariHolidays. I\'m here to help you plan your perfect trip within your budget! 🌟\n\nWhether you\'re dreaming of Kerala\'s backwaters, Rajasthan\'s palaces, or international destinations like Bali and Dubai, I can help you find the perfect package.\n\nTo get started, please share your contact details using the "Your Details" button, then tell me where you\'d like to travel!',
         timestamp: new Date()
       }]);
     }
@@ -85,17 +84,29 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
     setShowQuickReplies(false);
 
     try {
-      console.log('Sending message to AI chat function:', { messageText, sessionId });
+      console.log('Sending message to AI chat function:', { 
+        messageLength: messageText.length, 
+        sessionId,
+        messagePreview: messageText.substring(0, 50) + '...'
+      });
       
       const { data, error } = await supabase.functions.invoke('ai-chat', {
         body: { 
           message: messageText,
           sessionId: sessionId,
-          conversationData: messages
+          conversationData: messages.map(msg => ({
+            role: msg.type === 'user' ? 'user' : 'assistant',
+            content: msg.content,
+            timestamp: msg.timestamp.toISOString()
+          }))
         }
       });
 
-      console.log('AI chat response:', { data, error });
+      console.log('AI chat response received:', { 
+        hasData: !!data, 
+        hasError: !!error,
+        responseLength: data?.response?.length || 0
+      });
 
       if (error) {
         console.error('Supabase function error:', error);
@@ -111,24 +122,24 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
         };
 
         setMessages(prev => [...prev, assistantMessage]);
-        console.log('Message successfully processed and added to chat');
+        console.log('AI response successfully added to chat');
       } else {
-        throw new Error('No response received from AI');
+        throw new Error('No response received from AI service');
       }
     } catch (error) {
       console.error('Error sending message:', error);
       
-      // Show user-friendly error message
+      // Provide helpful fallback message
       const fallbackMessage: Message = {
         id: (Date.now() + 2).toString(),
         type: 'assistant',
-        content: 'I\'m here to help plan your perfect trip! 🌟\n\nI can assist with destinations like Kerala, Rajasthan, Goa, Bali, Dubai, and many more. Try our Trip Calculator for instant cost estimates, or contact our executives directly!\n\nWhat destination interests you most?',
+        content: 'I\'m here to help plan your perfect trip! 🌟\n\nI can assist with destinations like Kerala, Rajasthan, Goa, Bali, Dubai, and many more.\n\nPlease try:\n• Using the Trip Calculator for instant quotes\n• Sharing your contact details via "Your Details" button\n• Contacting our executives directly\n\nWhat destination interests you most?',
         timestamp: new Date()
       };
       setMessages(prev => [...prev, fallbackMessage]);
       
-      // Show toast but don't make it too alarming
-      toast.info('Connected! Feel free to ask about any destination.');
+      // Show helpful toast
+      toast.info('Chat is ready! Feel free to ask about any destination or use the Trip Calculator.');
     } finally {
       setIsLoading(false);
     }
@@ -166,7 +177,7 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
     const contactMessage: Message = {
       id: (Date.now() + 1).toString(),
       type: 'assistant',
-      content: `Thank you ${contactData.name}! I have your contact details. Now you can use the Trip Calculator to get instant cost estimates for your dream destination!`,
+      content: `Thank you ${contactData.name}! I have your contact details. Now you can use the Trip Calculator to get instant cost estimates for your dream destination, or tell me about your travel preferences!`,
       timestamp: new Date()
     };
     setMessages(prev => [...prev, contactMessage]);
@@ -240,7 +251,7 @@ This includes accommodation, meals, transfers, and sightseeing. Would you like m
           type: 'assistant',
           content: `Perfect! I've generated your detailed ${calculatedData.destination} itinerary with the calculated costing. The PDF includes day-wise activities, inclusions, exclusions, and the total cost breakdown of ₹${calculatedData.totalCost.toLocaleString()}.
 
-Is there anything else you'd like to customize in your trip?`,
+The PDF has been sent to your email. Is there anything else you'd like to customize in your trip?`,
           timestamp: new Date()
         };
         
