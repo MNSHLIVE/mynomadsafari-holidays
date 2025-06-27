@@ -1,17 +1,17 @@
 
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.4';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const supabase = createClient(
-  Deno.env.get('SUPABASE_URL') ?? '',
-  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-);
+// Initialize Supabase client
+const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -20,258 +20,225 @@ serve(async (req) => {
 
   try {
     const { message, sessionId, conversationData } = await req.json();
-    
-    if (!message || !sessionId) {
-      throw new Error('Message and sessionId are required');
-    }
+    console.log('AI Chat request received:', { sessionId, message: message.substring(0, 100) });
 
-    const geminiApiKey = Deno.env.get('GEMINI_API_KEY');
-    if (!geminiApiKey) {
-      console.error('GEMINI_API_KEY not found in environment');
-      throw new Error('Gemini API key not configured');
-    }
-
-    console.log('Using Google Gemini 1.5 Flash API for chat completion');
-
-    // Check cache first
-    const cacheKey = `${message.toLowerCase().trim()}`;
-    const { data: cachedResponse } = await supabase
-      .from('cached_responses')
-      .select('response_text')
-      .eq('query_hash', cacheKey)
-      .single();
-
-    let aiResponse = '';
-
-    if (cachedResponse) {
-      console.log('Using cached response');
-      aiResponse = cachedResponse.response_text;
-    } else {
-      // Get or create conversation record
-      let { data: conversation, error: fetchError } = await supabase
+    // Store the conversation in the database
+    try {
+      const { error: dbError } = await supabase
         .from('ai_chat_conversations')
-        .select('*')
-        .eq('session_id', sessionId)
-        .single();
-
-      if (fetchError && fetchError.code !== 'PGRST116') {
-        console.error('Error fetching conversation:', fetchError);
-      }
-
-      // Build conversation history
-      let messages = [];
-      if (conversation?.conversation_data) {
-        messages = conversation.conversation_data as any[];
-      }
-
-      // Add user message
-      messages.push({ role: 'user', content: message, timestamp: new Date().toISOString() });
-
-      // Enhanced system prompt for travel assistance
-      const systemPrompt = `You are an AI travel assistant for MyNomadSafariHolidays, specialized in creating perfect travel experiences within budget.
-
-YOUR EXPERTISE:
-- Domestic destinations: Kerala, Rajasthan, Himachal, Goa, Kashmir, Ladakh, Uttarakhand, etc.
-- International destinations: Bali, Dubai, Thailand, Singapore, Maldives, etc.
-- Package types: Honeymoon, Adventure, Family, Religious tours, Luxury, Budget-friendly
-- Travel planning: Itineraries, accommodation, transportation, activities
-
-CONVERSATION GOALS:
-1. Help customers plan their ideal trip within budget
-2. Guide them to use our Trip Calculator for accurate costing
-3. Collect trip details naturally during conversation:
-   - Preferred destination and travel dates
-   - Number of travelers (adults/children)
-   - Budget range and special requirements
-4. Provide helpful travel advice and recommendations
-5. Offer to generate detailed itinerary with costing when ready
-
-CURRENT CUSTOMER INFO:
-${conversation ? `
-Travel Date: ${conversation.travel_date || 'Not provided'}
-Destination: ${conversation.destination || 'Not provided'}
-Adults: ${conversation.adults || 'Not specified'}
-Children: ${conversation.children || 'Not specified'}
-Special Requests: ${conversation.special_requests || 'None mentioned'}
-` : 'New conversation - gathering trip details'}
-
-RESPONSE STYLE:
-- Be warm, friendly, and genuinely helpful
-- Ask natural questions about their travel preferences
-- Show your travel expertise with specific recommendations
-- Keep responses concise but informative (max 150 words)
-- Guide users to our Trip Calculator for accurate pricing
-- Always end with a relevant question to keep conversation flowing
-- When you have trip details, offer to create detailed itinerary PDF
-- Mention that our Trip Calculator gives instant cost estimates
-
-TRIP CALCULATOR GUIDANCE:
-When users ask about costs, guide them to use our Trip Calculator:
-"I recommend using our Trip Calculator for accurate cost estimates. You can find it on our website - it gives instant pricing for domestic and international tours based on your specific requirements like destination, dates, number of travelers, and hotel category. Would you like me to help you gather the details needed for the calculator?"
-
-Remember: You're here to help plan amazing trips within budget and guide users to our tools for accurate pricing!
-
-User message: ${message}`;
-
-      // Call Google Gemini 1.5 Flash API
-      console.log('Calling Google Gemini 1.5 Flash API...');
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{ text: systemPrompt }]
-          }]
-        }),
-      });
-
-      console.log('Gemini API response status:', response.status);
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Gemini API error response:', errorText);
-        console.error('Response status:', response.status);
-        
-        if (response.status === 401) {
-          throw new Error('Gemini API authentication failed - please check API key');
-        } else if (response.status === 429) {
-          throw new Error('Gemini API rate limit exceeded - please try again in a moment');
-        } else if (response.status === 403) {
-          throw new Error('Gemini API access forbidden - please check your account permissions');
-        }
-        
-        throw new Error(`Gemini API error (${response.status}): ${errorText}`);
-      }
-
-      const data = await response.json();
-      console.log('Gemini API response received successfully');
-
-      if (!data.candidates || !data.candidates[0] || !data.candidates[0].content || !data.candidates[0].content.parts || !data.candidates[0].content.parts[0]) {
-        console.error('Invalid Gemini API response format:', data);
-        throw new Error('Invalid response format from Gemini API');
-      }
-
-      aiResponse = data.candidates[0].content.parts[0].text;
-
-      // Cache the response
-      await supabase
-        .from('cached_responses')
-        .insert({
-          query_hash: cacheKey,
-          response_text: aiResponse,
-          api_source: 'gemini'
-        });
-    }
-
-    // Add AI response to messages
-    const messages = conversation?.conversation_data as any[] || [];
-    messages.push({ role: 'user', content: message, timestamp: new Date().toISOString() });
-    messages.push({ role: 'assistant', content: aiResponse, timestamp: new Date().toISOString() });
-
-    // Extract trip information
-    const messageText = message.toLowerCase();
-    const updateData: any = {
-      conversation_data: messages,
-      updated_at: new Date().toISOString()
-    };
-
-    // Extract destination
-    const destinations = [
-      'kerala', 'rajasthan', 'himachal', 'goa', 'bali', 'dubai', 'thailand', 'singapore', 
-      'kashmir', 'ladakh', 'manali', 'shimla', 'udaipur', 'jaipur', 'cochin', 'munnar',
-      'maldives', 'sri lanka', 'nepal', 'bhutan', 'vietnam', 'malaysia', 'indonesia',
-      'uttarakhand', 'rishikesh', 'haridwar', 'darjeeling', 'ooty', 'kodaikanal', 'bangalore'
-    ];
-    
-    for (const dest of destinations) {
-      if (messageText.includes(dest)) {
-        updateData.destination = dest.charAt(0).toUpperCase() + dest.slice(1);
-        break;
-      }
-    }
-
-    // Extract travel dates, adults/children count, budget
-    const datePatterns = [
-      /(?:in|on)\s+(january|february|march|april|may|june|july|august|september|october|november|december)/i,
-      /\b(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})\b/,
-      /(?:next|this)\s+(week|month|year)/i
-    ];
-    
-    for (const pattern of datePatterns) {
-      if (message.match(pattern)) {
-        updateData.travel_date = new Date().toISOString().split('T')[0];
-        break;
-      }
-    }
-
-    const adultsMatch = message.match(/(\d+)\s*(?:adult|person|people)/i);
-    if (adultsMatch) {
-      updateData.adults = parseInt(adultsMatch[1]);
-    }
-
-    const childrenMatch = message.match(/(\d+)\s*(?:child|kid|children)/i);
-    if (childrenMatch) {
-      updateData.children = parseInt(childrenMatch[1]);
-    }
-
-    const budgetMatch = message.match(/budget.*?(\d+(?:,\d+)*(?:\.\d+)?)\s*(?:k|thousand|lakh|lakhs|rupees?|rs\.?|\₹)/i);
-    if (budgetMatch) {
-      updateData.budget_range = budgetMatch[0];
-    }
-
-    const specialRequests = ['honeymoon', 'adventure', 'religious', 'family', 'luxury', 'budget', 'pilgrimage', 'wildlife', 'beach', 'mountain'];
-    for (const request of specialRequests) {
-      if (messageText.includes(request)) {
-        updateData.package_type = request.charAt(0).toUpperCase() + request.slice(1);
-        updateData.special_requests = updateData.special_requests ? 
-          `${updateData.special_requests}, ${request}` : request;
-      }
-    }
-
-    // Update or create conversation record
-    if (conversation) {
-      const { error: updateError } = await supabase
-        .from('ai_chat_conversations')
-        .update(updateData)
-        .eq('session_id', sessionId);
-      
-      if (updateError) {
-        console.error('Error updating conversation:', updateError);
-      }
-    } else {
-      const { error: insertError } = await supabase
-        .from('ai_chat_conversations')
-        .insert({
+        .upsert({
           session_id: sessionId,
-          ...updateData
+          conversation_data: [...(conversationData || []), { role: 'user', content: message, timestamp: new Date() }],
+          updated_at: new Date().toISOString()
+        }, {
+          onConflict: 'session_id'
         });
-      
-      if (insertError) {
-        console.error('Error creating conversation:', insertError);
+
+      if (dbError) {
+        console.error('Database error:', dbError);
+      } else {
+        console.log('Conversation stored successfully');
       }
+    } catch (dbErr) {
+      console.error('Failed to store conversation:', dbErr);
     }
 
-    return new Response(
-      JSON.stringify({ response: aiResponse }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    // Check if we have Gemini API key
+    const geminiApiKey = Deno.env.get('GEMINI_API_KEY');
+    
+    if (!geminiApiKey) {
+      console.log('GEMINI_API_KEY not found, providing fallback response');
+      
+      // Provide intelligent fallback responses based on message content
+      let response = '';
+      const lowerMessage = message.toLowerCase();
+      
+      if (lowerMessage.includes('kerala') || lowerMessage.includes('backwater')) {
+        response = `I'd be happy to help you plan your Kerala trip! 🌴
+
+Kerala is one of our most popular destinations with:
+- Beautiful backwaters in Alleppey & Kumarakom
+- Hill stations like Munnar & Wayanad
+- Beach destinations like Kovalam & Varkala
+- Cultural experiences in Kochi & Thekkady
+
+For a 6-day Kerala package, costs typically range from ₹25,000 to ₹60,000 per person depending on:
+- Hotel category (3★ to 5★)
+- Season (peak/off-peak)
+- Inclusions (meals, activities)
+
+Would you like to use our Trip Calculator for exact costing? Just click the "Trip Calculator" button above to get instant quotes!`;
+
+      } else if (lowerMessage.includes('rajasthan') || lowerMessage.includes('jaipur') || lowerMessage.includes('udaipur')) {
+        response = `Rajasthan is perfect for heritage and cultural tours! 🏰
+
+Popular Rajasthan destinations:
+- Jaipur (Pink City) - Amber Fort, City Palace
+- Udaipur (City of Lakes) - Lake Palace, Jagdish Temple  
+- Jodhpur (Blue City) - Mehrangarh Fort
+- Jaisalmer (Golden City) - Desert Safari, Sam Dunes
+
+A 7-day Rajasthan heritage tour typically costs ₹30,000 to ₹75,000 per person based on accommodation and season.
+
+Use our Trip Calculator above to get personalized quotes with detailed breakdown!`;
+
+      } else if (lowerMessage.includes('international') || lowerMessage.includes('bali') || lowerMessage.includes('dubai') || lowerMessage.includes('thailand')) {
+        response = `Great choice for international travel! ✈️
+
+Our popular international packages:
+🏝️ Bali (4-6 days): ₹45,000 - ₹85,000 per person
+🏙️ Dubai (4-5 days): ₹40,000 - ₹70,000 per person  
+🇹🇭 Thailand (5-7 days): ₹50,000 - ₹90,000 per person
+🇸🇬 Singapore (4-5 days): ₹55,000 - ₹95,000 per person
+
+Prices include flights, hotels, transfers & sightseeing.
+
+Click "Trip Calculator" above for exact quotes with current flight prices!`;
+
+      } else if (lowerMessage.includes('budget') || lowerMessage.includes('cheap') || lowerMessage.includes('affordable')) {
+        response = `We have excellent budget-friendly options! 💰
+
+Budget Tour Suggestions:
+🏔️ Himachal (Manali-Shimla): ₹15,000 - ₹25,000
+🏖️ Goa: ₹12,000 - ₹22,000
+🏛️ Golden Triangle (Delhi-Agra-Jaipur): ₹18,000 - ₹30,000
+⛰️ Uttarakhand (Rishikesh-Haridwar): ₹14,000 - ₹24,000
+
+These include accommodation, meals, transfers & sightseeing.
+
+Use our Trip Calculator to customize your budget and get exact quotes!`;
+
+      } else if (lowerMessage.includes('honeymoon') || lowerMessage.includes('romantic')) {
+        response = `Perfect for a romantic getaway! 💕
+
+Top Honeymoon Destinations:
+🏝️ Kerala Backwaters: ₹35,000 - ₹65,000 (5-6 days)
+🏰 Rajasthan Heritage: ₹40,000 - ₹80,000 (6-7 days)
+🏔️ Kashmir: ₹30,000 - ₹60,000 (5-6 days)
+🌊 Goa Beach: ₹25,000 - ₹45,000 (4-5 days)
+🏝️ Bali International: ₹65,000 - ₹1,20,000 (5-6 days)
+
+All packages include romantic dinners, couple activities & premium stays.
+
+Click "Trip Calculator" for personalized honeymoon quotes!`;
+
+      } else {
+        response = `Welcome to MyNomadSafariHolidays! 🌟 I'm here to help you plan your perfect trip.
+
+I can assist you with:
+🇮🇳 **Domestic Tours**: Kerala, Rajasthan, Goa, Himachal, Kashmir
+🌍 **International**: Bali, Dubai, Thailand, Singapore, Maldives  
+🙏 **Religious Tours**: Char Dham, Golden Temple, South India temples
+💕 **Honeymoon Packages**: Romantic destinations with special arrangements
+🎒 **Adventure Tours**: Trekking, Safari, Water sports
+
+Popular Services:
+✈️ Flight & Train Bookings
+🛂 Visa Assistance  
+🏨 Hotel Reservations
+🚌 Transportation
+
+To get started, tell me:
+- Where would you like to travel?
+- When are you planning to go?
+- How many people?
+
+Or use our Trip Calculator above for instant cost estimates!`;
+      }
+
+      return new Response(JSON.stringify({ response }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // If we have the API key, use Gemini API
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${geminiApiKey}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: `You are a helpful travel assistant for MyNomadSafariHolidays, India's premier travel company. You help customers plan trips to domestic and international destinations.
+
+Company Services:
+- Domestic Tours: Kerala, Rajasthan, Goa, Himachal, Kashmir, Golden Triangle
+- International Tours: Bali, Dubai, Thailand, Singapore, Maldives, Europe
+- Religious Tours: Char Dham, Vaishno Devi, Golden Temple, South India temples
+- Honeymoon Packages with romantic arrangements
+- Adventure Tours: Trekking, Safari, Water sports
+- Flight/Train Bookings & Visa Assistance
+
+Important Instructions:
+1. Be helpful and friendly
+2. Ask for travel dates, destination preferences, and group size
+3. Provide cost estimates when asked
+4. Encourage users to use the Trip Calculator for exact quotes
+5. Mention WhatsApp contact for booking: Delhi +91-9968682200, Mumbai +91-7042910449
+6. Keep responses conversational and not too long
+
+Customer Query: ${message}`
+          }]
+        }],
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 500,
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Gemini API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || 'I apologize, but I encountered a technical issue. Please try asking your question again or contact our executives directly.';
+
+    // Update conversation with AI response
+    try {
+      await supabase
+        .from('ai_chat_conversations')
+        .upsert({
+          session_id: sessionId,
+          conversation_data: [
+            ...(conversationData || []), 
+            { role: 'user', content: message, timestamp: new Date() },
+            { role: 'assistant', content: aiResponse, timestamp: new Date() }
+          ],
+          updated_at: new Date().toISOString()
+        }, {
+          onConflict: 'session_id'
+        });
+    } catch (dbErr) {
+      console.error('Failed to update conversation:', dbErr);
+    }
+
+    return new Response(JSON.stringify({ response: aiResponse }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
 
   } catch (error) {
     console.error('Error in ai-chat function:', error);
     
-    let fallbackResponse = "I'm here to help you plan your perfect trip! I can assist you with destinations like Kerala, Rajasthan, Goa, Bali, Dubai, and many more. For accurate pricing, I recommend using our Trip Calculator. What destination interests you?";
-    
-    if (error.message.includes('rate limit')) {
-      fallbackResponse = "I'm experiencing high demand right now. Please try again in a moment, or use our Trip Calculator for instant cost estimates while I recover!";
-    } else if (error.message.includes('authentication') || error.message.includes('API key')) {
-      fallbackResponse = "I'm having technical difficulties. Please try our Trip Calculator for instant cost estimates while I get back online!";
-    }
-    
-    return new Response(
-      JSON.stringify({ response: fallbackResponse }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    // Return a helpful fallback response instead of generic error
+    const fallbackResponse = `I'm here to help you plan your perfect trip! 🌟
+
+While I'm experiencing a brief technical issue, you can still:
+
+1. **Use Trip Calculator** - Get instant cost estimates
+2. **Contact Our Executives**:
+   - Delhi Office: +91-9968682200
+   - Mumbai Office: +91-7042910449
+
+Popular destinations we cover:
+🇮🇳 **Domestic**: Kerala, Rajasthan, Goa, Himachal
+🌍 **International**: Bali, Dubai, Thailand, Singapore
+
+What destination interests you most?`;
+
+    return new Response(JSON.stringify({ response: fallbackResponse }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
   }
 });

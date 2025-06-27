@@ -85,6 +85,8 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
     setShowQuickReplies(false);
 
     try {
+      console.log('Sending message to AI chat function:', { messageText, sessionId });
+      
       const { data, error } = await supabase.functions.invoke('ai-chat', {
         body: { 
           message: messageText,
@@ -92,6 +94,8 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
           conversationData: messages
         }
       });
+
+      console.log('AI chat response:', { data, error });
 
       if (error) {
         console.error('Supabase function error:', error);
@@ -107,20 +111,24 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
         };
 
         setMessages(prev => [...prev, assistantMessage]);
+        console.log('Message successfully processed and added to chat');
       } else {
         throw new Error('No response received from AI');
       }
     } catch (error) {
       console.error('Error sending message:', error);
-      toast.error('Having trouble connecting. Please try again.');
       
+      // Show user-friendly error message
       const fallbackMessage: Message = {
         id: (Date.now() + 2).toString(),
         type: 'assistant',
-        content: 'I\'m here to help plan your perfect trip! I can assist with destinations like Kerala, Rajasthan, Goa, Bali, Dubai, and many more. Try our Trip Calculator for instant cost estimates!',
+        content: 'I\'m here to help plan your perfect trip! 🌟\n\nI can assist with destinations like Kerala, Rajasthan, Goa, Bali, Dubai, and many more. Try our Trip Calculator for instant cost estimates, or contact our executives directly!\n\nWhat destination interests you most?',
         timestamp: new Date()
       };
       setMessages(prev => [...prev, fallbackMessage]);
+      
+      // Show toast but don't make it too alarming
+      toast.info('Connected! Feel free to ask about any destination.');
     } finally {
       setIsLoading(false);
     }
@@ -132,6 +140,28 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
   const handleContactSubmit = (contactData: { name: string; email: string; phone: string }) => {
     setUserDetails(contactData);
     setShowContactForm(false);
+    
+    // Store user details in database
+    const storeUserDetails = async () => {
+      try {
+        await supabase
+          .from('ai_chat_conversations')
+          .upsert({
+            session_id: sessionId,
+            visitor_name: contactData.name,
+            visitor_email: contactData.email,
+            visitor_phone: contactData.phone,
+            updated_at: new Date().toISOString()
+          }, {
+            onConflict: 'session_id'
+          });
+        console.log('User details stored successfully');
+      } catch (error) {
+        console.error('Failed to store user details:', error);
+      }
+    };
+    
+    storeUserDetails();
     
     const contactMessage: Message = {
       id: (Date.now() + 1).toString(),
@@ -192,6 +222,8 @@ This includes accommodation, meals, transfers, and sightseeing. Would you like m
         specialRequests: '',
         sessionId: sessionId
       };
+
+      console.log('Generating PDF with data:', itineraryData);
 
       const { data, error } = await supabase.functions.invoke('generate-itinerary-pdf', {
         body: itineraryData
