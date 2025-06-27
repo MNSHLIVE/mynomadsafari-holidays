@@ -45,7 +45,7 @@ serve(async (req) => {
           body: JSON.stringify({
             contents: [{
               parts: [{
-                text: `You are a helpful travel assistant for MyNomadSafariHolidays, India's premier travel company. You help customers plan trips to domestic and international destinations.
+                text: `You are a helpful travel assistant for MyNomadSafariHolidays, India's premier travel company. You help customers with comprehensive travel services.
 
 Company Services:
 - Domestic Tours: Kerala, Rajasthan, Goa, Himachal, Kashmir, Golden Triangle
@@ -53,16 +53,21 @@ Company Services:
 - Religious Tours: Char Dham, Vaishno Devi, Golden Temple, South India temples
 - Honeymoon Packages with romantic arrangements
 - Adventure Tours: Trekking, Safari, Water sports
-- Flight/Train Bookings & Visa Assistance
+- Flight Bookings (Domestic & International)
+- Train & Bus Bookings
+- Visa Assistance for all countries
+- Hotel Bookings & Travel Insurance
 
 Important Instructions:
 1. Be helpful and friendly
-2. Ask for travel dates, destination preferences, and group size
-3. Provide cost estimates when asked
-4. Encourage users to use the Trip Calculator for exact quotes
-5. Mention WhatsApp contact for booking: Delhi +91-9968682200, Mumbai +91-7042910449
-6. Keep responses conversational and not too long
-7. Always ask for user details (name, email, phone) before providing detailed quotes
+2. For tour packages: Ask for travel dates, destination preferences, and group size
+3. For flights/trains: Ask departure city, destination, travel dates, and passenger count
+4. For visa assistance: Ask destination country, nationality, and travel purpose
+5. Provide cost estimates when asked
+6. Encourage users to use forms for specific services (Visa Form, Flight Booking, Train Booking)
+7. Mention WhatsApp contact for booking: Delhi +91-9968682200, Mumbai +91-7042910449
+8. Keep responses conversational and not too long
+9. Always ask for user details (name, email, phone) before providing detailed quotes
 
 Customer Query: ${message}`
               }]
@@ -121,20 +126,20 @@ Customer Query: ${message}`
   } catch (error) {
     console.error('Error in ai-chat function:', error);
     
-    const fallbackResponse = `I'm here to help you plan your perfect trip! 🌟
+    const fallbackResponse = `I'm here to help you with all your travel needs! 🌟
 
-While I'm experiencing a brief technical issue, you can still:
+**Our Services:**
+🏖️ **Tour Packages** - Domestic & International destinations
+✈️ **Flight Bookings** - Best deals on domestic & international flights
+🚂 **Train & Bus Bookings** - Convenient travel across India
+🛂 **Visa Services** - Complete visa assistance for all countries
+🏨 **Hotel Bookings** - Comfortable stays worldwide
 
-1. **Use Trip Calculator** - Get instant cost estimates
-2. **Contact Our Executives**:
-   - Delhi Office: +91-9968682200
-   - Mumbai Office: +91-7042910449
+**Contact Our Executives:**
+📞 Delhi Office: +91-9968682200
+📞 Mumbai Office: +91-7042910449
 
-Popular destinations we cover:
-🇮🇳 **Domestic**: Kerala, Rajasthan, Goa, Himachal
-🌍 **International**: Bali, Dubai, Thailand, Singapore
-
-What destination interests you most?`;
+Use the service buttons below or tell me what you're looking for!`;
 
     return new Response(JSON.stringify({ response: fallbackResponse }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -145,7 +150,80 @@ What destination interests you most?`;
 function getFallbackResponse(message: string): string {
   const lowerMessage = message.toLowerCase();
   
-  if (lowerMessage.includes('kerala') || lowerMessage.includes('backwater')) {
+  if (lowerMessage.includes('visa')) {
+    return `I can help you with visa services! 🛂
+
+**Visa Services We Offer:**
+• Tourist Visas - All countries
+• Business Visas
+• Student Visas
+• Work Permits
+• Transit Visas
+
+**Required Documents:**
+✓ Valid passport (min 6 months validity)
+✓ Passport photos
+✓ Application forms
+✓ Supporting documents (varies by country)
+
+**Popular Destinations:**
+🇺🇸 USA - Tourist/Business Visa
+🇬🇧 UK - Standard Visitor Visa
+🇨🇦 Canada - Visitor Visa
+🇦🇺 Australia - Tourist Visa
+🇪🇺 Schengen - Europe Multi-country
+
+Click "Visa Form" button to start your application or contact our executives for personalized assistance!`;
+
+  } else if (lowerMessage.includes('flight')) {
+    return `I can help you with flight bookings! ✈️
+
+**Flight Services:**
+🛫 **Domestic Flights** - All Indian cities
+🌍 **International Flights** - Worldwide destinations
+💼 **Corporate Bookings** - Business travel solutions
+👥 **Group Bookings** - Special rates for groups
+
+**Popular Routes:**
+• Delhi ↔ Mumbai, Bangalore, Chennai
+• International: Dubai, Bangkok, Singapore, London
+
+**Benefits:**
+✅ Best fare guarantee
+✅ 24/7 customer support
+✅ Easy cancellation/rescheduling
+✅ Seat selection & meal preferences
+
+Click "Flight Booking" button to check availability and prices, or tell me your travel dates and destinations!`;
+
+  } else if (lowerMessage.includes('train') || lowerMessage.includes('bus')) {
+    return `I can help you with train and bus bookings! 🚂🚌
+
+**Train Services:**
+🚄 All Indian Railways bookings
+🎫 Tatkal & Premium Tatkal tickets
+🛏️ AC/Non-AC class options
+👥 Group bookings available
+
+**Bus Services:**
+🚌 Volvo, Sleeper, Semi-sleeper buses
+🌃 Overnight journeys
+🏙️ Inter-city & Inter-state travel
+
+**Popular Routes:**
+• Delhi - Mumbai, Bangalore, Chennai, Kolkata
+• Golden Quadrilateral routes
+• Hill station connections
+
+**Features:**
+✅ Instant confirmation
+✅ E-tickets via email/SMS
+✅ Cancellation protection
+✅ Seat selection
+
+Click "Train Booking" button to book your journey or share your travel details with me!`;
+
+  } else if (lowerMessage.includes('kerala') || lowerMessage.includes('backwater')) {
     return `I'd be happy to help you plan your Kerala trip! 🌴
 
 Kerala is one of our most popular destinations with:
@@ -215,26 +293,23 @@ All packages include romantic dinners, couple activities & premium stays.
 To create your perfect honeymoon itinerary, please share your details using the "Your Details" button above!`;
 
   } else {
-    return `Welcome to MyNomadSafariHolidays! 🌟 I'm here to help you plan your perfect trip.
+    return `Welcome to MyNomadSafariHolidays! 🌟 I'm here to help you with all your travel needs.
 
-I can assist you with:
-🇮🇳 **Domestic Tours**: Kerala, Rajasthan, Goa, Himachal, Kashmir
-🌍 **International**: Bali, Dubai, Thailand, Singapore, Maldives  
-🙏 **Religious Tours**: Char Dham, Golden Temple, South India temples
+**Our Complete Services:**
+🏖️ **Tour Packages**: Kerala, Rajasthan, Goa, Himachal, Kashmir, International destinations
+✈️ **Flight Bookings**: Domestic & International with best prices
+🚂 **Train & Bus**: Comfortable travel across India
+🛂 **Visa Services**: Complete assistance for all countries
+🏨 **Hotel Bookings**: Comfortable stays worldwide
 💕 **Honeymoon Packages**: Romantic destinations with special arrangements
 🎒 **Adventure Tours**: Trekking, Safari, Water sports
 
-Popular Services:
-✈️ Flight & Train Bookings
-🛂 Visa Assistance  
-🏨 Hotel Reservations
-🚌 Transportation
+**Quick Actions:**
+• Click "Your Details" to share contact information
+• Use "Trip Calculator" for instant cost estimates
+• Use service buttons for specific bookings (Visa, Flight, Train)
+• Contact executives directly via WhatsApp
 
-To get started, please:
-1. Click "Your Details" to share your contact information
-2. Use "Trip Calculator" for instant cost estimates
-3. Tell me your preferred destination and travel dates
-
-What destination interests you most?`;
+What can I help you with today?`;
   }
 }
