@@ -54,13 +54,6 @@ const FloatingChatButton: React.FC = () => {
             AI Travel Assistant
             <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
           </div>
-
-          {/* Badge for new messages */}
-          {!isWidgetOpen && (
-            <div className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 rounded-full flex items-center justify-center">
-              <span className="text-xs text-white font-bold">!</span>
-            </div>
-          )}
         </div>
       </div>
 
