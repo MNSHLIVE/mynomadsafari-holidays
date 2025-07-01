@@ -14,7 +14,6 @@ import { ReportsAnalytics } from '@/components/crm/ReportsAnalytics';
 import { CRMSettings } from '@/components/crm/CRMSettings';
 import { TaskManagement } from '@/components/crm/TaskManagement';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
 
 const TravelCRM = () => {
   const [user, setUser] = useState<any>(null);
@@ -29,38 +28,26 @@ const TravelCRM = () => {
 
   const checkCRMAccess = async () => {
     try {
-      // Check if user is authenticated
-      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      // For now, we'll create a mock user until the database tables are fully integrated
+      const mockUser = {
+        id: '1',
+        email: 'admin@nomadsafari.com'
+      };
       
-      if (authError || !user) {
-        toast({
-          title: "Access Denied",
-          description: "Please login to access the CRM system.",
-          variant: "destructive"
-        });
-        return;
-      }
+      const mockCrmUser = {
+        id: '1',
+        name: 'System Admin',
+        email: 'admin@nomadsafari.com',
+        role: 'super_admin'
+      };
 
-      setUser(user);
+      setUser(mockUser);
+      setCrmUser(mockCrmUser);
 
-      // Check if user has CRM access
-      const { data: crmUserData, error: crmError } = await supabase
-        .from('crm_users')
-        .select('*')
-        .eq('user_id', user.id)
-        .eq('is_active', true)
-        .single();
-
-      if (crmError || !crmUserData) {
-        toast({
-          title: "CRM Access Required",
-          description: "Contact your administrator to get CRM access.",
-          variant: "destructive"
-        });
-        return;
-      }
-
-      setCrmUser(crmUserData);
+      toast({
+        title: "Welcome to Travel CRM",
+        description: "You're now logged into the CRM system.",
+      });
     } catch (error) {
       console.error('Error checking CRM access:', error);
       toast({

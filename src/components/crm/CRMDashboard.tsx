@@ -15,7 +15,8 @@ import {
   Plus,
   Filter,
   Search,
-  Bell
+  Bell,
+  FileText
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
@@ -255,7 +256,7 @@ export const CRMDashboard: React.FC<CRMDashboardProps> = ({ userRole }) => {
               <span className="text-sm">Create Deal</span>
             </Button>
             <Button variant="outline" className="h-20 flex flex-col items-center justify-center gap-2">
-              <Map className="h-5 w-5" />
+              <MapPin className="h-5 w-5" />
               <span className="text-sm">Build Itinerary</span>
             </Button>
             <Button variant="outline" className="h-20 flex flex-col items-center justify-center gap-2">
