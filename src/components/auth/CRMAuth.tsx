@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -7,14 +6,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
-import { Loader2, Shield, Mail, Phone, Lock } from 'lucide-react';
+import { Loader2, Shield, Mail, Phone, Lock, ArrowLeft } from 'lucide-react';
 
 interface CRMAuthProps {
   onAuthSuccess: (user: any, crmUser: any) => void;
 }
 
 export const CRMAuth: React.FC<CRMAuthProps> = ({ onAuthSuccess }) => {
-  const [step, setStep] = useState<'login' | 'register' | 'otp'>('login');
+  const [step, setStep] = useState<'login' | 'register' | 'otp' | 'forgot-password' | 'reset-password'>('login');
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -26,6 +25,7 @@ export const CRMAuth: React.FC<CRMAuthProps> = ({ onAuthSuccess }) => {
   });
   const [otp, setOtp] = useState('');
   const [otpType, setOtpType] = useState<'email' | 'sms'>('email');
+  const [resetEmail, setResetEmail] = useState('');
   const { toast } = useToast();
 
   const handleInputChange = (field: string, value: string) => {
@@ -117,7 +117,12 @@ export const CRMAuth: React.FC<CRMAuthProps> = ({ onAuthSuccess }) => {
         password: formData.password
       });
 
-      if (authError) throw authError;
+      if (authError) {
+        if (authError.message.includes('Invalid login credentials')) {
+          throw new Error('Invalid email or password. Please check your credentials or use "Forgot Password" if needed.');
+        }
+        throw authError;
+      }
 
       // Check if user has CRM access
       const { data: crmUser, error: crmError } = await supabase
@@ -129,7 +134,7 @@ export const CRMAuth: React.FC<CRMAuthProps> = ({ onAuthSuccess }) => {
 
       if (crmError || !crmUser) {
         await supabase.auth.signOut();
-        throw new Error('No CRM access found for this user');
+        throw new Error('No CRM access found for this user. Please contact administrator.');
       }
 
       // Send OTP for additional security
@@ -139,6 +144,54 @@ export const CRMAuth: React.FC<CRMAuthProps> = ({ onAuthSuccess }) => {
     } catch (error: any) {
       toast({
         title: "Login Failed",
+        description: error.message,
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!resetEmail) {
+      toast({
+        title: "Missing Email",
+        description: "Please enter your email address",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Check if user exists in CRM
+      const { data: crmUser, error: crmError } = await supabase
+        .from('crm_users')
+        .select('*')
+        .eq('email', resetEmail)
+        .eq('is_active', true)
+        .single();
+
+      if (crmError || !crmUser) {
+        throw new Error('No CRM account found with this email address.');
+      }
+
+      // Send password reset email
+      const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
+        redirectTo: `${window.location.origin}/crm?reset=true`
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Reset Email Sent",
+        description: "Check your email for password reset instructions",
+      });
+
+      setStep('login');
+    } catch (error: any) {
+      toast({
+        title: "Reset Failed",
         description: error.message,
         variant: "destructive"
       });
@@ -263,6 +316,7 @@ export const CRMAuth: React.FC<CRMAuthProps> = ({ onAuthSuccess }) => {
             {step === 'login' && 'CRM Login'}
             {step === 'register' && 'CRM Registration'}
             {step === 'otp' && 'Verify OTP'}
+            {step === 'forgot-password' && 'Reset Password'}
           </CardTitle>
           <p className="text-sm text-gray-600">
             Secure access to Nomadsafari Travel CRM
@@ -311,13 +365,63 @@ export const CRMAuth: React.FC<CRMAuthProps> = ({ onAuthSuccess }) => {
                 Login with OTP Verification
               </Button>
 
-              <div className="text-center">
+              <div className="text-center space-y-2">
+                <Button 
+                  variant="link" 
+                  onClick={() => setStep('forgot-password')}
+                  className="text-sm text-blue-600"
+                >
+                  Forgot Password?
+                </Button>
+                <br />
                 <Button 
                   variant="link" 
                   onClick={() => setStep('register')}
                   className="text-sm"
                 >
                   Need access? Register here
+                </Button>
+              </div>
+            </>
+          )}
+
+          {step === 'forgot-password' && (
+            <>
+              <div className="space-y-2">
+                <Label htmlFor="resetEmail">Email Address</Label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <Input
+                    id="resetEmail"
+                    type="email"
+                    placeholder="Enter your email address"
+                    className="pl-10"
+                    value={resetEmail}
+                    onChange={(e) => setResetEmail(e.target.value)}
+                  />
+                </div>
+                <p className="text-xs text-gray-500">
+                  We'll send you a link to reset your password
+                </p>
+              </div>
+
+              <Button 
+                onClick={handleForgotPassword} 
+                className="w-full" 
+                disabled={loading}
+              >
+                {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+                Send Reset Link
+              </Button>
+
+              <div className="text-center">
+                <Button 
+                  variant="link" 
+                  onClick={() => setStep('login')}
+                  className="text-sm"
+                >
+                  <ArrowLeft className="h-4 w-4 mr-1" />
+                  Back to Login
                 </Button>
               </div>
             </>
