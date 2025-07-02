@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -6,7 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
-import { Loader2, Shield, Mail, Phone, Lock, ArrowLeft } from 'lucide-react';
+import { Loader2, Shield, Mail, Phone, Lock, ArrowLeft, AlertCircle } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 interface CRMAuthProps {
   onAuthSuccess: (user: any, crmUser: any) => void;
@@ -27,6 +29,24 @@ export const CRMAuth: React.FC<CRMAuthProps> = ({ onAuthSuccess }) => {
   const [otpType, setOtpType] = useState<'email' | 'sms'>('email');
   const [resetEmail, setResetEmail] = useState('');
   const { toast } = useToast();
+
+  // Check for password reset on component mount
+  useEffect(() => {
+    const checkPasswordReset = async () => {
+      const hashParams = new URLSearchParams(window.location.hash.substring(1));
+      const type = hashParams.get('type');
+      
+      if (type === 'recovery') {
+        setStep('reset-password');
+        toast({
+          title: "Password Reset",
+          description: "Please enter your new password below",
+        });
+      }
+    };
+    
+    checkPasswordReset();
+  }, [toast]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -176,22 +196,80 @@ export const CRMAuth: React.FC<CRMAuthProps> = ({ onAuthSuccess }) => {
         throw new Error('No CRM account found with this email address.');
       }
 
-      // Send password reset email
+      // Send password reset email with the current domain
+      const redirectUrl = `${window.location.origin}${window.location.pathname}`;
       const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
-        redirectTo: `${window.location.origin}/crm?reset=true`
+        redirectTo: redirectUrl
       });
 
       if (error) throw error;
 
       toast({
         title: "Reset Email Sent",
-        description: "Check your email for password reset instructions",
+        description: "Check your email for password reset instructions. The reset link will work in this same browser window.",
       });
 
       setStep('login');
     } catch (error: any) {
       toast({
         title: "Reset Failed",
+        description: error.message,
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePasswordReset = async () => {
+    if (!formData.password || !formData.confirmPassword) {
+      toast({
+        title: "Missing Information",
+        description: "Please enter both password fields",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      toast({
+        title: "Password Mismatch",
+        description: "Passwords do not match",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      toast({
+        title: "Password Too Short",
+        description: "Password must be at least 6 characters long",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: formData.password
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Password Updated",
+        description: "Your password has been successfully updated. Please log in.",
+      });
+
+      // Clear the hash from URL
+      window.history.replaceState(null, '', window.location.pathname);
+      setStep('login');
+      setFormData(prev => ({ ...prev, password: '', confirmPassword: '' }));
+
+    } catch (error: any) {
+      toast({
+        title: "Password Reset Failed",
         description: error.message,
         variant: "destructive"
       });
@@ -219,6 +297,15 @@ export const CRMAuth: React.FC<CRMAuthProps> = ({ onAuthSuccess }) => {
       return;
     }
 
+    if (formData.password.length < 6) {
+      toast({
+        title: "Password Too Short",
+        description: "Password must be at least 6 characters long",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setLoading(true);
     try {
       // Register with Supabase Auth
@@ -226,14 +313,25 @@ export const CRMAuth: React.FC<CRMAuthProps> = ({ onAuthSuccess }) => {
         email: formData.email,
         password: formData.password,
         options: {
-          emailRedirectTo: `${window.location.origin}/crm`
+          emailRedirectTo: `${window.location.origin}${window.location.pathname}`,
+          data: {
+            full_name: formData.name
+          }
         }
       });
 
       if (authError) throw authError;
 
       if (authData.user) {
-        // Create CRM user profile
+        // Create CRM user profile - set as admin if this is the first user
+        const { data: existingUsers } = await supabase
+          .from('crm_users')
+          .select('id')
+          .limit(1);
+
+        const isFirstUser = !existingUsers || existingUsers.length === 0;
+        const userRole = isFirstUser ? 'admin' : 'staff';
+
         const { error: crmError } = await supabase
           .from('crm_users')
           .insert({
@@ -242,14 +340,14 @@ export const CRMAuth: React.FC<CRMAuthProps> = ({ onAuthSuccess }) => {
             email: formData.email,
             phone: formData.phone,
             company_name: formData.companyName,
-            role: 'staff' // Default role
+            role: userRole
           });
 
         if (crmError) throw crmError;
 
         toast({
           title: "Registration Successful",
-          description: "Please check your email to verify your account",
+          description: `Account created successfully${isFirstUser ? ' with admin privileges' : ''}. ${authData.user.email_confirmed_at ? 'You can now log in.' : 'Please check your email to verify your account.'}`,
         });
 
         setStep('login');
@@ -317,6 +415,7 @@ export const CRMAuth: React.FC<CRMAuthProps> = ({ onAuthSuccess }) => {
             {step === 'register' && 'CRM Registration'}
             {step === 'otp' && 'Verify OTP'}
             {step === 'forgot-password' && 'Reset Password'}
+            {step === 'reset-password' && 'Set New Password'}
           </CardTitle>
           <p className="text-sm text-gray-600">
             Secure access to Nomadsafari Travel CRM
@@ -326,6 +425,13 @@ export const CRMAuth: React.FC<CRMAuthProps> = ({ onAuthSuccess }) => {
         <CardContent className="space-y-4">
           {step === 'login' && (
             <>
+              <Alert>
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>
+                  <strong>First-time setup:</strong> Click "Register here" to create the first admin account.
+                </AlertDescription>
+              </Alert>
+
               <div className="space-y-2">
                 <Label htmlFor="email">Email Address</Label>
                 <div className="relative">
@@ -401,7 +507,7 @@ export const CRMAuth: React.FC<CRMAuthProps> = ({ onAuthSuccess }) => {
                   />
                 </div>
                 <p className="text-xs text-gray-500">
-                  We'll send you a link to reset your password
+                  We'll send you a link to reset your password. The link will work in this same browser window.
                 </p>
               </div>
 
@@ -427,8 +533,68 @@ export const CRMAuth: React.FC<CRMAuthProps> = ({ onAuthSuccess }) => {
             </>
           )}
 
+          {step === 'reset-password' && (
+            <>
+              <Alert>
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>
+                  Please enter your new password below.
+                </AlertDescription>
+              </Alert>
+
+              <div className="space-y-2">
+                <Label htmlFor="newPassword">New Password</Label>
+                <Input
+                  id="newPassword"
+                  type="password"
+                  placeholder="Enter new password (min 6 characters)"
+                  value={formData.password}
+                  onChange={(e) => handleInputChange('password', e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="confirmNewPassword">Confirm New Password</Label>
+                <Input
+                  id="confirmNewPassword"
+                  type="password"
+                  placeholder="Confirm new password"
+                  value={formData.confirmPassword}
+                  onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                />
+              </div>
+
+              <Button 
+                onClick={handlePasswordReset} 
+                className="w-full" 
+                disabled={loading}
+              >
+                {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+                Update Password
+              </Button>
+
+              <div className="text-center">
+                <Button 
+                  variant="link" 
+                  onClick={() => setStep('login')}
+                  className="text-sm"
+                >
+                  <ArrowLeft className="h-4 w-4 mr-1" />
+                  Back to Login
+                </Button>
+              </div>
+            </>
+          )}
+
           {step === 'register' && (
             <>
+              <Alert>
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>
+                  The first registered user will automatically become an admin.
+                </AlertDescription>
+              </Alert>
+
               <div className="space-y-2">
                 <Label htmlFor="name">Full Name *</Label>
                 <Input
@@ -469,7 +635,7 @@ export const CRMAuth: React.FC<CRMAuthProps> = ({ onAuthSuccess }) => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Password *</Label>
+                <Label htmlFor="password">Password * (min 6 characters)</Label>
                 <Input
                   id="password"
                   type="password"
