@@ -7,9 +7,34 @@ export const heroSlides = [
     subtitle: "Personalized travel experiences, expert planning, and unforgettable adventures"
   },
   {
+    imageSrc: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=2000",
+    title: "Kerala Backwaters - God's Own Country",
+    subtitle: "Experience the serene beauty of Kerala's pristine backwaters and houseboat cruises"
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=2000",
+    title: "Rajasthan's Royal Heritage",
+    subtitle: "Discover the magnificent palaces, forts, and vibrant culture of royal Rajasthan"
+  },
+  {
     imageSrc: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=2000",
     title: "Discover the Beauty of Incredible India",
     subtitle: "From the Himalayas to the backwaters, experience the diversity of India"
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?q=80&w=2000",
+    title: "Mahalaxmi Temple Kolhapur - Divine Blessings",
+    subtitle: "Embark on a spiritual journey to the sacred Mahalaxmi Temple in Kolhapur"
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=2000",
+    title: "Kerala's Emerald Landscapes",
+    subtitle: "Explore the lush tea plantations, spice gardens, and hill stations of Kerala"
+  },
+  {
+    imageSrc: "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?q=80&w=2000",
+    title: "Rajasthan Desert Safari Adventures",
+    subtitle: "Experience the golden sands and royal hospitality of the Thar Desert"
   },
   {
     imageSrc: "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80&w=2000",
