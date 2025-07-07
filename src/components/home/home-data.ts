@@ -17,9 +17,9 @@ export const heroSlides = [
     subtitle: "Discover the magnificent palaces, forts, and vibrant culture of royal Rajasthan"
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=2000",
-    title: "Discover the Beauty of Incredible India",
-    subtitle: "From the Himalayas to the backwaters, experience the diversity of India"
+    imageSrc: "https://images.unsplash.com/photo-1564507592333-c60657e46820?q=80&w=2000",
+    title: "Taj Mahal - Symbol of Eternal Love",
+    subtitle: "Visit the world's most beautiful monument and explore the Golden Triangle"
   },
   {
     imageSrc: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?q=80&w=2000",
@@ -27,9 +27,9 @@ export const heroSlides = [
     subtitle: "Embark on a spiritual journey to the sacred Mahalaxmi Temple in Kolhapur"
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=2000",
-    title: "Kerala's Emerald Landscapes",
-    subtitle: "Explore the lush tea plantations, spice gardens, and hill stations of Kerala"
+    imageSrc: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2000",
+    title: "Kerala's Emerald Backwaters",
+    subtitle: "Cruise through tranquil backwaters surrounded by coconut palms and traditional villages"
   },
   {
     imageSrc: "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?q=80&w=2000",
@@ -42,9 +42,9 @@ export const heroSlides = [
     subtitle: "Explore exotic destinations with our curated international packages"
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2000",
-    title: "Door-to-Door Travel Solutions",
-    subtitle: "We pick you up from home and drop you back - hassle-free travel guaranteed"
+    imageSrc: "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?q=80&w=2000",
+    title: "Spiritual Journey Through India",
+    subtitle: "Discover ancient temples, sacred ghats, and timeless spiritual traditions"
   }
 ];
 
