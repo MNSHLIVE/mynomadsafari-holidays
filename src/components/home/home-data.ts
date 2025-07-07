@@ -1,3 +1,4 @@
+
 // Shared data for home page components
 
 export const heroSlides = [
@@ -7,12 +8,12 @@ export const heroSlides = [
     subtitle: "Personalized travel experiences, expert planning, and unforgettable adventures"
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=2000",
+    imageSrc: "/lovable-uploads/5fa44e5b-d4ff-443b-b639-0cfa9bd03795.png",
     title: "Kerala Backwaters - God's Own Country",
     subtitle: "Experience the serene beauty of Kerala's pristine backwaters and houseboat cruises"
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=2000",
+    imageSrc: "/lovable-uploads/ba77bc0e-2a8e-4115-968d-fe82d87b7689.png",
     title: "Rajasthan's Royal Heritage",
     subtitle: "Discover the magnificent palaces, forts, and vibrant culture of royal Rajasthan"
   },
@@ -22,24 +23,24 @@ export const heroSlides = [
     subtitle: "Visit the world's most beautiful monument and explore the Golden Triangle"
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?q=80&w=2000",
-    title: "Mahalaxmi Temple Kolhapur - Divine Blessings",
-    subtitle: "Embark on a spiritual journey to the sacred Mahalaxmi Temple in Kolhapur"
+    imageSrc: "/lovable-uploads/ed87ce9c-b48d-4eee-9781-f1315d0d4cba.png",
+    title: "Vibrant Local Markets & Culture",
+    subtitle: "Immerse yourself in colorful markets and authentic local experiences"
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2000",
-    title: "Kerala's Emerald Backwaters",
-    subtitle: "Cruise through tranquil backwaters surrounded by coconut palms and traditional villages"
+    imageSrc: "/lovable-uploads/5d3ba368-fe61-47bd-a2b0-3e115e083d86.png",
+    title: "Himalayan Adventures Await",
+    subtitle: "Conquer the majestic peaks and valleys of the mighty Himalayas"
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?q=80&w=2000",
-    title: "Rajasthan Desert Safari Adventures",
-    subtitle: "Experience the golden sands and royal hospitality of the Thar Desert"
+    imageSrc: "/lovable-uploads/ef41300f-5e0e-4fff-9a96-17335105f658.png",
+    title: "Singapore - Garden City Experience",
+    subtitle: "Explore the modern marvels and futuristic architecture of Singapore"
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80&w=2000",
-    title: "International Adventures Await",
-    subtitle: "Explore exotic destinations with our curated international packages"
+    imageSrc: "/lovable-uploads/71af5cc3-aa7e-4fc1-b6d1-31ce0abc47c7.png",
+    title: "Tropical Paradise Beach Escapes",
+    subtitle: "Relax on pristine beaches with crystal clear waters and exotic landscapes"
   },
   {
     imageSrc: "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?q=80&w=2000",
