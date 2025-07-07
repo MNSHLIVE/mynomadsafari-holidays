@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -39,17 +38,15 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Enhanced quick reply suggestions with new options
+  // Optimized quick replies for faster engagement
   const quickReplies = [
-    "Plan a Kerala trip",
-    "Rajasthan heritage tour", 
-    "International packages",
-    "Honeymoon destinations",
-    "Visa assistance",
-    "Flight booking",
-    "Train booking",
-    "Adventure tours",
-    "Budget travel options"
+    "Kerala trip cost?",
+    "Rajasthan packages", 
+    "Bali pricing",
+    "Dubai deals",
+    "Goa packages",
+    "Visa help",
+    "Flight booking"
   ];
 
   const scrollToBottom = () => {
@@ -60,13 +57,13 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
     scrollToBottom();
   }, [messages]);
 
-  // Initialize with welcome message
+  // Shorter, focused welcome message
   useEffect(() => {
     if (messages.length === 0) {
       setMessages([{
         id: '1',
         type: 'assistant',
-        content: 'Hello! I\'m your personal travel assistant at MyNomadSafariHolidays. I\'m here to help you plan your perfect trip within your budget! 🌟\n\nI can help you with:\n🏖️ Tour Packages (Domestic & International)\n✈️ Flight Bookings\n🚂 Train & Bus Bookings\n🛂 Visa Assistance\n📋 Custom Travel Planning\n\nTo get started, please share your contact details using the "Your Details" button, then tell me how I can help you!',
+        content: 'Hi! I\'m your travel assistant. Share your destination interest and get instant quotes! 🌟\n\nFirst, please share your contact details using "Your Details" button below.',
         timestamp: new Date()
       }]);
     }
@@ -88,12 +85,6 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
     setShowQuickReplies(false);
 
     try {
-      console.log('Sending message to AI chat function:', { 
-        messageLength: messageText.length, 
-        sessionId,
-        messagePreview: messageText.substring(0, 50) + '...'
-      });
-      
       const { data, error } = await supabase.functions.invoke('ai-chat', {
         body: { 
           message: messageText,
@@ -106,14 +97,7 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
         }
       });
 
-      console.log('AI chat response received:', { 
-        hasData: !!data, 
-        hasError: !!error,
-        responseLength: data?.response?.length || 0
-      });
-
       if (error) {
-        console.error('Supabase function error:', error);
         throw error;
       }
 
@@ -124,37 +108,20 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
           content: data.response,
           timestamp: new Date()
         };
-
         setMessages(prev => [...prev, assistantMessage]);
-        console.log('AI response successfully added to chat');
-      } else {
-        throw new Error('No response received from AI service');
       }
     } catch (error) {
       console.error('Error sending message:', error);
       
-      // Provide helpful fallback message based on query type
-      let fallbackContent = 'I\'m here to help plan your perfect trip! 🌟\n\n';
-      
-      if (messageText.toLowerCase().includes('visa')) {
-        fallbackContent += 'For visa assistance, please use the "Visa Form" button below or contact our executives directly.\n\n';
-      } else if (messageText.toLowerCase().includes('flight')) {
-        fallbackContent += 'For flight bookings, please use the "Flight Booking" button below or contact our executives directly.\n\n';
-      } else if (messageText.toLowerCase().includes('train') || messageText.toLowerCase().includes('bus')) {
-        fallbackContent += 'For train/bus bookings, please use the "Train Booking" button below or contact our executives directly.\n\n';
-      }
-      
-      fallbackContent += 'You can also:\n• Use Trip Calculator for instant quotes\n• Share your contact details via "Your Details" button\n• Contact our executives directly\n\nWhat destination interests you most?';
-      
+      // Short fallback message
       const fallbackMessage: Message = {
         id: (Date.now() + 2).toString(),
         type: 'assistant',
-        content: fallbackContent,
+        content: 'Quick help available! Contact: Delhi +91-9968682200 | Mumbai +91-7042910449. Which destination interests you?',
         timestamp: new Date()
       };
       setMessages(prev => [...prev, fallbackMessage]);
-      
-      toast.info('Chat is ready! Feel free to ask about any service or use our booking forms.');
+      toast.info('Chat ready! Ask about any destination or use booking forms.');
     } finally {
       setIsLoading(false);
     }
@@ -167,7 +134,7 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
     setUserDetails(contactData);
     setShowContactForm(false);
     
-    // Store user details in database
+    // Store user details
     const storeUserDetails = async () => {
       try {
         await supabase
@@ -181,7 +148,6 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
           }, {
             onConflict: 'session_id'
           });
-        console.log('User details stored successfully');
       } catch (error) {
         console.error('Failed to store user details:', error);
       }
@@ -192,7 +158,7 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
     const contactMessage: Message = {
       id: (Date.now() + 1).toString(),
       type: 'assistant',
-      content: `Thank you ${contactData.name}! I have your contact details. Now you can use the Trip Calculator to get instant cost estimates, or let me know what type of service you need - tours, flights, trains, or visa assistance!`,
+      content: `Thanks ${contactData.name}! Now tell me your dream destination and I'll share instant pricing! 🏖️`,
       timestamp: new Date()
     };
     setMessages(prev => [...prev, contactMessage]);
@@ -202,14 +168,7 @@ const AIChatWidget: React.FC<AIChatWidgetProps> = ({ isOpen, onClose }) => {
     setCalculatedData(data);
     setShowCalculator(false);
     
-    const costMessage = `Based on your ${data.destination} trip for ${data.adults} adults${data.children > 0 ? ` and ${data.children} children` : ''} from ${data.departureDate} to ${data.returnDate}:
-
-💰 **Total Cost**: ₹${data.totalCost.toLocaleString()}
-👤 **Per Person**: ₹${data.perPersonCost.toLocaleString()}
-🏨 **Hotel Category**: ${data.hotelCategory}
-📦 **Package Type**: ${data.packageType}
-
-This includes accommodation, meals, transfers, and sightseeing. Would you like me to generate a detailed itinerary PDF with this costing?`;
+    const costMessage = `${data.destination} trip: ₹${data.totalCost.toLocaleString()} total (₹${data.perPersonCost.toLocaleString()}/person)\n${data.adults} adults${data.children > 0 ? `, ${data.children} kids` : ''}\n\nReady to book? Contact: Delhi +91-9968682200 | Mumbai +91-7042910449`;
 
     const calculatorMessage: Message = {
       id: (Date.now() + 3).toString(),
@@ -249,31 +208,25 @@ This includes accommodation, meals, transfers, and sightseeing. Would you like m
         sessionId: sessionId
       };
 
-      console.log('Generating PDF with data:', itineraryData);
-
       const { data, error } = await supabase.functions.invoke('generate-itinerary-pdf', {
         body: itineraryData
       });
 
       if (error) {
-        console.error('Error generating itinerary:', error);
         toast.error('Failed to generate itinerary. Please try again.');
       } else {
-        toast.success('Itinerary generated! Check your email for the PDF.');
+        toast.success('Itinerary sent to your email!');
         
         const pdfMessage: Message = {
           id: (Date.now() + 4).toString(),
           type: 'assistant',
-          content: `Perfect! I've generated your detailed ${calculatedData.destination} itinerary with the calculated costing. The PDF includes day-wise activities, inclusions, exclusions, and the total cost breakdown of ₹${calculatedData.totalCost.toLocaleString()}.
-
-The PDF has been sent to your email. Is there anything else you'd like to customize in your trip?`,
+          content: `PDF sent! Your ${calculatedData.destination} itinerary with ₹${calculatedData.totalCost.toLocaleString()} costing is in your email. Ready to book?`,
           timestamp: new Date()
         };
         
         setMessages(prev => [...prev, pdfMessage]);
       }
     } catch (error) {
-      console.error('PDF generation error:', error);
       toast.error('Failed to generate PDF. Please try again.');
     }
   };
@@ -281,8 +234,8 @@ The PDF has been sent to your email. Is there anything else you'd like to custom
   const openWhatsApp = (office: 'delhi' | 'mumbai') => {
     const phoneNumber = office === 'delhi' ? "+919968682200" : "+917042910449";
     const message = userDetails ? 
-      `Hi! I'm ${userDetails.name}. I'd like to discuss my ${calculatedData?.destination || 'travel'} requirements. My email: ${userDetails.email}, Phone: ${userDetails.phone}` :
-      "Hi! I'd like to discuss travel services with your executive.";
+      `Hi! I'm ${userDetails.name}. Interested in ${calculatedData?.destination || 'travel'} packages. Email: ${userDetails.email}, Phone: ${userDetails.phone}` :
+      "Hi! Interested in travel packages. Please share details.";
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank");
   };
@@ -371,7 +324,7 @@ The PDF has been sent to your email. Is there anything else you'd like to custom
                   </div>
                 )}
 
-                {/* Enhanced Action buttons with new services */}
+                {/* Streamlined action buttons */}
                 <div className="space-y-2">
                   <div className="flex gap-2 flex-wrap">
                     {!userDetails && (
@@ -392,7 +345,7 @@ The PDF has been sent to your email. Is there anything else you'd like to custom
                       className="text-xs"
                     >
                       <Calculator className="h-3 w-3 mr-1" />
-                      Trip Calculator
+                      Quick Quote
                     </Button>
                     
                     {calculatedData && userDetails && (
@@ -402,40 +355,12 @@ The PDF has been sent to your email. Is there anything else you'd like to custom
                         className="bg-green-600 hover:bg-green-700 text-xs"
                       >
                         <FileText className="h-3 w-3 mr-1" />
-                        Generate PDF
+                        Get PDF
                       </Button>
                     )}
                   </div>
 
-                  {/* New Service Buttons */}
-                  <div className="flex gap-2 flex-wrap">
-                    <Button 
-                      onClick={() => openBookingForm('visa')}
-                      size="sm"
-                      className="bg-purple-600 hover:bg-purple-700 text-xs"
-                    >
-                      <MapPin className="h-3 w-3 mr-1" />
-                      Visa Form
-                    </Button>
-                    <Button 
-                      onClick={() => openBookingForm('flight')}
-                      size="sm"
-                      className="bg-orange-600 hover:bg-orange-700 text-xs"
-                    >
-                      <Plane className="h-3 w-3 mr-1" />
-                      Flight Booking
-                    </Button>
-                    <Button 
-                      onClick={() => openBookingForm('train')}
-                      size="sm"
-                      className="bg-indigo-600 hover:bg-indigo-700 text-xs"
-                    >
-                      <Train className="h-3 w-3 mr-1" />
-                      Train Booking
-                    </Button>
-                  </div>
-                  
-                  {/* WhatsApp buttons */}
+                  {/* Quick booking buttons */}
                   <div className="flex gap-2 flex-wrap">
                     <Button 
                       onClick={() => openWhatsApp('delhi')}
@@ -443,7 +368,7 @@ The PDF has been sent to your email. Is there anything else you'd like to custom
                       className="bg-green-500 hover:bg-green-600 text-xs"
                     >
                       <Phone className="h-3 w-3 mr-1" />
-                      Delhi Executive
+                      Delhi
                     </Button>
                     <Button 
                       onClick={() => openWhatsApp('mumbai')}
@@ -451,15 +376,22 @@ The PDF has been sent to your email. Is there anything else you'd like to custom
                       className="bg-green-500 hover:bg-green-600 text-xs"
                     >
                       <Phone className="h-3 w-3 mr-1" />
-                      Mumbai Executive
+                      Mumbai
+                    </Button>
+                    <Button 
+                      onClick={() => openBookingForm('visa')}
+                      size="sm"
+                      className="bg-purple-600 hover:bg-purple-700 text-xs"
+                    >
+                      Visa
                     </Button>
                   </div>
                 </div>
 
-                {/* Enhanced Quick Replies */}
+                {/* Optimized Quick Replies */}
                 {showQuickReplies && messages.length <= 2 && (
                   <div className="space-y-2">
-                    <p className="text-xs text-gray-600 px-1">Quick suggestions:</p>
+                    <p className="text-xs text-gray-600 px-1">Popular destinations:</p>
                     <div className="flex flex-wrap gap-2">
                       {quickReplies.map((reply) => (
                         <Button
@@ -483,7 +415,7 @@ The PDF has been sent to your email. Is there anything else you'd like to custom
             <div className="border-t bg-gray-50 p-3 flex-shrink-0">
               <div className="flex gap-2">
                 <Input
-                  placeholder={isMobile ? "Type your message..." : "Ask about tours, flights, visa..."}
+                  placeholder={isMobile ? "Ask about destinations..." : "Which destination interests you?"}
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
