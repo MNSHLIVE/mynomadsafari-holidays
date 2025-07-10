@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -46,10 +45,6 @@ export const AITester: React.FC<AITesterProps> = ({ userRole }) => {
       email: `rajesh.gupta.${Date.now()}@example.com`,
       phone: '+91-9876543210',
       country: 'India',
-      segment: 'customer',
-      budgetRange: '₹1,00,000 - ₹3,00,000',
-      travelStyle: 'Family, Cultural',
-      groupSize: 4,
       notes: 'Interested in Rajasthan heritage tours with family'
     },
     {
@@ -58,10 +53,6 @@ export const AITester: React.FC<AITesterProps> = ({ userRole }) => {
       email: `anita.sharma.${Date.now()}@example.com`,
       phone: '+91-8765432109',
       country: 'India',
-      segment: 'vip',
-      budgetRange: '₹5,00,000 - ₹10,00,000',
-      travelStyle: 'Luxury, Beach',
-      groupSize: 2,
       notes: 'Honeymoon package for Maldives, prefers luxury resorts'
     },
     {
@@ -70,10 +61,6 @@ export const AITester: React.FC<AITesterProps> = ({ userRole }) => {
       email: `michael.johnson.${Date.now()}@example.com`,
       phone: '+1-555-0123',
       country: 'USA',
-      segment: 'lead',
-      budgetRange: '₹2,00,000 - ₹5,00,000',
-      travelStyle: 'Adventure, Photography',
-      groupSize: 3,
       notes: 'Wildlife photography tour in Kerala backwaters'
     }
   ];
@@ -85,7 +72,7 @@ export const AITester: React.FC<AITesterProps> = ({ userRole }) => {
       startDate: '2024-03-15',
       endDate: '2024-03-22',
       packageCost: 85000,
-      status: 'confirmed',
+      status: 'confirmed' as const,
       paymentStatus: 'partial',
       notes: 'Heritage tour with luxury hotels'
     },
@@ -95,7 +82,7 @@ export const AITester: React.FC<AITesterProps> = ({ userRole }) => {
       startDate: '2024-04-01',
       endDate: '2024-04-08',
       packageCost: 125000,
-      status: 'new',
+      status: 'new' as const,
       paymentStatus: 'pending',
       notes: 'Premium houseboat with Ayurvedic spa'
     }
