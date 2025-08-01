@@ -5,7 +5,7 @@ export const southeastAsiaDestinations: DestinationData[] = [
     name: "Thailand",
     region: "Southeast Asia",
     imageSrc: "/Destination/International/Main/Thailand-main.jpg",
-    description: "Tropical beaches, opulent palaces, and a vibrant street life make Thailand unforgettable.",
+    description: "Discover amazing Thailand tour packages 2025 featuring Bangkok's vibrant culture, pristine Phuket beaches, Chiang Mai temples, and exotic island hopping adventures. Ideal for family trips and romantic honeymoon escapes.",
     bestTimeToVisit: "November - March",
     budgetRange: {
       economy: "₹45,000 - ₹65,000",
@@ -25,7 +25,7 @@ export const southeastAsiaDestinations: DestinationData[] = [
     name: "Bali",
     region: "Southeast Asia",
     imageSrc: "/Destination/International/Main/Bali-main.jpg",
-    description: "Experience the perfect blend of beaches, culture, and adventure in this island paradise.",
+    description: "Experience ultimate Bali vacation packages 2025 with luxury beach resorts, cultural temple tours, volcano adventures, and tropical paradise getaways. Perfect for honeymoon tours, family vacations, and spiritual retreats in Indonesia.",
     bestTimeToVisit: "April - October",
     budgetRange: {
       economy: "₹50,000 - ₹70,000",
@@ -45,7 +45,7 @@ export const southeastAsiaDestinations: DestinationData[] = [
     name: "Singapore",
     region: "Southeast Asia",
     imageSrc: "/Destination/International/Main/Singapore-main.jpg",
-    description: "A futuristic garden city with impeccable cleanliness, amazing food, and iconic landmarks.",
+    description: "Experience luxury Singapore tour packages 2025 with world-class attractions, Gardens by the Bay, Universal Studios, Marina Bay Sands, and cultural districts. Perfect for family holidays and business travel.",
     bestTimeToVisit: "February - April, November - December",
     budgetRange: {
       economy: "₹55,000 - ₹75,000",

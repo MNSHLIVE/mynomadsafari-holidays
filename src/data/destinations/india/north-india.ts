@@ -6,7 +6,7 @@ export const northIndiaDestinations: DestinationData[] = [
     name: "Rajasthan",
     region: "North India",
     imageSrc: "/Destination/Domestic/main/Rajasthan-main.jpg",
-    description: "Experience the vibrant culture and royal heritage of the land of kings.",
+    description: "Experience magnificent Rajasthan heritage tours 2025 with luxury palace stays, desert safaris in Jaisalmer, and royal cultural experiences. Discover the Pink City Jaipur, romantic Lake City Udaipur, and blue city Jodhpur with expert guides.",
     bestTimeToVisit: "October - March",
     budgetRange: {
       economy: "₹30,000 - ₹45,000",
@@ -25,7 +25,7 @@ export const northIndiaDestinations: DestinationData[] = [
     name: "Himachal Pradesh",
     region: "North India",
     imageSrc: "/Destination/Domestic/main/Himachal-Main.jpg",
-    description: "Experience the majestic Himalayas and charming hill stations.",
+    description: "Discover stunning Himachal Pradesh tour packages 2025 featuring scenic hill stations, adventure activities, and mountain getaways. Perfect for honeymoon tours with cozy stays in Shimla, Manali, and serene Dharamshala.",
     bestTimeToVisit: "March - June, September - November",
     budgetRange: {
       economy: "₹28,000 - ₹42,000",
@@ -45,7 +45,7 @@ export const northIndiaDestinations: DestinationData[] = [
     name: "Ladakh",
     region: "North India",
     imageSrc: "/Destination/Domestic/main/Ladhak-main.jpg",
-    description: "Explore the high-altitude desert landscapes and Buddhist monasteries of this remote Himalayan region.",
+    description: "Experience ultimate Ladakh adventure tours 2025 with high-altitude landscapes, pristine lakes like Pangong Tso, ancient Buddhist monasteries, and thrilling bike expeditions. Ideal for adventure seekers and spiritual travelers.",
     bestTimeToVisit: "June - September",
     budgetRange: {
       economy: "₹40,000 - ₹60,000",

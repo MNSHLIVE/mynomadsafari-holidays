@@ -73,14 +73,15 @@ const EmbeddedCalculator: React.FC<EmbeddedCalculatorProps> = ({ onCalculate, on
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-lg flex items-center gap-2">
-          <Calculator className="h-5 w-5" />
-          Quick Cost Calculator
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
+    <div className="w-full max-h-[400px] overflow-y-auto">
+      <Card className="w-full">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm flex items-center gap-2">
+            <Calculator className="h-4 w-4" />
+            Quick Cost Calculator
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3 text-sm">
         <div>
           <Label htmlFor="destination">Destination</Label>
           <Select value={destination} onValueChange={setDestination}>
@@ -95,36 +96,38 @@ const EmbeddedCalculator: React.FC<EmbeddedCalculatorProps> = ({ onCalculate, on
           </Select>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2">
           <div>
-            <Label htmlFor="adults">Adults</Label>
+            <Label htmlFor="adults" className="text-xs">Adults</Label>
             <Input
               type="number"
               value={adults}
               onChange={(e) => setAdults(Number(e.target.value))}
               min="1"
               max="20"
+              className="h-8 text-sm"
             />
           </div>
           <div>
-            <Label htmlFor="children">Children</Label>
+            <Label htmlFor="children" className="text-xs">Children</Label>
             <Input
               type="number"
               value={children}
               onChange={(e) => setChildren(Number(e.target.value))}
               min="0"
               max="10"
+              className="h-8 text-sm"
             />
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2">
           <div>
-            <Label>Departure Date</Label>
+            <Label className="text-xs">Departure Date</Label>
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="w-full justify-start text-left font-normal">
-                  <CalendarIcon className="mr-2 h-4 w-4" />
+                <Button variant="outline" className="w-full justify-start text-left font-normal h-8 text-xs">
+                  <CalendarIcon className="mr-1 h-3 w-3" />
                   {departureDate ? format(departureDate, "MMM dd") : "Select"}
                 </Button>
               </PopoverTrigger>
@@ -139,11 +142,11 @@ const EmbeddedCalculator: React.FC<EmbeddedCalculatorProps> = ({ onCalculate, on
             </Popover>
           </div>
           <div>
-            <Label>Return Date</Label>
+            <Label className="text-xs">Return Date</Label>
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="w-full justify-start text-left font-normal">
-                  <CalendarIcon className="mr-2 h-4 w-4" />
+                <Button variant="outline" className="w-full justify-start text-left font-normal h-8 text-xs">
+                  <CalendarIcon className="mr-1 h-3 w-3" />
                   {returnDate ? format(returnDate, "MMM dd") : "Select"}
                 </Button>
               </PopoverTrigger>
@@ -159,46 +162,48 @@ const EmbeddedCalculator: React.FC<EmbeddedCalculatorProps> = ({ onCalculate, on
           </div>
         </div>
 
-        <div>
-          <Label>Hotel Category</Label>
-          <Select value={hotelCategory} onValueChange={setHotelCategory}>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="2-star">2-Star</SelectItem>
-              <SelectItem value="3-star">3-Star</SelectItem>
-              <SelectItem value="4-star">4-Star</SelectItem>
-              <SelectItem value="5-star">5-Star</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div>
-          <Label>Package Type</Label>
-          <Select value={packageType} onValueChange={setPackageType}>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="budget">Budget</SelectItem>
-              <SelectItem value="standard">Standard</SelectItem>
-              <SelectItem value="luxury">Luxury</SelectItem>
-              <SelectItem value="premium">Premium</SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="grid grid-cols-2 gap-2">
+          <div>
+            <Label className="text-xs">Hotel Category</Label>
+            <Select value={hotelCategory} onValueChange={setHotelCategory}>
+              <SelectTrigger className="h-8 text-xs">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="2-star">2-Star</SelectItem>
+                <SelectItem value="3-star">3-Star</SelectItem>
+                <SelectItem value="4-star">4-Star</SelectItem>
+                <SelectItem value="5-star">5-Star</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label className="text-xs">Package Type</Label>
+            <Select value={packageType} onValueChange={setPackageType}>
+              <SelectTrigger className="h-8 text-xs">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="budget">Budget</SelectItem>
+                <SelectItem value="standard">Standard</SelectItem>
+                <SelectItem value="luxury">Luxury</SelectItem>
+                <SelectItem value="premium">Premium</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         <div className="flex gap-2 pt-2">
-          <Button onClick={calculateCost} className="flex-1">
+          <Button onClick={calculateCost} className="flex-1 h-8 text-xs">
             Calculate Cost
           </Button>
-          <Button variant="outline" onClick={onClose}>
+          <Button variant="outline" onClick={onClose} className="h-8 text-xs">
             Close
           </Button>
         </div>
       </CardContent>
     </Card>
+    </div>
   );
 };
 

@@ -43,6 +43,12 @@ serve(async (req) => {
                           existingConversation?.visitor_email && 
                           existingConversation?.visitor_phone;
 
+    // Enhanced context tracking to avoid repetition
+    const hasContactDetailsInConversation = conversationHistory.some(msg => 
+      msg.content?.toLowerCase().includes('thanks') && 
+      msg.content?.toLowerCase().includes('name')
+    );
+
     let aiResponse = '';
     const geminiApiKey = Deno.env.get('GEMINI_API_KEY');
 
@@ -151,8 +157,13 @@ function getOptimizedFallbackResponse(message: string, hasUserDetails: boolean, 
   
   // Check if already asked this question recently
   const recentTopics = conversationHistory.slice(-6).map(msg => msg.content?.toLowerCase() || '');
+  const hasContactDetailsInConversation = conversationHistory.some(msg => 
+    msg.content?.toLowerCase().includes('thanks') && 
+    msg.content?.toLowerCase().includes('name')
+  );
   
-  if (!hasUserDetails) {
+  // Only ask for details if we don't have them AND haven't already thanked them
+  if (!hasUserDetails && !hasContactDetailsInConversation) {
     return "Hi! I need your name, email & phone to provide personalized quotes. Share your details and destination interest! 📞 Delhi: +91-9968682200 | Mumbai: +91-7042910449";
   }
 

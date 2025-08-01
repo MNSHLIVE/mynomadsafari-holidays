@@ -6,7 +6,7 @@ export const southIndiaDestinations: DestinationData[] = [
     name: "Kerala",
     region: "South India",
     imageSrc: "/Destination/Domestic/main/Kerala-main.jpg",
-    description: "Discover the serene backwaters and lush greenery of God's own country.",
+    description: "Experience magical Kerala backwater tours 2025 with luxury houseboat stays, Ayurveda wellness retreats, misty hill stations in Munnar, and pristine beaches. Perfect for honeymoon packages and family vacations in God's Own Country.",
     bestTimeToVisit: "September - March",
     budgetRange: {
       economy: "₹35,000 - ₹50,000",

@@ -29,9 +29,9 @@ const Index = () => {
   const [searchValue, setSearchValue] = useState("");
 
   const seoData = {
-    title: "Best India Tour Packages 2024 | Luxury Safari Holidays | MyNomadSafariHolidays",
-    description: "Book end-to-end luxury India tour packages with customized safari holidays, adventure travel, cultural heritage tours & wildlife experiences. Best deals for Kerala, Rajasthan, Himachal & more destinations.",
-    keywords: "India tour packages, luxury safari holidays, best tour packages India, customized safari vacations, adventure travel India, Kerala tour packages, Rajasthan heritage tours, Golden Triangle tours, wildlife safari packages, end-to-end tour operators India",
+    title: "Best India Tour Packages 2025 | Luxury Safari Holidays | MyNomadSafariHolidays",
+    description: "Book premium India tour packages 2025 with luxury safari holidays, Kerala backwater tours, Rajasthan heritage experiences, Himachal adventures & international destinations. Expert travel planning with 24/7 support & best prices guaranteed.",
+    keywords: "India tour packages 2025, luxury safari holidays, Kerala backwater tours, Rajasthan heritage packages, adventure travel India, wildlife safari tours, customized travel packages, best tour operators India, spiritual tours India, family vacation packages, honeymoon tours India, international tour packages, budget travel India, group tours, solo travel packages",
     canonicalUrl: "https://www.mynomadsafariholidays.in/",
     ogImage: "https://www.mynomadsafariholidays.in/lovable-uploads/3e515213-741f-498e-add3-8b8f70b7fe4c.png",
     structuredData: [

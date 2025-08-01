@@ -6,7 +6,7 @@ export const middleEastDestinations: DestinationData[] = [
     name: "Dubai",
     region: "Middle East",
     imageSrc: "/Destination/International/Main/Dubai-main.jpg",
-    description: "A glamorous city of superlatives, from the world's tallest building to man-made islands.",
+    description: "Experience luxury Dubai tour packages 2025 with world-class shopping, futuristic skyline, desert safaris, luxury resorts, and iconic attractions. Perfect for family vacations, honeymoon trips, and business travel in UAE.",
     bestTimeToVisit: "November - March",
     budgetRange: {
       economy: "₹60,000 - ₹85,000",
