@@ -1,7 +1,7 @@
 
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.4';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -27,7 +27,7 @@ serve(async (req) => {
 
     // Get conversation context to avoid repetition
     const conversationHistory = conversationData || [];
-    const userHasDetails = conversationHistory.some(msg => 
+    const userHasDetails = conversationHistory.some((msg: any) => 
       msg.content?.toLowerCase().includes('email') || 
       msg.content?.toLowerCase().includes('phone')
     );
@@ -44,7 +44,7 @@ serve(async (req) => {
                           existingConversation?.visitor_phone;
 
     // Enhanced context tracking to avoid repetition
-    const hasContactDetailsInConversation = conversationHistory.some(msg => 
+    const hasContactDetailsInConversation = conversationHistory.some((msg: any) => 
       msg.content?.toLowerCase().includes('thanks') && 
       msg.content?.toLowerCase().includes('name')
     );

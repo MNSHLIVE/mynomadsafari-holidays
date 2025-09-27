@@ -75,9 +75,7 @@ serve(async (req) => {
             username,
             password,
           },
-          socketTimeout: 30000, // 30 seconds socket timeout
         },
-        debug: true, // Keep debug mode for verbose logs
         pool: false, // Disable connection pooling to ensure fresh connections
       });
 
@@ -122,7 +120,7 @@ serve(async (req) => {
           } 
         }
       );
-    } catch (emailError) {
+    } catch (emailError: any) {
       console.error(`[SEND-EMAIL] Error during email sending at ${new Date().toISOString()}:`, emailError.message);
       console.error("[SEND-EMAIL] Error details:", JSON.stringify(emailError, Object.getOwnPropertyNames(emailError)));
       
@@ -154,7 +152,7 @@ serve(async (req) => {
       );
     }
     
-  } catch (error) {
+  } catch (error: any) {
     console.error(`[SEND-EMAIL] General error at ${new Date().toISOString()}:`, error);
     
     // Get more details about the error

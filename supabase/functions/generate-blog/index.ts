@@ -124,7 +124,7 @@ Create a comprehensive blog post (800-1200 words) with:
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in generate-blog function:', error);
     return new Response(
       JSON.stringify({ error: error.message }),
