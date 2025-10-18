@@ -10,76 +10,100 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "13.0.5"
+    PostgrestVersion: "12.2.3 (519615d)"
   }
   public: {
     Tables: {
       ai_chat_conversations: {
         Row: {
+          adults: number | null
+          budget_range: string | null
+          children: number | null
+          children_ages: number[] | null
           conversation_data: Json | null
-          created_at: string | null
+          created_at: string
           destination: string | null
           id: string
           lead_status: string | null
+          package_type: string | null
           session_id: string
-          updated_at: string | null
+          special_requests: string | null
+          travel_date: string | null
+          updated_at: string
           visitor_email: string | null
           visitor_name: string | null
           visitor_phone: string | null
+          whatsapp_handoff: boolean | null
         }
         Insert: {
+          adults?: number | null
+          budget_range?: string | null
+          children?: number | null
+          children_ages?: number[] | null
           conversation_data?: Json | null
-          created_at?: string | null
+          created_at?: string
           destination?: string | null
           id?: string
           lead_status?: string | null
+          package_type?: string | null
           session_id: string
-          updated_at?: string | null
+          special_requests?: string | null
+          travel_date?: string | null
+          updated_at?: string
           visitor_email?: string | null
           visitor_name?: string | null
           visitor_phone?: string | null
+          whatsapp_handoff?: boolean | null
         }
         Update: {
+          adults?: number | null
+          budget_range?: string | null
+          children?: number | null
+          children_ages?: number[] | null
           conversation_data?: Json | null
-          created_at?: string | null
+          created_at?: string
           destination?: string | null
           id?: string
           lead_status?: string | null
+          package_type?: string | null
           session_id?: string
-          updated_at?: string | null
+          special_requests?: string | null
+          travel_date?: string | null
+          updated_at?: string
           visitor_email?: string | null
           visitor_name?: string | null
           visitor_phone?: string | null
+          whatsapp_handoff?: boolean | null
         }
         Relationships: []
       }
       blog_generation_requests: {
         Row: {
           content: string | null
-          created_at: string | null
+          created_at: string
           id: string
           keywords: string[] | null
+          published_at: string | null
           status: string | null
           topic: string
-          updated_at: string | null
         }
         Insert: {
           content?: string | null
-          created_at?: string | null
+          created_at?: string
           id?: string
           keywords?: string[] | null
+          published_at?: string | null
           status?: string | null
           topic: string
-          updated_at?: string | null
         }
         Update: {
           content?: string | null
-          created_at?: string | null
+          created_at?: string
           id?: string
           keywords?: string[] | null
+          published_at?: string | null
           status?: string | null
           topic?: string
-          updated_at?: string | null
         }
         Relationships: []
       }
@@ -91,9 +115,10 @@ export type Database = {
           end_date: string
           id: string
           notes: string | null
+          package_cost: number
+          payment_status: string | null
           start_date: string
-          status: string | null
-          total_amount: number
+          status: Database["public"]["Enums"]["booking_status"] | null
           trip_name: string
           updated_at: string | null
         }
@@ -104,9 +129,10 @@ export type Database = {
           end_date: string
           id?: string
           notes?: string | null
+          package_cost: number
+          payment_status?: string | null
           start_date: string
-          status?: string | null
-          total_amount: number
+          status?: Database["public"]["Enums"]["booking_status"] | null
           trip_name: string
           updated_at?: string | null
         }
@@ -117,9 +143,10 @@ export type Database = {
           end_date?: string
           id?: string
           notes?: string | null
+          package_cost?: number
+          payment_status?: string | null
           start_date?: string
-          status?: string | null
-          total_amount?: number
+          status?: Database["public"]["Enums"]["booking_status"] | null
           trip_name?: string
           updated_at?: string | null
         }
@@ -133,76 +160,154 @@ export type Database = {
           },
         ]
       }
-      crm_activity_logs: {
+      cached_responses: {
         Row: {
-          activity_type: string
-          created_at: string | null
-          description: string
+          api_source: string | null
+          created_at: string
+          expires_at: string | null
           id: string
-          metadata: Json | null
-          user_id: string
+          query_hash: string
+          response_text: string
         }
         Insert: {
-          activity_type: string
-          created_at?: string | null
-          description: string
+          api_source?: string | null
+          created_at?: string
+          expires_at?: string | null
           id?: string
-          metadata?: Json | null
-          user_id: string
+          query_hash: string
+          response_text: string
         }
         Update: {
-          activity_type?: string
-          created_at?: string | null
-          description?: string
+          api_source?: string | null
+          created_at?: string
+          expires_at?: string | null
           id?: string
-          metadata?: Json | null
-          user_id?: string
+          query_hash?: string
+          response_text?: string
         }
         Relationships: []
       }
+      crm_activity_logs: {
+        Row: {
+          action: string
+          created_at: string | null
+          id: string
+          ip_address: string | null
+          new_data: Json | null
+          old_data: Json | null
+          record_id: string | null
+          table_name: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string | null
+          id?: string
+          ip_address?: string | null
+          new_data?: Json | null
+          old_data?: Json | null
+          record_id?: string | null
+          table_name?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string | null
+          id?: string
+          ip_address?: string | null
+          new_data?: Json | null
+          old_data?: Json | null
+          record_id?: string | null
+          table_name?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_activity_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "crm_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       crm_users: {
         Row: {
+          company_name: string | null
           created_at: string | null
           email: string
-          first_name: string | null
           id: string
-          is_verified: boolean | null
-          last_name: string | null
-          phone: string
-          role: string | null
+          is_active: boolean | null
+          name: string
+          phone: string | null
+          role: string
           updated_at: string | null
           user_id: string | null
         }
         Insert: {
+          company_name?: string | null
           created_at?: string | null
           email: string
-          first_name?: string | null
           id?: string
-          is_verified?: boolean | null
-          last_name?: string | null
-          phone: string
-          role?: string | null
+          is_active?: boolean | null
+          name: string
+          phone?: string | null
+          role?: string
           updated_at?: string | null
           user_id?: string | null
         }
         Update: {
+          company_name?: string | null
           created_at?: string | null
           email?: string
-          first_name?: string | null
           id?: string
-          is_verified?: boolean | null
-          last_name?: string | null
-          phone?: string
-          role?: string | null
+          is_active?: boolean | null
+          name?: string
+          phone?: string | null
+          role?: string
           updated_at?: string | null
           user_id?: string | null
         }
         Relationships: []
       }
+      customer_tags: {
+        Row: {
+          created_at: string | null
+          customer_id: string
+          tag_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          customer_id: string
+          tag_id: string
+        }
+        Update: {
+          created_at?: string | null
+          customer_id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_tags_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "customer_tags_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "tags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       customers: {
         Row: {
-          address: string | null
-          city: string | null
           country: string | null
           created_at: string | null
           email: string
@@ -211,12 +316,10 @@ export type Database = {
           last_name: string
           notes: string | null
           phone: string | null
-          tags: string[] | null
+          total_spent: number | null
           updated_at: string | null
         }
         Insert: {
-          address?: string | null
-          city?: string | null
           country?: string | null
           created_at?: string | null
           email: string
@@ -225,12 +328,10 @@ export type Database = {
           last_name: string
           notes?: string | null
           phone?: string | null
-          tags?: string[] | null
+          total_spent?: number | null
           updated_at?: string | null
         }
         Update: {
-          address?: string | null
-          city?: string | null
           country?: string | null
           created_at?: string | null
           email?: string
@@ -239,7 +340,7 @@ export type Database = {
           last_name?: string
           notes?: string | null
           phone?: string | null
-          tags?: string[] | null
+          total_spent?: number | null
           updated_at?: string | null
         }
         Relationships: []
@@ -252,7 +353,6 @@ export type Database = {
           name: string
           subject: string
           updated_at: string | null
-          variables: string[] | null
         }
         Insert: {
           body: string
@@ -261,7 +361,6 @@ export type Database = {
           name: string
           subject: string
           updated_at?: string | null
-          variables?: string[] | null
         }
         Update: {
           body?: string
@@ -270,25 +369,63 @@ export type Database = {
           name?: string
           subject?: string
           updated_at?: string | null
-          variables?: string[] | null
         }
         Relationships: []
       }
-      newsletter_subscriptions: {
+      future_travel_plans: {
         Row: {
-          active: boolean | null
+          adults: number | null
+          approximate_date: string | null
+          boarding_from: string | null
+          children: number | null
+          created_at: string | null
+          destination_city: string | null
+          email: string
+          id: string
+          phone: string | null
+          tour_destination: string | null
+          traveler_name: string | null
+        }
+        Insert: {
+          adults?: number | null
+          approximate_date?: string | null
+          boarding_from?: string | null
+          children?: number | null
+          created_at?: string | null
+          destination_city?: string | null
+          email: string
+          id?: string
+          phone?: string | null
+          tour_destination?: string | null
+          traveler_name?: string | null
+        }
+        Update: {
+          adults?: number | null
+          approximate_date?: string | null
+          boarding_from?: string | null
+          children?: number | null
+          created_at?: string | null
+          destination_city?: string | null
+          email?: string
+          id?: string
+          phone?: string | null
+          tour_destination?: string | null
+          traveler_name?: string | null
+        }
+        Relationships: []
+      }
+      newsletter_subscribers: {
+        Row: {
           email: string
           id: string
           subscribed_at: string | null
         }
         Insert: {
-          active?: boolean | null
           email: string
           id?: string
           subscribed_at?: string | null
         }
         Update: {
-          active?: boolean | null
           email?: string
           id?: string
           subscribed_at?: string | null
@@ -303,7 +440,9 @@ export type Database = {
           expires_at: string
           id: string
           is_verified: boolean | null
-          otp: string
+          otp_code: string
+          otp_type: string
+          phone: string | null
         }
         Insert: {
           attempts?: number | null
@@ -312,7 +451,9 @@ export type Database = {
           expires_at: string
           id?: string
           is_verified?: boolean | null
-          otp: string
+          otp_code: string
+          otp_type: string
+          phone?: string | null
         }
         Update: {
           attempts?: number | null
@@ -321,88 +462,264 @@ export type Database = {
           expires_at?: string
           id?: string
           is_verified?: boolean | null
-          otp?: string
+          otp_code?: string
+          otp_type?: string
+          phone?: string | null
+        }
+        Relationships: []
+      }
+      Send_Us_a_message: {
+        Row: {
+          created_at: string | null
+          email: string
+          full_name: string
+          id: string
+          message: string
+          phone: string | null
+          subject: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          full_name: string
+          id?: string
+          message: string
+          phone?: string | null
+          subject?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          message?: string
+          phone?: string | null
+          subject?: string | null
         }
         Relationships: []
       }
       tags: {
         Row: {
-          color: string | null
           created_at: string | null
           id: string
           name: string
         }
         Insert: {
-          color?: string | null
           created_at?: string | null
           id?: string
           name: string
         }
         Update: {
-          color?: string | null
           created_at?: string | null
           id?: string
           name?: string
+        }
+        Relationships: []
+      }
+      ticket_requests: {
+        Row: {
+          arrival_city: string | null
+          created_at: string
+          departure_city: string | null
+          email: string
+          id: string
+          name: string
+          passengers: number | null
+          phone: string | null
+          special_requirements: string | null
+          ticket_type: string | null
+          travel_date: string | null
+        }
+        Insert: {
+          arrival_city?: string | null
+          created_at?: string
+          departure_city?: string | null
+          email: string
+          id?: string
+          name: string
+          passengers?: number | null
+          phone?: string | null
+          special_requirements?: string | null
+          ticket_type?: string | null
+          travel_date?: string | null
+        }
+        Update: {
+          arrival_city?: string | null
+          created_at?: string
+          departure_city?: string | null
+          email?: string
+          id?: string
+          name?: string
+          passengers?: number | null
+          phone?: string | null
+          special_requirements?: string | null
+          ticket_type?: string | null
+          travel_date?: string | null
         }
         Relationships: []
       }
       tour_package_requests: {
         Row: {
           adults: number | null
+          arrival_city: string | null
           children: number | null
-          created_at: string | null
-          departure_date: string
+          created_at: string
+          departure_city: string | null
+          departure_date: string | null
           destination_name: string
           email: string
           estimated_price: string | null
           id: string
           name: string
-          package_type: string
-          phone: string
-          return_date: string
+          package_type: string | null
+          phone: string | null
+          return_date: string | null
           special_requirements: string | null
-          status: string | null
           travel_date: string
           trip_type: string | null
-          updated_at: string | null
         }
         Insert: {
           adults?: number | null
+          arrival_city?: string | null
           children?: number | null
-          created_at?: string | null
-          departure_date: string
+          created_at?: string
+          departure_city?: string | null
+          departure_date?: string | null
           destination_name: string
           email: string
           estimated_price?: string | null
           id?: string
           name: string
-          package_type: string
-          phone: string
-          return_date: string
+          package_type?: string | null
+          phone?: string | null
+          return_date?: string | null
           special_requirements?: string | null
-          status?: string | null
           travel_date: string
           trip_type?: string | null
-          updated_at?: string | null
         }
         Update: {
           adults?: number | null
+          arrival_city?: string | null
           children?: number | null
-          created_at?: string | null
-          departure_date?: string
+          created_at?: string
+          departure_city?: string | null
+          departure_date?: string | null
           destination_name?: string
           email?: string
           estimated_price?: string | null
           id?: string
           name?: string
-          package_type?: string
-          phone?: string
-          return_date?: string
+          package_type?: string | null
+          phone?: string | null
+          return_date?: string | null
           special_requirements?: string | null
-          status?: string | null
           travel_date?: string
           trip_type?: string | null
-          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      tour_with_tickets: {
+        Row: {
+          adults: number | null
+          boarding_from: string | null
+          children: number | null
+          created_at: string | null
+          destination_city: string | null
+          email: string
+          id: string
+          is_armed_forces: boolean | null
+          is_medical_professional: boolean | null
+          is_senior_citizen: boolean | null
+          phone: string | null
+          travel_date: string | null
+        }
+        Insert: {
+          adults?: number | null
+          boarding_from?: string | null
+          children?: number | null
+          created_at?: string | null
+          destination_city?: string | null
+          email: string
+          id?: string
+          is_armed_forces?: boolean | null
+          is_medical_professional?: boolean | null
+          is_senior_citizen?: boolean | null
+          phone?: string | null
+          travel_date?: string | null
+        }
+        Update: {
+          adults?: number | null
+          boarding_from?: string | null
+          children?: number | null
+          created_at?: string | null
+          destination_city?: string | null
+          email?: string
+          id?: string
+          is_armed_forces?: boolean | null
+          is_medical_professional?: boolean | null
+          is_senior_citizen?: boolean | null
+          phone?: string | null
+          travel_date?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      Visa_Inquiry_Form: {
+        Row: {
+          created_at: string
+          destination_country: string | null
+          email: string
+          id: string
+          name: string
+          nationality: string | null
+          phone: string
+          special_requirements: string | null
+          travel_date: string | null
+          visa_type: string | null
+        }
+        Insert: {
+          created_at?: string
+          destination_country?: string | null
+          email: string
+          id?: string
+          name: string
+          nationality?: string | null
+          phone: string
+          special_requirements?: string | null
+          travel_date?: string | null
+          visa_type?: string | null
+        }
+        Update: {
+          created_at?: string
+          destination_country?: string | null
+          email?: string
+          id?: string
+          name?: string
+          nationality?: string | null
+          phone?: string
+          special_requirements?: string | null
+          travel_date?: string | null
+          visa_type?: string | null
         }
         Relationships: []
       }
@@ -411,10 +728,31 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      clean_expired_otps: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      cleanup_expired_cache: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      create_first_admin: {
+        Args: { email: string }
+        Returns: undefined
+      }
+      get_user_role: {
+        Args: { user_id: string }
+        Returns: Database["public"]["Enums"]["app_role"]
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "staff"
+      booking_status:
+        | "new"
+        | "contacted"
+        | "confirmed"
+        | "cancelled"
+        | "completed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -541,6 +879,15 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "staff"],
+      booking_status: [
+        "new",
+        "contacted",
+        "confirmed",
+        "cancelled",
+        "completed",
+      ],
+    },
   },
 } as const
