@@ -1,11 +1,11 @@
 
 import { useState, useEffect } from "react";
-import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import SectionHeading from "@/components/section-heading";
 import DestinationCard from "@/components/destination-card";
+import SEOHead from "@/components/seo/seo-head";
 import { destinations, getRegions, getDestinationsByRegion } from "@/data/destinations";
 
 const Destinations = () => {
@@ -22,15 +22,16 @@ const Destinations = () => {
 
   const regions = getRegions();
 
+  const seoData = {
+    title: "Top Travel Destinations in India & Abroad | My Nomad Safari Holidays",
+    description: "Explore top travel destinations in India and worldwide. From Kerala backwaters to Rajasthan forts, Himachal adventures to international getaways. Expert planning, best prices & customized tours. Find your perfect destination!",
+    keywords: "travel destinations India, best places to visit India, Kerala tourism, Rajasthan tours, Himachal packages, international destinations, tour packages India, holiday destinations, adventure travel India, religious tour destinations",
+    canonicalUrl: "https://www.mynomadsafariholidays.in/destinations"
+  };
+
   return (
     <>
-      <Helmet>
-        <title>Destinations | My Nomadsafari Holidays</title>
-        <meta
-          name="description"
-          content="Explore a wide range of destinations for your next holiday with My Nomadsafari Holidays."
-        />
-      </Helmet>
+      <SEOHead {...seoData} />
 
       <div className="container mx-auto px-4 py-12">
         <SectionHeading
