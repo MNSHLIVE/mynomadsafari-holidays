@@ -85,7 +85,7 @@ const DestinationCard = ({
             variant="default" 
             className="w-full group bg-primary hover:bg-primary/90"
           >
-            <span>Book</span>
+            <span>Enquire Now</span>
             <ArrowRight className="h-4 w-4 ml-2 transition-transform group-hover:translate-x-1" />
           </Button>
         </Link>
