@@ -69,18 +69,14 @@ const HeroSlider = ({ slides, interval = 5000, className }: HeroSliderProps) => 
   };
 
   useEffect(() => {
-    let slideTimer: number | undefined;
+    if (!isAutoPlaying) return;
     
-    if (isAutoPlaying) {
-      slideTimer = window.setInterval(() => {
-        nextSlide();
-      }, interval);
-    }
+    const slideTimer = window.setInterval(() => {
+      setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+    }, interval);
 
-    return () => {
-      if (slideTimer) clearInterval(slideTimer);
-    };
-  }, [currentSlide, isAutoPlaying, interval]);
+    return () => clearInterval(slideTimer);
+  }, [isAutoPlaying, interval, slides.length]);
 
   const handleMouseEnter = () => setIsAutoPlaying(false);
   const handleMouseLeave = () => setIsAutoPlaying(true);

@@ -173,7 +173,7 @@ const TourCard = ({
             <div className="mt-4 flex justify-between">
               <DestinationQueryForm 
                 destinationName={title}
-                buttonText="Book This Itinerary"
+                buttonText="Enquire Now"
               />
               
               <DialogClose asChild>

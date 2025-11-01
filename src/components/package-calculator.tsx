@@ -341,16 +341,22 @@ const PackageCalculator = ({ className, onRequestQuote }: PackageCalculatorProps
         name,
         email,
         phone,
-        destination_name: destination || (calculatorType === "domestic" ? "Domestic Tour" : "International Tour"),
+        destination_name: destination || "Domestic Tour",
         adults,
         children,
         package_type: packageType,
         estimated_price: formatCurrency(totalCost),
-        special_requirements: `${calculatorType === "domestic" ? "Domestic" : "International"} Tour Package: ${days} days, ${adults} adults, ${children} children, ${hotelType} hotel, ${roomType} room(s), ${calculatorType === "domestic" ? transportType : ""} transport. Travel date: ${travelDate ? format(travelDate, "PPP") : "Not specified"}`,
-        travel_date: formattedTravelDate
+        travel_date: formattedTravelDate,
+        days,
+        hotel_type: hotelType,
+        room_type: roomType,
+        rooms,
+        transport_type: transportType,
+        distance,
+        special_requirements: `Domestic Tour Package: ${days} days, ${adults} adults, ${children} children, ${hotelType} hotel, ${roomType} room(s), ${transportType} transport. Travel date: ${travelDate ? format(travelDate, "PPP") : "Not specified"}`
       };
       
-      const { error } = await supabase.from('tour_package_requests').insert(requestData);
+      const { error } = await supabase.from('Trip_Cost_Calulator_Domestic').insert(requestData);
       
       if (error) {
         console.error("[FORM] Error saving to Supabase:", error);

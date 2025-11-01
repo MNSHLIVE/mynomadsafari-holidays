@@ -54,7 +54,7 @@ const DestinationSidebar = ({ name, region, bestTimeToVisit, budgetRange }: Dest
       
       <DestinationQueryForm 
         destinationName={name}
-        buttonText="Book Now"
+        buttonText="Enquire Now"
         buttonClassName="w-full"
       />
     </div>

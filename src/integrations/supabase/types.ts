@@ -558,7 +558,7 @@ export type Database = {
         }
         Relationships: []
       }
-      tour_package_requests: {
+      tour_package_requests_Enquire: {
         Row: {
           adults: number | null
           arrival_city: string | null
@@ -663,6 +663,135 @@ export type Database = {
         }
         Relationships: []
       }
+      trip_cost_calculator_international: {
+        Row: {
+          adults: number | null
+          arrival_city: string | null
+          children: number | null
+          created_at: string
+          departure_city: string | null
+          departure_date: string | null
+          destination_name: string
+          email: string
+          estimated_price: string | null
+          hotel_category: string | null
+          id: string
+          infants: number | null
+          name: string
+          nights: number | null
+          package_type: string | null
+          per_person_cost: string | null
+          phone: string | null
+          return_date: string | null
+          special_requirements: string | null
+          trip_type: string | null
+        }
+        Insert: {
+          adults?: number | null
+          arrival_city?: string | null
+          children?: number | null
+          created_at?: string
+          departure_city?: string | null
+          departure_date?: string | null
+          destination_name: string
+          email: string
+          estimated_price?: string | null
+          hotel_category?: string | null
+          id?: string
+          infants?: number | null
+          name: string
+          nights?: number | null
+          package_type?: string | null
+          per_person_cost?: string | null
+          phone?: string | null
+          return_date?: string | null
+          special_requirements?: string | null
+          trip_type?: string | null
+        }
+        Update: {
+          adults?: number | null
+          arrival_city?: string | null
+          children?: number | null
+          created_at?: string
+          departure_city?: string | null
+          departure_date?: string | null
+          destination_name?: string
+          email?: string
+          estimated_price?: string | null
+          hotel_category?: string | null
+          id?: string
+          infants?: number | null
+          name?: string
+          nights?: number | null
+          package_type?: string | null
+          per_person_cost?: string | null
+          phone?: string | null
+          return_date?: string | null
+          special_requirements?: string | null
+          trip_type?: string | null
+        }
+        Relationships: []
+      }
+      Trip_Cost_Calulator_Domestic: {
+        Row: {
+          adults: number | null
+          arrival_city: string | null
+          children: number | null
+          created_at: string
+          departure_city: string | null
+          departure_date: string | null
+          destination_name: string
+          email: string
+          estimated_price: string | null
+          id: string
+          name: string
+          package_type: string | null
+          phone: string | null
+          return_date: string | null
+          special_requirements: string | null
+          travel_date: string
+          trip_type: string | null
+        }
+        Insert: {
+          adults?: number | null
+          arrival_city?: string | null
+          children?: number | null
+          created_at?: string
+          departure_city?: string | null
+          departure_date?: string | null
+          destination_name: string
+          email: string
+          estimated_price?: string | null
+          id?: string
+          name: string
+          package_type?: string | null
+          phone?: string | null
+          return_date?: string | null
+          special_requirements?: string | null
+          travel_date: string
+          trip_type?: string | null
+        }
+        Update: {
+          adults?: number | null
+          arrival_city?: string | null
+          children?: number | null
+          created_at?: string
+          departure_city?: string | null
+          departure_date?: string | null
+          destination_name?: string
+          email?: string
+          estimated_price?: string | null
+          id?: string
+          name?: string
+          package_type?: string | null
+          phone?: string | null
+          return_date?: string | null
+          special_requirements?: string | null
+          travel_date?: string
+          trip_type?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string | null
@@ -728,18 +857,9 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      clean_expired_otps: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      cleanup_expired_cache: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      create_first_admin: {
-        Args: { email: string }
-        Returns: undefined
-      }
+      clean_expired_otps: { Args: never; Returns: undefined }
+      cleanup_expired_cache: { Args: never; Returns: undefined }
+      create_first_admin: { Args: { email: string }; Returns: undefined }
       get_user_role: {
         Args: { user_id: string }
         Returns: Database["public"]["Enums"]["app_role"]

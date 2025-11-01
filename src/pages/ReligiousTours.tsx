@@ -111,7 +111,7 @@ const ReligiousTours = () => {
             <div className="mt-3">
               <DestinationQueryForm 
                 destinationName={tour.title}
-                buttonText="Book This Tour"
+                buttonText="Enquire Now"
                 buttonClassName="w-full"
               />
             </div>

@@ -119,20 +119,23 @@ const InternationalTourCalculator = ({
         destination_name: destination || arrivalCity || "International Tour",
         adults,
         children,
+        infants,
+        nights,
+        hotel_category: hotelCategory,
         package_type: hotelCategory,
         estimated_price: `₹${totalCost.toLocaleString('en-IN')}`,
-        special_requirements: `International Tour Package: ${nights} nights, ${adults} adults, ${children} children, ${infants} infants, ${hotelCategory} hotels. Per person cost: ₹${perPersonCost.toLocaleString('en-IN')}`,
-        travel_date: formattedDepartureDate || format(new Date(), 'yyyy-MM-dd'),
+        per_person_cost: `₹${perPersonCost.toLocaleString('en-IN')}`,
         departure_city: departureCity,
         arrival_city: arrivalCity,
+        trip_type: tripType,
         departure_date: formattedDepartureDate,
         return_date: tripType === "Round Trip" ? formattedReturnDate : null,
-        trip_type: tripType,
+        special_requirements: `International Tour Package: ${nights} nights, ${adults} adults, ${children} children, ${infants} infants, ${hotelCategory} hotels. Per person cost: ₹${perPersonCost.toLocaleString('en-IN')}`
       };
 
       console.log('[INTERNATIONAL_TOUR] Submitting data:', requestData);
 
-      const { error } = await supabase.from('tour_package_requests').insert(requestData);
+      const { error } = await supabase.from('Trip_Cost_Calculator_International').insert(requestData);
 
       if (error) {
         console.error("[INTERNATIONAL_TOUR] Error saving to Supabase:", error);
