@@ -135,7 +135,7 @@ const InternationalTourCalculator = ({
 
       console.log('[INTERNATIONAL_TOUR] Submitting data:', requestData);
 
-      const { error } = await supabase.from('Trip_Cost_Calculator_International').insert(requestData);
+      const { error } = await supabase.from('trip_cost_calculator_international').insert(requestData);
 
       if (error) {
         console.error("[INTERNATIONAL_TOUR] Error saving to Supabase:", error);

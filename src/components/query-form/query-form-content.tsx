@@ -88,7 +88,7 @@ export const QueryFormContent = ({
       console.log('[FORM] Submitting tour package request:', requestData);
 
       try {
-        const { error, data } = await supabase.from('tour_package_requests').insert(requestData).select();
+        const { error, data } = await supabase.from('tour_package_requests_Enquire').insert(requestData).select();
         
         if (error) {
           console.error('[FORM] Error saving to Supabase:', error);
