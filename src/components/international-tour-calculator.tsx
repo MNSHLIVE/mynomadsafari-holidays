@@ -146,7 +146,7 @@ const InternationalTourCalculator = ({
       setIsSubmitting(false);
       setIsSubmitted(true);
 
-      toast.success("Thank you for your inquiry! Our team will contact you shortly.");
+      toast.success(`Estimated Cost: ${formatCurrency(totalCost)} (${formatCurrency(perPersonCost)}/person) - Check ${email} for best rates!`);
 
       if (onRequestQuote) {
         onRequestQuote({

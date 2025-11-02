@@ -366,7 +366,7 @@ const PackageCalculator = ({ className, onRequestQuote }: PackageCalculatorProps
       setIsSubmitting(false);
       setIsSubmitted(true);
       
-      toast.success("Thank you for your inquiry! Our team will contact you shortly.");
+      toast.success(`Estimated Cost: ${formatCurrency(totalCost)} - Please check your email at ${email} for detailed quote and best rates!`);
       
       if (onRequestQuote) {
         onRequestQuote({
@@ -706,13 +706,27 @@ const PackageCalculator = ({ className, onRequestQuote }: PackageCalculatorProps
               {isSubmitted ? (
                 <Alert className="bg-primary/5 border-primary/20">
                   <Check className="h-5 w-5 text-primary" />
-                  <AlertTitle className="text-lg font-medium mb-2">Thank you for your inquiry!</AlertTitle>
-                  <AlertDescription className="space-y-2">
-                    <p>
-                      We've received your request about {destination || (calculatorType === "domestic" ? "Domestic Tour" : "International Tour")} and will contact you at {email} within 24 hours with a customized itinerary.
+                  <AlertTitle className="text-lg font-semibold mb-3">
+                    Thank You! Your Estimated Cost: {formatCurrency(totalCost)}
+                  </AlertTitle>
+                  <AlertDescription className="space-y-3">
+                    <p className="font-medium">
+                      We've received your inquiry for <span className="text-primary">{destination || (calculatorType === "domestic" ? "Domestic Tour" : "International Tour")}</span>
                     </p>
-                    <p className="text-sm text-muted-foreground">
-                      If you have any urgent questions, please feel free to contact us directly.
+                    <div className="bg-background/50 p-3 rounded-md border">
+                      <p className="font-medium mb-2">📧 Please check your email at: <span className="text-primary">{email}</span></p>
+                      <ul className="text-sm space-y-1.5 ml-4">
+                        <li>✓ Detailed day-wise itinerary</li>
+                        <li>✓ Best available rates discussion</li>
+                        <li>✓ Customization options</li>
+                        <li>✓ Flexible payment plans</li>
+                      </ul>
+                    </div>
+                    <p className="text-sm">
+                      <strong>Our travel experts will reach out within 24 hours</strong> to finalize your perfect trip and discuss the best rates available!
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Need immediate assistance? Feel free to contact us directly.
                     </p>
                   </AlertDescription>
                 </Alert>

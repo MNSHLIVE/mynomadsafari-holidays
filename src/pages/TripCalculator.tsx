@@ -53,13 +53,25 @@ const TripCalculator = () => {
             <div className="mb-8 max-w-4xl mx-auto">
               <Alert className="bg-primary/5 border-primary/20">
                 <CheckCircle className="h-5 w-5 text-primary" />
-                <AlertTitle className="text-lg font-medium mb-2">Thank you for choosing My Nomadsafari Holidays!</AlertTitle>
-                <AlertDescription className="space-y-2">
-                  <p>
-                    We've received your inquiry and our travel experts will contact you shortly with a detailed itinerary and quote.
+                <AlertTitle className="text-lg font-semibold mb-2">Thank you for choosing My Nomadsafari Holidays!</AlertTitle>
+                <AlertDescription className="space-y-3">
+                  <p className="font-medium">
+                    We've received your inquiry and calculated your tentative trip cost.
                   </p>
-                  <p className="text-sm text-muted-foreground">
-                    We look forward to serving you and creating an unforgettable travel experience.
+                  <div className="bg-background/50 p-3 rounded-md border">
+                    <p className="font-medium mb-2">📧 Please check your email for:</p>
+                    <ul className="text-sm space-y-1.5 ml-4">
+                      <li>✓ Detailed itinerary with day-wise plans</li>
+                      <li>✓ Best rate discussion with our experts</li>
+                      <li>✓ Complete quote breakdown</li>
+                      <li>✓ Customization options</li>
+                    </ul>
+                  </div>
+                  <p className="text-sm">
+                    Our travel experts will contact you shortly to finalize your perfect trip and offer the best available rates!
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    We look forward to creating an unforgettable travel experience for you.
                   </p>
                 </AlertDescription>
               </Alert>

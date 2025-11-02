@@ -57,13 +57,32 @@ const InternationalTourResults = ({
       <div id="results" className="mt-8 p-6 border rounded-lg bg-muted/30">
         <Alert className="bg-primary/5 border-primary/20">
           <Check className="h-5 w-5 text-primary" />
-          <AlertTitle className="text-lg font-medium mb-2">Thank you for your inquiry!</AlertTitle>
-          <AlertDescription className="space-y-2">
-            <p>
-              We've received your request about {destination || "International Tour"} and will contact you at {email} within 24 hours with a customized itinerary.
+          <AlertTitle className="text-lg font-semibold mb-3">
+            Thank You! Your Estimated Cost: {formatCurrency(totalCost)}
+          </AlertTitle>
+          <AlertDescription className="space-y-3">
+            <p className="font-medium">
+              We've received your inquiry for <span className="text-primary">{destination || "International Tour"}</span>
             </p>
-            <p className="text-sm text-muted-foreground">
-              If you have any urgent questions, please feel free to contact us directly.
+            <div className="bg-background/60 p-4 rounded-md border space-y-2">
+              <p className="font-medium text-base">Total: {formatCurrency(totalCost)}</p>
+              <p className="text-sm">Per Person: {formatCurrency(perPersonCost)}</p>
+              <p className="text-sm text-muted-foreground italic">*Tentative cost subject to customization</p>
+            </div>
+            <div className="bg-background/50 p-3 rounded-md border">
+              <p className="font-medium mb-2">📧 Please check your email at: <span className="text-primary">{email}</span></p>
+              <ul className="text-sm space-y-1.5 ml-4">
+                <li>✓ Complete international package details</li>
+                <li>✓ Best available rates discussion</li>
+                <li>✓ Visa assistance information</li>
+                <li>✓ Flexible payment options</li>
+              </ul>
+            </div>
+            <p className="text-sm">
+              <strong>Our international tour specialists will contact you within 24 hours</strong> to provide the best rates and create your dream vacation!
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Need immediate assistance? Feel free to contact us directly.
             </p>
           </AlertDescription>
         </Alert>
