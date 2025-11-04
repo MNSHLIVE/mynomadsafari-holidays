@@ -3,19 +3,19 @@
   <!-- Main Pages -->
   <url>
     <loc>https://www.mynomadsafariholidays.in/</loc>
-    <lastmod>2024-12-19</lastmod>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://www.mynomadsafariholidays.in/about</loc>
-    <lastmod>2024-12-19</lastmod>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.mynomadsafariholidays.in/contact</loc>
-    <lastmod>2024-12-19</lastmod>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -23,39 +23,45 @@
   <!-- Travel Services -->
   <url>
     <loc>https://www.mynomadsafariholidays.in/tours</loc>
-    <lastmod>2024-12-19</lastmod>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.mynomadsafariholidays.in/destinations</loc>
-    <lastmod>2024-12-19</lastmod>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.mynomadsafariholidays.in/religious-tours</loc>
-    <lastmod>2024-12-19</lastmod>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.mynomadsafariholidays.in/group-tours</loc>
-    <lastmod>2024-12-19</lastmod>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.mynomadsafariholidays.in/trip-calculator</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   
   <!-- Ticket & Visa Services -->
   <url>
     <loc>https://www.mynomadsafariholidays.in/tickets</loc>
-    <lastmod>2024-12-19</lastmod>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.mynomadsafariholidays.in/visa</loc>
-    <lastmod>2024-12-19</lastmod>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -63,59 +69,205 @@
   <!-- Blog -->
   <url>
     <loc>https://www.mynomadsafariholidays.in/blog</loc>
-    <lastmod>2024-12-19</lastmod>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
-  <!-- Popular Destination URLs (SEO-friendly) -->
+  <!-- North India Destinations -->
   <url>
-    <loc>https://www.mynomadsafariholidays.in/destinations/kerala-tour-packages</loc>
-    <lastmod>2024-12-19</lastmod>
+    <loc>https://www.mynomadsafariholidays.in/destinations/rajasthan</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.mynomadsafariholidays.in/destinations/himachal-pradesh</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.mynomadsafariholidays.in/destinations/ladakh</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.mynomadsafariholidays.in/destinations/varanasi</loc>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mynomadsafariholidays.in/destinations/rajasthan-heritage-tours</loc>
-    <lastmod>2024-12-19</lastmod>
+    <loc>https://www.mynomadsafariholidays.in/destinations/char-dham</loc>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mynomadsafariholidays.in/destinations/golden-triangle-tours</loc>
-    <lastmod>2024-12-19</lastmod>
+    <loc>https://www.mynomadsafariholidays.in/destinations/haridwar-rishikesh</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- South India Destinations -->
+  <url>
+    <loc>https://www.mynomadsafariholidays.in/destinations/kerala</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- West India Destinations -->
+  <url>
+    <loc>https://www.mynomadsafariholidays.in/destinations/goa</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- East India Destinations -->
+  <url>
+    <loc>https://www.mynomadsafariholidays.in/destinations/kolkata</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.mynomadsafariholidays.in/destinations/darjeeling</loc>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.mynomadsafariholidays.in/destinations/himachal-adventure-tours</loc>
-    <lastmod>2024-12-19</lastmod>
+    <loc>https://www.mynomadsafariholidays.in/destinations/gangtok</loc>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  
+  <!-- Southeast Asia Destinations -->
+  <url>
+    <loc>https://www.mynomadsafariholidays.in/destinations/thailand</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.mynomadsafariholidays.in/destinations/bali</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.mynomadsafariholidays.in/destinations/singapore</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.mynomadsafariholidays.in/destinations/vietnam</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Middle East Destinations -->
+  <url>
+    <loc>https://www.mynomadsafariholidays.in/destinations/dubai</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- European Destinations -->
+  <url>
+    <loc>https://www.mynomadsafariholidays.in/destinations/paris-france</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.mynomadsafariholidays.in/destinations/rome-italy</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.mynomadsafariholidays.in/destinations/santorini-greece</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.mynomadsafariholidays.in/destinations/swiss-alps-switzerland</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.mynomadsafariholidays.in/destinations/london-united-kingdom</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.mynomadsafariholidays.in/destinations/barcelona-spain</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Other Region Destinations -->
+  <url>
+    <loc>https://www.mynomadsafariholidays.in/destinations/maldives</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.mynomadsafariholidays.in/destinations/nepal</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.mynomadsafariholidays.in/destinations/bhutan</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.mynomadsafariholidays.in/destinations/kazakhstan</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
   
   <!-- Utility Pages -->
   <url>
     <loc>https://www.mynomadsafariholidays.in/faq</loc>
-    <lastmod>2024-12-19</lastmod>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://www.mynomadsafariholidays.in/terms</loc>
-    <lastmod>2024-12-19</lastmod>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://www.mynomadsafariholidays.in/privacy</loc>
-    <lastmod>2024-12-19</lastmod>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://www.mynomadsafariholidays.in/refund</loc>
-    <lastmod>2024-12-19</lastmod>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
