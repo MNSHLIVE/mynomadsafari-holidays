@@ -1,24 +1,63 @@
+# Robots.txt for My Nomad Safari Holidays
+# Website: https://www.mynomadsafariholidays.in
 
+# Default rule for all crawlers
 User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: https://www.mynomadsafariholidays.in/sitemap.xml
+# Disallow admin and private areas
+Disallow: /crm
+Disallow: /admin
+Disallow: /api/
+Disallow: /*.json$
+Disallow: /lovable-uploads/
 
-# Crawl-delay
-Crawl-delay: 1
-
-# Disallow sensitive areas (if any in future)
-# Disallow: /admin/
-# Disallow: /api/
-
-# Allow important pages
+# Allow all public pages
+Allow: /
+Allow: /about
+Allow: /contact
 Allow: /tours
 Allow: /destinations
+Allow: /destinations/*
 Allow: /religious-tours
 Allow: /group-tours
+Allow: /trip-calculator
 Allow: /tickets
 Allow: /visa
 Allow: /blog
-Allow: /contact
-Allow: /about
+Allow: /faq
+Allow: /terms
+Allow: /privacy
+Allow: /refund
+
+# Allow search engines to index images
+Allow: /Destination/
+Allow: /images/
+
+# Crawl delay to prevent server overload
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://www.mynomadsafariholidays.in/sitemap.xml
+
+# Google-specific rules
+User-agent: Googlebot
+Allow: /
+Disallow: /crm
+Crawl-delay: 0.5
+
+# Bing-specific rules
+User-agent: Bingbot
+Allow: /
+Disallow: /crm
+Crawl-delay: 1
+
+# Block bad bots
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 5
