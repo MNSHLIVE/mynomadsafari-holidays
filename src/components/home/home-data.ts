@@ -18,7 +18,7 @@ export const heroSlides = [
     subtitle: "Discover the magnificent palaces, forts, and vibrant culture of royal Rajasthan"
   },
   {
-    imageSrc: "https://images.unsplash.com/photo-1564507592333-c60657e46820?q=80&w=2000",
+    imageSrc: "/Destination/Home/Hero/Tajmahal-hero.jpg",
     title: "Taj Mahal - Symbol of Eternal Love",
     subtitle: "Visit the world's most beautiful monument and explore the Golden Triangle"
   },
