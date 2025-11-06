@@ -347,13 +347,7 @@ const PackageCalculator = ({ className, onRequestQuote }: PackageCalculatorProps
         package_type: packageType,
         estimated_price: formatCurrency(totalCost),
         travel_date: formattedTravelDate,
-        days,
-        hotel_type: hotelType,
-        room_type: roomType,
-        rooms,
-        transport_type: transportType,
-        distance,
-        special_requirements: `Domestic Tour Package: ${days} days, ${adults} adults, ${children} children, ${hotelType} hotel, ${roomType} room(s), ${transportType} transport. Travel date: ${travelDate ? format(travelDate, "PPP") : "Not specified"}`
+        special_requirements: `Domestic Tour Package: ${days} days, ${adults} adults, ${children} children, ${hotelType} hotel, ${roomType} room(s), ${transportType} transport, ${distance}km distance. Travel date: ${travelDate ? format(travelDate, "PPP") : "Not specified"}`
       };
       
       const { error } = await supabase.from('Trip_Cost_Calulator_Domestic').insert(requestData);
