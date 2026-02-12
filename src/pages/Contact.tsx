@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import SectionHeading from "@/components/section-heading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,6 +29,8 @@ import {
   Facebook,
   Instagram,
   Twitter,
+  ArrowLeft,
+  Home,
   Linkedin
 } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -157,6 +160,11 @@ const Contact = () => {
     <>
       {/* Hero Section */}
       <section className="pt-24 pb-16 container mx-auto px-4">
+        <div className="flex items-center gap-2 mb-6">
+          <Button variant="outline" size="sm" asChild>
+            <Link to="/"><ArrowLeft className="h-4 w-4 mr-1" />Back to Home</Link>
+          </Button>
+        </div>
         <div className="max-w-3xl mx-auto text-center mb-16">
           <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-secondary/30 text-secondary-foreground mb-3">
             Get in Touch
