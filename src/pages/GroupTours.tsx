@@ -1,12 +1,23 @@
 
 import React from 'react';
+import { Link } from "react-router-dom";
+import { ArrowLeft, Home } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import CTASection from '@/components/cta-section';
 
 const GroupTours = () => {
   return (
     <div className="container mx-auto py-12">
+      <div className="flex items-center gap-2 mb-6">
+        <Button variant="outline" size="sm" asChild>
+          <Link to="/tours"><ArrowLeft className="h-4 w-4 mr-1" />Tours</Link>
+        </Button>
+        <Button variant="ghost" size="sm" asChild>
+          <Link to="/"><Home className="h-4 w-4 mr-1" />Home</Link>
+        </Button>
+      </div>
       <h1 className="text-3xl font-bold mb-6">Group Tours</h1>
-      
+
       <div className="prose max-w-none mb-8">
         <p className="text-lg">
           Explore our specially curated group tour packages designed for corporate teams, 

@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowLeft, Home } from "lucide-react";
 import SectionHeading from "@/components/section-heading";
 import DestinationCard from "@/components/destination-card";
 import SEOHead from "@/components/seo/seo-head";
@@ -34,6 +34,11 @@ const Destinations = () => {
       <SEOHead {...seoData} />
 
       <div className="container mx-auto px-4 py-12">
+        <div className="flex items-center gap-2 mb-6">
+          <Button variant="outline" size="sm" asChild>
+            <Link to="/"><ArrowLeft className="h-4 w-4 mr-1" />Back to Home</Link>
+          </Button>
+        </div>
         <SectionHeading
           title="Explore Our Destinations"
           subtitle="Discover your next adventure with our curated list of destinations"

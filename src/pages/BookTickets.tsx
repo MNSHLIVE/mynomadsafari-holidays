@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { toast } from "sonner";
-import { CalendarIcon, Clock, Calendar, Route, Plane, Train, Bus, Users, User, UserRound, CheckCircle } from "lucide-react";
+import { CalendarIcon, Clock, Calendar, Route, Plane, Train, Bus, Users, User, UserRound, CheckCircle, ArrowLeft, Home } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 import { Button } from "@/components/ui/button";
@@ -156,6 +157,11 @@ const BookTickets = () => {
 
   return (
     <div className="container mx-auto py-12">
+      <div className="flex items-center gap-2 mb-6">
+        <Button variant="outline" size="sm" asChild>
+          <Link to="/"><ArrowLeft className="h-4 w-4 mr-1" />Back to Home</Link>
+        </Button>
+      </div>
       <SectionHeading 
         title="Book Travel Tickets"
         subtitle="Air, Train, and Bus ticket booking services"

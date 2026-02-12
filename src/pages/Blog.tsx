@@ -1,10 +1,11 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import SectionHeading from "@/components/section-heading";
 import BlogCard from "@/components/blog-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, X } from "lucide-react";
+import { Search, X, ArrowLeft, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // Blog post data
@@ -122,6 +123,11 @@ const Blog = () => {
     <>
       {/* Hero Section */}
       <section className="pt-24 pb-16 container mx-auto px-4">
+        <div className="flex items-center gap-2 mb-6">
+          <Button variant="outline" size="sm" asChild>
+            <Link to="/"><ArrowLeft className="h-4 w-4 mr-1" />Back to Home</Link>
+          </Button>
+        </div>
         <div className="max-w-3xl mx-auto text-center mb-12">
           <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-secondary/30 text-secondary-foreground mb-3">
             Our Blog

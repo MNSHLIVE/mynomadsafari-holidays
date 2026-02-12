@@ -1,8 +1,8 @@
-
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight, ArrowLeft, Home } from "lucide-react";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { religiousTours } from "@/components/tours/data";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -30,46 +30,24 @@ const ReligiousTours = () => {
       title: tour.title,
       location: tour.location,
       duration: tour.duration,
-      price: String(tour.price), // Convert price to string
+      price: String(tour.price),
       bestTime: tour.bestTime,
       packageType: tour.packageType as PackageType,
       description: tour.description,
-      link: `/religious-tours/${tour.title.toLowerCase().replace(/\s+/g, '-')}` // Added link prop
+      link: `/religious-tours/${tour.title.toLowerCase().replace(/\s+/g, '-')}`
     }));
   };
   
   const hinduPackages = formatTourPackages(religiousTours);
   
-  // Define sections with their titles and filters
   const hinduSections = [
+    { id: 'charDham', title: 'Char Dham Yatra', filter: (tour) => tour.title.includes('Char Dham') },
+    { id: 'jyotirlinga', title: 'Jyotirlinga Darshan', filter: (tour) => tour.title.includes('Jyotirlinga') },
+    { id: 'vaishnoDevi', title: 'Vaishno Devi', filter: (tour) => tour.title.includes('Vaishno Devi') },
+    { id: 'badrinathKedarnath', title: 'Badrinath-Kedarnath', filter: (tour) => tour.title.includes('Badrinath') },
+    { id: 'southIndia', title: 'South India Temple Tours', filter: (tour) => tour.title.includes('South India') },
     {
-      id: 'charDham',
-      title: 'Char Dham Yatra',
-      filter: (tour) => tour.title.includes('Char Dham')
-    },
-    {
-      id: 'jyotirlinga',
-      title: 'Jyotirlinga Darshan',
-      filter: (tour) => tour.title.includes('Jyotirlinga')
-    },
-    {
-      id: 'vaishnoDevi',
-      title: 'Vaishno Devi',
-      filter: (tour) => tour.title.includes('Vaishno Devi')
-    },
-    {
-      id: 'badrinathKedarnath',
-      title: 'Badrinath-Kedarnath',
-      filter: (tour) => tour.title.includes('Badrinath')
-    },
-    {
-      id: 'southIndia',
-      title: 'South India Temple Tours',
-      filter: (tour) => tour.title.includes('South India')
-    },
-    {
-      id: 'otherHindu',
-      title: 'Other Hindu Pilgrimages',
+      id: 'otherHindu', title: 'Other Hindu Pilgrimages',
       filter: (tour) => !tour.title.includes('Char Dham') && 
                         !tour.title.includes('Jyotirlinga') && 
                         !tour.title.includes('Vaishno Devi') && 
@@ -78,10 +56,8 @@ const ReligiousTours = () => {
     },
   ];
   
-  // Helper to render tours based on filter
   const renderTours = (tours, filter) => {
     const filteredTours = tours.filter(filter);
-    
     if (filteredTours.length === 0) {
       return (
         <div className="text-center py-8">
@@ -89,7 +65,6 @@ const ReligiousTours = () => {
         </div>
       );
     }
-    
     return (
       <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredTours.map((tour) => (
@@ -106,7 +81,7 @@ const ReligiousTours = () => {
               description={tour.description}
               link={tour.link}
               className="flex-grow"
-              eager={true} // Add eager prop to load images quickly
+              eager={true}
             />
             <div className="mt-3">
               <DestinationQueryForm 
@@ -133,6 +108,14 @@ const ReligiousTours = () => {
       
       <div className="bg-primary/5 py-16 md:py-20">
         <div className="container mx-auto px-4">
+          <div className="flex items-center gap-2 mb-6">
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/tours"><ArrowLeft className="h-4 w-4 mr-1" />All Tours</Link>
+            </Button>
+            <Button variant="ghost" size="sm" asChild>
+              <Link to="/"><Home className="h-4 w-4 mr-1" />Home</Link>
+            </Button>
+          </div>
           <div className="text-center max-w-3xl mx-auto">
             <h1 className="text-3xl md:text-4xl font-bold mb-4">Religious & Pilgrimage Tours</h1>
             <p className="text-muted-foreground">Embark on a spiritual journey to the most sacred destinations. Our carefully curated pilgrimage packages combine spiritual experiences with comfortable travel.</p>
@@ -159,13 +142,10 @@ const ReligiousTours = () => {
                     {isOpen[section.id] ? <ChevronDown /> : <ChevronRight />}
                   </Button>
                 </div>
-                
                 {isOpen[section.id] && renderTours(hinduPackages, section.filter)}
               </section>
             ))}
           </TabsContent>
-          
-          {/* Other religion tabs can be added here */}
           
           {["Buddhist", "Jain", "Sikh", "Muslim", "Christian"].map((religion) => (
             <TabsContent key={religion} value={religion}>
